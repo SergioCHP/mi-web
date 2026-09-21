@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<!-- Página principal: index.html -->
+<html lang="es" data-accent="pink" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07070a" />
+    <title>Sergio Chorques | Web personal</title>
+
+    <meta
+      name="description"
+      content="Web personal de Sergio Chorques: estudiante de DAM, gamer, lector y desarrollador en formación."
+    />
+    <meta name="author" content="Sergio Chorques" />
+
+    <!-- Open Graph & Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Sergio Chorques | Web personal" />
+    <meta
+      property="og:description"
+      content="Estudiante de DAM, gamer y desarrollador en formación. Proyectos, intereses y marca personal."
+    />
+    <meta property="og:url" content="https://tu-dominio.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Favicon SVG -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23ff2e97' font-family='Arial'>SC</text></svg>"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Barra de progreso de lectura -->
+    <div id="scrollProgressBar" aria-hidden="true"></div>
+
+    <!-- Enlace de accesibilidad -->
+    <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+    <!-- Cursor personalizado -->
+    <div id="cursorWrap" aria-hidden="true">
+      <div id="cursorRing"></div>
+      <div id="cursorDot"></div>
+    </div>
+
+    <!-- Barra de navegación fija con glassmorphism -->
+    <header class="navbar-wrapper">
+      <nav class="navbar" aria-label="Navegación principal">
+        <a href="#inicio" class="nav-logo" aria-label="Volver al inicio">SC</a>
+        <div class="nav-links">
+          <a href="#sobre-mi">Sobre mí</a>
+          <a href="#lo-que-he-hecho">Trayectoria</a>
+          <a href="#me-gusta">Intereses</a>
+          <a href="#proyectos">Proyectos</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+        <div class="controls">
+          <!-- Nuevo botón de idioma -->
+          <button
+            id="langToggle"
+            type="button"
+            aria-label="Canviar idioma a valencià"
+            title="Canviar a valencià"
+            class="lang-btn"
+          >
+            <span>VA</span>
+          </button>
+
+          <button
+            id="themeToggle"
+            type="button"
+            aria-pressed="false"
+            aria-label="Cambiar tema"
+            title="Cambiar tema"
+          >
+          
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <button
+            id="accentToggle"
+            type="button"
+            aria-pressed="false"
+            aria-label="Cambiar tono de acento"
+            title="Cambiar color de acento"
+          >
+            <svg class="icon-accent" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="9" cy="12" r="6" fill="var(--pink)"></circle>
+              <circle cx="15" cy="12" r="6" fill="var(--blue)" fill-opacity="0.92"></circle>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Sección Hero (Opción A: Centrado Vertical con foto grande) -->
+    <section class="hero" id="inicio">
+      <div class="hero-inner">
+        <!-- Badge de estado -->
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span>Disponible para nuevos retos &amp; proyectos</span>
+        </div>
+
+        <div class="brand">
+          <div class="avatar-wrap">
+            <img src="images/perfil.webp" alt="Sergio Chorques" class="avatar-img" />
+          </div>
+          <div class="brand-text">
+            <h1>Sergio Chorques</h1>
+            <p class="tagline" aria-live="polite">
+              <span id="typeText">Construyo universos interactivos desde cero.</span><span id="typeCursor" aria-hidden="true">▍</span>
+            </p>
+          </div>
+        </div>
+
+        <p class="hero-text">
+          Estudiante de 1º DAM en el IES Simarro. Enfocado en el desarrollo de software como motor
+          para crear herramientas prácticas, explorar tecnologías modernas y diseñar interfaces intuitivas.
+        </p>
+      </div>
+    </section>
+
+    <!-- Contenido principal -->
+    <main id="contenido">
+      <!-- Sección: Sobre mí -->
+      <section id="sobre-mi" class="section reveal" aria-labelledby="sobre-mi-title">
+        <div class="section-head">
+          <h2 id="sobre-mi-title">Sobre mí</h2>
+          <p>Perfil personal, académico y motivación principal.</p>
+        </div>
+
+        <article class="card about-card spotlight-card">
+          <p>Soy Sergio Chorques, estudiante del ciclo superior de 1º DAM en el IES Simarro.</p>
+          <p>
+            He asumido el reto personal de adentrarme en el mundo de la programación para darle un
+            nuevo rumbo a mis intereses y habilidades analíticas.
+          </p>
+          <p>
+            Me parece fascinante cómo se pueden construir universos interactivos y herramientas
+            útiles desde cero a base de código limpio. Continúo explorando arquitectura de datos y
+            desarrollo web para materializar proyectos funcionales.
+          </p>
+
+          <ul class="tags">
+            <li>1º DAM</li>
+            <li>IES Simarro</li>
+            <!-- Java -->
+            <li class="tech-tag">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M8.85 16.84c0 .03.04.05.07.03 1.13-.6 2.4-.87 3.63-.82 1.95.07 3.82.91 5.71.69 1.14-.14 2.15-.72 2.37-1.89.26-1.39-.77-2.31-1.95-2.58-1.57-.36-3.23.08-4.73.54-1.63.49-3.35 1.05-5.1.03zm-1.12 3.03c1.78.36 3.61.34 5.37-.09 1.63-.4 3.28-.93 4.97-.68 1.02.15 1.92.74 2.17 1.76.27 1.1-.38 2.05-1.36 2.45-2.02.82-4.32.55-6.42.16-1.58-.29-3.15-.74-4.73-1.6zm10.74-7.44c1.11.23 2.08.77 2.39 1.91.31 1.15-.22 2.22-1.13 2.87-1.63 1.15-3.69 1.25-5.6 1.14-2.12-.13-4.22.45-6.28 1.01-1.19.33-2.39-.02-3.16-.96-.75-.92-.68-2.14.07-3.03 1.24-1.46 3.19-2.05 5.06-2.33 2.88-.44 5.86-.33 8.65-.64zM9.54 2.75c-.32 1.34.46 2.61 1.36 3.51 1.06 1.05 2.3 1.88 3.55 2.7.2.13.4.15.48-.09.11-.34.02-.69-.17-.98-.82-1.28-1.97-2.32-2.9-3.53-.78-1.01-1.45-2.11-2.32-1.61z"/>
+              </svg>
+              <span>Java</span>
+            </li>
+            <!-- JavaScript -->
+            <li class="tech-tag">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M3 3h18v18H3V3zm13.78 13.9c1.07 0 1.94-.48 2.36-1.16l-1.38-.85c-.24.4-.55.65-.98.65-.54 0-.88-.33-.88-.93v-4.42h-1.74v4.54c0 1.45.89 2.17 2.62 2.17zm-5.74-.06c1.19 0 1.92-.55 2.23-1.13l-1.38-.83c-.22.37-.47.59-.85.59-.44 0-.71-.24-.71-.62 0-.46.33-.67 1.03-.98l.38-.16c1.3-.57 1.89-1.2 1.89-2.28 0-1.31-1.01-2.24-2.52-2.24-1.26 0-2.13.56-2.5 1.31l1.37.82c.2-.34.49-.55.88-.55.38 0 .61.2.61.52 0 .4-.3.59-.86.83l-.38.16c-1.42.6-2.07 1.27-2.07 2.45 0 1.44 1.06 2.32 2.56 2.32z"/>
+              </svg>
+              <span>JavaScript</span>
+            </li>
+            <!-- HTML5 -->
+            <li class="tech-tag">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M4.07 2.25h15.86l-1.44 16.2L12 21.75l-6.49-3.3L4.07 2.25zM12 4.14v15.22l4.89-2.49 1.13-12.73H12zm-4.32 3.6h8.64l-.24 2.7H9.98l.24 2.7h4.86l-.48 5.4-2.6 1.3-2.6-1.3-.18-1.95H7.4l.32 3.65L12 20.35l4.28-2.15.58-6.55.19-2.15.19-2.15H7.68v.29z"/>
+              </svg>
+              <span>HTML5</span>
+            </li>
+            <!-- CSS3 -->
+            <li class="tech-tag">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M4.18 2.25h15.64l-1.42 16.2L12 21.75l-6.4-3.3L4.18 2.25zM12 4.14v15.22l4.82-2.49 1.11-12.73H12zm-4.26 3.6h8.51l-.24 2.7H9.86l.24 2.7h4.78l-.48 5.4-2.56 1.3-2.56-1.3-.18-1.95H7.31l.32 3.65L12 20.35l4.22-2.15.57-6.55.19-2.15.19-2.15H7.58v.29z"/>
+              </svg>
+              <span>CSS3</span>
+            </li>
+            <!-- Git -->
+            <li class="tech-tag">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M21.62 10.97l-8.59-8.59a2.07 2.07 0 0 0-2.93 0L8.2 4.28l3.15 3.15a2.45 2.45 0 0 1 3.1 3.11l3.03 3.03a2.45 2.45 0 1 1-1.46 1.46l-2.84-2.84v4.4a2.46 2.46 0 1 1-2.07 0V11.8a2.45 2.45 0 0 1-1.3-3.21L6.7 5.47 2.38 9.79a2.07 2.07 0 0 0 0 2.93l8.59 8.59a2.07 2.07 0 0 0 2.93 0l7.72-7.72a2.07 2.07 0 0 0 0-2.93v.31z"/>
+              </svg>
+              <span>Git</span>
+            </li>
+            <li>Aprendizaje continuo</li>
+          </ul>
+
+        </article>
+      </section>
+
+      <!-- Sección: Lo que he hecho -->
+      <section id="lo-que-he-hecho" class="section reveal" aria-labelledby="hecho-title">
+        <div class="section-head">
+          <h2 id="hecho-title">Lo que he hecho</h2>
+          <p>Experiencias recientes, formación previa e hitos personales.</p>
+        </div>
+
+        <div class="card-grid">
+          <article class="card spotlight-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+              </svg>
+            </div>
+            <h3>Formación Base</h3>
+            <p>Módulo de Grado Medio de SMR (Sistemas Microinformáticos y Redes) completado con éxito.</p>
+          </article>
+
+          <article class="card spotlight-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m18 16 4-4-4-4"></path>
+                <path d="m6 8-4 4 4 4"></path>
+                <path d="m14.5 4-5 16"></path>
+              </svg>
+            </div>
+            <h3>Reto Programación</h3>
+            <p>Salto a 1º DAM orientado al dominio de desarrollo en lenguajes estructurados y POO.</p>
+          </article>
+
+          <article class="card spotlight-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                <path d="M7 7h10"></path>
+                <path d="M7 12h10"></path>
+                <path d="M7 17h10"></path>
+              </svg>
+            </div>
+            <h3>Colección &amp; Datos</h3>
+            <p>Catalogación estructurada y gestión de colección personal de cómics, novelas y cine.</p>
+          </article>
+
+          <article class="card spotlight-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="12 6 12 12 16 14"></polygon>
+              </svg>
+            </div>
+            <h3>Desconexión</h3>
+            <p>Viajes de desconexión en familia, costas de Cádiz y recarga de energía creativa.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Sección: Me gusta -->
+      <section id="me-gusta" class="section reveal" aria-labelledby="gusta-title">
+        <div class="section-head">
+          <h2 id="gusta-title">Me gusta</h2>
+          <p>Aficiones, entretenimiento y áreas de inspiración.</p>
+        </div>
+
+        <div class="card-grid">
+          <article class="card spotlight-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="6" y1="12" x2="10" y2="12"></line>
+                <line x1="8" y1="10" x2="8" y2="14"></line>
+                <line x1="15" y1="13" x2="15.01" y2="13"></line>
+                <line x1="18" y1="11" x2="18.01" y2="11"></line>
+                <rect width="20" height="12" x="2" y="6" rx="6"></rect>
+              </svg>
+            </div>
+            <h3>Videojuegos</h3>
+            <p>Jugador en PS5, priorizando títulos con narrativa elaborada, mecánicas pulidas y diseño inmersivo.</p>
+          </article>
+
+          <article class="card spotlight-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="15" x="2" y="7" rx="2" ry="2"></rect>
+                <polyline points="17 2 12 7 7 2"></polyline>
+              </svg>
+            </div>
+            <h3>Cine &amp; Anime</h3>
+            <p>Apreciación del lenguaje audiovisual contemporáneo y series clásicas de animación japonesa.</p>
+          </article>
+
+          <article class="card spotlight-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                <path d="M6 6h10"></path>
+                <path d="M6 10h10"></path>
+              </svg>
+            </div>
+            <h3>Lectura</h3>
+            <p>Constante interés por novelas de ciencia ficción, literatura técnica, cómic independiente y manga.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Sección: Proyectos -->
+      <section id="proyectos" class="section reveal" aria-labelledby="proyectos-title">
+        <div class="section-head">
+          <h2 id="proyectos-title">Proyectos</h2>
+          <p>Prácticas, experimentos y aplicaciones donde aplico código real y diseño de interfaces.</p>
+        </div>
+
+        <div class="filter-bar" role="tablist" aria-label="Filtrar proyectos">
+          <button type="button" class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true">
+            Todos
+          </button>
+          <button type="button" class="filter-btn" data-filter="web" role="tab" aria-selected="false">
+            Web
+          </button>
+          <button type="button" class="filter-btn" data-filter="js" role="tab" aria-selected="false">
+            JavaScript
+          </button>
+          <button type="button" class="filter-btn" data-filter="dam" role="tab" aria-selected="false">
+            DAM
+          </button>
+        </div>
+
+        <div class="projects-grid" id="projectsGrid">
+          <article class="project-card tilt spotlight-card" data-category="web js">
+            <div class="project-card-inner">
+              <header class="project-card-head">
+                <p class="project-type">Web / JS</p>
+                <h3 class="project-title">Mi web personal</h3>
+              </header>
+              <p class="project-desc">
+                Portal personal con soporte para temas dinámicos, microinteracciones reactivas y accesibilidad integrada.
+              </p>
+              <ul class="project-tags">
+                <li>HTML5</li>
+                <li>CSS Moderno</li>
+                <li>JavaScript Vanilla</li>
+              </ul>
+              <div class="project-actions">
+                <a class="project-link" href="#" aria-label="Ver código del proyecto Mi web personal">Ver código</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card tilt spotlight-card" data-category="dam js">
+            <div class="project-card-inner">
+              <header class="project-card-head">
+                <p class="project-type">Práctica DAM</p>
+                <h3 class="project-title">Gestor de biblioteca</h3>
+              </header>
+              <p class="project-desc">
+                Aplicación orientada a organizar colecciones de libros y mangas mediante estructuras de datos ordenadas y persistencia lógica.
+              </p>
+              <ul class="project-tags">
+                <li>Java</li>
+                <li>Estructura de Datos</li>
+                <li>POO</li>
+              </ul>
+              <div class="project-actions">
+                <a class="project-link" href="#" aria-label="Ver código del proyecto Gestor de biblioteca">Ver código</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card tilt spotlight-card" data-category="web dam">
+            <div class="project-card-inner">
+              <header class="project-card-head">
+                <p class="project-type">Web / DAM</p>
+                <h3 class="project-title">Interfaz gamer HUD</h3>
+              </header>
+              <p class="project-desc">
+                Prototipo de dashboard con estética Cyberpunk/HUD, animaciones con aceleración gráfica por hardware y componentes modulares.
+              </p>
+              <ul class="project-tags">
+                <li>UI / UX</li>
+                <li>CSS Grid</li>
+                <li>Glow Effects</li>
+              </ul>
+              <div class="project-actions">
+                <a class="project-link" href="#" aria-label="Ver código del proyecto Interfaz gamer">Ver código</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer id="contacto" class="section reveal" aria-labelledby="contacto-title">
+      <div class="footer-inner">
+        <div class="section-head">
+          <h2 id="contacto-title">Contacto</h2>
+          <p>¿Interesado en hablar sobre desarrollo de software, proyectos o colaborar? Escríbeme.</p>
+        </div>
+
+        <address class="contact-address">
+          Abierto a consultas académicas, proyectos compartidos y conexiones profesionales.
+        </address>
+
+        <ul class="contact-links">
+          <li><a href="mailto:serchoper@alu.edu.gva.es">Enviar Correo</a></li>
+          <li>
+            <a href="https://github.com/SergioCHP" target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/tu-perfil" target="_blank" rel="noopener noreferrer">
+              LinkedIn
+            </a>
+          </li>
+        </ul>
+
+        <p class="copy">© <span id="year"></span> Sergio Chorques · Web personal.</p>
+      </div>
+    </footer>
+
+    <!-- Botón Volver Arriba -->
+    <button
+      id="scrollTopBtn"
+      type="button"
+      class="scroll-top-btn"
+      aria-label="Volver arriba"
+      title="Volver arriba"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    </button>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+  </body>
+</html>
