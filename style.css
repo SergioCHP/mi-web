@@ -1,11 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap");
+
 /* =========================================================
    style.css — Web personal Sergio Chorques
    Estética Gamer / Tech HUD con Retrato Central Destacado
    ========================================================= */
-
-@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap");
-
-*,
 *::before,
 *::after {
   box-sizing: border-box;
@@ -1085,4 +1083,13 @@ html.js-cursor .card {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+/* =========================================================
+   FUENTE DEL TÍTULO PRINCIPAL (Sergio Chorques)
+   ========================================================= */
+.hero h1 {
+  font-family: "Poppins", "Segoe UI", sans-serif !important;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
