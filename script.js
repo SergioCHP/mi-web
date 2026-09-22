@@ -151,11 +151,33 @@
         { desc: "Prototipo de dashboard con estética Cyberpunk/HUD, animaciones con aceleración gráfica por hardware y componentes modulares.", link: "Ver código" }
       ],
 
-      // Sección Contacto
+      // Sección Contacto + Modal
       contactTitle: "Contacto",
       contactSub: "¿Interesado en hablar sobre desarrollo de software, proyectos o colaborar? Escríbeme.",
       contactAddress: "Abierto a consultas académicas, proyectos compartidos y conexiones profesionales.",
       contactSend: "Enviar Correo",
+      contactCallBtn: "¿Te llamo?",
+      modalKicker: "Contacto directo",
+      modalTitle: "¿Te llamo?",
+      modalLead: "Déjame tus datos y te llamo cuando te venga bien. Sin compromiso.",
+      modalName: "Nombre",
+      modalNamePh: "Tu nombre",
+      modalEmail: "Email",
+      modalPhone: "Teléfono",
+      modalWhen: "¿Cuándo te va bien?",
+      modalWhenDefault: "Elige una franja",
+      modalWhenOpts: [
+        "Mañanas (9–13h)",
+        "Mediodía (13–16h)",
+        "Tardes (16–20h)",
+        "Da igual, cuando puedas"
+      ],
+      modalMsg: "¿Sobre qué?",
+      modalMsgOpt: "(opcional)",
+      modalMsgPh: "Proyecto, práctica, colaboración…",
+      modalSubmit: "Enviar solicitud",
+      modalSuccessTitle: "¡Solicitud enviada!",
+      modalSuccessDesc: "Te llamaré muy pronto.",
       copy: "© " + (yearElement ? yearElement.textContent : new Date().getFullYear()) + " Sergio Chorques · Web personal."
     },
     va: {
@@ -203,11 +225,33 @@
         { desc: "Prototip de panell amb estètica Cyberpunk/HUD, animacions amb acceleració gràfica per maquinari i components modulars.", link: "Veure codi" }
       ],
 
-      // Sección Contacte
+      // Sección Contacte + Modal
       contactTitle: "Contacte",
       contactSub: "Interessat en parlar sobre desenvolupament de programari, projectes o col·laborar? Escriu-me.",
       contactAddress: "Obert a consultes acadèmiques, projectes compartits i connexions professionals.",
       contactSend: "Enviar Correu",
+      contactCallBtn: "Et cride?",
+      modalKicker: "Contacte directe",
+      modalTitle: "Et cride?",
+      modalLead: "Deixa'm les teues dades i et cride quan et vinga bé. Sense compromís.",
+      modalName: "Nom",
+      modalNamePh: "El teu nom",
+      modalEmail: "Correu electrònic",
+      modalPhone: "Telèfon",
+      modalWhen: "Quan et va bé?",
+      modalWhenDefault: "Tria una franja",
+      modalWhenOpts: [
+        "Matins (9–13h)",
+        "Migdia (13–16h)",
+        "Vesprades (16–20h)",
+        "Tant se val, quan pugues"
+      ],
+      modalMsg: "Sobre què?",
+      modalMsgOpt: "(opcional)",
+      modalMsgPh: "Projecte, pràctica, col·laboració…",
+      modalSubmit: "Enviar sol·licitud",
+      modalSuccessTitle: "Sol·licitud enviada!",
+      modalSuccessDesc: "Et cridaré ben prompte.",
       copy: "© " + (yearElement ? yearElement.textContent : new Date().getFullYear()) + " Sergio Chorques · Web personal."
     }
   };
@@ -337,6 +381,65 @@
     const copyP = document.querySelector(".copy");
     if (copyP) {
       copyP.innerHTML = `© <span id="year">${new Date().getFullYear()}</span> Sergio Chorques · ${lang === 'va' ? 'Web personal.' : 'Web personal.'}`;
+    }
+
+    // Botón de llamada en footer
+    const callBtnSpan = document.querySelector("#openCall span");
+    if (callBtnSpan) callBtnSpan.textContent = t.contactCallBtn;
+
+    // Elementos del Modal
+    const modalKicker = document.querySelector(".modal__kicker");
+    if (modalKicker) modalKicker.textContent = t.modalKicker;
+
+    const modalTitle = document.getElementById("callTitle");
+    if (modalTitle) modalTitle.textContent = t.modalTitle;
+
+    const modalLead = document.querySelector(".modal__lead");
+    if (modalLead) modalLead.textContent = t.modalLead;
+
+    // Campos del formulario
+    const nameLabel = document.querySelector('label[for="cf-name"]');
+    if (nameLabel) nameLabel.textContent = t.modalName;
+    const nameInput = document.getElementById("cf-name");
+    if (nameInput) nameInput.placeholder = t.modalNamePh;
+
+    const emailLabel = document.querySelector('label[for="cf-email"]');
+    if (emailLabel) emailLabel.textContent = t.modalEmail;
+
+    const phoneLabel = document.querySelector('label[for="cf-phone"]');
+    if (phoneLabel) phoneLabel.textContent = t.modalPhone;
+
+    const whenLabel = document.querySelector('label[for="cf-when"]');
+    if (whenLabel) whenLabel.textContent = t.modalWhen;
+
+    const whenSelect = document.getElementById("cf-when");
+    if (whenSelect && whenSelect.options.length > 0) {
+      whenSelect.options[0].textContent = t.modalWhenDefault;
+      t.modalWhenOpts.forEach((text, i) => {
+        if (whenSelect.options[i + 1]) {
+          whenSelect.options[i + 1].textContent = text;
+        }
+      });
+    }
+
+    const msgLabel = document.querySelector('label[for="cf-msg"]');
+    if (msgLabel) {
+      msgLabel.innerHTML = `${t.modalMsg} <span class="opt">${t.modalMsgOpt}</span>`;
+    }
+    const msgInput = document.getElementById("cf-msg");
+    if (msgInput) msgInput.placeholder = t.modalMsgPh;
+
+    const submitBtn = document.getElementById("callSubmit");
+    if (submitBtn && !submitBtn.disabled) {
+      submitBtn.textContent = t.modalSubmit;
+    }
+
+    const successEl = document.getElementById("callSuccess");
+    if (successEl) {
+      const successP = successEl.querySelector("p");
+      if (successP) {
+        successP.innerHTML = `<strong>${t.modalSuccessTitle}</strong><br>${t.modalSuccessDesc}`;
+      }
     }
   };
 
@@ -652,6 +755,13 @@
 
   let lastFocus = null;
 
+  // Funciones para saber qué texto poner en el botón según el idioma activo
+  const getSubmitLabel = () => 
+    document.documentElement.getAttribute("lang") === "va" ? "Enviar sol·licitud" : "Enviar solicitud";
+
+  const getSendingLabel = () => 
+    document.documentElement.getAttribute("lang") === "va" ? "Enviant…" : "Enviando…";
+
   const focusables = () =>
     modal.querySelectorAll('button, input, select, textarea, [href], [tabindex]:not([tabindex="-1"])');
 
@@ -730,7 +840,7 @@
       return;
     }
 
-    setSubmitState(true, "Enviando…");
+    setSubmitState(true, getSendingLabel());
 
     try {
       const res = await fetch(FORMSPREE_ENDPOINT, {
@@ -758,7 +868,7 @@
           "No se pudo enviar. Inténtalo de nuevo.",
           true
         );
-        setSubmitState(false, "Enviar solicitud");
+        setSubmitState(false, getSubmitLabel());
       }
     } catch {
       setStatus("Error de conexión. Revisa tu red.", true);
