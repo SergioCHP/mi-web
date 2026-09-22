@@ -409,6 +409,15 @@
               LinkedIn
             </a>
           </li>
+          <!-- Botón ¿Te llamo? -->
+          <li>
+            <button type="button" class="contact-call" id="openCall" aria-haspopup="dialog">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span>¿Te llamo?</span>
+            </button>
+          </li>
         </ul>
 
         <p class="copy">© <span id="year"></span> Sergio Chorques · Web personal.</p>
@@ -430,5 +439,74 @@
 
     <!-- Script -->
     <script src="script.js"></script>
+    <!-- ========================================================= -->
+      <!-- MODAL: ¿TE LLAMO? -->
+      <!-- ========================================================= -->
+      <div class="modal" id="callModal" aria-hidden="true">
+        <div class="modal__backdrop" data-close-modal></div>
+
+        <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="callTitle">
+          <button type="button" class="modal__close" data-close-modal aria-label="Cerrar formulario">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+
+          <p class="modal__kicker">Contacto directo</p>
+          <h3 class="modal__title" id="callTitle">¿Te llamo?</h3>
+          <p class="modal__lead">Déjame tus datos y te llamo cuando te venga bien. Sin compromiso.</p>
+
+          <!-- Formulario -->
+          <form class="modal__form" id="callForm" method="POST">
+            <!-- Honeypot anti-spam: no tocar ni mostrar -->
+            <input type="text" name="_gotcha" class="modal__hp" tabindex="-1" autocomplete="off">
+
+            <div class="field">
+              <label for="cf-name">Nombre</label>
+              <input id="cf-name" name="Nombre" type="text" required autocomplete="name" placeholder="Tu nombre">
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="cf-email">Email</label>
+                <input id="cf-email" name="Email" type="email" required autocomplete="email" placeholder="tucorreo@dominio.com">
+              </div>
+              <div class="field">
+                <label for="cf-phone">Teléfono</label>
+                <input id="cf-phone" name="Teléfono" type="tel" required autocomplete="tel" inputmode="tel" placeholder="+34 600 000 000">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cf-when">¿Cuándo te va bien?</label>
+              <select id="cf-when" name="Disponibilidad" required>
+                <option value="" disabled selected>Elige una franja</option>
+                <option>Mañanas (9–13h)</option>
+                <option>Mediodía (13–16h)</option>
+                <option>Tardes (16–20h)</option>
+                <option>Da igual, cuando puedas</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="cf-msg">¿Sobre qué? <span class="opt">(opcional)</span></label>
+              <textarea id="cf-msg" name="Mensaje" rows="3" placeholder="Proyecto, práctica, colaboración…"></textarea>
+            </div>
+
+            <input type="hidden" name="_subject" value="Nueva llamada solicitada desde la web">
+
+            <button type="submit" class="modal__submit" id="callSubmit">Enviar solicitud</button>
+            <p class="modal__status" id="callStatus" role="status" aria-live="polite"></p>
+          </form>
+
+          <!-- Confirmación -->
+          <div class="modal__success" id="callSuccess" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 6 9 17l-5-5"/>
+            </svg>
+            <p><strong>¡Solicitud enviada!</strong><br>Te llamaré muy pronto.</p>
+          </div>
+        </div>
+      </div>
   </body>
 </html>

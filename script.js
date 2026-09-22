@@ -44,7 +44,7 @@
       themeButton.setAttribute("aria-pressed", String(isLight));
     }
     if (themeColorMeta) {
-      themeColorMeta.setAttribute("content", isLight ? "#f5f6fb" : "#07070a");
+      themeColorMeta.setAttribute("content", isLight ? "#f3efe4" : "#07070a");
     }
   };
 
@@ -57,8 +57,9 @@
       } catch (e) {}
       updateThemeUI();
     });
-    updateThemeUI();
   }
+
+  updateThemeUI();
 
   /* ---------- Acento Rosa / Azul ---------- */
   let accent = "pink";
@@ -89,8 +90,9 @@
       } catch (e) {}
       updateAccentUI();
     });
-    updateAccentUI();
   }
+
+  updateAccentUI();
 
  /* ---------- Selector de Idioma (ES / VA) Completo ---------- */
   const langButton = document.getElementById("langToggle");
@@ -176,7 +178,7 @@
       trayectoriaTitle: "El que he fet",
       trayectoriaSub: "Experiències recents, formació prèvia i fites personals.",
       trayectoriaCards: [
-        { title: "Formació Base", desc: "Mòdul de Grau Mitjà de SMX (Sistemes Microinformàtics i Xarxes) completat amb èxit." },
+        { title: "Formació Base", desc: "Mòdul de Grau Mitjà de SMR (Sistemes Microinformàtics i Xarxes) completat amb èxit." },
         { title: "Repte Programació", desc: "Salt a 1r DAM orientat al domini de desenvolupament en llenguatges estructurats i POO." },
         { title: "Col·lecció & Dades", desc: "Catalogació estructurada i gestió de col·lecció personal de còmics, novel·les i cinema." },
         { title: "Desconnexió", desc: "Viatges de desconnexió en família, costes de Cadis i recàrrega d'energia creativa." }
@@ -188,7 +190,7 @@
       interesesCards: [
         { title: "Videojocs", desc: "Jugador en PS5, prioritzant títols amb narrativa elaborada, mecàniques polides i disseny immersiu." },
         { title: "Cinema & Anime", desc: "Apreciació del llenguatge audiovisual contemporani i sèries clàssiques d'animació japonesa." },
-        { title: "Lectura", desc: "Interés constant per novel·les de ciència-ficció, literatura tècnica, còmic independent i manga." }
+        { title: "Lectura", desc: "Interès constant per novel·les de ciència-ficció, literatura tècnica, còmic independent i manga." }
       ],
 
       // Sección Projectes
@@ -212,11 +214,14 @@
 
   const applyLanguage = (lang) => {
     const t = translations[lang];
+    if (!t) return;
+
     root.setAttribute("lang", lang);
 
     // Botón
     if (langButton) {
-      langButton.querySelector("span").textContent = t.btnLabel;
+      const langSpan = langButton.querySelector("span");
+      if (langSpan) langSpan.textContent = t.btnLabel;
       langButton.setAttribute("title", t.btnTitle);
       langButton.setAttribute("aria-label", t.btnTitle);
     }
@@ -230,6 +235,7 @@
     // Hero & Status
     const statusText = document.querySelector(".status-pill span:last-child");
     if (statusText) statusText.textContent = t.status;
+
     const heroP = document.querySelector(".hero-text");
     if (heroP) heroP.textContent = t.heroText;
 
@@ -237,8 +243,11 @@
     const smTitle = document.getElementById("sobre-mi-title");
     if (smTitle) {
       smTitle.textContent = t.sobreMiTitle;
-      smTitle.nextElementSibling.textContent = t.sobreMiSub;
+      if (smTitle.nextElementSibling) {
+        smTitle.nextElementSibling.textContent = t.sobreMiSub;
+      }
     }
+
     const aboutPs = document.querySelectorAll(".about-card > p");
     t.aboutPs.forEach((text, idx) => {
       if (aboutPs[idx]) aboutPs[idx].textContent = text;
@@ -248,59 +257,77 @@
     const hechoTitle = document.getElementById("hecho-title");
     if (hechoTitle) {
       hechoTitle.textContent = t.trayectoriaTitle;
-      hechoTitle.nextElementSibling.textContent = t.trayectoriaSub;
+      if (hechoTitle.nextElementSibling) {
+        hechoTitle.nextElementSibling.textContent = t.trayectoriaSub;
+      }
     }
+
     const trayectoriaCards = document.querySelectorAll("#lo-que-he-hecho .card");
     t.trayectoriaCards.forEach((cardData, idx) => {
-      if (trayectoriaCards[idx]) {
-        const h3 = trayectoriaCards[idx].querySelector("h3");
-        const p = trayectoriaCards[idx].querySelector("p");
-        if (h3) h3.textContent = cardData.title;
-        if (p) p.textContent = cardData.desc;
-      }
+      const card = trayectoriaCards[idx];
+      if (!card) return;
+
+      const h3 = card.querySelector("h3");
+      const p = card.querySelector("p");
+
+      if (h3) h3.textContent = cardData.title;
+      if (p) p.textContent = cardData.desc;
     });
 
     // Sección: Intereses (Me gusta)
     const gustaTitle = document.getElementById("gusta-title");
     if (gustaTitle) {
       gustaTitle.textContent = t.interesesTitle;
-      gustaTitle.nextElementSibling.textContent = t.interesesSub;
+      if (gustaTitle.nextElementSibling) {
+        gustaTitle.nextElementSibling.textContent = t.interesesSub;
+      }
     }
+
     const interesesCards = document.querySelectorAll("#me-gusta .card");
     t.interesesCards.forEach((cardData, idx) => {
-      if (interesesCards[idx]) {
-        const h3 = interesesCards[idx].querySelector("h3");
-        const p = interesesCards[idx].querySelector("p");
-        if (h3) h3.textContent = cardData.title;
-        if (p) p.textContent = cardData.desc;
-      }
+      const card = interesesCards[idx];
+      if (!card) return;
+
+      const h3 = card.querySelector("h3");
+      const p = card.querySelector("p");
+
+      if (h3) h3.textContent = cardData.title;
+      if (p) p.textContent = cardData.desc;
     });
 
     // Sección: Proyectos
     const proyTitle = document.getElementById("proyectos-title");
     if (proyTitle) {
       proyTitle.textContent = t.proyectosTitle;
-      proyTitle.nextElementSibling.textContent = t.proyectosSub;
+      if (proyTitle.nextElementSibling) {
+        proyTitle.nextElementSibling.textContent = t.proyectosSub;
+      }
     }
+
     const filterBtnAll = document.querySelector('.filter-btn[data-filter="all"]');
     if (filterBtnAll) filterBtnAll.textContent = t.filterAll;
 
-    const projectCards = document.querySelectorAll(".project-card");
+    const projectCardsLang = document.querySelectorAll(".project-card");
     t.projectCards.forEach((cardData, idx) => {
-      if (projectCards[idx]) {
-        const pDesc = projectCards[idx].querySelector(".project-desc");
-        const aLink = projectCards[idx].querySelector(".project-link");
-        if (pDesc) pDesc.textContent = cardData.desc;
-        if (aLink) aLink.textContent = cardData.link;
-      }
+      const card = projectCardsLang[idx];
+      if (!card) return;
+
+      const pDesc = card.querySelector(".project-desc");
+      const aLink = card.querySelector(".project-link");
+
+      if (pDesc) pDesc.textContent = cardData.desc;
+      if (aLink) aLink.textContent = cardData.link;
     });
 
     // Sección: Contacto y Footer
     const contactoTitle = document.getElementById("contacto-title");
     if (contactoTitle) {
       contactoTitle.textContent = t.contactTitle;
-      contactoTitle.nextElementSibling.textContent = t.contactSub;
+      if (contactoTitle.nextElementSibling) {
+        contactoTitle.nextElementSibling.textContent = t.contactSub;
+      }
     }
+
     const address = document.querySelector(".contact-address");
     if (address) address.textContent = t.contactAddress;
 
@@ -308,7 +335,9 @@
     if (mailLink) mailLink.textContent = t.contactSend;
 
     const copyP = document.querySelector(".copy");
-    if (copyP) copyP.innerHTML = `© <span id="year">${new Date().getFullYear()}</span> Sergio Chorques · ${lang === 'va' ? 'Web personal.' : 'Web personal.'}`;
+    if (copyP) {
+      copyP.innerHTML = `© <span id="year">${new Date().getFullYear()}</span> Sergio Chorques · ${lang === 'va' ? 'Web personal.' : 'Web personal.'}`;
+    }
   };
 
   if (langButton) {
@@ -319,7 +348,12 @@
       } catch (e) {}
       applyLanguage(currentLang);
     });
+  }
+
+  try {
     applyLanguage(currentLang);
+  } catch (e) {
+    console.warn("No se pudo aplicar el idioma:", e);
   }
 
   /* ---------- Reveal con IntersectionObserver ---------- */
@@ -461,16 +495,21 @@
     document.addEventListener("mouseleave", () => {
       wrap.style.opacity = "0";
     });
+
     document.addEventListener("mouseenter", () => {
       wrap.style.opacity = "1";
     });
 
     const hoverTargets = "a, button, .card, .tags li, .filter-btn";
+
     document.addEventListener("mouseover", (e) => {
-      if (e.target.closest(hoverTargets)) wrap.classList.add("cursor--hover");
+      const target = e.target && e.target.closest ? e.target.closest(hoverTargets) : null;
+      if (target) wrap.classList.add("cursor--hover");
     });
+
     document.addEventListener("mouseout", (e) => {
-      if (e.target.closest(hoverTargets)) wrap.classList.remove("cursor--hover");
+      const target = e.target && e.target.closest ? e.target.closest(hoverTargets) : null;
+      if (target) wrap.classList.remove("cursor--hover");
     });
   })();
 
@@ -499,7 +538,11 @@
   });
 
   /* ---------- Tilt 3D sin retrasos ---------- */
-  if (!prefersReducedMotion && window.matchMedia("(hover: hover)").matches) {
+  if (
+    !prefersReducedMotion &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(hover: hover)").matches
+  ) {
     const tiltCards = document.querySelectorAll(".tilt");
 
     tiltCards.forEach((card) => {
@@ -521,6 +564,7 @@
       card.addEventListener("mouseleave", reset);
     });
   }
+
  /* ---------- Spy Scroll (Indicador activo en el menú) ---------- */
   const navLinksList = document.querySelectorAll(".nav-links a");
   const trackedSections = document.querySelectorAll("section[id], footer[id]");
@@ -549,6 +593,7 @@
 
     trackedSections.forEach((section) => spyObserver.observe(section));
   } 
+
   /* ---------- Barra de progreso de scroll ---------- */
   const progressBar = document.getElementById("scrollProgressBar");
 
@@ -562,20 +607,24 @@
     };
 
     window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
   }
 
   /* ---------- Botón Volver Arriba ---------- */
   const scrollTopBtn = document.getElementById("scrollTopBtn");
 
   if (scrollTopBtn) {
-    window.addEventListener("scroll", () => {
+    const updateScrollTopVisibility = () => {
       // Se muestra al bajar más de 350px
       if (window.scrollY > 350) {
         scrollTopBtn.classList.add("is-visible");
       } else {
         scrollTopBtn.classList.remove("is-visible");
       }
-    }, { passive: true });
+    };
+
+    window.addEventListener("scroll", updateScrollTopVisibility, { passive: true });
+    updateScrollTopVisibility();
 
     scrollTopBtn.addEventListener("click", () => {
       window.scrollTo({
@@ -584,4 +633,136 @@
       });
     });
   }
+})();
+
+/* =========================================================
+   MODAL ¿TE LLAMO? + envío por Formspree
+   ========================================================= */
+(() => {
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/TU_ID"; // <-- CAMBIA TU_ID
+
+  const modal = document.getElementById("callModal");
+  const openBtn = document.getElementById("openCall");
+  const form = document.getElementById("callForm");
+  const submitBtn = document.getElementById("callSubmit");
+  const statusEl = document.getElementById("callStatus");
+  const successEl = document.getElementById("callSuccess");
+
+  if (!modal || !openBtn || !form) return;
+
+  let lastFocus = null;
+
+  const focusables = () =>
+    modal.querySelectorAll('button, input, select, textarea, [href], [tabindex]:not([tabindex="-1"])');
+
+  const setSubmitState = (disabled, text) => {
+    if (!submitBtn) return;
+    submitBtn.disabled = disabled;
+    submitBtn.textContent = text;
+  };
+
+  const setStatus = (message, isError) => {
+    if (!statusEl) return;
+    statusEl.textContent = message || "";
+    statusEl.className = isError ? "modal__status is-error" : "modal__status";
+  };
+
+  const showSuccess = (visible) => {
+    if (!successEl) return;
+    successEl.hidden = !visible;
+  };
+
+  const openModal = () => {
+    lastFocus = document.activeElement;
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+
+    const first = modal.querySelector("#cf-name");
+    if (first) first.focus();
+  };
+
+  const closeModal = () => {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+
+    if (lastFocus) lastFocus.focus();
+  };
+
+  openBtn.addEventListener("click", openModal);
+
+  modal.querySelectorAll("[data-close-modal]").forEach((el) =>
+    el.addEventListener("click", closeModal)
+  );
+
+  document.addEventListener("keydown", (e) => {
+    if (!modal.classList.contains("is-open")) return;
+
+    if (e.key === "Escape") {
+      closeModal();
+      return;
+    }
+
+    if (e.key === "Tab") { // focus trap
+      const f = Array.from(focusables()).filter((el) => !el.disabled && el.offsetParent !== null);
+      if (!f.length) return;
+
+      const first = f[0];
+      const last = f[f.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setStatus("", false);
+
+    if (FORMSPREE_ENDPOINT.includes("TU_ID")) {
+      setStatus("Falta configurar Formspree (cambia TU_ID en script.js).", true);
+      return;
+    }
+
+    setSubmitState(true, "Enviando…");
+
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" }
+      });
+
+      if (res.ok) {
+        form.hidden = true;
+        showSuccess(true);
+        setStatus("", false);
+
+        setTimeout(() => {
+          closeModal();
+          form.reset();
+          form.hidden = false;
+          showSuccess(false);
+          setSubmitState(false, "Enviar solicitud");
+        }, 2600);
+      } else {
+        const data = await res.json().catch(() => null);
+        setStatus(
+          (data && data.errors && data.errors[0] && data.errors[0].message) ||
+          "No se pudo enviar. Inténtalo de nuevo.",
+          true
+        );
+        setSubmitState(false, "Enviar solicitud");
+      }
+    } catch {
+      setStatus("Error de conexión. Revisa tu red.", true);
+      setSubmitState(false, "Enviar solicitud");
+    }
+  });
 })();
