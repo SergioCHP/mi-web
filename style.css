@@ -36,10 +36,15 @@
 }
 
 html[data-theme="light"] {
-  --bg: #f5f6fb;
-  --surface: #ffffff;
-  --surface-2: #eaedf6;
-  --surface-trans: rgba(255, 255, 255, 0.88);
+  /* Fondo crema suave, no blanco puro */
+  --bg: #f3efe4;
+  /* Tarjetas: blanco cálido, para que se levanten sobre el crema */
+  --surface: #fbf8f1;
+  /* Chips / etiquetas: crema un punto más oscuro */
+  --surface-2: #ece6d6;
+  /* Navbar translúcida en tono crema */
+  --surface-trans: rgba(243, 239, 228, 0.85);
+
   --text: #0d0d14;
   --text-muted: #57576e;
   --line: rgba(16, 16, 22, 0.1);
