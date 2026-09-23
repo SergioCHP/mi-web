@@ -13,44 +13,56 @@
   --font-display: "Chakra Petch", "Segoe UI", sans-serif;
   --font-body: "Inter", "Segoe UI", Roboto, sans-serif;
 
-  --bg: #07070a;
-  --surface: #101016;
-  --surface-2: #16161d;
-  --surface-trans: rgba(16, 16, 22, 0.78);
-  --text: #f4f4f8;
-  --text-muted: #a8a8b8;
-  --line: rgba(255, 255, 255, 0.09);
-  --line-strong: rgba(255, 255, 255, 0.18);
+  /* Modo Oscuro más profundo y elegante */
+  --bg: #07080b;              /* Fondo casi negro grafito profundo */
+  --surface: #0e1017;         /* Tarjetas y superficies oscuras */
+  --surface-2: #141720;       /* Elementos secundarios / chips */
+  --surface-trans: rgba(14, 16, 23, 0.88);
+  --text: #e6edf3;
+  --text-muted: #838a96;
+  --line: rgba(255, 255, 255, 0.07);
+  --line-strong: rgba(255, 255, 255, 0.14);
+
+  /* Sombras Neumórficas Oscuras adaptadas al nuevo fondo */
+  --neu-flat: 8px 8px 20px #030406, -6px -6px 16px #131720;
+  --neu-inset: inset 3px 3px 8px #040507, inset -3px -3px 7px #161b26;
+  --neu-bevel: inset 1px 1px 1px rgba(255, 255, 255, 0.08), inset -1px -1px 2px rgba(0, 0, 0, 0.85);
 
   --pink: #ff2e97;
-  --blue: #2ea8ff;
+  --blue: #38bdf8;
   --accent: var(--pink);
   --accent-alt: var(--blue);
 
   --radius: 20px;
   --radius-sm: 10px;
-  --shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
-  --shadow-soft: 0 8px 22px rgba(0, 0, 0, 0.3);
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+  --shadow-soft: 0 8px 22px rgba(0, 0, 0, 0.4);
   --transition: 0.28s cubic-bezier(0.22, 1, 0.36, 1);
   --maxw: 1100px;
 }
 
 html[data-theme="light"] {
-  /* Fondo crema suave, no blanco puro */
-  --bg: #f3efe4;
-  /* Tarjetas: blanco cálido, para que se levanten sobre el crema */
-  --surface: #fbf8f1;
-  /* Chips / etiquetas: crema un punto más oscuro */
-  --surface-2: #ece6d6;
-  /* Navbar translúcida en tono crema */
-  --surface-trans: rgba(243, 239, 228, 0.85);
+  /* Modo Claro cálido / color hueso (sand-bone) */
+  --bg: #ece6dc;              /* Hueso / arena suave sin ser blanco duro */
+  --surface: #f4eee4;         /* Tarjetas ligeramente más claras para dar volumen */
+  --surface-2: #e3dcce;       /* Chips e inputs con tono hueso más presente */
+  --surface-trans: rgba(244, 238, 228, 0.88);
+  --text: #221f1d;            /* Texto carbón cálido */
+  --text-muted: #6b635b;      /* Texto secundario en armonía cálida */
+  --line: rgba(60, 50, 40, 0.08);
+  --line-strong: rgba(60, 50, 40, 0.16);
+  --shadow: 0 18px 40px rgba(50, 40, 30, 0.08);
+  --shadow-soft: 0 8px 22px rgba(50, 40, 30, 0.06);
 
-  --text: #0d0d14;
-  --text-muted: #57576e;
-  --line: rgba(16, 16, 22, 0.1);
-  --line-strong: rgba(16, 16, 22, 0.2);
-  --shadow: 0 18px 40px rgba(16, 16, 22, 0.08);
-  --shadow-soft: 0 8px 22px rgba(16, 16, 22, 0.06);
+  /* Sombras Neumórficas Cálidas (hueso / relieve suave) */
+  --neu-flat: 10px 10px 24px #cac3b8, -8px -8px 20px #ffffff;
+  --neu-inset: inset 3px 3px 7px #cac3b8, inset -3px -3px 7px #ffffff;
+  --neu-bevel: inset 1px 1px 1px #ffffff, inset -1px -1px 2px rgba(60, 50, 40, 0.06);
+}
+
+html[data-accent="pink"] {
+  --accent: var(--pink);
+  --accent-alt: var(--blue);
 }
 
 html[data-accent="blue"] {
@@ -70,23 +82,12 @@ body {
   color: var(--text);
   background-color: var(--bg);
 
-  /* Textura ultradiscreta: solo el halo del ratón y micropuntos casi invisibles */
-  background-image: 
-    radial-gradient(
-      900px circle at var(--mouse-x, 50%) var(--mouse-y, 25%),
-      color-mix(in srgb, var(--accent) 10%, transparent),
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 1px 1px,
-      color-mix(in srgb, var(--text) 1.5%, transparent) 1px,
-      transparent 0
-    );
-
-  background-size: 
-    auto,
-    24px 24px;
-    
+  /* Solo el resplandor interactivo suave del ratón */
+  background-image: radial-gradient(
+    900px circle at var(--mouse-x, 50%) var(--mouse-y, 25%),
+    color-mix(in srgb, var(--accent) 9%, transparent),
+    transparent 60%
+  );
   background-attachment: fixed;
 }
 
@@ -250,16 +251,57 @@ a {
   height: 18px;
 }
 
-.icon-sun,
-.icon-moon {
-  display: none;
+/* Interruptor en cápsula animado */
+.controls .theme-pill-btn {
+  width: auto;
+  height: auto;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0;
+  border: none;
 }
-html[data-theme="dark"] .icon-sun {
-  display: block;
+
+.theme-pill-track {
+  display: flex;
+  align-items: center;
+  width: 58px;
+  height: 32px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: var(--neu-inset), var(--neu-bevel);
+  cursor: pointer;
+  transition: all var(--transition);
 }
-html[data-theme="light"] .icon-moon {
-  display: block;
+
+.theme-pill-thumb {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.45), -1px -1px 4px rgba(255, 255, 255, 0.1);
+  transform: translateX(0);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background-color var(--transition), color var(--transition);
 }
+
+html[data-theme="light"] .theme-pill-thumb {
+  transform: translateX(26px);
+  color: #d97706;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15), -2px -2px 5px #ffffff;
+}
+
+.theme-pill-thumb svg {
+  width: 15px;
+  height: 15px;
+}
+
+html[data-theme="dark"] .theme-pill-thumb .icon-sun { display: none; }
+html[data-theme="dark"] .theme-pill-thumb .icon-moon { display: block; }
+html[data-theme="light"] .theme-pill-thumb .icon-sun { display: block; }
+html[data-theme="light"] .theme-pill-thumb .icon-moon { display: none; }
 
 /* =========================================================
    Hero Section & Foto Destacada (Opción A)
@@ -280,10 +322,12 @@ html[data-theme="light"] .icon-moon {
   background-image:
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 44px 44px;
-  -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
-  mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
-  opacity: 0.45;
+  background-size: 38px 38px;
+  /* Máscara radial: visible detrás de la foto/título y se desvanece suavemente hacia abajo */
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 15%, transparent 70%);
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 15%, transparent 70%);
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 .hero-inner {
@@ -546,6 +590,7 @@ h2 {
   position: relative;
   background-color: var(--surface);
   border: 1px solid var(--line);
+  box-shadow: var(--neu-flat), var(--neu-bevel);
   border-radius: var(--radius);
   overflow: hidden;
 }
