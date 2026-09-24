@@ -108,33 +108,65 @@
       </nav>
     </header>
 
-    <!-- Sección Hero (Opción A: Centrado Vertical con foto grande) -->
-    <section class="hero" id="inicio">
-      <div class="hero-inner">
-        <!-- Badge de estado -->
-        <div class="status-pill">
-          <span class="status-dot"></span>
-          <span>Disponible para nuevos retos &amp; proyectos</span>
-        </div>
+    <!-- Sección Hero mejorada: foto grande + título protagonista + panel gamer -->
+<section class="hero" id="inicio">
+  <!-- Fondo decorativo -->
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-grid"></div>
+    <div class="hero-scan"></div>
+  </div>
 
-        <div class="brand">
-          <div class="avatar-wrap">
-            <img src="images/perfil.webp" alt="Sergio Chorques" class="avatar-img" />
-          </div>
-          <div class="brand-text">
-            <h1>Sergio Chorques</h1>
-            <p class="tagline" aria-live="polite">
-              <span id="typeText">Construyo universos interactivos desde cero.</span><span id="typeCursor" aria-hidden="true">▍</span>
-            </p>
-          </div>
-        </div>
+  <div class="hero-inner">
+    <!-- Badge de estado -->
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      <span>Disponible para nuevos retos &amp; proyectos</span>
+    </div>
+
+    <!-- Tarjeta principal del hero -->
+    <div class="hero-card">
+      <!-- Foto grande -->
+      <div class="avatar-wrap">
+        <img
+          src="images/perfil.webp"
+          alt="Sergio Chorques"
+          class="avatar-img"
+          width="800"
+          height="800"
+          loading="eager"
+          decoding="async"
+        />
+        <div class="avatar-ring" aria-hidden="true"></div>
+      </div>
+
+      <!-- Texto principal -->
+      <div class="brand-text">
+        <p class="hero-kicker">Estudiante de 1º DAM · IES Simarro</p>
+
+        <h1>Sergio Chorques</h1>
+
+        <p class="tagline" aria-live="polite">
+          <span id="typeText">Construyo universos interactivos desde cero.</span><span id="typeCursor" aria-hidden="true">▍</span>
+        </p>
 
         <p class="hero-text">
           Estudiante de 1º DAM en el IES Simarro. Enfocado en el desarrollo de software como motor
           para crear herramientas prácticas, explorar tecnologías modernas y diseñar interfaces intuitivas.
         </p>
+
+        <!-- Chips de enfoque -->
+        <ul class="hero-chips" aria-label="Áreas de enfoque">
+          <li>Java</li>
+          <li>JavaScript</li>
+          <li>HTML5</li>
+          <li>CSS3</li>
+          <li>PS5</li>
+          <li>Animación</li>
+        </ul>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
     <!-- Contenido principal -->
     <main id="contenido">

@@ -577,8 +577,8 @@
     let dotY = mouseY;
 
     const updatePosition = () => {
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
+      ringX += (mouseX - ringX) * 0.4;
+      ringY += (mouseY - ringY) * 0.4;
       dotX += (mouseX - dotX) * 0.75;
       dotY += (mouseY - dotY) * 0.75;
 
