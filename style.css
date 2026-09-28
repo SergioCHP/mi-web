@@ -349,14 +349,17 @@ html[data-theme="light"] .theme-pill-thumb .icon-moon {
   isolation: isolate;
   overflow: hidden;
 
+  /*
   min-height: 100vh;
-  min-height: 100svh;
+  min-height: 100svh; */
+
+  min-height: auto;
 
   display: grid;
   place-items: center;
   align-content: start;
 
-  padding: var(--hero-top) 20px 80px;
+  padding: var(--hero-top) 20px 120px;
   border-bottom: 1px solid var(--line);
   color: var(--hero-text);
   background: linear-gradient(180deg, var(--bg, #07070a), var(--surface, #0d0d12));
@@ -507,28 +510,17 @@ html[data-theme="light"] .theme-pill-thumb .icon-moon {
   grid-template-columns: auto minmax(0, 1fr);
   gap: clamp(26px, 5vw, 64px);
   align-items: center;
-  padding: clamp(22px, 4vw, 44px);
-  border-radius: 34px;
-  border: 1px solid var(--hero-border);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.08),
-    rgba(255, 255, 255, 0.03)
-  );
-  box-shadow: 0 26px 80px var(--hero-shadow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  padding: 20px 0; /* Reducimos el padding al no tener bordes */
+  background: transparent; /* Hacemos el fondo transparente */
+  border: none; /* Quitamos el borde */
+  box-shadow: none; /* Quitamos la sombra */
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   animation: heroCardIn 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .hero-card::before {
-  content: "";
-  position: absolute;
-  inset: clamp(8px, 2vw, 12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 28px;
-  pointer-events: none;
+  display: none; /* Oculta el borde decorativo interno */
 }
 
 /* Foto */
@@ -748,7 +740,7 @@ html[data-theme="light"] .theme-pill-thumb .icon-moon {
 @media (max-width: 920px) {
   .hero {
     --hero-top: 84px;
-    padding: var(--hero-top) 18px 56px;
+    padding: var(--hero-top) 18px 82px;
   }
 
   .hero-card {
@@ -773,7 +765,7 @@ html[data-theme="light"] .theme-pill-thumb .icon-moon {
 @media (max-width: 640px) {
   .hero {
     --hero-top: 76px;
-    padding: var(--hero-top) 14px 44px;
+    padding: var(--hero-top) 14px 60px;
   }
 
   .hero .avatar-wrap {
@@ -821,21 +813,6 @@ html[data-theme="light"] .hero-grid {
     linear-gradient(90deg, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
 }
 
-html[data-theme="light"] .hero-card {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.82),
-    rgba(255, 255, 255, 0.66)
-  );
-  border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-html[data-theme="light"] .hero-card::before {
-  border-color: rgba(0, 0, 0, 0.06);
-}
-
 html[data-theme="light"] .status-pill {
   background: rgba(255, 255, 255, 0.65);
   border-color: rgba(0, 0, 0, 0.08);
@@ -876,7 +853,7 @@ main {
 
 section {
   position: relative;
-  padding: clamp(3.5rem, 8vw, 5rem) 0;
+  padding: clamp(2rem, 4vw, 3.5rem) 0;
 }
 
 main section + section {
@@ -1329,76 +1306,79 @@ footer {
 }
 
 /* =========================================================
-   10) CURSOR PERSONALIZADO
+   10) CURSOR NEÓN PERSONALIZADO (TAMAÑO REDUCIDO)
    ========================================================= */
-#cursorWrap {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 99999;
-  pointer-events: none;
-  opacity: 0;
-  transition: none;
-  will-change: transform;
+
+/* Cursor flecha neón por defecto (Azul base) - Tamaño 24x24 */
+body {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"><path d="M4 4l9.5 24 3.5-9 9-3.5z" fill="none" stroke="%2338bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="drop-shadow(0 0 4px %2338bdf8) drop-shadow(0 0 8px %2338bdf8)"/></svg>') 3 3, auto !important;
 }
 
-html.js-cursor #cursorWrap {
-  opacity: 1;
+/* Cursor mano neón para enlaces y botones (Azul base) - Tamaño 26x26 */
+a, button, .card, .tags li, .filter-btn, [role="button"], input[type="submit"], select, .theme-pill-track {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 36 36"><path d="M12 18v-8a3 3 0 016 0v2h1a2 2 0 012 2v1h1a2 2 0 012 2v2h1a2 2 0 012 2v5a7 7 0 01-7 7h-3a9 9 0 01-9-9v-4l-3.5-2.5a2 2 0 011.5-3.5L12 16z" fill="none" stroke="%2338bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="drop-shadow(0 0 4px %2338bdf8) drop-shadow(0 0 8px %2338bdf8)"/></svg>') 9 3, pointer !important;
 }
 
-#cursorDot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  background: var(--accent);
-  clip-path: polygon(0% 0%, 100% 35%, 45% 45%, 35% 100%);
-  will-change: transform;
+/* Variante cuando el tema es Rosa */
+html[data-accent="pink"] body {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"><path d="M4 4l9.5 24 3.5-9 9-3.5z" fill="none" stroke="%23ff2e97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="drop-shadow(0 0 4px %23ff2e97) drop-shadow(0 0 8px %23ff2e97)"/></svg>') 3 3, auto !important;
 }
 
-#cursorRing {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 36px;
-  height: 36px;
-  margin: -18px 0 0 -18px;
-  will-change: transform;
-  transition: none;
+html[data-accent="pink"] a, 
+html[data-accent="pink"] button, 
+html[data-accent="pink"] .card, 
+html[data-accent="pink"] .tags li, 
+html[data-accent="pink"] .filter-btn, 
+html[data-accent="pink"] [role="button"], 
+html[data-accent="pink"] input[type="submit"], 
+html[data-accent="pink"] select, 
+html[data-accent="pink"] .theme-pill-track {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 36 36"><path d="M12 18v-8a3 3 0 016 0v2h1a2 2 0 012 2v1h1a2 2 0 012 2v2h1a2 2 0 012 2v5a7 7 0 01-7 7h-3a9 9 0 01-9-9v-4l-3.5-2.5a2 2 0 011.5-3.5L12 16z" fill="none" stroke="%23ff2e97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="drop-shadow(0 0 4px %23ff2e97) drop-shadow(0 0 8px %23ff2e97)"/></svg>') 9 3, pointer !important;
 }
 
-#cursorRing::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 1.5px dashed color-mix(in srgb, var(--accent) 70%, transparent);
-  border-radius: 4px;
-  animation: spinHUD 8s linear infinite;
-  transition: border-radius 0.25s ease, border-color 0.25s ease,
-    background-color 0.25s ease;
+/* Reducción de movimiento o pantallas táctiles */
+@media (hover: none) or (pointer: coarse) {
+    body, a, button, .card {
+        cursor: auto !important;
+    }
 }
 
-#cursorWrap.cursor--hover #cursorRing {
-  width: 48px;
-  height: 48px;
-  margin: -24px 0 0 -24px;
+/* =========================================================
+   REGLAS PARA EL CURSOR EN MODO CLARO (Sin efecto neón/sombra)
+   ========================================================= */
+
+/* Modo Claro: Cursor Azul por defecto */
+html[data-theme="light"] body {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"><path d="M4 4l9.5 24 3.5-9 9-3.5z" fill="none" stroke="%2338bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>') 3 3, auto !important;
 }
 
-#cursorWrap.cursor--hover #cursorRing::after {
-  border: 2px solid var(--accent);
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-  border-radius: 50%;
-  animation-duration: 2s;
+html[data-theme="light"] a, 
+html[data-theme="light"] button, 
+html[data-theme="light"] .card, 
+html[data-theme="light"] .tags li, 
+html[data-theme="light"] .filter-btn, 
+html[data-theme="light"] [role="button"], 
+html[data-theme="light"] input[type="submit"], 
+html[data-theme="light"] select, 
+html[data-theme="light"] .theme-pill-track {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 36 36"><path d="M12 18v-8a3 3 0 016 0v2h1a2 2 0 012 2v1h1a2 2 0 012 2v2h1a2 2 0 012 2v5a7 7 0 01-7 7h-3a9 9 0 01-9-9v-4l-3.5-2.5a2 2 0 011.5-3.5L12 16z" fill="none" stroke="%2338bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>') 9 3, pointer !important;
 }
 
-/* Ocultar cursor nativo */
-html.js-cursor body,
-html.js-cursor a,
-html.js-cursor button,
-html.js-cursor .card {
-  cursor: none;
+/* Modo Claro: Cursor Rosa (cuando el acento es pink) */
+html[data-theme="light"][data-accent="pink"] body {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"><path d="M4 4l9.5 24 3.5-9 9-3.5z" fill="none" stroke="%23ff2e97" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>') 3 3, auto !important;
+}
+
+html[data-theme="light"][data-accent="pink"] a, 
+html[data-theme="light"][data-accent="pink"] button, 
+html[data-theme="light"][data-accent="pink"] .card, 
+html[data-theme="light"][data-accent="pink"] .tags li, 
+html[data-theme="light"][data-accent="pink"] .filter-btn, 
+html[data-theme="light"][data-accent="pink"] [role="button"], 
+html[data-theme="light"][data-accent="pink"] input[type="submit"], 
+html[data-theme="light"][data-accent="pink"] select, 
+html[data-theme="light"][data-accent="pink"] .theme-pill-track {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 36 36"><path d="M12 18v-8a3 3 0 016 0v2h1a2 2 0 012 2v1h1a2 2 0 012 2v2h1a2 2 0 012 2v5a7 7 0 01-7 7h-3a9 9 0 01-9-9v-4l-3.5-2.5a2 2 0 011.5-3.5L12 16z" fill="none" stroke="%23ff2e97" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>') 9 3, pointer !important;
 }
 
 /* =========================================================
