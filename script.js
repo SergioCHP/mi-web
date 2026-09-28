@@ -555,7 +555,7 @@
 
     const copyP = document.querySelector(".copy");
     if (copyP) {
-      copyP.innerHTML = `© <span id="year">${new Date().getFullYear()}</span> Sergio Chorques · Web personal.`;
+      copyP.innerHTML = `© <span id="year">${new Date().getFullYear()}</span> Sergio Chorques · Web personal. <a href="admin.html" style="color: var(--text-muted); margin-left: 8px; opacity: 0.6; transition: opacity 0.2s;" aria-label="Acceso al panel de administración" title="Admin"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></a>`;
     }
 
     // Botón de llamada en footer
@@ -828,10 +828,12 @@
 })();
 
 /* =========================================================
-   MODAL ¿TE LLAMO? + envío por Formspree
+   MODAL ¿TE LLAMO? + ENVÍO A SUPABASE API
    ========================================================= */
 (() => {
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/TU_ID"; // <-- CAMBIA TU_ID
+  // PEGA AQUÍ TUS DATOS DE SUPABASE:
+  const SUPABASE_URL = "https://kusmmtgvrecayytatvbf.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1c21tdGd2cmVjYXl5dGF0dmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2Mjc3NzgsImV4cCI6MjEwNjIwMzc3OH0.y_p7oKUQPueKn8fSqWGqlRafnDaQelFX0cvFmQv3AqI";
 
   const modal = document.getElementById("callModal");
   const openBtn = document.getElementById("openCall");
@@ -842,152 +844,88 @@
 
   if (!modal || !openBtn || !form) return;
 
-  let lastFocus = null;
-
-  // Textos según idioma activo
-  const getSubmitLabel = () =>
-    document.documentElement.getAttribute("lang") === "va"
-      ? "Enviar sol·licitud"
-      : "Enviar solicitud";
-
-  const getSendingLabel = () =>
-    document.documentElement.getAttribute("lang") === "va"
-      ? "Enviant…"
-      : "Enviando…";
-
-  const getErrorMsg = () =>
-    document.documentElement.getAttribute("lang") === "va"
-      ? "No s'ha pogut enviar. Torna-ho a provar."
-      : "No se pudo enviar. Inténtalo de nuevo.";
-
-  const getNetworkErrorMsg = () =>
-    document.documentElement.getAttribute("lang") === "va"
-      ? "Error de connexió. Revisa la teua xarxa."
-      : "Error de conexión. Revisa tu red.";
-
-  const getFormspreeMissingMsg = () =>
-    document.documentElement.getAttribute("lang") === "va"
-      ? "Falta configurar Formspree (canvia TU_ID a script.js)."
-      : "Falta configurar Formspree (cambia TU_ID en script.js).";
-
-  const focusables = () =>
-    modal.querySelectorAll(
-      'button, input, select, textarea, [href], [tabindex]:not([tabindex="-1"])'
-    );
-
-  const setSubmitState = (disabled, text) => {
-    if (!submitBtn) return;
-    submitBtn.disabled = disabled;
-    submitBtn.textContent = text;
+  const isVa = () => document.documentElement.getAttribute("lang") === "va";
+  
+  const setSubmitState = (disabled, text) => { 
+    if (submitBtn) { submitBtn.disabled = disabled; submitBtn.textContent = text; } 
   };
-
-  const setStatus = (message, isError) => {
-    if (!statusEl) return;
-    statusEl.textContent = message || "";
-    statusEl.className = isError ? "modal__status is-error" : "modal__status";
+  
+  const setStatus = (msg, isError) => { 
+    if (statusEl) { 
+      statusEl.textContent = msg || ""; 
+      statusEl.className = isError ? "modal__status is-error" : "modal__status"; 
+    } 
   };
-
-  const showSuccess = (visible) => {
-    if (!successEl) return;
-    successEl.hidden = !visible;
-  };
-
+  
   const openModal = () => {
-    lastFocus = document.activeElement;
-    modal.classList.add("is-open");
-    modal.setAttribute("aria-hidden", "false");
+    modal.classList.add("is-open"); 
+    modal.setAttribute("aria-hidden", "false"); 
     document.body.classList.add("modal-open");
-
-    const first = modal.querySelector("#cf-name");
+    const first = modal.querySelector("#cf-name"); 
     if (first) first.focus();
   };
-
+  
   const closeModal = () => {
-    modal.classList.remove("is-open");
-    modal.setAttribute("aria-hidden", "true");
+    modal.classList.remove("is-open"); 
+    modal.setAttribute("aria-hidden", "true"); 
     document.body.classList.remove("modal-open");
-
-    if (lastFocus) lastFocus.focus();
   };
 
   openBtn.addEventListener("click", openModal);
-
-  modal.querySelectorAll("[data-close-modal]").forEach((el) =>
-    el.addEventListener("click", closeModal)
-  );
-
-  document.addEventListener("keydown", (e) => {
-    if (!modal.classList.contains("is-open")) return;
-
-    if (e.key === "Escape") {
-      closeModal();
-      return;
-    }
-
-    if (e.key === "Tab") {
-      const f = Array.from(focusables()).filter(
-        (el) => !el.disabled && el.offsetParent !== null
-      );
-      if (!f.length) return;
-
-      const first = f[0];
-      const last = f[f.length - 1];
-
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-  });
+  modal.querySelectorAll("[data-close-modal]").forEach((el) => el.addEventListener("click", closeModal));
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     setStatus("", false);
 
-    if (FORMSPREE_ENDPOINT.includes("TU_ID")) {
-      setStatus(getFormspreeMissingMsg(), true);
+    const formData = new FormData(form);
+    
+    // Antispam (Honeypot)
+    if (formData.get("_gotcha")) {
+      setStatus("Spam detectado.", true);
       return;
     }
 
-    setSubmitState(true, getSendingLabel());
+    setSubmitState(true, isVa() ? "Enviant…" : "Enviando…");
+
+    // Preparamos los datos para la base de datos
+    const payload = {
+      nombre: formData.get("Nombre"),
+      email: formData.get("Email"),
+      telefono: formData.get("Teléfono"),
+      disponibilidad: formData.get("Disponibilidad"),
+      mensaje: formData.get("Mensaje")
+    };
 
     try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/mensajes`, {
         method: "POST",
-        body: new FormData(form),
-        headers: { Accept: "application/json" }
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify(payload)
       });
 
       if (res.ok) {
         form.hidden = true;
-        showSuccess(true);
-        setStatus("", false);
-
+        successEl.hidden = false;
         setTimeout(() => {
           closeModal();
           form.reset();
           form.hidden = false;
-          showSuccess(false);
-          setSubmitState(false, getSubmitLabel());
+          successEl.hidden = true;
+          setSubmitState(false, isVa() ? "Enviar sol·licitud" : "Enviar solicitud");
         }, 2600);
       } else {
-        const data = await res.json().catch(() => null);
-        setStatus(
-          (data &&
-            data.errors &&
-            data.errors[0] &&
-            data.errors[0].message) ||
-            getErrorMsg(),
-          true
-        );
-        setSubmitState(false, getSubmitLabel());
+        setStatus(isVa() ? "No s'ha pogut enviar." : "No se pudo enviar.", true);
+        setSubmitState(false, isVa() ? "Enviar sol·licitud" : "Enviar solicitud");
       }
     } catch {
-      setStatus(getNetworkErrorMsg(), true);
-      setSubmitState(false, getSubmitLabel());
+      setStatus(isVa() ? "Error de connexió." : "Error de conexión.", true);
+      setSubmitState(false, isVa() ? "Enviar sol·licitud" : "Enviar solicitud");
     }
   });
 })();
