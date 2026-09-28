@@ -1,5 +1,7 @@
 /* =========================================================
    script.js — Interacción, Spotlight, Tilt 3D y Controles
+   Versión corregida: typewriter multilenguaje, scroll spy
+   mejorado, aria-pressed correcto y traducción completa.
    ========================================================= */
 
 (function () {
@@ -41,6 +43,9 @@
     if (themeButton) {
       themeButton.setAttribute("aria-label", label);
       themeButton.setAttribute("title", label);
+      // aria-pressed debe indicar si el botón está "activado".
+      // El modo por defecto es oscuro, así que el botón NO está presionado
+      // cuando estamos en oscuro y SÍ cuando estamos en claro.
       themeButton.setAttribute("aria-pressed", String(isLight));
     }
     if (themeColorMeta) {
@@ -94,7 +99,9 @@
 
   updateAccentUI();
 
- /* ---------- Selector de Idioma (ES / VA) Completo ---------- */
+  /* =========================================================
+     Selector de Idioma (ES / VA) Completo
+     ========================================================= */
   const langButton = document.getElementById("langToggle");
   let currentLang = "es";
 
@@ -111,8 +118,17 @@
       btnTitle: "Canviar a valencià",
       nav: ["Sobre mí", "Trayectoria", "Intereses", "Proyectos", "Contacto"],
       status: "Disponible para nuevos retos & proyectos",
-      heroText: "Estudiante de 1º DAM en el IES Simarro. Enfocado en el desarrollo de software como motor para crear herramientas prácticas, explorar tecnologías modernas y diseñar interfaces intuitivas.",
-      
+      heroText:
+        "Estudiante de 1º DAM en el IES Simarro. Enfocado en el desarrollo de software como motor para crear herramientas prácticas, explorar tecnologías modernas y diseñar interfaces intuitivas.",
+
+      // Frases del typewriter
+      typePhrases: [
+        "Construyo universos interactivos desde cero.",
+        "Estudiante de 1º DAM en el IES Simarro.",
+        "Del código nacen proyectos funcionales y limpios.",
+        "Gamer, lector y futuro desarrollador de software."
+      ],
+
       // Sección Sobre mí
       sobreMiTitle: "Sobre mí",
       sobreMiSub: "Perfil personal, académico y motivación principal.",
@@ -126,40 +142,77 @@
       trayectoriaTitle: "Lo que he hecho",
       trayectoriaSub: "Experiencias recientes, formación previa e hitos personales.",
       trayectoriaCards: [
-        { title: "Formación Base", desc: "Módulo de Grado Medio de SMR (Sistemas Microinformáticos y Redes) completado con éxito." },
-        { title: "Reto Programación", desc: "Salto a 1º DAM orientado al dominio de desarrollo en lenguajes estructurados y POO." },
-        { title: "Colección & Datos", desc: "Catalogación estructurada y gestión de colección personal de cómics, novelas y cine." },
-        { title: "Desconexión", desc: "Viajes de desconexión en familia, costas de Cádiz y recarga de energía creativa." }
+        {
+          title: "Formación Base",
+          desc: "Módulo de Grado Medio de SMR (Sistemas Microinformáticos y Redes) completado con éxito."
+        },
+        {
+          title: "Reto Programación",
+          desc: "Salto a 1º DAM orientado al dominio de desarrollo en lenguajes estructurados y POO."
+        },
+        {
+          title: "Colección & Datos",
+          desc: "Catalogación estructurada y gestión de colección personal de cómics, novelas y cine."
+        },
+        {
+          title: "Desconexión",
+          desc: "Viajes de desconexión en familia, costas de Cádiz y recarga de energía creativa."
+        }
       ],
 
       // Sección Intereses (Me gusta)
       interesesTitle: "Me gusta",
       interesesSub: "Aficiones, entretenimiento y áreas de inspiración.",
       interesesCards: [
-        { title: "Videojuegos", desc: "Jugador en PS5, priorizando títulos con narrativa elaborada, mecánicas pulidas y diseño inmersivo." },
-        { title: "Cine & Anime", desc: "Apreciación del lenguaje audiovisual contemporáneo y series clásicas de animación japonesa." },
-        { title: "Lectura", desc: "Constante interés por novelas de ciencia ficción, literatura técnica, cómic independiente y manga." }
+        {
+          title: "Videojuegos",
+          desc: "Jugador en PS5, priorizando títulos con narrativa elaborada, mecánicas pulidas y diseño inmersivo."
+        },
+        {
+          title: "Cine & Anime",
+          desc: "Apreciación del lenguaje audiovisual contemporáneo y series clásicas de animación japonesa."
+        },
+        {
+          title: "Lectura",
+          desc: "Constante interés por novelas de ciencia ficción, literatura técnica, cómic independiente y manga."
+        }
       ],
 
       // Sección Proyectos
       proyectosTitle: "Proyectos",
-      proyectosSub: "Prácticas, experimentos y aplicaciones donde aplico código real y diseño de interfaces.",
+      proyectosSub:
+        "Prácticas, experimentos y aplicaciones donde aplico código real y diseño de interfaces.",
       filterAll: "Todos",
       projectCards: [
-        { desc: "Portal personal con soporte para temas dinámicos, microinteracciones reactivas y accesibilidad integrada.", link: "Ver código" },
-        { desc: "Aplicación orientada a organizar colecciones de libros y mangas mediante estructuras de datos ordenadas y persistencia lógica.", link: "Ver código" },
-        { desc: "Prototipo de dashboard con estética Cyberpunk/HUD, animaciones con aceleración gráfica por hardware y componentes modulares.", link: "Ver código" }
+        {
+          desc: "Portal personal con soporte para temas dinámicos, microinteracciones reactivas y accesibilidad integrada.",
+          link: "Ver código",
+          aria: "Ver código del proyecto Mi web personal"
+        },
+        {
+          desc: "Aplicación orientada a organizar colecciones de libros y mangas mediante estructuras de datos ordenadas y persistencia lógica.",
+          link: "Ver código",
+          aria: "Ver código del proyecto Gestor de biblioteca"
+        },
+        {
+          desc: "Prototipo de dashboard con estética Cyberpunk/HUD, animaciones con aceleración gráfica por hardware y componentes modulares.",
+          link: "Ver código",
+          aria: "Ver código del proyecto Interfaz gamer"
+        }
       ],
 
       // Sección Contacto + Modal
       contactTitle: "Contacto",
-      contactSub: "¿Interesado en hablar sobre desarrollo de software, proyectos o colaborar? Escríbeme.",
-      contactAddress: "Abierto a consultas académicas, proyectos compartidos y conexiones profesionales.",
+      contactSub:
+        "¿Interesado en hablar sobre desarrollo de software, proyectos o colaborar? Escríbeme.",
+      contactAddress:
+        "Abierto a consultas académicas, proyectos compartidos y conexiones profesionales.",
       contactSend: "Enviar Correo",
       contactCallBtn: "¿Te llamo?",
       modalKicker: "Contacto directo",
       modalTitle: "¿Te llamo?",
-      modalLead: "Déjame tus datos y te llamo cuando te venga bien. Sin compromiso.",
+      modalLead:
+        "Déjame tus datos y te llamo cuando te venga bien. Sin compromiso.",
       modalName: "Nombre",
       modalNamePh: "Tu nombre",
       modalEmail: "Email",
@@ -177,16 +230,24 @@
       modalMsgPh: "Proyecto, práctica, colaboración…",
       modalSubmit: "Enviar solicitud",
       modalSuccessTitle: "¡Solicitud enviada!",
-      modalSuccessDesc: "Te llamaré muy pronto.",
-      copy: "© " + (yearElement ? yearElement.textContent : new Date().getFullYear()) + " Sergio Chorques · Web personal."
+      modalSuccessDesc: "Te llamaré muy pronto."
     },
     va: {
       btnLabel: "ES",
       btnTitle: "Cambiar a castellano",
       nav: ["Sobre mi", "Trajectòria", "Interessos", "Projectes", "Contacte"],
       status: "Disponible per a nous reptes & projectes",
-      heroText: "Estudiant de 1r DAM a l'IES Simarro. Enfocat en el desenvolupament de programari com a motor per a crear ferramentes pràctiques, explorar tecnologies modernes i dissenyar interfícies intuïtives.",
-      
+      heroText:
+        "Estudiant de 1r DAM a l'IES Simarro. Enfocat en el desenvolupament de programari com a motor per a crear ferramentes pràctiques, explorar tecnologies modernes i dissenyar interfícies intuïtives.",
+
+      // Frases del typewriter
+      typePhrases: [
+        "Construeix universos interactius des de zero.",
+        "Estudiant de 1r DAM a l'IES Simarro.",
+        "Del codi naixen projectes funcionals i nets.",
+        "Gamer, lector i futur desenvolupador de programari."
+      ],
+
       // Sección Sobre mi
       sobreMiTitle: "Sobre mi",
       sobreMiSub: "Perfil personal, acadèmic i motivació principal.",
@@ -200,40 +261,77 @@
       trayectoriaTitle: "El que he fet",
       trayectoriaSub: "Experiències recents, formació prèvia i fites personals.",
       trayectoriaCards: [
-        { title: "Formació Base", desc: "Mòdul de Grau Mitjà de SMR (Sistemes Microinformàtics i Xarxes) completat amb èxit." },
-        { title: "Repte Programació", desc: "Salt a 1r DAM orientat al domini de desenvolupament en llenguatges estructurats i POO." },
-        { title: "Col·lecció & Dades", desc: "Catalogació estructurada i gestió de col·lecció personal de còmics, novel·les i cinema." },
-        { title: "Desconnexió", desc: "Viatges de desconnexió en família, costes de Cadis i recàrrega d'energia creativa." }
+        {
+          title: "Formació Base",
+          desc: "Mòdul de Grau Mitjà de SMR (Sistemes Microinformàtics i Xarxes) completat amb èxit."
+        },
+        {
+          title: "Repte Programació",
+          desc: "Salt a 1r DAM orientat al domini de desenvolupament en llenguatges estructurats i POO."
+        },
+        {
+          title: "Col·lecció & Dades",
+          desc: "Catalogació estructurada i gestió de col·lecció personal de còmics, novel·les i cinema."
+        },
+        {
+          title: "Desconnexió",
+          desc: "Viatges de desconnexió en família, costes de Cadis i recàrrega d'energia creativa."
+        }
       ],
 
       // Sección Interessos (M'agrada)
       interesesTitle: "M'agrada",
       interesesSub: "Aficions, entreteniment i àrees d'inspiració.",
       interesesCards: [
-        { title: "Videojocs", desc: "Jugador en PS5, prioritzant títols amb narrativa elaborada, mecàniques polides i disseny immersiu." },
-        { title: "Cinema & Anime", desc: "Apreciació del llenguatge audiovisual contemporani i sèries clàssiques d'animació japonesa." },
-        { title: "Lectura", desc: "Interès constant per novel·les de ciència-ficció, literatura tècnica, còmic independent i manga." }
+        {
+          title: "Videojocs",
+          desc: "Jugador en PS5, prioritzant títols amb narrativa elaborada, mecàniques polides i disseny immersiu."
+        },
+        {
+          title: "Cinema & Anime",
+          desc: "Apreciació del llenguatge audiovisual contemporani i sèries clàssiques d'animació japonesa."
+        },
+        {
+          title: "Lectura",
+          desc: "Interès constant per novel·les de ciència-ficció, literatura tècnica, còmic independent i manga."
+        }
       ],
 
       // Sección Projectes
       proyectosTitle: "Projectes",
-      proyectosSub: "Pràctiques, experiments i aplicacions on aplique codi real i disseny d'interfícies.",
+      proyectosSub:
+        "Pràctiques, experiments i aplicacions on aplique codi real i disseny d'interfícies.",
       filterAll: "Tots",
       projectCards: [
-        { desc: "Portal personal amb suport per a temes dinàmics, microinteraccions reactives i accessibilitat integrada.", link: "Veure codi" },
-        { desc: "Aplicació orientada a organitzar col·leccions de llibres i mangues mitjançant estructures de dades ordenades i persistència lògica.", link: "Veure codi" },
-        { desc: "Prototip de panell amb estètica Cyberpunk/HUD, animacions amb acceleració gràfica per maquinari i components modulars.", link: "Veure codi" }
+        {
+          desc: "Portal personal amb suport per a temes dinàmics, microinteraccions reactives i accessibilitat integrada.",
+          link: "Veure codi",
+          aria: "Veure codi del projecte La meua web personal"
+        },
+        {
+          desc: "Aplicació orientada a organitzar col·leccions de llibres i mangues mitjançant estructures de dades ordenades i persistència lògica.",
+          link: "Veure codi",
+          aria: "Veure codi del projecte Gestor de biblioteca"
+        },
+        {
+          desc: "Prototip de panell amb estètica Cyberpunk/HUD, animacions amb acceleració gràfica per maquinari i components modulars.",
+          link: "Veure codi",
+          aria: "Veure codi del projecte Interfície gamer"
+        }
       ],
 
       // Sección Contacte + Modal
       contactTitle: "Contacte",
-      contactSub: "Interessat en parlar sobre desenvolupament de programari, projectes o col·laborar? Escriu-me.",
-      contactAddress: "Obert a consultes acadèmiques, projectes compartits i connexions professionals.",
+      contactSub:
+        "Interessat en parlar sobre desenvolupament de programari, projectes o col·laborar? Escriu-me.",
+      contactAddress:
+        "Obert a consultes acadèmiques, projectes compartits i connexions professionals.",
       contactSend: "Enviar Correu",
       contactCallBtn: "Et cride?",
       modalKicker: "Contacte directe",
       modalTitle: "Et cride?",
-      modalLead: "Deixa'm les teues dades i et cride quan et vinga bé. Sense compromís.",
+      modalLead:
+        "Deixa'm les teues dades i et cride quan et vinga bé. Sense compromís.",
       modalName: "Nom",
       modalNamePh: "El teu nom",
       modalEmail: "Correu electrònic",
@@ -251,18 +349,90 @@
       modalMsgPh: "Projecte, pràctica, col·laboració…",
       modalSubmit: "Enviar sol·licitud",
       modalSuccessTitle: "Sol·licitud enviada!",
-      modalSuccessDesc: "Et cridaré ben prompte.",
-      copy: "© " + (yearElement ? yearElement.textContent : new Date().getFullYear()) + " Sergio Chorques · Web personal."
+      modalSuccessDesc: "Et cridaré ben prompte."
     }
   };
 
+  /* ---------- Typewriter multilenguaje ---------- */
+  const typewriterCtrl = (function () {
+    const textEl = document.getElementById("typeText");
+    if (!textEl) return { restart: () => {} };
+
+    let phrases = translations[currentLang].typePhrases;
+    let phraseIdx = 0;
+    let charIdx = 0;
+    let deleting = false;
+    let timerId = null;
+
+    const typeSpeed = 50;
+    const deleteSpeed = 25;
+    const pauseEnd = 1600;
+    const pauseStart = 400;
+
+    function clearTimer() {
+      if (timerId) {
+        clearTimeout(timerId);
+        timerId = null;
+      }
+    }
+
+    function tick() {
+      const current = phrases[phraseIdx] || "";
+
+      if (!deleting) {
+        charIdx++;
+        textEl.textContent = current.slice(0, charIdx);
+        if (charIdx >= current.length) {
+          deleting = true;
+          timerId = setTimeout(tick, pauseEnd);
+          return;
+        }
+        timerId = setTimeout(tick, typeSpeed);
+      } else {
+        charIdx--;
+        textEl.textContent = current.slice(0, Math.max(0, charIdx));
+        if (charIdx <= 0) {
+          deleting = false;
+          phraseIdx = (phraseIdx + 1) % phrases.length;
+          timerId = setTimeout(tick, pauseStart);
+          return;
+        }
+        timerId = setTimeout(tick, deleteSpeed);
+      }
+    }
+
+    function start() {
+      clearTimer();
+      phrases = translations[currentLang].typePhrases;
+      phraseIdx = 0;
+      charIdx = 0;
+      deleting = false;
+
+      if (prefersReducedMotion) {
+        textEl.textContent = phrases[0];
+        return;
+      }
+
+      textEl.textContent = "";
+      timerId = setTimeout(tick, 500);
+    }
+
+    // Arranque inicial
+    start();
+
+    return {
+      restart: start
+    };
+  })();
+
+  /* ---------- Aplicar idioma ---------- */
   const applyLanguage = (lang) => {
     const t = translations[lang];
     if (!t) return;
 
     root.setAttribute("lang", lang);
 
-    // Botón
+    // Botón de idioma
     if (langButton) {
       const langSpan = langButton.querySelector("span");
       if (langSpan) langSpan.textContent = t.btnLabel;
@@ -306,7 +476,9 @@
       }
     }
 
-    const trayectoriaCards = document.querySelectorAll("#lo-que-he-hecho .card");
+    const trayectoriaCards = document.querySelectorAll(
+      "#lo-que-he-hecho .card"
+    );
     t.trayectoriaCards.forEach((cardData, idx) => {
       const card = trayectoriaCards[idx];
       if (!card) return;
@@ -360,7 +532,10 @@
       const aLink = card.querySelector(".project-link");
 
       if (pDesc) pDesc.textContent = cardData.desc;
-      if (aLink) aLink.textContent = cardData.link;
+      if (aLink) {
+        aLink.textContent = cardData.link;
+        if (cardData.aria) aLink.setAttribute("aria-label", cardData.aria);
+      }
     });
 
     // Sección: Contacto y Footer
@@ -380,7 +555,7 @@
 
     const copyP = document.querySelector(".copy");
     if (copyP) {
-      copyP.innerHTML = `© <span id="year">${new Date().getFullYear()}</span> Sergio Chorques · ${lang === 'va' ? 'Web personal.' : 'Web personal.'}`;
+      copyP.innerHTML = `© <span id="year">${new Date().getFullYear()}</span> Sergio Chorques · Web personal.`;
     }
 
     // Botón de llamada en footer
@@ -414,6 +589,8 @@
 
     const whenSelect = document.getElementById("cf-when");
     if (whenSelect && whenSelect.options.length > 0) {
+      // Resetear selección para que el placeholder se re-traduzca bien
+      whenSelect.selectedIndex = 0;
       whenSelect.options[0].textContent = t.modalWhenDefault;
       t.modalWhenOpts.forEach((text, i) => {
         if (whenSelect.options[i + 1]) {
@@ -441,6 +618,9 @@
         successP.innerHTML = `<strong>${t.modalSuccessTitle}</strong><br>${t.modalSuccessDesc}`;
       }
     }
+
+    // Reiniciar typewriter con el nuevo idioma
+    typewriterCtrl.restart();
   };
 
   if (langButton) {
@@ -498,62 +678,6 @@
     });
   });
 
-  /* ---------- Máquina de escribir ---------- */
-  (function typewriter() {
-    const textEl = document.getElementById("typeText");
-    if (!textEl) return;
-
-    const phrases = [
-      "Construyo universos interactivos desde cero.",
-      "Estudiante de 1º DAM en el IES Simarro.",
-      "Del código nacen proyectos funcionales y limpios.",
-      "Gamer, lector y futuro desarrollador de software."
-    ];
-
-    if (prefersReducedMotion) {
-      textEl.textContent = phrases[0];
-      return;
-    }
-
-    const typeSpeed = 50;
-    const deleteSpeed = 25;
-    const pauseEnd = 1600;
-    const pauseStart = 400;
-
-    let phraseIdx = 0;
-    let charIdx = 0;
-    let deleting = false;
-
-    textEl.textContent = "";
-
-    function tick() {
-      const current = phrases[phraseIdx];
-
-      if (!deleting) {
-        charIdx++;
-        textEl.textContent = current.slice(0, charIdx);
-        if (charIdx === current.length) {
-          deleting = true;
-          setTimeout(tick, pauseEnd);
-          return;
-        }
-        setTimeout(tick, typeSpeed);
-      } else {
-        charIdx--;
-        textEl.textContent = current.slice(0, charIdx);
-        if (charIdx === 0) {
-          deleting = false;
-          phraseIdx = (phraseIdx + 1) % phrases.length;
-          setTimeout(tick, pauseStart);
-          return;
-        }
-        setTimeout(tick, deleteSpeed);
-      }
-    }
-
-    setTimeout(tick, 500);
-  })();
-
   /* ---------- Cursor Personalizado Fluido ---------- */
   (function customCursor() {
     const wrap = document.getElementById("cursorWrap");
@@ -606,12 +730,14 @@
     const hoverTargets = "a, button, .card, .tags li, .filter-btn";
 
     document.addEventListener("mouseover", (e) => {
-      const target = e.target && e.target.closest ? e.target.closest(hoverTargets) : null;
+      const target =
+        e.target && e.target.closest ? e.target.closest(hoverTargets) : null;
       if (target) wrap.classList.add("cursor--hover");
     });
 
     document.addEventListener("mouseout", (e) => {
-      const target = e.target && e.target.closest ? e.target.closest(hoverTargets) : null;
+      const target =
+        e.target && e.target.closest ? e.target.closest(hoverTargets) : null;
       if (target) wrap.classList.remove("cursor--hover");
     });
   })();
@@ -650,7 +776,8 @@
 
     tiltCards.forEach((card) => {
       const reset = () => {
-        card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+        card.style.transform =
+          "perspective(1000px) rotateX(0deg) rotateY(0deg)";
       };
 
       card.addEventListener("mousemove", (e) => {
@@ -658,8 +785,8 @@
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        const rotateX = ((y / rect.height) - 0.5) * -10;
-        const rotateY = ((x / rect.width) - 0.5) * 12;
+        const rotateX = (y / rect.height - 0.5) * -10;
+        const rotateY = (x / rect.width - 0.5) * 12;
 
         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       });
@@ -668,34 +795,58 @@
     });
   }
 
- /* ---------- Spy Scroll (Indicador activo en el menú) ---------- */
+  /* =========================================================
+     Spy Scroll mejorado (indicador activo en el menú)
+     ========================================================= */
   const navLinksList = document.querySelectorAll(".nav-links a");
   const trackedSections = document.querySelectorAll("section[id], footer[id]");
 
   if ("IntersectionObserver" in window && navLinksList.length > 0) {
+    // Guardamos la sección visible más cercana al top para evitar parpadeos
+    const visibleSections = new Map();
+
     const spyObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          const id = entry.target.getAttribute("id");
           if (entry.isIntersecting) {
-            const currentId = entry.target.getAttribute("id");
-            navLinksList.forEach((link) => {
-              const href = link.getAttribute("href");
-              if (href === `#${currentId}`) {
-                link.classList.add("is-active");
-              } else {
-                link.classList.remove("is-active");
-              }
-            });
+            visibleSections.set(id, entry.boundingClientRect.top);
+          } else {
+            visibleSections.delete(id);
+          }
+        });
+
+        if (visibleSections.size === 0) return;
+
+        // Elegimos la sección más cercana al top (la primera visible)
+        let closestId = null;
+        let closestTop = Infinity;
+        visibleSections.forEach((top, id) => {
+          if (top < closestTop) {
+            closestTop = top;
+            closestId = id;
+          }
+        });
+
+        if (!closestId) return;
+
+        navLinksList.forEach((link) => {
+          const href = link.getAttribute("href");
+          if (href === `#${closestId}`) {
+            link.classList.add("is-active");
+          } else {
+            link.classList.remove("is-active");
           }
         });
       },
       {
-        rootMargin: "-20% 0px -60% 0px" // Detecta la sección cuando está en el tercio superior de la pantalla
+        rootMargin: "-25% 0px -55% 0px",
+        threshold: [0, 0.25, 0.5, 0.75, 1]
       }
     );
 
     trackedSections.forEach((section) => spyObserver.observe(section));
-  } 
+  }
 
   /* ---------- Barra de progreso de scroll ---------- */
   const progressBar = document.getElementById("scrollProgressBar");
@@ -704,7 +855,8 @@
     const updateProgress = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const scrollHeight =
-        document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
       const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
       progressBar.style.width = `${progress}%`;
     };
@@ -718,7 +870,6 @@
 
   if (scrollTopBtn) {
     const updateScrollTopVisibility = () => {
-      // Se muestra al bajar más de 350px
       if (window.scrollY > 350) {
         scrollTopBtn.classList.add("is-visible");
       } else {
@@ -726,7 +877,9 @@
       }
     };
 
-    window.addEventListener("scroll", updateScrollTopVisibility, { passive: true });
+    window.addEventListener("scroll", updateScrollTopVisibility, {
+      passive: true
+    });
     updateScrollTopVisibility();
 
     scrollTopBtn.addEventListener("click", () => {
@@ -755,15 +908,36 @@
 
   let lastFocus = null;
 
-  // Funciones para saber qué texto poner en el botón según el idioma activo
-  const getSubmitLabel = () => 
-    document.documentElement.getAttribute("lang") === "va" ? "Enviar sol·licitud" : "Enviar solicitud";
+  // Textos según idioma activo
+  const getSubmitLabel = () =>
+    document.documentElement.getAttribute("lang") === "va"
+      ? "Enviar sol·licitud"
+      : "Enviar solicitud";
 
-  const getSendingLabel = () => 
-    document.documentElement.getAttribute("lang") === "va" ? "Enviant…" : "Enviando…";
+  const getSendingLabel = () =>
+    document.documentElement.getAttribute("lang") === "va"
+      ? "Enviant…"
+      : "Enviando…";
+
+  const getErrorMsg = () =>
+    document.documentElement.getAttribute("lang") === "va"
+      ? "No s'ha pogut enviar. Torna-ho a provar."
+      : "No se pudo enviar. Inténtalo de nuevo.";
+
+  const getNetworkErrorMsg = () =>
+    document.documentElement.getAttribute("lang") === "va"
+      ? "Error de connexió. Revisa la teua xarxa."
+      : "Error de conexión. Revisa tu red.";
+
+  const getFormspreeMissingMsg = () =>
+    document.documentElement.getAttribute("lang") === "va"
+      ? "Falta configurar Formspree (canvia TU_ID a script.js)."
+      : "Falta configurar Formspree (cambia TU_ID en script.js).";
 
   const focusables = () =>
-    modal.querySelectorAll('button, input, select, textarea, [href], [tabindex]:not([tabindex="-1"])');
+    modal.querySelectorAll(
+      'button, input, select, textarea, [href], [tabindex]:not([tabindex="-1"])'
+    );
 
   const setSubmitState = (disabled, text) => {
     if (!submitBtn) return;
@@ -814,8 +988,10 @@
       return;
     }
 
-    if (e.key === "Tab") { // focus trap
-      const f = Array.from(focusables()).filter((el) => !el.disabled && el.offsetParent !== null);
+    if (e.key === "Tab") {
+      const f = Array.from(focusables()).filter(
+        (el) => !el.disabled && el.offsetParent !== null
+      );
       if (!f.length) return;
 
       const first = f[0];
@@ -836,7 +1012,7 @@
     setStatus("", false);
 
     if (FORMSPREE_ENDPOINT.includes("TU_ID")) {
-      setStatus("Falta configurar Formspree (cambia TU_ID en script.js).", true);
+      setStatus(getFormspreeMissingMsg(), true);
       return;
     }
 
@@ -859,20 +1035,23 @@
           form.reset();
           form.hidden = false;
           showSuccess(false);
-          setSubmitState(false, "Enviar solicitud");
+          setSubmitState(false, getSubmitLabel());
         }, 2600);
       } else {
         const data = await res.json().catch(() => null);
         setStatus(
-          (data && data.errors && data.errors[0] && data.errors[0].message) ||
-          "No se pudo enviar. Inténtalo de nuevo.",
+          (data &&
+            data.errors &&
+            data.errors[0] &&
+            data.errors[0].message) ||
+            getErrorMsg(),
           true
         );
         setSubmitState(false, getSubmitLabel());
       }
     } catch {
-      setStatus("Error de conexión. Revisa tu red.", true);
-      setSubmitState(false, "Enviar solicitud");
+      setStatus(getNetworkErrorMsg(), true);
+      setSubmitState(false, getSubmitLabel());
     }
   });
 })();
