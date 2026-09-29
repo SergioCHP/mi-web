@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="es" data-accent="pink" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combate JRPG | Sergio Chorques</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .jrpg-container {
+            width: 100%;
+            max-width: 950px;
+            height: 100vh;
+            max-height: 620px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--line-strong);
+            background-color: var(--surface);
+            box-shadow: 0 0 50px rgba(0,0,0,0.85);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ESCENARIO CANVAS */
+        .battle-arena {
+            flex: 1;
+            position: relative;
+            /* 1. Añadimos la imagen de fondo */
+            background-image: 
+                /* Opcional: un degradado oscuro superpuesto para que los personajes y texto resalten mejor */
+                linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.65)),
+                url('./assets/fondo_combate.jpg');
+            background-size: cover;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .battle-arena::before {
+            content: '';
+            position: absolute;
+            bottom: -25%; left: 0; right: 0; height: 65%;
+            background-image: linear-gradient(var(--line) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--line) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform: perspective(600px) rotateX(70deg);
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        #battleCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            image-rendering: pixelated;
+        }
+
+        /* INTERFAZ HUD */
+        .battle-ui {
+            height: 190px;
+            background: linear-gradient(180deg, var(--surface) 0%, #050608 100%);
+            border-top: 2px solid var(--accent);
+            display: grid;
+            grid-template-columns: 210px 1fr;
+            padding: 14px;
+            gap: 14px;
+            z-index: 20;
+        }
+
+        .command-menu {
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .cmd-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            text-align: left;
+            padding: 8px 12px;
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cmd-btn.active {
+            color: #fff;
+            border-left: 3px solid var(--accent);
+            background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 25%, transparent) 0%, transparent 100%);
+            padding-left: 16px;
+        }
+
+        .cmd-btn:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+
+        .status-window {
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .entity-status {
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .status-portrait {
+            width: 58px;
+            height: 58px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--line);
+            object-fit: cover;
+            background: #000;
+        }
+        .enemy-portrait {
+            border-color: #ff3366;
+        }
+
+        .stat-info {
+            display: grid;
+            grid-template-columns: 1fr 140px;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .stat-name {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 3px;
+        }
+
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .bar-container {
+            height: 8px;
+            background: #10121a;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            transition: width 0.3s ease-out;
+        }
+
+        .hp-fill { background: linear-gradient(90deg, #22c55e, #4ade80); }
+        .mp-fill { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .atb-fill { background: linear-gradient(90deg, #eab308, #facc15); transition: width 0.08s linear; }
+        .atb-fill.ready { background: linear-gradient(90deg, #ff2e97, #ff7eb3); box-shadow: 0 0 10px #ff2e97; }
+
+        .stat-numbers {
+            font-size: 0.72rem;
+            font-family: monospace;
+            color: var(--text-muted);
+        }
+
+        .damage-popup {
+            position: absolute;
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-shadow: 0 0 12px #ff0000, 2px 2px 0 #000;
+            pointer-events: none;
+            z-index: 100;
+            animation: popup 0.9s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes popup {
+            0% { transform: translateY(20px) scale(0.5); opacity: 0; }
+            25% { transform: translateY(-35px) scale(1.2); opacity: 1; }
+            80% { transform: translateY(-45px) scale(1); opacity: 1; }
+            100% { transform: translateY(-55px) scale(1); opacity: 0; }
+        }
+
+        .battle-message {
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.85);
+            border: 1px solid var(--accent);
+            padding: 8px 24px;
+            border-radius: 999px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 2px;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .magic-effect {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 1) 0%, rgba(56, 189, 248, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 50;
+            mix-blend-mode: screen;
+            box-shadow: 0 0 40px #38bdf8;
+            animation: magic-blast 0.4s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes magic-blast {
+            0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+        }
+
+        .hero-aura {
+            position: absolute;
+            width: 120px;
+            height: 200px;
+            background: linear-gradient(0deg, rgba(56, 189, 248, 0) 0%, rgba(56, 189, 248, 0.8) 50%, rgba(56, 189, 248, 0) 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 15;
+            mix-blend-mode: screen;
+            filter: drop-shadow(0 0 15px #38bdf8);
+            animation: aura-charge 0.4s ease-out forwards;
+        }
+
+        @keyframes aura-charge {
+            0% { transform: translate(-50%, -50%) scaleX(0.2) scaleY(0.5) translateY(40px); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scaleX(1) scaleY(1.2) translateY(0); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scaleX(1.5) scaleY(1.5) translateY(-40px); opacity: 0; }
+        }
+
+        /* Pantalla / Cartel inicial */
+        .intro-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(5, 6, 8, 0.88);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 300;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-modal {
+            background: var(--surface);
+            border: 2px solid var(--accent);
+            border-radius: var(--radius-sm, 8px);
+            padding: 2.2rem 2.5rem;
+            text-align: center;
+            box-shadow: 0 0 35px color-mix(in srgb, var(--accent) 30%, transparent);
+            max-width: 420px;
+            animation: modalIn 0.35s cubic-bezier(0.1, 0.9, 0.2, 1);
+        }
+
+        .intro-modal h2 {
+            margin: 0 0 0.8rem 0;
+            font-family: var(--font-display, sans-serif);
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .intro-modal p {
+            margin: 0 0 1.8rem 0;
+            font-family: sans-serif;
+            color: var(--text-muted, #a1a1aa);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .btn-start {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            font-family: var(--font-display, sans-serif);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 50%, transparent);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .btn-start:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--accent);
+        }
+
+        /* Botones y acciones de salto */
+        .intro-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-skip {
+            background: transparent;
+            color: var(--text-muted, #a1a1aa);
+            border: 1px solid var(--line, #333);
+            padding: 11px 22px;
+            font-family: var(--font-display, sans-serif);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-skip:hover {
+            color: #fff;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Botón de saltar flotante durante el combate */
+        .btn-skip-battle {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 150;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid var(--line, #333);
+            color: var(--text-muted, #a1a1aa);
+            padding: 6px 14px;
+            font-family: var(--font-display, sans-serif);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-skip-battle:hover {
+            color: #fff;
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        @keyframes modalIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="jrpg-container">
+        <!-- Botón flotante para saltar en cualquier momento -->
+        <button class="btn-skip-battle" id="btnQuickSkip" title="Saltar combate">Saltar ➔</button>
+
+        <div class="battle-message" id="battleMessage">¡Combate Iniciado!</div>
+        
+        <!-- Cartel de inicio con opción de jugar o saltar -->
+        <div class="intro-overlay" id="introOverlay">
+            <div class="intro-modal">
+                <h2>¡Encuentro!</h2>
+                <p>Juega para avanzar y desbloquear el siguiente nivel.</p>
+                <div class="intro-actions">
+                    <button class="btn-start" id="btnStartGame">Jugar</button>
+                    <button class="btn-skip" id="btnIntroSkip">Saltar</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contenedor del Canvas -->
+        <div class="battle-arena" id="arena">
+            <canvas id="battleCanvas"></canvas>
+        </div>
+
+        <div class="battle-ui">
+            <div class="command-menu" id="cmd-menu">
+                <button class="cmd-btn" id="btn-attack" disabled>Atacar</button>
+                <button class="cmd-btn" id="btn-magic" disabled>Magia (15 MP)</button>
+                <button class="cmd-btn" id="btn-defend" disabled>Defender</button>
+            </div>
+
+            <div class="status-window">
+                <div class="entity-status">
+                    <img src="./assets/Heroe.png" alt="Héroe" class="status-portrait">
+                    <div class="stat-info">
+                        <div>
+                            <div class="stat-name">S. CHORQUES</div>
+                            <div class="bar-group">
+                                <div class="bar-container"><div class="bar-fill hp-fill" id="p-hp-bar"></div></div>
+                                <div class="bar-container"><div class="bar-fill mp-fill" id="p-mp-bar"></div></div>
+                                <div class="stat-numbers">HP: <span id="p-hp-txt"></span> | MP: <span id="p-mp-txt"></span></div>
+                            </div>
+                        </div>
+                        <div class="bar-group">
+                            <div class="stat-numbers" style="color: #eab308; font-weight: bold;">ATB</div>
+                            <div class="bar-container"><div class="bar-fill atb-fill" id="p-atb-bar"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="entity-status">
+                    <img src="./assets/Monstruo.png" alt="Monstruo" class="status-portrait enemy-portrait">
+                    <div class="stat-info">
+                        <div>
+                            <div class="stat-name" style="color:#ff3366">BUG FATAL</div>
+                            <div class="bar-group">
+                                <div class="bar-container"><div class="bar-fill hp-fill" id="e-hp-bar"></div></div>
+                                <div class="bar-container" style="visibility: hidden;"><div class="bar-fill mp-fill"></div></div>
+                                <div class="stat-numbers">HP: <span id="e-hp-txt"></span></div>
+                            </div>
+                        </div>
+                        <div class="bar-group">
+                            <div class="stat-numbers" style="color: #eab308; font-weight: bold;">ATB</div>
+                            <div class="bar-container"><div class="bar-fill atb-fill" id="e-atb-bar"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Entity {
+            constructor(id, name, hp, mp, speed, isPlayer) {
+                this.id = id;
+                this.name = name;
+                this.maxHp = hp;
+                this.hp = hp;
+                this.maxMp = mp;
+                this.mp = mp;
+                this.speed = speed;
+                this.atb = 0;
+                this.isPlayer = isPlayer;
+                this.isDefending = false;
+            }
+
+            takeDamage(amount) {
+                if (this.isDefending) amount = Math.floor(amount * 0.5);
+                this.hp = Math.max(0, this.hp - amount);
+                return amount;
+            }
+
+            useMp(amount) {
+                if (this.mp >= amount) {
+                    this.mp -= amount;
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        class BattleManager {
+            constructor() {
+                this.player = new Entity('player', 'Sergio', 250, 45, 1.1, true);
+                this.enemy = new Entity('enemy', 'Bug Fatal', 380, 0, 0.75, false);
+                
+                this.state = 'WAITING';
+                this.loopInterval = null;
+
+                this.ui = {
+                    p_hp: document.getElementById('p-hp-bar'), p_hp_txt: document.getElementById('p-hp-txt'),
+                    p_mp: document.getElementById('p-mp-bar'), p_mp_txt: document.getElementById('p-mp-txt'),
+                    p_atb: document.getElementById('p-atb-bar'),
+                    e_hp: document.getElementById('e-hp-bar'), e_hp_txt: document.getElementById('e-hp-txt'),
+                    e_atb: document.getElementById('e-atb-bar'),
+                    msg: document.getElementById('battleMessage')
+                };
+
+                // Inicializar Canvas
+                this.canvas = document.getElementById('battleCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.resizeCanvas();
+                window.addEventListener('resize', () => this.resizeCanvas());
+
+                // Cargar Sprites
+                this.images = {
+                    heroIdle: this.loadImage('./assets/heroe_idle.png'),
+                    heroAttack: this.loadImage('./assets/heroe_ataque.png'),
+                    monsterIdle: this.loadImage('./assets/monstruo_idle.png'),
+                    monsterAttack: this.loadImage('./assets/monstruo_ataque.png')
+                };
+
+                // Variables de Renderizado
+                this.heroState = { action: 'idle', frame: 0, xOffset: 0, shake: 0 };
+                this.monsterState = { action: 'idle', frame: 0, xOffset: 0, shake: 0 };
+                this.animTimer = 0;
+
+                this.bindControls();
+                this.updateUI();
+            }
+
+            loadImage(src) {
+                const img = new Image();
+                img.src = src;
+                return img;
+            }
+
+            resizeCanvas() {
+                this.canvas.width = this.canvas.parentElement.clientWidth;
+                this.canvas.height = this.canvas.parentElement.clientHeight;
+            }
+
+            start() {
+                this.showMessage("¡Combate Iniciado!");
+                // Bucle de lógica ATB
+                this.loopInterval = setInterval(() => this.gameLoop(), 16);
+                // Bucle de dibujo fluido en Canvas
+                requestAnimationFrame(() => this.renderLoop());
+            }
+
+            gameLoop() {
+                if (this.state === 'ANIMATING' || this.state === 'GAME_OVER') return;
+
+                if (this.player.atb < 100 && this.state !== 'PLAYER_TURN') {
+                    this.player.atb = Math.min(100, this.player.atb + this.player.speed);
+                    this.ui.p_atb.style.width = `${this.player.atb}%`;
+                    if (this.player.atb >= 100) this.readyPlayerTurn();
+                }
+
+                if (this.enemy.atb < 100 && this.state === 'WAITING') {
+                    this.enemy.atb = Math.min(100, this.enemy.atb + this.enemy.speed);
+                    this.ui.e_atb.style.width = `${this.enemy.atb}%`;
+                    if (this.enemy.atb >= 100) this.executeEnemyTurn();
+                }
+            }
+
+            renderLoop() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                this.animTimer++;
+                // Velocidad de animación de fotogramas (cambia cada 8 ticks)
+                if (this.animTimer % 8 === 0) {
+                    if (this.heroState.action === 'idle') {
+                        this.heroState.frame = (this.heroState.frame + 1) % 6;
+                    }
+                    if (this.monsterState.action === 'idle') {
+                        this.monsterState.frame = (this.monsterState.frame + 1) % 6;
+                    }
+                }
+
+                // Posiciones base en el escenario
+                const baseY = this.canvas.height - 240;
+                const heroBaseX = this.canvas.width * 0.18 + this.heroState.xOffset + (this.heroState.shake ? (Math.random()*12 - 6) : 0);
+                const monsterBaseX = this.canvas.width * 0.82 + this.monsterState.xOffset + (this.monsterState.shake ? (Math.random()*12 - 6) : 0);
+
+                // Dibujar Héroe
+                const hImg = this.heroState.action === 'attack' ? this.images.heroAttack : this.images.heroIdle;
+                const hTotalFrames = 6;
+                if (hImg.complete && hImg.naturalWidth > 0) {
+                    const frameWidth = hImg.naturalWidth / hTotalFrames;
+                    const frameHeight = hImg.naturalHeight;
+                    const drawWidth = 190;
+                    const drawHeight = (frameHeight / frameWidth) * drawWidth;
+
+                    const recorte = 3; // Ajusta a 2 si se sigue viendo un borde
+
+                    this.ctx.drawImage(
+                        hImg,
+                        Math.floor(this.heroState.frame * frameWidth), 0, Math.floor(frameWidth) - recorte, frameHeight,
+                        heroBaseX - drawWidth / 2, baseY, drawWidth, drawHeight
+                    );
+                }
+
+                // Dibujar Monstruo (Invertido horizontalmente para mirar al héroe)
+                const mImg = this.monsterState.action === 'attack' ? this.images.monsterAttack : this.images.monsterIdle;
+                const mTotalFrames = this.monsterState.action === 'attack' ? 5 : 6;
+                if (mImg.complete && mImg.naturalWidth > 0) {
+                    const frameWidth = mImg.naturalWidth / mTotalFrames;
+                    const frameHeight = mImg.naturalHeight;
+                    const drawWidth = 200;
+                    const drawHeight = (frameHeight / frameWidth) * drawWidth;
+
+                    this.ctx.save();
+                    this.ctx.translate(monsterBaseX, baseY);
+                    this.ctx.scale(-1, 1); // Efecto espejo
+
+                    const recorte = 2; // Ajusta a 2 si se sigue viendo un borde
+
+                    this.ctx.drawImage(
+                        mImg,
+                        Math.floor(this.monsterState.frame * frameWidth), 0, Math.floor(frameWidth) - recorte, frameHeight,
+                        -drawWidth / 2, 0, drawWidth, drawHeight
+                    );
+                    this.ctx.restore();
+                }
+
+                requestAnimationFrame(() => this.renderLoop());
+            }
+
+            readyPlayerTurn() {
+                this.state = 'PLAYER_TURN';
+                this.ui.p_atb.classList.add('ready');
+                this.player.isDefending = false;
+                
+                document.querySelectorAll('.cmd-btn').forEach(btn => {
+                    btn.disabled = false;
+                    btn.classList.add('active');
+                });
+                this.showMessage("¡Tu turno!");
+            }
+
+            bindControls() {
+                document.getElementById('btn-attack').onclick = () => this.executePlayerAction('ATTACK');
+                document.getElementById('btn-magic').onclick = () => this.executePlayerAction('MAGIC');
+                document.getElementById('btn-defend').onclick = () => this.executePlayerAction('DEFEND');
+            }
+
+            async executePlayerAction(action) {
+                if (this.state !== 'PLAYER_TURN') return;
+                
+                this.state = 'ANIMATING';
+                this.resetPlayerMenu();
+
+                if (action === 'ATTACK') {
+                    this.showMessage("¡Estocada!");
+                    
+                    this.heroState.action = 'attack';
+                    this.heroState.xOffset = 180; // Embestida hacia el enemigo
+
+                    // Reproducir los 6 frames de ataque secuencialmente
+                    for (let f = 0; f < 6; f++) {
+                        this.heroState.frame = f;
+                        await this.sleep(90);
+                    }
+                    
+                    const dmg = this.enemy.takeDamage(Math.floor(Math.random() * 20) + 35);
+                    this.monsterState.shake = 1;
+                    this.spawnDamage(dmg, this.canvas.width * 0.78, this.canvas.height * 0.45);
+                    this.updateUI();
+
+                    await this.sleep(250);
+                    this.monsterState.shake = 0;
+
+                    // Volver a la posición inicial
+                    this.heroState.action = 'idle';
+                    this.heroState.xOffset = 0;
+                    this.heroState.frame = 0;
+
+                } else if (action === 'MAGIC') {
+                    if (this.player.useMp(15)) {
+                        this.showMessage("¡Compilación Pura!");
+
+                        // --- 1. AURA DE CARGA DEL HÉROE ---
+                        const heroAura = document.createElement('div');
+                        heroAura.className = 'hero-aura';
+                        // El héroe está posicionado en el 18% del ancho del canvas
+                        heroAura.style.left = `${this.canvas.width * 0.18}px`;
+                        heroAura.style.top = `${this.canvas.height - 140}px`; 
+                        document.getElementById('arena').appendChild(heroAura);
+                        
+                        setTimeout(() => heroAura.remove(), 400);
+
+                        // Esperamos a que la animación de carga casi termine
+                        await this.sleep(300);
+
+                        // --- INICIO EFECTO VISUAL DE MAGIA ---
+                        const magicFx = document.createElement('div');
+                        magicFx.className = 'magic-effect';
+                        // Centramos el efecto en la posición X del monstruo (82% del ancho) y la altura base (Y)
+                        magicFx.style.left = `${this.canvas.width * 0.82}px`;
+                        magicFx.style.top = `${this.canvas.height - 240}px`;
+                        document.getElementById('arena').appendChild(magicFx);
+                        
+                        // Limpiamos el div del efecto después de la animación
+                        setTimeout(() => magicFx.remove(), 400);
+                        // --- FIN EFECTO VISUAL DE MAGIA ---
+
+                        await this.sleep(300);
+                        
+                        const dmg = this.enemy.takeDamage(Math.floor(Math.random() * 30) + 65);
+                        this.monsterState.shake = 1;
+                        this.spawnDamage(dmg, this.canvas.width * 0.78, this.canvas.height * 0.45, '#38bdf8');
+                        this.updateUI();
+                        
+                        await this.sleep(350);
+                        this.monsterState.shake = 0;
+                    } else {
+                        this.showMessage("MP Insuficiente");
+                        this.state = 'PLAYER_TURN';
+                        this.readyPlayerTurn();
+                        return;
+                    }
+                } else if (action === 'DEFEND') {
+                    this.showMessage("¡Posición Defensiva!");
+                    this.player.isDefending = true;
+                    await this.sleep(450);
+                }
+
+                this.finishTurn(this.player, this.ui.p_atb);
+            }
+
+            async executeEnemyTurn() {
+                this.state = 'ANIMATING';
+                this.ui.e_atb.classList.add('ready');
+
+                await this.sleep(400);
+
+                const isCrit = Math.random() > 0.65;
+                this.showMessage(isCrit ? "¡Zarpazo Crítico!" : "¡Ataque del Bug!");
+                
+                this.monsterState.action = 'attack';
+                this.monsterState.xOffset = -180; // Embestida hacia el héroe
+
+                // Reproducir los 5 frames de ataque del monstruo
+                for (let f = 0; f < 5; f++) {
+                    this.monsterState.frame = f;
+                    await this.sleep(110);
+                }
+
+                let rawDmg = isCrit ? Math.floor(Math.random() * 25) + 40 : Math.floor(Math.random() * 15) + 20;
+                const finalDmg = this.player.takeDamage(rawDmg);
+                
+                this.heroState.shake = 1;
+                this.spawnDamage(finalDmg, this.canvas.width * 0.22, this.canvas.height * 0.45);
+                this.updateUI();
+
+                await this.sleep(250);
+                this.heroState.shake = 0;
+
+                this.monsterState.action = 'idle';
+                this.monsterState.xOffset = 0;
+                this.monsterState.frame = 0;
+
+                this.finishTurn(this.enemy, this.ui.e_atb);
+            }
+
+            finishTurn(entity, atbBar) {
+                entity.atb = 0;
+                atbBar.style.width = '0%';
+                atbBar.classList.remove('ready');
+
+                if (this.enemy.hp <= 0) {
+                    this.state = 'GAME_OVER';
+                    this.showMessage("¡VICTORIA! Accediendo...");
+                    setTimeout(() => { window.location.href = 'juegos.html'; }, 2200);
+                } else if (this.player.hp <= 0) {
+                    this.state = 'GAME_OVER';
+                    this.showMessage("HAS SIDO DERROTADO");
+                    setTimeout(() => { location.reload(); }, 2200);
+                } else {
+                    this.state = 'WAITING';
+                }
+            }
+
+            resetPlayerMenu() {
+                document.querySelectorAll('.cmd-btn').forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.remove('active');
+                });
+            }
+
+            updateUI() {
+                this.ui.p_hp.style.width = `${(this.player.hp / this.player.maxHp) * 100}%`;
+                this.ui.p_hp_txt.innerText = `${this.player.hp}/${this.player.maxHp}`;
+                
+                this.ui.p_mp.style.width = `${(this.player.mp / this.player.maxMp) * 100}%`;
+                this.ui.p_mp_txt.innerText = `${this.player.mp}/${this.player.maxMp}`;
+
+                this.ui.e_hp.style.width = `${(this.enemy.hp / this.enemy.maxHp) * 100}%`;
+                this.ui.e_hp_txt.innerText = `${this.enemy.hp}/${this.enemy.maxHp}`;
+            }
+
+            spawnDamage(amount, x, y, color = '#fff') {
+                const popup = document.createElement('div');
+                popup.innerText = amount;
+                popup.className = 'damage-popup';
+                popup.style.color = color;
+                popup.style.left = `${x}px`;
+                popup.style.top = `${y}px`;
+                
+                document.getElementById('arena').appendChild(popup);
+                setTimeout(() => popup.remove(), 900);
+            }
+
+            showMessage(text) {
+                this.ui.msg.innerText = text;
+                this.ui.msg.style.opacity = '1';
+                clearTimeout(this.msgTimeout);
+                this.msgTimeout = setTimeout(() => { this.ui.msg.style.opacity = '0'; }, 1400);
+            }
+
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+
+        window.onload = () => {
+            const battle = new BattleManager();
+
+            const overlay = document.getElementById('introOverlay');
+            const startBtn = document.getElementById('btnStartGame');
+            const introSkipBtn = document.getElementById('btnIntroSkip');
+            const quickSkipBtn = document.getElementById('btnQuickSkip');
+
+            // Comenzar el combate
+            startBtn.addEventListener('click', () => {
+                overlay.classList.add('hidden');
+                battle.start();
+            });
+
+            // Función para saltarse el minijuego
+            const skipGame = () => {
+                window.location.href = 'juegos.html';
+            };
+
+            introSkipBtn.addEventListener('click', skipGame);
+            quickSkipBtn.addEventListener('click', skipGame);
+        };
+    </script>
+</body>
+</html>
