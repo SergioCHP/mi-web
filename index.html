@@ -267,17 +267,28 @@
             <p>Salto a 1º DAM orientado al dominio de desarrollo en lenguajes estructurados y POO.</p>
           </article>
 
-          <article class="card spotlight-card">
+          <article class="card spotlight-card cert-card">
             <div class="card-icon">
+              <!-- Icono de certificación / escudo / medalla -->
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect width="18" height="18" x="3" y="3" rx="2"></rect>
-                <path d="M7 7h10"></path>
-                <path d="M7 12h10"></path>
-                <path d="M7 17h10"></path>
+                <path d="M12 15l-2 5l4-2l4 2l-2-5"></path>
+                <circle cx="12" cy="9" r="6"></circle>
               </svg>
             </div>
-            <h3>Colección &amp; Datos</h3>
-            <p>Catalogación estructurada y gestión de colección personal de cómics, novelas y cine.</p>
+            <h3>Certificaciones Cisco</h3>
+            <p>Credenciales oficiales obtenidas a través de Cisco Networking Academy:</p>
+            
+            <div class="cert-buttons">
+              <button type="button" class="cert-btn" data-cert-src="images/cert-cisco-redes.webp" data-cert-title="Cisco — CCNA: Introducción a las redes">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>CCNA: Introducción a las redes</span>
+              </button>
+
+              <button type="button" class="cert-btn" data-cert-src="images/cert-cisco-ciberseguridad.webp" data-cert-title="Cisco — Fundamentos de Ciberseguridad">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>Fundamentos de Ciberseguridad</span>
+              </button>
+            </div>
           </article>
 
           <article class="card spotlight-card">
@@ -408,22 +419,23 @@
             </div>
           </article>
 
-          <article class="project-card tilt spotlight-card" data-category="web dam">
+          <article class="project-card tilt spotlight-card" data-category="web">
             <div class="project-card-inner">
               <header class="project-card-head">
-                <p class="project-type">Web / DAM</p>
-                <h3 class="project-title">Interfaz gamer HUD</h3>
+                <p class="project-type">Web / WordPress</p>
+                <h3 class="project-title">El Señor de los Anillos</h3>
               </header>
               <p class="project-desc">
-                Prototipo de dashboard con estética Cyberpunk/HUD, animaciones con aceleración gráfica por hardware y componentes modulares.
+                Página web temática desarrollada con WordPress. Un proyecto del año pasado centrado en el diseño, personalización y gestión de contenidos.
               </p>
               <ul class="project-tags">
-                <li>UI / UX</li>
-                <li>CSS Grid</li>
-                <li>Glow Effects</li>
+                <li>WordPress</li>
+                <li>Diseño Web</li>
+                <li>CMS</li>
               </ul>
               <div class="project-actions">
-                <a class="project-link" href="#" aria-label="Ver código del proyecto Interfaz gamer">Ver código</a>
+                <!-- Sustituye el '#' por la URL real de tu página de WordPress -->
+                <a class="project-link" href="http://sergiochorques.atwebpages.com/" target="_blank" rel="noopener noreferrer" aria-label="Visitar la web de El Señor de los Anillos">Visitar web</a>
               </div>
             </div>
           </article>
@@ -562,6 +574,22 @@
           </div>
         </div>
       </div>
+
+      <!-- Modal Visor de Certificados -->
+      <div class="modal cert-modal" id="certModal" aria-hidden="true">
+        <div class="modal__backdrop" data-close-cert></div>
+        <div class="cert-modal__panel" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
+          <button type="button" class="modal__close" data-close-cert aria-label="Cerrar visor">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <h3 id="certModalTitle" class="cert-modal__title"></h3>
+          <div class="cert-modal__img-wrap">
+            <img id="certModalImg" src="" alt="Certificado Cisco" loading="lazy" />
+          </div>
+        </div>
+      </div>
+
       <script src="script.js"></script>
+
   </body>
 </html>

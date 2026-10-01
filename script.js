@@ -151,8 +151,8 @@
           desc: "Salto a 1º DAM orientado al dominio de desarrollo en lenguajes estructurados y POO."
         },
         {
-          title: "Colección & Datos",
-          desc: "Catalogación estructurada y gestión de colección personal de cómics, novelas y cine."
+          title: "Certificaciones Cisco",
+          desc: "Credenciales oficiales obtenidas a través de Cisco Networking Academy:"
         },
         {
           title: "Desconexión",
@@ -195,9 +195,9 @@
           aria: "Ver código del proyecto Gestor de biblioteca"
         },
         {
-          desc: "Prototipo de dashboard con estética Cyberpunk/HUD, animaciones con aceleración gráfica por hardware y componentes modulares.",
-          link: "Ver código",
-          aria: "Ver código del proyecto Interfaz gamer"
+          desc: "Página web temática desarrollada con WordPress. Un proyecto del año pasado centrado en el diseño, personalización y gestión de contenidos.",
+          link: "Visitar web",
+          aria: "Visitar la web de El Señor de los Anillos"
         }
       ],
 
@@ -270,8 +270,8 @@
           desc: "Salt a 1r DAM orientat al domini de desenvolupament en llenguatges estructurats i POO."
         },
         {
-          title: "Col·lecció & Dades",
-          desc: "Catalogació estructurada i gestió de col·lecció personal de còmics, novel·les i cinema."
+          title: "Certificacions Cisco",
+          desc: "Credencials oficials obtingudes mitjançant Cisco Networking Academy:"
         },
         {
           title: "Desconnexió",
@@ -314,9 +314,9 @@
           aria: "Veure codi del projecte Gestor de biblioteca"
         },
         {
-          desc: "Prototip de panell amb estètica Cyberpunk/HUD, animacions amb acceleració gràfica per maquinari i components modulars.",
-          link: "Veure codi",
-          aria: "Veure codi del projecte Interfície gamer"
+          desc: "Pàgina web temàtica desenvolupada amb WordPress. Un projecte de l'any passat centrat en el disseny, personalització i gestió de continguts.",
+          link: "Visitar web",
+          aria: "Visitar la web d'El Senyor dels Anells"
         }
       ],
 
@@ -926,6 +926,53 @@
     } catch {
       setStatus(isVa() ? "Error de connexió." : "Error de conexión.", true);
       setSubmitState(false, isVa() ? "Enviar sol·licitud" : "Enviar solicitud");
+    }
+  });
+})();
+
+/* =========================================================
+   MODAL VISOR DE CERTIFICADOS CISCO
+   ========================================================= */
+(() => {
+  const modal = document.getElementById("certModal");
+  const modalImg = document.getElementById("certModalImg");
+  const modalTitle = document.getElementById("certModalTitle");
+  const certBtns = document.querySelectorAll(".cert-btn");
+
+  if (!modal || !modalImg || !modalTitle) return;
+
+  const openCert = (src, title) => {
+    modalImg.src = src;
+    modalImg.alt = title;
+    modalTitle.textContent = title;
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  };
+
+  const closeCert = () => {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    modalImg.src = "";
+  };
+
+  certBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const src = btn.getAttribute("data-cert-src");
+      const title = btn.getAttribute("data-cert-title");
+      openCert(src, title);
+    });
+  });
+
+  modal.querySelectorAll("[data-close-cert]").forEach((el) => {
+    el.addEventListener("click", closeCert);
+  });
+
+  // Cerrar con la tecla Esc
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("is-open")) {
+      closeCert();
     }
   });
 })();
