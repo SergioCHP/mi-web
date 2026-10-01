@@ -446,6 +446,12 @@
       if (navLinks[i]) navLinks[i].textContent = text;
     });
 
+    // Navegación en juegos.html
+    const navHome = document.getElementById("navHome");
+    const navReplay = document.getElementById("navReplay");
+    if (navHome) navHome.textContent = lang === "va" ? "Inici" : "Inicio";
+    if (navReplay) navReplay.textContent = lang === "va" ? "Jugar de nou" : "Jugar de nuevo";
+
     // Hero & Status
     const statusText = document.querySelector(".status-pill span:last-child");
     if (statusText) statusText.textContent = t.status;
