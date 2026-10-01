@@ -397,6 +397,101 @@
             from { transform: scale(0.85); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
+
+        /* =========================================================
+           ADAPTACIÓN RESPONSIVA (MÓVIL Y TABLET)
+           ========================================================= */
+        @media (max-width: 768px) {
+            .jrpg-container {
+                max-height: 100vh;
+                height: 100vh;
+                border: none;
+            }
+
+            /* Reducir altura del HUD inferior y apilar columnas */
+            .battle-ui {
+                height: auto;
+                min-height: 175px;
+                grid-template-columns: 1fr;
+                gap: 8px;
+                padding: 8px 10px;
+            }
+
+            /* Menú de botones horizontal compacto */
+            .command-menu {
+                flex-direction: row;
+                gap: 6px;
+                padding: 6px;
+            }
+
+            .cmd-btn {
+                flex: 1;
+                text-align: center;
+                padding: 7px 4px;
+                font-size: 0.72rem;
+                letter-spacing: 0.5px;
+            }
+
+            .cmd-btn.active {
+                padding-left: 4px;
+                border-left: none;
+                border-bottom: 2px solid var(--accent);
+            }
+
+            /* Ventana de estados compacta */
+            .status-window {
+                padding: 6px 10px;
+                gap: 6px;
+            }
+
+            .entity-status {
+                grid-template-columns: 36px 1fr;
+                gap: 8px;
+            }
+
+            .status-portrait {
+                width: 36px;
+                height: 36px;
+            }
+
+            .stat-info {
+                grid-template-columns: 1fr 65px;
+                gap: 8px;
+            }
+
+            .stat-name {
+                font-size: 0.78rem;
+                margin-bottom: 1px;
+            }
+
+            .stat-numbers {
+                font-size: 0.65rem;
+            }
+
+            .bar-container {
+                height: 6px;
+            }
+
+            /* Modal de inicio */
+            .intro-modal {
+                margin: 0 16px;
+                padding: 1.5rem;
+            }
+
+            .intro-modal h2 {
+                font-size: 1.3rem;
+            }
+
+            .intro-modal p {
+                font-size: 0.85rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .damage-popup {
+                font-size: 1.6rem;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -590,10 +685,13 @@
                     }
                 }
 
-                // Posiciones base en el escenario
-                const baseY = this.canvas.height - 240;
-                const heroBaseX = this.canvas.width * 0.18 + this.heroState.xOffset + (this.heroState.shake ? (Math.random()*12 - 6) : 0);
-                const monsterBaseX = this.canvas.width * 0.82 + this.monsterState.xOffset + (this.monsterState.shake ? (Math.random()*12 - 6) : 0);
+                // Escala y posición adaptativa según resolución
+                const isMobile = this.canvas.width < 600;
+                const scale = isMobile ? 0.72 : 1;
+                
+                const baseY = this.canvas.height - (isMobile ? 165 : 230);
+                const heroBaseX = this.canvas.width * (isMobile ? 0.22 : 0.18) + (this.heroState.xOffset * scale) + (this.heroState.shake ? (Math.random()*12 - 6) : 0);
+                const monsterBaseX = this.canvas.width * (isMobile ? 0.78 : 0.82) + (this.monsterState.xOffset * scale) + (this.monsterState.shake ? (Math.random()*12 - 6) : 0);
 
                 // Dibujar Héroe
                 const hImg = this.heroState.action === 'attack' ? this.images.heroAttack : this.images.heroIdle;
@@ -601,8 +699,8 @@
                 if (hImg.complete && hImg.naturalWidth > 0) {
                     const frameWidth = hImg.naturalWidth / hTotalFrames;
                     const frameHeight = hImg.naturalHeight;
-                    const drawWidth = 190;
-                    const drawHeight = (frameHeight / frameWidth) * drawWidth;
+                    const drawWidth = isMobile ? 135 : 190;
+    const drawHeight = (frameHeight / frameWidth) * drawWidth;
 
                     const recorte = 3; // Ajusta a 2 si se sigue viendo un borde
 
@@ -619,7 +717,7 @@
                 if (mImg.complete && mImg.naturalWidth > 0) {
                     const frameWidth = mImg.naturalWidth / mTotalFrames;
                     const frameHeight = mImg.naturalHeight;
-                    const drawWidth = 200;
+                    const drawWidth = isMobile ? 140 : 200;
                     const drawHeight = (frameHeight / frameWidth) * drawWidth;
 
                     this.ctx.save();

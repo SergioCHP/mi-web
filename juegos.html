@@ -105,13 +105,15 @@
         }
 
     .games-header h2 {
-      margin: 0.5rem 0 0.2rem 0;
-      font-size: clamp(2.2rem, 5vw, 3.2rem);
-      background: linear-gradient(100deg, var(--accent), var(--accent-alt));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
-      animation: titleShine 9s linear infinite; 
+        margin: 0.5rem 0 0.2rem 0;
+        font-size: clamp(2.2rem, 5vw, 3.2rem);
+        background: linear-gradient(100deg, var(--accent), var(--accent-alt), var(--accent));
+        background-size: 200% 100%; /* Imprescindible para que el gradiente tenga recorrido al animar */
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: titleShine 9s linear infinite; 
     }
 
     .games-header p {
