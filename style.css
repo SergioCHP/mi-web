@@ -1908,3 +1908,53 @@ body.modal-open {
   object-fit: contain;
   display: block;
 }
+
+/* =========================================================
+   ANIMACIÓN INTERACTIVA: MANDO PS5, TICKET Y LIBRO
+   ========================================================= */
+
+.card-gaming,
+.card-cinema,
+.card-reading {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-gaming .card-icon,
+.card-gaming h3,
+.card-gaming p,
+.card-cinema .card-icon,
+.card-cinema h3,
+.card-cinema p,
+.card-reading .card-icon,
+.card-reading h3,
+.card-reading p {
+  position: relative;
+  z-index: 2;
+}
+
+/* Estado oculto: vertical arriba a la derecha y fuera de la tarjeta */
+.mando-corner-img,
+.cinema-corner-img,
+.reading-corner-img {
+  position: absolute;
+  top: 15px;
+  right: -30px;
+  width: 120px;
+  height: auto;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transform: translateX(100px) rotate(0deg) scale(0.9);
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.15),
+              opacity 0.35s ease;
+  filter: drop-shadow(-6px 4px 14px rgba(0, 0, 0, 0.5));
+}
+
+/* Estado visible al pasar el ratón */
+.card-gaming:hover .mando-corner-img,
+.card-cinema:hover .cinema-corner-img,
+.card-reading:hover .reading-corner-img {
+  opacity: 0.95;
+  transform: translateX(-40px) rotate(0deg) scale(1.05);
+}
