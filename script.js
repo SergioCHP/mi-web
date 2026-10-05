@@ -230,7 +230,19 @@
       modalMsgPh: "Proyecto, práctica, colaboración…",
       modalSubmit: "Enviar solicitud",
       modalSuccessTitle: "¡Solicitud enviada!",
-      modalSuccessDesc: "Te llamaré muy pronto."
+      modalSuccessDesc: "Te llamaré muy pronto.",
+
+      // GitHub Widget
+      ghTitle: "Actividad en GitHub",
+      ghBadgeLive: "API GitHub · En vivo",
+      ghBadgeOffline: "Desconectado",
+      ghReposLabel: "Repos",
+      ghFollowersLabel: "Seguidores",
+      ghSinceLabel: "En GitHub desde",
+      ghUpdatedLabel: "Act",
+      ghCodeLabel: "Código",
+      ghDefaultBio: "Perfil de GitHub activo con {n} repositorios públicos.",
+      ghError: "No se pudieron sincronizar los datos de GitHub en este momento."
     },
     va: {
       btnLabel: "ES",
@@ -349,9 +361,118 @@
       modalMsgPh: "Projecte, pràctica, col·laboració…",
       modalSubmit: "Enviar sol·licitud",
       modalSuccessTitle: "Sol·licitud enviada!",
-      modalSuccessDesc: "Et cridaré ben prompte."
+      modalSuccessDesc: "Et cridaré ben prompte.",
+
+      // GitHub Widget
+      ghTitle: "Activitat en GitHub",
+      ghBadgeLive: "API GitHub · En viu",
+      ghBadgeOffline: "Desconnectat",
+      ghReposLabel: "Repos",
+      ghFollowersLabel: "Seguidors",
+      ghSinceLabel: "En GitHub des de",
+      ghUpdatedLabel: "Act",
+      ghCodeLabel: "Codi",
+      ghDefaultBio: "Perfil de GitHub actiu amb {n} repositoris públics.",
+      ghError: "No s'han pogut sincronitzar les dades de GitHub en este moment."
     }
   };
+
+  let cachedGitHubData = null;
+
+  function renderGitHubWidget() {
+    const bioEl = document.getElementById("ghBio");
+    const statsEl = document.getElementById("ghStats");
+    const reposEl = document.getElementById("ghRepos");
+    const badgeEl = document.getElementById("ghStatusBadge");
+    const titleEl = document.querySelector(".github-header h3");
+
+    if (!bioEl || !reposEl || !cachedGitHubData) return;
+
+    const t = translations[currentLang] || translations.es;
+
+    if (titleEl) titleEl.textContent = t.ghTitle;
+
+    if (cachedGitHubData.error) {
+      if (badgeEl) {
+        badgeEl.textContent = t.ghBadgeOffline;
+        badgeEl.style.color = "#ef4444";
+      }
+      bioEl.textContent = t.ghError;
+      if (statsEl) statsEl.replaceChildren();
+      reposEl.replaceChildren();
+      return;
+    }
+
+    const { user, repos } = cachedGitHubData;
+
+    if (badgeEl) {
+      badgeEl.textContent = t.ghBadgeLive;
+      badgeEl.style.color = "";
+    }
+
+    bioEl.textContent = user.bio ||
+      (t.ghDefaultBio
+        ? t.ghDefaultBio.replace("{n}", user.public_repos)
+        : `Perfil con ${user.public_repos} repositorios.`);
+
+    if (statsEl) {
+      const stats = [
+        [`📦 ${t.ghReposLabel}: `, user.public_repos],
+        [`👥 ${t.ghFollowersLabel}: `, user.followers],
+        [`📅 ${t.ghSinceLabel}: `, new Date(user.created_at).getFullYear()]
+      ];
+
+      statsEl.replaceChildren(...stats.map(([label, value]) => {
+        const item = document.createElement("div");
+        item.className = "gh-stat-item";
+        item.append(document.createTextNode(label));
+
+        const strong = document.createElement("strong");
+        strong.textContent = String(value);
+        item.append(strong);
+        return item;
+      }));
+    }
+
+    const locale = currentLang === "va" ? "ca-ES" : "es-ES";
+    const developmentText = currentLang === "va"
+      ? "Projecte en desenvolupament"
+      : "Proyecto en desarrollo";
+
+    reposEl.replaceChildren(...repos.map((repo) => {
+      const card = document.createElement("a");
+      card.href = `https://github.com/SergioCHP/${encodeURIComponent(repo.name)}`;
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+      card.className = "gh-repo-card";
+
+      const details = document.createElement("div");
+      const name = document.createElement("div");
+      name.className = "gh-repo-name";
+      name.append(document.createTextNode("📂 "));
+      name.append(document.createTextNode(repo.name));
+
+      const description = document.createElement("p");
+      description.className = "gh-repo-desc";
+      description.textContent = repo.description || developmentText;
+      details.append(name, description);
+
+      const footer = document.createElement("div");
+      footer.className = "gh-repo-footer";
+      const language = document.createElement("span");
+      language.textContent = `🔹 ${repo.language || t.ghCodeLabel}`;
+      const date = document.createElement("span");
+      const pushedAt = new Date(repo.pushed_at);
+      const formattedDate = Number.isNaN(pushedAt.getTime())
+        ? ""
+        : pushedAt.toLocaleDateString(locale, { month: "short", day: "numeric" });
+      date.textContent = `${t.ghUpdatedLabel}: ${formattedDate}`;
+      footer.append(language, date);
+
+      card.append(details, footer);
+      return card;
+    }));
+  }
 
   /* ---------- Typewriter multilenguaje ---------- */
   const typewriterCtrl = (function () {
@@ -627,6 +748,10 @@
 
     // Reiniciar typewriter con el nuevo idioma
     typewriterCtrl.restart();
+    // Actualizar textos del widget de GitHub al cambiar de idioma
+    if (typeof renderGitHubWidget === "function") {
+      renderGitHubWidget();
+    }
   };
 
   if (langButton) {
@@ -644,6 +769,31 @@
   } catch (e) {
     console.warn("No se pudo aplicar el idioma:", e);
   }
+
+  (async function initGitHub() {
+    if (!document.getElementById("ghBio") || !document.getElementById("ghRepos")) return;
+
+    const username = "SergioCHP";
+    try {
+      const [userRes, reposRes] = await Promise.all([
+        fetch(`https://api.github.com/users/${username}`),
+        fetch(`https://api.github.com/users/${username}/repos?sort=pushed&per_page=3`)
+      ]);
+
+      if (!userRes.ok || !reposRes.ok) throw new Error("Error consultando la API");
+
+      const user = await userRes.json();
+      const repos = await reposRes.json();
+      if (!Array.isArray(repos)) throw new Error("La API devolvió una lista de repositorios no válida");
+
+      cachedGitHubData = { user, repos };
+    } catch (error) {
+      console.error("No se pudieron cargar los datos de GitHub:", error);
+      cachedGitHubData = { error: true };
+    }
+
+    renderGitHubWidget();
+  })();
 
   /* ---------- Reveal con IntersectionObserver ---------- */
   const revealElements = document.querySelectorAll(".reveal");

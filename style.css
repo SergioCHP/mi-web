@@ -1958,3 +1958,246 @@ body.modal-open {
   opacity: 0.95;
   transform: translateX(-40px) rotate(0deg) scale(1.05);
 }
+
+/* =========================================================
+   WIDGET DINÁMICO API GITHUB
+   ========================================================= */
+.github-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.github-card {
+  padding: 1.8rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.github-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.github-header h3 {
+  margin: 0;
+}
+
+.gh-badge {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.gh-stats {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.gh-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+}
+
+.gh-stat-item strong {
+  color: var(--accent);
+}
+
+.gh-repos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.gh-repo-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.gh-repo-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.gh-repo-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.gh-repo-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0.4rem 0 0.8rem;
+  line-height: 1.4;
+}
+
+.gh-repo-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+}
+
+/* =========================================================
+   MARCAS DE AGUA TIPOGRÁFICAS GIGANTES (TODAS A LA DERECHA)
+   ========================================================= */
+
+#sobre-mi,
+#lo-que-he-hecho,
+#me-gusta,
+#proyectos {
+  position: relative;
+}
+
+#sobre-mi::after,
+#lo-que-he-hecho::after,
+#me-gusta::after,
+#proyectos::after {
+  position: absolute;
+  z-index: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(5.5rem, 16vw, 13rem);
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  
+  /* Fijar todas a la derecha */
+  left: auto;
+  right: -6vw;
+  
+  /* Modo Oscuro: silueta en trazo */
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.05);
+  opacity: 0.85;
+}
+
+/* El contenido (cabeceras y tarjetas) por encima */
+#sobre-mi > *,
+#lo-que-he-hecho > *,
+#me-gusta > *,
+#proyectos > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* --- Textos y alturas de cada sección --- */
+
+/* 1. Sobre mí */
+#sobre-mi::after {
+  content: "ABOUT";
+  top: 0;
+}
+
+/* 2. Trayectoria */
+#lo-que-he-hecho::after {
+  content: "CAREER";
+  top: 15px;
+}
+
+/* 3. Me gusta */
+#me-gusta::after {
+  content: "HOBBIES";
+  top: 10px;
+}
+
+/* 4. Proyectos */
+#proyectos::after {
+  content: "DEV.LAB";
+  top: 15px;
+}
+
+/* --- AJUSTE MODO CLARO --- */
+html[data-theme="light"] #sobre-mi::after,
+html[data-theme="light"] #lo-que-he-hecho::after,
+html[data-theme="light"] #me-gusta::after,
+html[data-theme="light"] #proyectos::after {
+  -webkit-text-stroke: 1.5px rgba(50, 40, 30, 0.08);
+  color: rgba(50, 40, 30, 0.02);
+  opacity: 1;
+}
+
+/* Adaptación móvil */
+@media (max-width: 640px) {
+  #sobre-mi::after,
+  #lo-que-he-hecho::after,
+  #me-gusta::after,
+  #proyectos::after {
+    font-size: clamp(3.8rem, 18vw, 6.5rem);
+    right: -4vw;
+    top: -10px;
+  }
+}
+
+/* =========================================================
+   TEXTURA DE RUIDO ANALÓGICO (CORREGIDA Y COMPATIBLE)
+   ========================================================= */
+
+/* Capa fija de ruido generada con codificación pura compatible */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; /* Por debajo de la barra fija (z-index: 900) y de las tarjetas */
+  pointer-events: none;
+  user-select: none;
+  
+  /* SVG de ruido en limpio sin errores de codificación */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+/* Modo Claro: Textura de grano visible tipo papel editorial */
+html[data-theme="light"] body::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* Asegurar que las tarjetas y el contenido sigan por encima del grano */
+main, footer {
+  position: relative;
+  z-index: 2;
+}
+
+/* Garantizar que la barra fija permanezca intacta y visible siempre */
+.navbar-wrapper {
+  position: fixed !important;
+  z-index: 900 !important;
+}
