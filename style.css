@@ -2201,3 +2201,60 @@ main, footer {
   position: fixed !important;
   z-index: 900 !important;
 }
+
+/* =========================================================
+   WIDGET DISCRETO DEL TIEMPO
+   ========================================================= */
+.weather-widget {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.85rem 0 1.1rem;
+  padding: 0.38rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  opacity: 0.85;
+  transition:
+    opacity var(--transition),
+    border-color var(--transition),
+    color var(--transition);
+}
+
+.weather-widget:hover {
+  opacity: 1;
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.weather-widget.is-loading {
+  opacity: 0.6;
+}
+
+.weather-widget.is-error {
+  color: #ff5c7a;
+  opacity: 0.9;
+}
+
+.weather-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.weather-text {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .weather-widget {
+    font-size: 0.72rem;
+    padding: 0.32rem 0.6rem;
+  }
+
+  .weather-text {
+    white-space: normal;
+  }
+}

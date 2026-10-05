@@ -1132,3 +1132,220 @@
     }
   });
 })();
+
+/* =========================================================
+   WIDGET DISCRETO DEL TIEMPO — Open-Meteo
+   ========================================================= */
+(() => {
+  const widget = document.getElementById("weatherWidget");
+  if (!widget) return;
+
+  const iconEl = document.getElementById("weatherIcon");
+  const textEl = document.getElementById("weatherText");
+
+  // Cambia esto por tu ciudad / coordenadas
+  const LOCATION = {
+    city: "Enguera",
+    lat: 39.2278,
+    lon: -0.7550
+  };
+
+  const UI_TEXT = {
+    es: {
+      loading: "Cargando el tiempo…",
+      error: "Tiempo no disponible",
+      wind: "viento"
+    },
+    va: {
+      loading: "Carregant el temps…",
+      error: "Temps no disponible",
+      wind: "vent"
+    }
+  };
+
+  const WEATHER_CODES = {
+    0: { es: "Despejado", va: "Desemparat", icon: "☀️" },
+    1: { es: "Mayormente despejado", va: "Majoritàriament desemparat", icon: "🌤️" },
+    2: { es: "Parcialmente nublado", va: "Parcialment ennuvolat", icon: "⛅" },
+    3: { es: "Nublado", va: "Ennuvolat", icon: "☁️" },
+    45: { es: "Niebla", va: "Boira", icon: "🌫️" },
+    48: { es: "Niebla con escarcha", va: "Boira amb gebada", icon: "🌫️" },
+    51: { es: "Llovizna ligera", va: "Pluja fina lleugera", icon: "🌦️" },
+    53: { es: "Llovizna", va: "Pluja fina", icon: "🌦️" },
+    55: { es: "Llovizna intensa", va: "Pluja fina intensa", icon: "🌧️" },
+    56: { es: "Llovizna helada", va: "Pluja fina gelada", icon: "🌧️" },
+    57: { es: "Llovizna helada intensa", va: "Pluja fina gelada intensa", icon: "🌧️" },
+    61: { es: "Lluvia ligera", va: "Pluja lleugera", icon: "🌦️" },
+    63: { es: "Lluvia", va: "Pluja", icon: "🌧️" },
+    65: { es: "Lluvia intensa", va: "Pluja intensa", icon: "🌧️" },
+    66: { es: "Lluvia helada", va: "Pluja gelada", icon: "🌧️" },
+    67: { es: "Lluvia helada intensa", va: "Pluja gelada intensa", icon: "🌧️" },
+    71: { es: "Nieve ligera", va: "Neu lleugera", icon: "🌨️" },
+    73: { es: "Nieve", va: "Neu", icon: "❄️" },
+    75: { es: "Nieve intensa", va: "Neu intensa", icon: "❄️" },
+    77: { es: "Granizo", va: "Calamarsa", icon: "🌨️" },
+    80: { es: "Chubascos ligeros", va: "Ruixades lleugeres", icon: "🌦️" },
+    81: { es: "Chubascos", va: "Ruixades", icon: "🌧️" },
+    82: { es: "Chubascos violentos", va: "Ruixades violentes", icon: "🌧️" },
+    85: { es: "Chubascos de nieve", va: "Ruixades de neu", icon: "🌨️" },
+    86: { es: "Chubascos de nieve intensos", va: "Ruixades de neu intenses", icon: "🌨️" },
+    95: { es: "Tormenta", va: "Tempesta", icon: "⛈️" },
+    96: { es: "Tormenta con granizo", va: "Tempesta amb calamarsa", icon: "⛈️" },
+    99: { es: "Tormenta con granizo fuerte", va: "Tempesta amb calamarsa forta", icon: "⛈️" },
+    default: { es: "Variable", va: "Variable", icon: "🌡️" }
+  };
+
+  let cached = null;
+  let isLoading = false;
+  let lastError = false;
+
+  const getLang = () =>
+    document.documentElement.getAttribute("lang") === "va" ? "va" : "es";
+
+  function describe(code) {
+    return WEATHER_CODES[code] || WEATHER_CODES.default;
+  }
+
+  function render() {
+    if (!cached) return;
+
+    const lang = getLang();
+    const info = describe(cached.code);
+
+    const tempText = Number.isFinite(cached.temp)
+      ? `${Math.round(cached.temp)}°`
+      : "—";
+
+    const windText = Number.isFinite(cached.wind)
+      ? `${Math.round(cached.wind)} km/h`
+      : "—";
+
+    if (iconEl) iconEl.textContent = info.icon;
+
+    if (textEl) {
+      textEl.textContent = `${LOCATION.city}: ${tempText} ${info[lang]}`;
+    }
+
+    widget.setAttribute(
+      "title",
+      `${LOCATION.city}: ${tempText} ${info[lang]} · ${UI_TEXT[lang].wind} ${windText} · Open-Meteo`
+    );
+
+    widget.classList.remove("is-error");
+    lastError = false;
+  }
+
+  function showError() {
+    const lang = getLang();
+
+    if (iconEl) iconEl.textContent = "⚠️";
+
+    if (textEl) {
+      textEl.textContent = UI_TEXT[lang].error;
+    }
+
+    widget.setAttribute("title", UI_TEXT[lang].error);
+    widget.classList.add("is-error");
+    lastError = true;
+  }
+
+  async function loadWeather() {
+    if (isLoading) return;
+
+    isLoading = true;
+    widget.classList.add("is-loading");
+    widget.classList.remove("is-error");
+
+    if (textEl && !cached) {
+      textEl.textContent = UI_TEXT[getLang()].loading;
+    }
+
+    try {
+      const params = new URLSearchParams({
+        latitude: LOCATION.lat,
+        longitude: LOCATION.lon,
+        current: "temperature_2m,weather_code,wind_speed_10m",
+        timezone: "auto"
+      });
+
+      const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
+      const res = await fetch(url);
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+
+      const data = await res.json();
+      const current = data.current;
+
+      if (!current) {
+        throw new Error("Respuesta sin datos actuales");
+      }
+
+      cached = {
+        temp: current.temperature_2m,
+        code: current.weather_code,
+        wind: current.wind_speed_10m,
+        time: current.time
+      };
+
+      render();
+    } catch (error) {
+      console.warn("No se pudo cargar el clima:", error);
+      cached = null;
+      showError();
+    } finally {
+      isLoading = false;
+      widget.classList.remove("is-loading");
+    }
+  }
+
+  // Texto inicial
+  if (textEl) {
+    textEl.textContent = UI_TEXT[getLang()].loading;
+  }
+
+  // Carga perezosa: solo pide el tiempo cuando el widget se acerca
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            loadWeather();
+            observer.disconnect();
+          }
+        });
+      },
+      { rootMargin: "140px 0px" }
+    );
+
+    io.observe(widget);
+  } else {
+    loadWeather();
+  }
+
+  // Si cambia el idioma, actualiza textos sin recargar la página
+  if ("MutationObserver" in window) {
+    const langObserver = new MutationObserver(() => {
+      if (cached) {
+        render();
+      } else if (lastError) {
+        showError();
+      } else if (textEl) {
+        textEl.textContent = UI_TEXT[getLang()].loading;
+      }
+    });
+
+    langObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["lang"]
+    });
+  }
+
+  // Actualización automática cada 15 minutos
+  setInterval(() => {
+    if (cached) {
+      loadWeather();
+    }
+  }, 15 * 60 * 1000);
+})();
