@@ -2137,170 +2137,220 @@ main, footer {
 }
 
 /* =========================================================
-   BUSCADOR DE VIDEOJUEGOS (RAWG) — mismo lenguaje visual que .card
+   BUSCADOR DE VIDEOJUEGOS (RAWG) — Integrado con el diseño .card
    ========================================================= */
-.buscador,
-.buscador__ficha {
-  position: relative;
-  overflow: hidden;
-  background: var(--surface);
+.buscador {
+  max-width: 900px;
+  width: calc(100% - 4rem);
+  margin: 1.5rem auto 3.5rem;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.buscador .card-icon {
+  margin-bottom: 0.8rem;
+}
+
+.buscador__titulo {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.buscador__intro {
+  margin: 0 0 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* --- Formulario --- */
+.buscador__form {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.buscador__input {
+  flex: 1 1 240px;
+  min-width: 0;
+  padding: 0.75rem 1rem;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.buscador__input::placeholder {
+  color: color-mix(in srgb, var(--text-muted) 75%, transparent);
+}
+
+.buscador__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.buscador__btn {
+  position: relative;
+  padding: 0.75rem 1.4rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
   transition: transform var(--transition), box-shadow var(--transition);
 }
-/* spotlight: MISMO mecanismo y variables que .spotlight-card */
-.buscador::before,
-.buscador__ficha::before {
+
+.buscador__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.buscador__btn:active {
+  transform: translateY(0);
+}
+
+.buscador__btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.buscador__btn.is-busy {
+  color: transparent;
+  pointer-events: none;
+}
+
+.buscador__btn.is-busy::after {
   content: "";
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background: radial-gradient(
-    500px circle at var(--card-x, -200px) var(--card-y, -200px),
-    color-mix(in srgb, var(--accent) 15%, transparent),
-    transparent 65%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-/* línea de acento superior: se muda a ::after (el ::before lo ocupa el glow) */
-.buscador::after,
-.buscador__ficha::after {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0;
-  transition: opacity var(--transition);
-  z-index: 2;
-}
-/* el contenido (título, input, botón, ficha) por encima del glow */
-.buscador > *,
-.buscador__ficha > * {
-  position: relative;
-  z-index: 1;
-}
-.buscador:hover,
-.buscador__ficha:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-soft);
-}
-.buscador:hover::before,
-.buscador__ficha:hover::before { opacity: 1; }
-.buscador:hover::after,
-.buscador__ficha:hover::after { opacity: 1; }
-
-/* entrada animada del contenedor (equivalente al reveal de .card) */
-.buscador {
-  max-width: 1100px;
-  width: 100%;
-  margin: clamp(2rem, 5vw, 3.5rem) auto 2.5rem;
-  padding: clamp(1.25rem, 3vw, 2rem);
-  box-sizing: border-box;
-  animation: buscadorIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
-}
-
-/* título con subrayado de acento que se dibuja al entrar */
-.buscador__titulo {
-  font-family: var(--font-display);
-  font-size: clamp(1.3rem, 3vw, 1.8rem);
-  margin: 0 0 0.35rem;
-  position: relative;
-  display: inline-block;
-}
-.buscador__titulo::after {
-  content: "";
-  position: absolute;
-  left: 0; bottom: -4px;
-  width: 100%; height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  animation: buscadorBar 0.7s 0.3s ease forwards;
-}
-.buscador__intro { margin: 0 0 1.25rem; color: var(--text-muted); font-size: 0.95rem; }
-
-/* --- Formulario --- */
-.buscador__form { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-.buscador__input {
-  flex: 1 1 220px; min-width: 0;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--line); border-radius: 12px;
-  background: var(--surface-2); color: var(--text); font: inherit;
-  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
-}
-.buscador__input::placeholder { color: var(--text-muted); opacity: 0.7; }
-.buscador__input:focus {
-  outline: none; border-color: var(--accent); background: var(--surface);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
-}
-
-/* botón plano con relieve + shine (color = acento, azul o rosa) */
-.buscador__btn {
-  flex: 0 0 auto; position: relative; overflow: hidden; border: none; cursor: pointer;
-  padding: 0.75rem 1.3rem; border-radius: 12px;
-  color: #fff; font-family: var(--font-display); font-weight: 600; font-size: 0.95rem;
-  background: var(--accent);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.28),
-    inset 0 -2px 0 rgba(0,0,0,0.18),
-    0 4px 14px color-mix(in srgb, var(--accent) 35%, transparent);
-  transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
-}
-.buscador__btn::before {
-  content: "";
-  position: absolute; top: -50%; bottom: -50%; left: -150%; width: 60%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.45), transparent);
-  transform: skewX(-20deg);
-  transition: left 0.6s ease;
-}
-.buscador__btn:hover { transform: translateY(-2px); filter: brightness(1.06);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -2px 0 rgba(0,0,0,0.18),
-    0 10px 26px color-mix(in srgb, var(--accent) 50%, transparent); }
-.buscador__btn:hover::before { left: 150%; }
-.buscador__btn:active { transform: translateY(0) scale(0.97);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.2),
-    0 2px 8px color-mix(in srgb, var(--accent) 30%, transparent); }
-.buscador__btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.buscador__btn.is-busy { color: transparent; pointer-events: none; }
-.buscador__btn.is-busy::after {
-  content: ""; position: absolute; inset: 0; margin: auto;
-  width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.5);
-  border-top-color: #fff; border-radius: 50%;
+  margin: auto;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top-color: #fff;
+  border-radius: 50%;
   animation: buscadorSpin 0.7s linear infinite;
 }
 
-.buscador__estado { min-height: 1.2em; margin: 0.75rem 0 0; font-size: 0.85rem; color: var(--text-muted); transition: color var(--transition); }
-.buscador__estado.is-error { color: #ff5c7a; }
+.buscador__estado {
+  min-height: 1.2em;
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
 
-/* --- Ficha (mismo material que .card) --- */
+.buscador__estado.is-error {
+  color: #ff5c7a;
+}
+
+/* --- Ficha del juego encontrado --- */
 .buscador__ficha {
-  margin-top: 1.25rem;
-  display: grid; grid-template-columns: 220px 1fr; gap: 1.25rem;
-  align-items: start; padding: clamp(1.25rem, 2.5vw, 1.6rem);
-  animation: fichaIn 0.45s cubic-bezier(0.22,1,0.36,1) both;
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--neu-inset), var(--neu-bevel);
 }
+
 .buscador__img {
-  width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 10px;
-  background: var(--surface-2); animation: imgIn 0.5s 0.1s ease both;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
 }
-.buscador__img--vacio { display: grid; place-items: center; color: var(--text-muted); font-size: 0.85rem; }
-.buscador__nombre { font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 1.6rem); margin: 0 0 0.6rem; line-height: 1.15; color: var(--text); }
-.buscador__meta { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; margin-bottom: 0.85rem; }
-.buscador__dato strong { display: block; font-family: var(--font-display); font-size: 1.1rem; color: var(--accent); }
-.buscador__dato span { font-size: 0.75rem; color: var(--text-muted); }
-.buscador__linea { margin: 0.35rem 0; font-size: 0.9rem; color: var(--text); }
-.buscador__etiqueta { display: inline-block; min-width: 86px; color: var(--text-muted); font-weight: 600; }
-.buscador__desc { margin: 0.85rem 0 0; font-size: 0.92rem; line-height: 1.55; color: var(--text-muted); }
-.buscador__tiendas { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+
+.buscador__img--vacio {
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.buscador__nombre {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin: 0 0 0.5rem;
+  color: var(--text);
+}
+
+.buscador__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.buscador__dato strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--accent);
+}
+
+.buscador__dato span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.buscador__linea {
+  margin: 0.35rem 0;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.buscador__etiqueta {
+  display: inline-block;
+  min-width: 90px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.buscador__desc {
+  margin: 0.8rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.buscador__tiendas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
 .buscador__tienda {
-  padding: 0.35rem 0.75rem; border: 1px solid var(--line); border-radius: 999px;
-  font-size: 0.78rem; color: var(--text); text-decoration: none;
-  transition: border-color var(--transition), color var(--transition), background var(--transition);
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--text);
+  background: var(--surface);
+  transition: all var(--transition);
 }
-.buscador__tienda:hover { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+
+.buscador__tienda:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
 
 /* Skeleton (base surface-2 para que contraste sobre la ficha surface) */
 .skeleton {
@@ -2311,11 +2361,107 @@ main, footer {
 .skeleton--line { height: 14px; margin-bottom: 10px; }
 .skeleton--title { height: 24px; width: 60%; margin-bottom: 14px; }
 
-@keyframes buscadorIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-@keyframes buscadorBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@keyframes fichaIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-@keyframes imgIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 @keyframes buscadorSpin { to { transform: rotate(360deg); } }
 
-@media (max-width: 640px) { .buscador__ficha { grid-template-columns: 1fr; } .buscador__img, .skeleton--img { max-width: 200px; } }
+@media (max-width: 640px) {
+  .buscador {
+    width: calc(100% - 2rem);
+    padding: 1.25rem;
+  }
+
+  .buscador__ficha {
+    grid-template-columns: 1fr;
+  }
+
+  .buscador__img,
+  .skeleton--img {
+    max-width: 180px;
+  }
+}
+
+/* Chips de búsqueda rápida */
+.buscador__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+
+.search-chip {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.search-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface-2));
+  transform: translateY(-2px);
+}
+
+/* Cuadrícula de múltiples resultados */
+.buscador__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.buscador__grid[hidden] {
+  display: none;
+}
+
+.game-mini-card {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.game-mini-card:hover,
+.game-mini-card.is-selected {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.game-mini-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.game-mini-info {
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.game-mini-title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.25;
+  margin: 0 0 0.35rem;
+}
+
+.game-mini-year {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}

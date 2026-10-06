@@ -1351,22 +1351,30 @@
 })();
 
 /* ===== Buscador de videojuegos (RAWG) ===== */
-const RAWG_KEY = "PEGA_AQUI_TU_API_KEY"; // ← pon tu key de rawg.io/apidocs
+const RAWG_KEY = "b6b00ccbcb714d73a1474bb2fff67d6a"; // Tu API key de RAWG
 
-const buscadorForm  = document.getElementById("buscadorForm");
+const buscadorForm = document.getElementById("buscadorForm");
 const buscadorInput = document.getElementById("buscadorInput");
 const buscadorEstado = document.getElementById("buscadorEstado");
+const buscadorGrid = document.getElementById("buscadorGrid");
 const buscadorFicha = document.getElementById("buscadorFicha");
+const searchChips = document.querySelectorAll(".search-chip");
+
+const gamesCache = new Map();
+let currentResults = [];
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 function estado(msg, err = false) {
+  if (!buscadorEstado) return;
   buscadorEstado.textContent = msg;
   buscadorEstado.classList.toggle("is-error", err);
 }
 
 function renderFicha(j) {
+  if (!buscadorFicha) return;
+
   const img = j.background_image
     ? `<img class="buscador__img" src="${esc(j.background_image)}" alt="${esc(j.name)}" loading="lazy" />`
     : `<div class="buscador__img buscador__img--vacio">Sin imagen</div>`;
@@ -1398,7 +1406,41 @@ function renderFicha(j) {
       ${tiendas ? `<div class="buscador__tiendas">${tiendas}</div>` : ""}
     </div>`;
   buscadorFicha.hidden = false;
-  attachSpotlight(buscadorFicha);
+  buscadorFicha.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function renderGrid(games) {
+  if (!buscadorGrid) return;
+  buscadorGrid.innerHTML = "";
+
+  games.forEach((game) => {
+    const card = document.createElement("article");
+    card.className = "game-mini-card";
+    const imgUrl = game.background_image || "";
+    const year = game.released ? game.released.split("-")[0] : "";
+
+    card.innerHTML = `
+      ${imgUrl ? `<img src="${esc(imgUrl)}" alt="${esc(game.name)}" loading="lazy" />` : '<div style="height:90px;background:var(--surface)"></div>'}
+      <div class="game-mini-info">
+        <div class="game-mini-title">${esc(game.name)}</div>
+        <span class="game-mini-year">${year}</span>
+      </div>
+    `;
+
+    card.addEventListener("click", () => {
+      document.querySelectorAll(".game-mini-card").forEach(c => c.classList.remove("is-selected"));
+      card.classList.add("is-selected");
+      renderFicha(game);
+    });
+
+    buscadorGrid.appendChild(card);
+  });
+
+  buscadorGrid.hidden = false;
+  if (games.length > 0) {
+    buscadorGrid.children[0].classList.add("is-selected");
+    renderFicha(games[0]);
+  }
 }
 
 async function buscarJuego(nombre) {
@@ -1409,34 +1451,38 @@ async function buscarJuego(nombre) {
   const q = (nombre || "").trim();
   if (q.length < 2) { estado("Escribe al menos 2 letras.", true); return; }
 
-  estado("Buscando…");
-  buscadorFicha.hidden = false;
-  buscadorFicha.innerHTML = `
-    <div class="skeleton skeleton--img"></div>
-    <div>
-      <div class="skeleton skeleton--title"></div>
-      <div class="skeleton skeleton--line" style="width:80%"></div>
-      <div class="skeleton skeleton--line" style="width:60%"></div>
-      <div class="skeleton skeleton--line" style="width:70%"></div>
-    </div>`;
+  const cacheKey = q.toLowerCase();
+  if (gamesCache.has(cacheKey)) {
+    currentResults = gamesCache.get(cacheKey);
+    renderGrid(currentResults);
+    estado("");
+    return;
+  }
+
+  estado("Buscando títulos…");
+  if (buscadorGrid) buscadorGrid.hidden = true;
+  if (buscadorFicha) buscadorFicha.hidden = true;
+
   const btn = document.querySelector(".buscador__btn");
   btn?.classList.add("is-busy");
 
   try {
-    const url = `https://api.rawg.io/api/games?key=${RAWG_KEY}&search=${encodeURIComponent(q)}&page_size=1`;
+    const url = `https://api.rawg.io/api/games?key=${RAWG_KEY}&search=${encodeURIComponent(q)}&page_size=6`;
     const res = await fetch(url);
     if (!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
-    if (!data.results || !data.results[0]) {
+
+    if (!data.results || data.results.length === 0) {
       estado(`Sin resultados para “${q}”.`, true);
-      buscadorFicha.hidden = true;
       return;
     }
-    renderFicha(data.results[0]);
+
+    currentResults = data.results;
+    gamesCache.set(cacheKey, currentResults);
+    renderGrid(currentResults);
     estado("");
   } catch (e) {
     estado("Error consultando RAWG. Revisa tu conexión o la API key.", true);
-    buscadorFicha.hidden = true;
   } finally {
     btn?.classList.remove("is-busy");
   }
@@ -1458,6 +1504,7 @@ function attachSpotlight(el) {
 }
 attachSpotlight(document.querySelector(".buscador"));
 
+// Eventos del formulario
 buscadorForm?.addEventListener("submit", (e) => {
   e.preventDefault();
   buscarJuego(buscadorInput.value);
@@ -1466,7 +1513,49 @@ buscadorForm?.addEventListener("submit", (e) => {
 let buscadorTimer = null;
 buscadorInput?.addEventListener("input", () => {
   clearTimeout(buscadorTimer);
+  const q = buscadorInput.value.trim();
+
+  // Si se borra la búsqueda o tiene menos de 2 caracteres, limpiamos y ocultamos todo
+  if (q.length < 2) {
+    if (buscadorGrid) {
+      buscadorGrid.innerHTML = "";
+      buscadorGrid.hidden = true;
+    }
+    if (buscadorFicha) {
+      buscadorFicha.innerHTML = "";
+      buscadorFicha.hidden = true;
+    }
+    estado("");
+    return;
+  }
+
+  // Si tiene 2 o más letras, lanzamos la búsqueda tras la pausa
   buscadorTimer = setTimeout(() => {
-    if (buscadorInput.value.trim().length >= 3) buscarJuego(buscadorInput.value);
-  }, 600);
+    buscarJuego(q);
+  }, 500);
+});
+
+// Manejo del evento de limpiar al pulsar la "x" que algunos navegadores ponen en los input search
+buscadorInput?.addEventListener("search", () => {
+  if (!buscadorInput.value.trim()) {
+    clearTimeout(buscadorTimer);
+    if (buscadorGrid) {
+      buscadorGrid.innerHTML = "";
+      buscadorGrid.hidden = true;
+    }
+    if (buscadorFicha) {
+      buscadorFicha.innerHTML = "";
+      buscadorFicha.hidden = true;
+    }
+    estado("");
+  }
+});
+
+// Eventos de los chips sugeridos
+searchChips.forEach((chip) => {
+  chip.addEventListener("click", () => {
+    const query = chip.getAttribute("data-query");
+    if (buscadorInput) buscadorInput.value = query;
+    buscarJuego(query);
+  });
 });
