@@ -648,6 +648,20 @@
       </button>
     </div>
 
+    <!-- Buscador de videojuegos (RAWG) -->
+    <div class="buscador" id="buscador" role="region" aria-labelledby="buscadorTitulo">
+      <h3 id="buscadorTitulo" class="buscador__titulo" data-es="Buscador de videojuegos" data-ca="Cercador de videojocs">Buscador de videojuegos</h3>
+      <p class="buscador__intro" data-es="Escribe un título y te muestro su ficha con portada, plataformas, nota y descripción. Datos de RAWG." data-ca="Escriu un títol i et mostro la fitxa amb portada, plataformes, nota i descripció. Dades de RAWG.">Escribe un título y te muestro su ficha con portada, plataformas, nota y descripción. Datos de RAWG.</p>
+
+      <form class="buscador__form" id="buscadorForm" autocomplete="off">
+        <input type="search" id="buscadorInput" class="buscador__input" placeholder="Ej. Final Fantasy VII" aria-label="Buscar videojuego" />
+        <button type="submit" class="btn btn--primary buscador__btn" data-es="Buscar" data-ca="Cercar">Buscar</button>
+      </form>
+
+      <p class="buscador__estado" id="buscadorEstado" aria-live="polite"></p>
+      <div class="buscador__ficha" id="buscadorFicha" hidden></div>
+    </div>
+
   </main>
 
   <script>
@@ -832,6 +846,43 @@
     updateCarouselPositions();
     requestAnimationFrame(renderCarousel);
   </script>
+
+    <footer class="section" aria-labelledby="contacto-title">
+    <div class="footer-inner">
+      <div class="section-head">
+        <h2 id="contacto-title">Contacto</h2>
+        <p>¿Interesado en hablar sobre desarrollo de software, proyectos o colaborar? Escríbeme.</p>
+      </div>
+
+      <address class="contact-address">
+        Abierto a consultas académicas, proyectos compartidos y conexiones profesionales.
+      </address>
+
+      <ul class="contact-links">
+        <li><a href="mailto:serchoper@alu.edu.gva.es">Enviar Correo</a></li>
+        <li>
+          <a href="https://github.com/SergioCHP" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/tu-perfil" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </li>
+        <li>
+          <a href="https://rawg.io" target="_blank" rel="noopener noreferrer" data-es="Datos de juegos: RAWG" data-ca="Dades de jocs: RAWG">Datos de juegos: RAWG</a>
+        </li>
+      </ul>
+
+      <p class="copy">
+        © <span id="year">2026</span> Sergio Chorques · Web personal. ·
+        <a href="index.html" class="copy__link" data-es="Inicio" data-ca="Inici">Inicio</a>
+        <a href="admin.html" style="color: var(--text-muted); margin-left: 8px; opacity: 0.6; transition: opacity 0.2s;" aria-label="Acceso al panel de administración" title="Admin">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </a>
+      </p>
+    </div>
+  </footer>
   
   <script src="script.js"></script>
 </body>

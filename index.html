@@ -37,6 +37,12 @@
     <!-- Barra de progreso de lectura -->
     <div id="scrollProgressBar" aria-hidden="true"></div>
 
+    <!-- Widget del clima (fijo arriba a la derecha) -->
+    <div id="weatherWidget" class="weather-widget is-loading" aria-live="polite" aria-atomic="true">
+      <span id="weatherIcon" class="weather-icon" aria-hidden="true">…</span>
+      <span id="weatherText" class="weather-text">Cargando el tiempo…</span>
+    </div>
+
     <!-- Enlace de accesibilidad -->
     <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
 
@@ -517,17 +523,6 @@
           </li>
         </ul>
 
-        <!-- Widget discreto del tiempo -->
-        <div
-          id="weatherWidget"
-          class="weather-widget is-loading"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          <span id="weatherIcon" class="weather-icon" aria-hidden="true">…</span>
-          <span id="weatherText" class="weather-text">Cargando el tiempo…</span>
-        </div>
-
         <p class="copy">
           © <span id="year"></span> Sergio Chorques · Web personal.
           
@@ -634,7 +629,7 @@
           </button>
           <h3 id="certModalTitle" class="cert-modal__title"></h3>
           <div class="cert-modal__img-wrap">
-            <img id="certModalImg" src="" alt="Certificado Cisco" loading="lazy" />
+            <img id="certModalImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Certificado" loading="lazy" />
           </div>
         </div>
       </div>

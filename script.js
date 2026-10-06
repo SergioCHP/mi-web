@@ -1349,3 +1349,124 @@
     }
   }, 15 * 60 * 1000);
 })();
+
+/* ===== Buscador de videojuegos (RAWG) ===== */
+const RAWG_KEY = "PEGA_AQUI_TU_API_KEY"; // ← pon tu key de rawg.io/apidocs
+
+const buscadorForm  = document.getElementById("buscadorForm");
+const buscadorInput = document.getElementById("buscadorInput");
+const buscadorEstado = document.getElementById("buscadorEstado");
+const buscadorFicha = document.getElementById("buscadorFicha");
+
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function estado(msg, err = false) {
+  buscadorEstado.textContent = msg;
+  buscadorEstado.classList.toggle("is-error", err);
+}
+
+function renderFicha(j) {
+  const img = j.background_image
+    ? `<img class="buscador__img" src="${esc(j.background_image)}" alt="${esc(j.name)}" loading="lazy" />`
+    : `<div class="buscador__img buscador__img--vacio">Sin imagen</div>`;
+
+  const plataformas = (j.platforms || []).map((p) => esc(p.platform.name)).slice(0, 8).join(" · ") || "—";
+  const generos = (j.genres || []).map((g) => esc(g.name)).slice(0, 6).join(" · ") || "—";
+  const fecha = j.released ? esc(j.released) : "—";
+  const nota = typeof j.rating === "number" ? j.rating.toFixed(1) : "—";
+  const meta = typeof j.metacritic === "number" ? j.metacritic : null;
+  const desc = (j.short_description || j.description_raw || "")
+    .replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+
+  const tiendas = (j.stores || [])
+    .map((s) => `<a class="buscador__tienda" href="${esc(s.store.url)}" target="_blank" rel="noopener">${esc(s.store.name)}</a>`)
+    .join("");
+
+  buscadorFicha.innerHTML = `
+    ${img}
+    <div class="buscador__contenido">
+      <h4 class="buscador__nombre">${esc(j.name)}</h4>
+      <div class="buscador__meta">
+        <span class="buscador__dato"><strong>${fecha}</strong><span>lanzamiento</span></span>
+        <span class="buscador__dato"><strong>${nota}</strong><span>nota RAWG</span></span>
+        ${meta != null ? `<span class="buscador__dato"><strong>${meta}</strong><span>Metacritic</span></span>` : ""}
+      </div>
+      <p class="buscador__linea"><span class="buscador__etiqueta">Plataformas</span>${plataformas}</p>
+      <p class="buscador__linea"><span class="buscador__etiqueta">Géneros</span>${generos}</p>
+      ${desc ? `<p class="buscador__desc">${esc(desc)}</p>` : ""}
+      ${tiendas ? `<div class="buscador__tiendas">${tiendas}</div>` : ""}
+    </div>`;
+  buscadorFicha.hidden = false;
+  attachSpotlight(buscadorFicha);
+}
+
+async function buscarJuego(nombre) {
+  if (!RAWG_KEY || RAWG_KEY.includes("PEGA_AQUI")) {
+    estado("Añade tu API key de RAWG en script.js (const RAWG_KEY).", true);
+    return;
+  }
+  const q = (nombre || "").trim();
+  if (q.length < 2) { estado("Escribe al menos 2 letras.", true); return; }
+
+  estado("Buscando…");
+  buscadorFicha.hidden = false;
+  buscadorFicha.innerHTML = `
+    <div class="skeleton skeleton--img"></div>
+    <div>
+      <div class="skeleton skeleton--title"></div>
+      <div class="skeleton skeleton--line" style="width:80%"></div>
+      <div class="skeleton skeleton--line" style="width:60%"></div>
+      <div class="skeleton skeleton--line" style="width:70%"></div>
+    </div>`;
+  const btn = document.querySelector(".buscador__btn");
+  btn?.classList.add("is-busy");
+
+  try {
+    const url = `https://api.rawg.io/api/games?key=${RAWG_KEY}&search=${encodeURIComponent(q)}&page_size=1`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    if (!data.results || !data.results[0]) {
+      estado(`Sin resultados para “${q}”.`, true);
+      buscadorFicha.hidden = true;
+      return;
+    }
+    renderFicha(data.results[0]);
+    estado("");
+  } catch (e) {
+    estado("Error consultando RAWG. Revisa tu conexión o la API key.", true);
+    buscadorFicha.hidden = true;
+  } finally {
+    btn?.classList.remove("is-busy");
+  }
+}
+
+/* ===== Spotlight del buscador (coherente con .spotlight-card) ===== */
+function attachSpotlight(el) {
+  if (!el || el.dataset.spotlight) return;
+  el.dataset.spotlight = "1";
+  el.addEventListener("pointermove", (e) => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--card-x", `${e.clientX - r.left}px`);
+    el.style.setProperty("--card-y", `${e.clientY - r.top}px`);
+  });
+  el.addEventListener("pointerleave", () => {
+    el.style.setProperty("--card-x", "-200px");
+    el.style.setProperty("--card-y", "-200px");
+  });
+}
+attachSpotlight(document.querySelector(".buscador"));
+
+buscadorForm?.addEventListener("submit", (e) => {
+  e.preventDefault();
+  buscarJuego(buscadorInput.value);
+});
+
+let buscadorTimer = null;
+buscadorInput?.addEventListener("input", () => {
+  clearTimeout(buscadorTimer);
+  buscadorTimer = setTimeout(() => {
+    if (buscadorInput.value.trim().length >= 3) buscarJuego(buscadorInput.value);
+  }, 600);
+});
