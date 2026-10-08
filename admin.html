@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Acceso Privado | Sergio Chorques</title>
+  <!-- SDK oficial de Supabase para autenticación y base de datos segura -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root { 
       --bg: #07080b; --surface: #0e1017; --surface-2: #141720; 
@@ -25,8 +27,6 @@
     .badge { background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--accent); padding: 2px 8px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; margin-left: 8px;}
     .meta { font-size: 0.85rem; color: var(--muted); margin: 0.3rem 0 0.8rem; }
     .actions { display: flex; gap: 0.5rem; }
-    
-    /* Diseño del login */
     .login-box { max-width: 360px; margin: 15vh auto; text-align: center; }
   </style>
 </head>
@@ -34,63 +34,73 @@
   <div class="container" id="app"></div>
 
   <script>
-    // 1. PEGA TUS DATOS DE SUPABASE AQUÍ
     const SUPABASE_URL = "https://kusmmtgvrecayytatvbf.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1c21tdGd2cmVjYXl5dGF0dmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2Mjc3NzgsImV4cCI6MjEwNjIwMzc3OH0.y_p7oKUQPueKn8fSqWGqlRafnDaQelFX0cvFmQv3AqI";
 
-    // 2. CONTRASEÑA PARA ENTRAR A ESTA PÁGINA
-    const ADMIN_PASSWORD = "1234";
-
+    // Inicializamos el cliente de Supabase
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const app = document.getElementById("app");
 
-    // Dibuja la pantalla de login
-    function renderLogin(err = false) {
+    // Dibuja el formulario de login con Email y Contraseña
+    function renderLogin(errorMsg = "") {
       app.innerHTML = `
         <div class="card login-box">
           <h2 style="margin-top:0">Acceso Privado</h2>
           <p style="color:var(--muted); font-size:0.9rem; margin-bottom: 1.5rem;">Panel de control de mensajes</p>
-          ${err ? '<p style="color:#ef4444; font-size:0.9rem">Contraseña incorrecta</p>' : ''}
-          <input type="password" id="adminPass" placeholder="Introduce la contraseña" onkeypress="if(event.key === 'Enter') verificarPass()">
-          <button style="width:100%" onclick="verificarPass()">Entrar al Panel</button>
+          ${errorMsg ? `<p style="color:#ef4444; font-size:0.9rem; margin-top:0;">${errorMsg}</p>` : ''}
+          <input type="email" id="adminEmail" placeholder="Correo electrónico" autocomplete="email">
+          <input type="password" id="adminPass" placeholder="Contraseña" autocomplete="current-password" onkeypress="if(event.key === 'Enter') iniciarSesion()">
+          <button style="width:100%" id="btnLogin" onclick="iniciarSesion()">Entrar al Panel</button>
         </div>
       `;
     }
 
-    // Comprueba la contraseña
-    function verificarPass() {
-      const pass = document.getElementById("adminPass").value;
-      if (pass === ADMIN_PASSWORD) {
-        sessionStorage.setItem("admin_auth", "true"); // Guarda la sesión mientras la pestaña esté abierta
-        cargarMensajes();
+    // Inicia sesión usando Supabase Auth
+    async function iniciarSesion() {
+      const email = document.getElementById("adminEmail").value.trim();
+      const password = document.getElementById("adminPass").value;
+      const btn = document.getElementById("btnLogin");
+
+      if (!email || !password) {
+        return renderLogin("Introduce tu correo y contraseña.");
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Verificando...";
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        renderLogin("Credenciales incorrectas: " + error.message);
       } else {
-        renderLogin(true);
+        cargarMensajes();
       }
     }
 
-    // Pide los mensajes a Supabase
+    // Carga los mensajes protegidos por RLS
     async function cargarMensajes() {
-      if (!sessionStorage.getItem("admin_auth")) return renderLogin();
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) return renderLogin();
 
-      app.innerHTML = '<p style="text-align:center; color:var(--muted)">Conectando con la base de datos...</p>';
+      app.innerHTML = '<p style="text-align:center; color:var(--muted)">Cargando mensajes...</p>';
 
-      try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/mensajes?select=*&order=fecha.desc`, {
-          headers: {
-            "apikey": SUPABASE_ANON_KEY,
-            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
-          }
-        });
+      const { data: mensajes, error } = await supabaseClient
+        .from('mensajes')
+        .select('*')
+        .order('fecha', { ascending: false });
 
-        if (!res.ok) throw new Error("Error de API");
-
-        const mensajes = await res.json();
-        renderDashboard(mensajes);
-      } catch (error) {
-        app.innerHTML = '<p style="color:#ef4444; text-align:center;">Error cargando mensajes. Comprueba tus credenciales de Supabase.</p>';
+      if (error) {
+        app.innerHTML = `
+          <p style="color:#ef4444; text-align:center;">Error cargando mensajes: ${error.message}</p>
+          <div style="text-align:center;"><button class="btn-secondary" onclick="cerrarSesion()">Cerrar sesión</button></div>
+        `;
+        return;
       }
+
+      renderDashboard(mensajes || []);
     }
 
-    // Dibuja el panel con los mensajes
+    // Muestra la bandeja de entrada
     function renderDashboard(mensajes) {
       let html = `
         <div class="top-bar">
@@ -131,40 +141,29 @@
       app.innerHTML = html;
     }
 
-    // Actualiza el estado (leído/no leído) en Supabase
+    // Actualiza el estado (leído / no leído)
     async function toggleLeido(id, estadoActual) {
-      await fetch(`${SUPABASE_URL}/rest/v1/mensajes?id=eq.${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
-        },
-        body: JSON.stringify({ leido: !estadoActual })
-      });
+      await supabaseClient.from('mensajes').update({ leido: !estadoActual }).eq('id', id);
       cargarMensajes();
     }
 
-    // Borra el mensaje de Supabase
+    // Borra un mensaje
     async function borrarMensaje(id) {
       if (!confirm("¿Eliminar este mensaje permanentemente?")) return;
-      await fetch(`${SUPABASE_URL}/rest/v1/mensajes?id=eq.${id}`, {
-        method: "DELETE",
-        headers: {
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
-        }
-      });
+      await supabaseClient.from('mensajes').delete().eq('id', id);
       cargarMensajes();
     }
 
-    function cerrarSesion() {
-      sessionStorage.removeItem("admin_auth");
+    // Cierra la sesión
+    async function cerrarSesion() {
+      await supabaseClient.auth.signOut();
       renderLogin();
     }
 
-    // Iniciar: si ya hay sesión, carga mensajes; si no, muestra login.
-    sessionStorage.getItem("admin_auth") ? cargarMensajes() : renderLogin();
+    // Comprobar sesión existente al abrir la página
+    supabaseClient.auth.getSession().then(({ data: { session } }) => {
+      session ? cargarMensajes() : renderLogin();
+    });
   </script>
 </body>
 </html>
