@@ -2465,3 +2465,15 @@ main, footer {
   font-size: 0.75rem;
   color: var(--text-muted);
 }
+
+/* Caja de interés clicable (patrón pseudo-enlace) */
+.card-cinema{ position:relative; }
+.card-cinema .card-link{
+  position:absolute; inset:0; z-index:2;
+  color:inherit; text-decoration:none;
+  border-radius:inherit;
+}
+.card-cinema .card-link:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+}
