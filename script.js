@@ -1689,3 +1689,91 @@ searchChips.forEach((chip) => {
     buscarJuego(query);
   });
 });
+
+/* =========================================================
+   SELECTOR DINÁMICO DE IMAGEN HERO (FLECHA + AUTOPLAY)
+   ========================================================= */
+(() => {
+  const heroImg =
+    document.getElementById("heroBgImg") ||
+    document.querySelector(".hero-bg-img");
+  const nextBtn =
+    document.getElementById("heroNextBtn") ||
+    document.querySelector(".hero-arrow-btn");
+  if (!heroImg || !nextBtn) return;
+
+  const heroImages = [
+    "images/new hero.webp",
+    "images/new hero 1.webp",
+    "images/new hero 2.webp",
+    "images/new hero 3.webp",
+    "images/new hero 4.webp",
+    "images/new hero 5.webp",
+    "images/new hero 6.webp",
+    "images/new hero 7.webp"
+  ];
+
+  let currentIndex = 0;
+  const AUTOPLAY_TIME = 7000;
+  let autoPlayTimer = null;
+
+  // Restaurar imagen guardada si existe en localStorage
+  try {
+    const saved = localStorage.getItem("sergio-hero-idx");
+    if (saved !== null) {
+      const idx = parseInt(saved, 10);
+      if (!isNaN(idx) && idx >= 0 && idx < heroImages.length) {
+        currentIndex = idx;
+        heroImg.src = heroImages[currentIndex];
+      }
+    }
+  } catch (e) {}
+
+  // Función principal para cambiar de imagen
+  function showNextImage() {
+    currentIndex = (currentIndex + 1) % heroImages.length;
+    const nextPath = heroImages[currentIndex];
+
+    heroImg.classList.add("is-switching");
+
+    setTimeout(() => {
+      heroImg.src = nextPath;
+    }, 150);
+
+    heroImg.onload = () => {
+      heroImg.classList.remove("is-switching");
+    };
+
+    heroImg.onerror = () => {
+      heroImg.classList.remove("is-switching");
+    };
+
+    try {
+      localStorage.setItem("sergio-hero-idx", currentIndex);
+    } catch (e) {}
+  }
+
+  // Iniciar el carrusel automático
+  function startAutoPlay() {
+    stopAutoPlay();
+    autoPlayTimer = setInterval(showNextImage, AUTOPLAY_TIME);
+  }
+
+  function stopAutoPlay() {
+    if (autoPlayTimer) {
+      clearInterval(autoPlayTimer);
+      autoPlayTimer = null;
+    }
+  }
+
+  // Clic manual: avanza y reinicia el contador de tiempo
+  nextBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    showNextImage();
+    startAutoPlay();
+  });
+
+  // Arrancar autoplay
+  startAutoPlay();
+})();
