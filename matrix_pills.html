@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix - La Elección</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --neon-green: #0f0;
+            --neon-red: #ff2a2a;
+            --neon-blue: #2a75ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        /* Contenedor del Canvas de Matrix */
+        #matrix-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Interfaz de Usuario */
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .title {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 4rem;
+            text-shadow: 0 0 3px rgba(0, 255, 0, 0.4);
+            text-align: center;
+            opacity: 0.8;
+            letter-spacing: 2px;
+        }
+
+        .hands-container {
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Estilo base de las pastillas */
+        .pill {
+            width: 140px;
+            height: 65px;
+            border-radius: 40px;
+            cursor: pointer;
+            position: relative;
+            /* Transición suave y orgánica usando cubic-bezier para efecto premium */
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            /* Efecto mate/plástico suave, sin destellos hacia afuera */
+            box-shadow: 
+                inset 0 6px 10px rgba(255, 255, 255, 0.15), 
+                inset 0 -6px 10px rgba(0, 0, 0, 0.4),
+                0 8px 15px rgba(0,0,0,0.6);
+            transform: translateY(0) scale(1);
+        }
+
+        .pill::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 15px;
+            width: 80%;
+            height: 30%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0));
+            border-radius: 20px;
+            pointer-events: none;
+        }
+
+        /* Pastilla Azul */
+        .pill-blue {
+            background: radial-gradient(circle at 35% 35%, #4a8deb 0%, #1752b0 50%, #061f4a 100%);
+        }
+
+        /* Pastilla Roja */
+        .pill-red {
+            background: radial-gradient(circle at 35% 35%, #e85a5a 0%, #b31212 50%, #4a0404 100%);
+        }
+
+        /* Efecto Hover unificado y mejorado: Levitación 3D */
+        .pill:hover {
+            /* Levitación suave y aumento de escala */
+            transform: scale(1.08) translateY(-10px);
+            /* Sombra de caída más grande, difuminada y alejada para el efecto 3D flotante */
+            box-shadow: 
+                inset 0 6px 10px rgba(255, 255, 255, 0.25), 
+                inset 0 -6px 10px rgba(0, 0, 0, 0.5),
+                0 25px 35px rgba(0,0,0,0.85);
+        }
+
+        /* Efecto al hacer clic (da realismo táctil) */
+        .pill:active {
+            transform: scale(0.98) translateY(2px);
+            box-shadow: 
+                inset 0 4px 6px rgba(255, 255, 255, 0.15), 
+                inset 0 -4px 6px rgba(0, 0, 0, 0.4),
+                0 4px 8px rgba(0,0,0,0.6);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        /* Pantalla de resultado / Mensaje Final */
+        #fade-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            z-index: 20;
+            pointer-events: none;
+            transition: background-color 2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        #final-message {
+            font-size: 2.5rem;
+            color: transparent;
+            text-shadow: none;
+            max-width: 800px;
+            opacity: 0;
+            transition: opacity 1s ease 1s;
+        }
+
+        /* Animación para simular escritura (cursor) */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Media queries para móviles */
+        @media (max-width: 600px) {
+            .hands-container {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            .title {
+                font-size: 1.5rem;
+            }
+            #final-message {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas para la lluvia digital -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Interfaz principal con las pastillas -->
+    <div id="ui-layer">
+        <h1 class="title">Elige tu destino</h1>
+        <div class="hands-container">
+            <!-- Pastilla Azul -> Cine -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                <div class="pill pill-blue" id="blue-pill" title="Entrar a Cine"></div>
+                <span style="color: #4a8deb; font-size: 0.95rem; letter-spacing: 1px; font-weight: bold;">CINE</span>
+            </div>
+
+            <!-- Pastilla Roja -> Anime -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                <div class="pill pill-red" id="red-pill" title="Entrar a Anime"></div>
+                <span style="color: #e85a5a; font-size: 0.95rem; letter-spacing: 1px; font-weight: bold;">ANIME</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Capa para el desvanecimiento y texto final -->
+    <div id="fade-overlay">
+        <div id="final-message"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        const uiLayer = document.getElementById('ui-layer');
+        const fadeOverlay = document.getElementById('fade-overlay');
+        const finalMessage = document.getElementById('final-message');
+        
+        let rainColor = '#0F0'; // Color inicial: Verde Matrix
+        let isRunning = true;
+        let animationId;
+
+        // Ajustar el canvas al tamaño de la ventana
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Caracteres para la lluvia (Katakana + Latino + Números)
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+~\\/?日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ';
+        const charArray = chars.split('');
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        // Inicializar gotas en posiciones aleatorias
+        for (let x = 0; x < columns; x++) {
+            drops[x] = Math.random() * canvas.height / fontSize; // Empezar distribuido aleatoriamente
+        }
+
+        // Función de dibujado principal del Matrix
+        function drawMatrix() {
+            if (!isRunning) return; // Si la simulación se detiene (pastilla azul)
+
+            // Fondo negro semitransparente para crear el efecto de rastro/estela
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.07)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Estilo del texto
+            ctx.fillStyle = rainColor;
+            ctx.font = fontSize + 'px monospace';
+            ctx.textAlign = 'center';
+
+            for (let i = 0; i < drops.length; i++) {
+                // Carácter aleatorio
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                
+                // Dibujar carácter
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                // Si la gota llega al fondo y un valor aleatorio es alto, resetear a arriba
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                // Mover la gota hacia abajo
+                drops[i]++;
+            }
+
+            // Eliminar el destello (bloom) para un efecto de código más nítido y apagado
+            ctx.shadowBlur = 0;
+        }
+
+        // Bucle de animación
+        function animate() {
+            drawMatrix();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        
+        // Función para efecto de máquina de escribir
+        function typeWriterEffect(text, color, shadowColor, delay = 50) {
+            finalMessage.style.color = color;
+            // Destello reducido para el texto final
+            finalMessage.style.textShadow = `0 0 5px ${shadowColor}`;
+            finalMessage.style.opacity = '1';
+            finalMessage.innerHTML = '<span id="typed-text"></span><span class="typing-cursor"></span>';
+            
+            const typedTextElement = document.getElementById('typed-text');
+            let i = 0;
+            
+            function type() {
+                if (i < text.length) {
+                    typedTextElement.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, delay);
+                } else {
+                    // Quitar el cursor parpadeante después de unos segundos
+                    setTimeout(() => {
+                        const cursor = document.querySelector('.typing-cursor');
+                        if (cursor) cursor.remove();
+                    }, 3000);
+                }
+            }
+            type();
+        }
+
+       // Pastilla Roja -> Redirección a Anime
+        document.getElementById('red-pill').addEventListener('click', () => {
+            rainColor = '#e83a3a';
+            
+            uiLayer.style.opacity = '0';
+            setTimeout(() => uiLayer.style.display = 'none', 800);
+
+            setTimeout(() => {
+                typeWriterEffect("Bienvenido al mundo del anime...", "#fff", "rgba(232, 58, 58, 0.5)", 55);
+            }, 900);
+
+            // Redirección equilibrada (3.6s en total)
+            setTimeout(() => {
+                window.location.href = 'anime.html';
+            }, 3600);
+        });
+
+        // Pastilla Azul -> Lluvia azul y Redirección a Cine
+        document.getElementById('blue-pill').addEventListener('click', () => {
+            // Cambiar lluvia digital a azul cian neón
+            rainColor = '#38bdf8';
+            
+            uiLayer.style.opacity = '0';
+            setTimeout(() => uiLayer.style.display = 'none', 800);
+
+            setTimeout(() => {
+                typeWriterEffect("Entrando a la sala de cine...", "#fff", "rgba(56, 189, 248, 0.5)", 55);
+            }, 900);
+
+            // Redirección manteniendo la lluvia en pantalla
+            setTimeout(() => {
+                window.location.href = 'cine.html';
+            }, 3600);
+        });
+
+        // Iniciar en la carga
+        window.onload = () => {
+            // Un pequeño retraso para inicializar el canvas sin parpadeos bruscos
+            setTimeout(() => {
+                animate();
+            }, 100);
+        };
+    </script>
+</body>
+</html>

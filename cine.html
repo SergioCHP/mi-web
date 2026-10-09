@@ -595,17 +595,17 @@
           </div>
         </article>
 
-        <!-- Tarjeta 7: Perfect Blue -->
+        <!-- Tarjeta 7: Jurassic Park -->
         <article class="carousel-card" data-index="6">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/cine7.webp" alt="Perfect Blue" onerror="this.style.backgroundColor='#3a0d4a'" />
+              <img src="images/cine7.webp" alt="Jurassic Park" onerror="this.style.backgroundColor='#4a2d0d'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">
-                <span class="game-platform">Anime · Thriller psicológico</span>
-                <h3>Perfect Blue</h3>
-                <p class="game-desc">Una ídolo pop que deja la canción para ser actriz y pierde la frontera entre pantalla y yo. Kon monta como si el montaje fuera el trastorno. Antes de las redes, ya las explicó.</p>
+                <span class="game-platform">Ciencia ficción · Aventura</span>
+                <h3>Jurassic Park</h3>
+                <p class="game-desc">La ambición genética desafía a la naturaleza en una isla remota donde la vida se abre camino. Spielberg redefinió el asombro cinematográfico y los efectos visuales para siempre.</p>
                 <div class="flip-hint">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
@@ -615,24 +615,24 @@
           </div>
         </article>
 
-        <!-- Tarjeta 8: Bleach -->
+        <!-- Tarjeta 8: Regreso al futuro -->
         <article class="carousel-card" data-index="7">
-        <div class="card-inner">
+          <div class="card-inner">
             <div class="card-front">
-            <img src="images/cine8.webp" alt="Bleach" onerror="this.style.backgroundColor='#b93a1a'" />
+              <img src="images/cine8.webp" alt="Regreso al futuro" onerror="this.style.backgroundColor='#1a2b4c'" />
             </div>
             <div class="card-back">
-            <div class="card-back-content">
-                <span class="game-platform">Anime · Shōnen de acción</span>
-                <h3>Bleach</h3>
-                <p class="game-desc">Un shinigami sustituto, espadas con nombre y el arco de la Soul Society grabado a fuego. Kubo diseñaba como un artista de cómic: composiciones imposibles, la tipografía del ataque en pantalla y una elegancia que el anime tardó años en alcanzarle. Volvió con Thousand-Year Blood War para redescubrirlo, y de paso me enseñó que un shōnen puede ser puro estilo.</p>
+              <div class="card-back-content">
+                <span class="game-platform">Ciencia ficción · Aventura · Comedia</span>
+                <h3>Regreso al futuro</h3>
+                <p class="game-desc">Un DeLorean a 88 mph, condensadores de fluzo y la paradoja de salvar tu propia existencia antes de que se agote el tiempo. Zemeckis y Gale construyeron una clase magistral de causa y efecto: cada frase del primer acto detona en el clímax con la precisión de un reloj suizo. La quintaesencia del cine de los ochenta que no envejece jamás.</p>
                 <div class="flip-hint">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                Voltear
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  Voltear
                 </div>
+              </div>
             </div>
-            </div>
-        </div>
+          </div>
         </article>
       </div>
     </div>
@@ -866,6 +866,14 @@
     </div>
   </footer>
   
-  <script src="script.js"></script>
+  <script>
+    // Recuperar tema y acento guardados al entrar a cine.html
+    try {
+      const savedTheme = localStorage.getItem("sergio-theme");
+      if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+      const savedAccent = localStorage.getItem("sergio-accent");
+      if (savedAccent) document.documentElement.setAttribute("data-accent", savedAccent);
+    } catch(e) {}
+  </script>
 </body>
 </html>
