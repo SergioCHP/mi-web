@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#07070a" />
-  <title>Mi Cine y Anime Favoritos | Sergio Chorques</title>
+  <title>Mis Películas Favoritas | Sergio Chorques</title>
 
   <!-- Favicon SVG -->
   <link
@@ -405,9 +405,12 @@
     <header class="navbar-wrapper">
     <nav class="navbar" aria-label="Navegación secundaria">
       <a href="index.html" class="nav-logo" aria-label="Volver al inicio">SC</a>
+
       <!-- Enlaces con id o atributos para traducción -->
       <div class="nav-links-games">
         <a href="index.html" id="navHome">Inicio</a>
+        <a href="matrix_pills.html">Matrix</a>
+        <a href="anime.html">Anime</a>
         <a href="juegos.html">Videojuegos</a>
       </div>
       
@@ -467,8 +470,8 @@
 
   <main style="flex: 1; display: flex; flex-direction: column; max-width: 100%; width: 100%; padding: 0; margin: 0;">
     <section class="games-header">
-      <h2>Mi cine y anime favoritos</h2>
-      <p style="color: var(--text-muted);">Gira el carrusel y toca una tarjeta para ver por qué me marcaron. Cuatro películas, cuatro animes.</p>
+      <h2>Mis películas favoritas</h2>
+      <p style="color: var(--text-muted);">Gira el carrusel y toca una tarjeta para ver por qué me marcaron. Obras que definieron mi forma de entender la narrativa y lo visual.</p>
     </section>
 
     <!-- ESCENA 3D -->
@@ -485,7 +488,7 @@
             <div class="card-back-content">
                 <span class="game-platform">Cine · Fantasía épica</span>
                 <h3>El señor de los anillos</h3>
-                <p class="game-desc">La referencia obligada de la épica: tres películas que se toman su tiempo y aun así no sobra un plano. De la Comarca a la caída de Boromir, me enseñó que un mundo inventado solo funciona si te lo crees de verdad. La trilogía entera sigue siendo mi vara para medir el cine grande.</p>
+                <p class="game-desc">La cúspide absoluta del séptimo arte. Jackson no adaptó un libro: forjó una leyenda viva a base de barro, acero, la carga inmortal de los Rohirrim y la banda sonora de Howard Shore. Un viaje colosal donde hasta el detalle más pequeño pesa y la épica no es artificio, es pura alma.</p>
                 <div class="flip-hint">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                 Voltear
@@ -575,17 +578,17 @@
         </div>
         </article>
 
-        <!-- Tarjeta 6: Akira -->
+        <!-- Tarjeta 6: Braveheart -->
         <article class="carousel-card" data-index="5">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/cine6.webp" alt="Akira" onerror="this.style.backgroundColor='#5a0d1e'" />
+              <img src="images/cine6.webp" alt="Braveheart" onerror="this.style.backgroundColor='#1c2a38'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">
-                <span class="game-platform">Anime · Cyberpunk</span>
-                <h3>Akira</h3>
-                <p class="game-desc">Neo-Tokio con más de 160.000 cels y un presupuesto hoy imposible. La moto de Kaneda, el cuerpo de Tetsuo, el final. Todo el cyberpunk posterior le debe algo; yo le debo entender que la animación no es infantil.</p>
+                <span class="game-platform">Cine · Drama histórico / Épico</span>
+                <h3>Braveheart</h3>
+                <p class="game-desc">Barro, gaitas y un discurso a caballo que eriza la piel cada vez que suena. Gibson convirtió la leyenda de William Wallace en el estándar definitivo de la épica visceral: batallas crudas sin artificios digitales y una pasión desmedida por la libertad que trasciende la pantalla.</p>
                 <div class="flip-hint">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
@@ -603,7 +606,7 @@
             </div>
             <div class="card-back">
               <div class="card-back-content">
-                <span class="game-platform">Ciencia ficción · Aventura</span>
+                <span class="game-platform">Cine · Aventura / Ciencia ficción</span>
                 <h3>Jurassic Park</h3>
                 <p class="game-desc">La ambición genética desafía a la naturaleza en una isla remota donde la vida se abre camino. Spielberg redefinió el asombro cinematográfico y los efectos visuales para siempre.</p>
                 <div class="flip-hint">
@@ -866,14 +869,221 @@
     </div>
   </footer>
   
-  <script>
-    // Recuperar tema y acento guardados al entrar a cine.html
-    try {
-      const savedTheme = localStorage.getItem("sergio-theme");
-      if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
-      const savedAccent = localStorage.getItem("sergio-accent");
-      if (savedAccent) document.documentElement.setAttribute("data-accent", savedAccent);
-    } catch(e) {}
+<script>
+    (function () {
+      const root = document.documentElement;
+      const themeToggle = document.getElementById("themeToggle");
+      const accentToggle = document.getElementById("accentToggle");
+      const langToggle = document.getElementById("langToggle");
+
+      /* ---------- 1. RECUPERAR TEMA Y ACENTO ---------- */
+      try {
+        const savedTheme = localStorage.getItem("sergio-theme");
+        if (savedTheme) root.setAttribute("data-theme", savedTheme);
+        const savedAccent = localStorage.getItem("sergio-accent");
+        if (savedAccent) root.setAttribute("data-accent", savedAccent);
+      } catch (e) {}
+
+      if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+          const currentTheme = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+          root.setAttribute("data-theme", currentTheme);
+          try { localStorage.setItem("sergio-theme", currentTheme); } catch (e) {}
+        });
+      }
+
+      if (accentToggle) {
+        accentToggle.addEventListener("click", () => {
+          const currentAccent = root.getAttribute("data-accent") === "blue" ? "pink" : "blue";
+          root.setAttribute("data-accent", currentAccent);
+          try { localStorage.setItem("sergio-accent", currentAccent); } catch (e) {}
+        });
+      }
+
+      /* ---------- 2. DICCIONARIO DE TRADUCCIÓN ---------- */
+      const translations = {
+        es: {
+          btnLabel: "VA",
+          btnTitle: "Canviar a valencià",
+          navHome: "Inicio",
+          headerTitle: "Mis películas favoritas",
+          headerDesc: "Gira el carrusel y toca una tarjeta para ver por qué me marcaron. Obras que definieron mi forma de entender la narrativa y lo visual.",
+          flipHint: "Voltear",
+          contactTitle: "Contacto",
+          contactDesc: "¿Interesado en hablar sobre desarrollo de software, proyectos o colaborar? Escríbeme.",
+          contactAddress: "Abierto a consultas académicas, proyectos compartidos y conexiones profesionales.",
+          contactSend: "Enviar Correo",
+          cards: [
+            {
+              platform: "Cine · Fantasía épica",
+              title: "El señor de los anillos",
+              desc: "La cúspide absoluta del séptimo arte. Jackson no adaptó un libro: forjó una leyenda viva a base de barro, acero, la carga inmortal de los Rohirrim y la banda sonora de Howard Shore. Un viaje colosal donde hasta el detalle más pequeño pesa y la épica no es artificio, es pura alma."
+            },
+            {
+              platform: "Cine · Acción épica",
+              title: "300",
+              desc: 'Pura viñeta en movimiento: Snyder convierte el cómic de Miller en un festival de slow motion, sangre dorada y siluetas. No la veo por el rigor histórico, sino por lo que me enseñó de composición y ritmo. "¡This is Sparta!" sigue siendo mi ejemplo de que un plano bien coreografiado vale más que mil líneas de diálogo.'
+            },
+            {
+              platform: "Cine · Drama histórico / Épico",
+              title: "Gladiator",
+              desc: 'Ridley Scott rodó Roma como un óleo y le puso encima una venganza de familia. Maximus lo pierde todo menos la dignidad, y ese "lo que hacemos en vida resuena en la eternidad" me sirve de vara para casi todo. Crowe camina por la arena como si cargara un imperio entero encima.'
+            },
+            {
+              platform: "Cine · Acción / Ciencia ficción",
+              title: "Terminator 2",
+              desc: "Cameron hizo lo imposible: convertir al asesino de la primera en el personaje más humano de la saga. Ver a un T-800 aprender a no matar, con el dilema de Skynet de fondo, me persigue como desarrollador de IA. El pulgar en alto al final sigue valiendo más que cualquier discurso."
+            },
+            {
+              platform: "Cine · Ciencia ficción",
+              title: "Matrix",
+              desc: "Los hermanos Wachowski proponen que la realidad puede ser una interfaz y lo sostienen con una coreografía de acción inédita hasta entonces. Más que ciencia ficción, es una reflexión sobre la libertad, la percepción y el precio de saber. Sigue siendo la referencia cuando alguien pregunta qué es real."
+            },
+            {
+              platform: "Cine · Drama histórico / Épico",
+              title: "Braveheart",
+              desc: "Barro, gaitas y un discurso a caballo que eriza la piel cada vez que suena. Gibson convirtió la leyenda de William Wallace en el estándar definitivo de la épica visceral: batallas crudas sin artificios digitales y una pasión desmedida por la libertad que trasciende la pantalla."
+            },
+            {
+              platform: "Cine · Aventura / Ciencia ficción",
+              title: "Jurassic Park",
+              desc: "La ambición genética desafía a la naturaleza en una isla remota donde la vida se abre camino. Spielberg redefinió el asombro cinematográfico y los efectos visuales para siempre."
+            },
+            {
+              platform: "Cine · Ciencia ficción / Aventura / Comedia",
+              title: "Regreso al futuro",
+              desc: "Un DeLorean a 88 mph, condensadores de fluzo y la paradoja de salvar tu propia existencia antes de que se agote el tiempo. Zemeckis y Gale construyeron una clase magistral de causa y efecto: cada frase del primer acto detona en el clímax con la precisión de un reloj suizo. La quintaesencia del cine de los ochenta que no envejece jamás."
+            }
+          ]
+        },
+        va: {
+          btnLabel: "ES",
+          btnTitle: "Cambiar a castellano",
+          navHome: "Inici",
+          headerTitle: "Les meues pel·lícules favorites",
+          headerDesc: "Gira el carrusel i toca una targeta per a veure per què em van marcar. Obres que van definir la meua forma d'entendre la narrativa i el llenguatge visual.",
+          flipHint: "Girar",
+          contactTitle: "Contacte",
+          contactDesc: "Interessat en parlar sobre desenvolupament de programari, projectes o col·laborar? Escriu-me.",
+          contactAddress: "Obert a consultes acadèmiques, projectes compartits i connexions professionals.",
+          contactSend: "Enviar Correu",
+          cards: [
+            {
+              platform: "Cinema · Fantasia èpica",
+              title: "El senyor dels anells",
+              desc: "La cúspide absoluta del seté art. Jackson no va adaptar un llibre: va forjar una llegenda viva a base de fang, acer, la càrrega immortal dels Rohirrim i la banda sonora de Howard Shore. Un viatge colossal on fins al detall més xicotet pesa i l'èpica no és artifici, és pura ànima."
+            },
+            {
+              platform: "Cinema · Acció èpica",
+              title: "300",
+              desc: 'Pura vinyeta en moviment: Snyder converteix el còmic de Miller en un festival de slow motion, sang daurada i siluetes. No la mire pel rigor històric, sinó pel que em va ensenyar de composició i ritme. "This is Sparta!" continua sent el meu exemple que un pla ben coreografiat val més que mil línies de diàleg.'
+            },
+            {
+              platform: "Cinema · Drama històric / Èpic",
+              title: "Gladiator",
+              desc: 'Ridley Scott va rodar Roma com un oli i li va posar damunt una venjança de família. Maximus ho perd tot menys la dignitat, i eixe "el que fem en vida ressona en l\'eternitat" em servix de guia per a quasi tot. Crowe camina per l\'arena com si carregara un imperi sencer damunt.'
+            },
+            {
+              platform: "Cinema · Acció / Ciència-ficció",
+              title: "Terminator 2",
+              desc: "Cameron va fer el que semblava impossible: convertir a l'assassí de la primera en el personatge més humà de la saga. Veure un T-800 aprendre a no matar, amb el dilema de Skynet de fons, em perseguix com a desenvolupador d'IA. El polze alçat al final continua valent més que qualsevol discurs."
+            },
+            {
+              platform: "Cinema · Ciència-ficció",
+              title: "Matrix",
+              desc: "Les germanes Wachowski proposen que la realitat pot ser una interfície i ho sostenen amb una coreografia d'acció inèdita fins aleshores. Més que ciència-ficció, és una reflexió sobre la llibertat, la percepció i el preu de saber. Continua sent la referència quan algú pregunta què és real."
+            },
+            {
+              platform: "Cinema · Drama històric / Èpic",
+              title: "Braveheart",
+              desc: "Fang, gaites i un discurs a cavall que posa la pell de gallina cada vegada que sona. Gibson va convertir la llegenda de William Wallace en l'estàndard definitiu de l'èpica visceral: batalles crues sense artificis digitals i una passió desmesurada per la llibertat que traspassa la pantalla."
+            },
+            {
+              platform: "Cinema · Aventura / Ciència-ficció",
+              title: "Jurassic Park",
+              desc: "L'ambició genètica desafia la naturalesa en una illa remota on la vida s'obri camí. Spielberg va redefinir la fascinació cinematogràfica i els efectes visuals per a sempre."
+            },
+            {
+              platform: "Cinema · Ciència-ficció / Aventura / Comèdia",
+              title: "Retorn al futur",
+              desc: "Un DeLorean a 88 mph, condensadors de flux i la paradoxa de salvar la teua pròpia existència abans que s'esgote el temps. Zemeckis i Gale van construir una classe magistral de causa i efecte: cada frase del primer acte detona en el clímax amb la precisió d'un rellotge suís. La quintaessència del cinema dels huitanta que no envellix mai."
+            }
+          ]
+        }
+      };
+
+      let currentLang = "es";
+      try {
+        const savedLang = localStorage.getItem("sergio-lang");
+        if (savedLang === "es" || savedLang === "va") currentLang = savedLang;
+      } catch (e) {}
+
+      /* ---------- 3. APLICAR TRADUCCIÓN ---------- */
+      function applyLanguage(lang) {
+        const t = translations[lang] || translations.es;
+        root.setAttribute("lang", lang);
+
+        if (langToggle) {
+          const span = langToggle.querySelector("span");
+          if (span) span.textContent = t.btnLabel;
+          langToggle.setAttribute("title", t.btnTitle);
+          langToggle.setAttribute("aria-label", t.btnTitle);
+        }
+
+        const navHome = document.getElementById("navHome");
+        if (navHome) navHome.textContent = t.navHome;
+
+        const headerH2 = document.querySelector(".games-header h2");
+        if (headerH2) headerH2.textContent = t.headerTitle;
+
+        const headerP = document.querySelector(".games-header p");
+        if (headerP) headerP.textContent = t.headerDesc;
+
+        // Traducir cada tarjeta del carrusel por su orden/índice
+        const cardElements = document.querySelectorAll(".carousel-card");
+        cardElements.forEach((card, index) => {
+          const data = t.cards[index];
+          if (!data) return;
+
+          const platformEl = card.querySelector(".game-platform");
+          const titleEl = card.querySelector(".card-back h3");
+          const descEl = card.querySelector(".game-desc");
+
+          if (platformEl) platformEl.textContent = data.platform;
+          if (titleEl) titleEl.textContent = data.title;
+          if (descEl) descEl.textContent = data.desc;
+        });
+
+        // Botón "Voltear" / "Girar"
+        document.querySelectorAll(".flip-hint").forEach(hint => {
+          const svg = hint.querySelector("svg");
+          hint.replaceChildren(svg, document.createTextNode(" " + t.flipHint));
+        });
+
+        // Sección Footer / Contacto
+        const contactTitle = document.getElementById("contacto-title");
+        if (contactTitle) contactTitle.textContent = t.contactTitle;
+
+        const contactP = document.querySelector(".footer-inner .section-head p");
+        if (contactP) contactP.textContent = t.contactDesc;
+
+        const address = document.querySelector(".contact-address");
+        if (address) address.textContent = t.contactAddress;
+
+        const mailLink = document.querySelector('.contact-links a[href^="mailto:"]');
+        if (mailLink) mailLink.textContent = t.contactSend;
+      }
+
+      if (langToggle) {
+        langToggle.addEventListener("click", () => {
+          currentLang = currentLang === "es" ? "va" : "es";
+          try { localStorage.setItem("sergio-lang", currentLang); } catch (e) {}
+          applyLanguage(currentLang);
+        });
+      }
+
+      applyLanguage(currentLang);
+    })();
   </script>
 </body>
 </html>

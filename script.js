@@ -128,6 +128,49 @@
         "Del código nacen proyectos funcionales y limpios.",
         "Gamer, lector y futuro desarrollador de software."
       ],
+      gamesHeaderTitle: "Mis juegos favoritos",
+      gamesHeaderDesc:
+        "Gira el carrusel y toca una tarjeta para ver más detalles.",
+      buscadorTitle: "Buscador de videojuegos",
+      buscadorIntro:
+        "Escribe un título y te muestro los resultados con portada, plataformas y detalles. Datos de RAWG.",
+      buscadorBtn: "Buscar",
+      rawgFooter: "Datos de juegos: RAWG",
+      flipHint: "Voltear",
+      gameCards: [
+        {
+          platform: "Saga · JRPG",
+          desc: "Magia, cristales y revoluciones. Una franquicia que redefine el espectáculo visual, las bandas sonoras orquestales y las historias memorables en cada entrega."
+        },
+        {
+          platform: "Saga · Stealth / Acción",
+          desc: "La obra cumbre del espionaje táctico. Una narrativa compleja, reflexiva y antibélica que rompió la cuarta pared y transformó la industria."
+        },
+        {
+          platform: "Saga · Acción / Aventura",
+          desc: "De la cólera mitológica en Grecia a la madurez y la paternidad en tierras nórdicas. Un combate contundente con una dirección artística monumental."
+        },
+        {
+          platform: "Saga · Survival Horror",
+          desc: "Pionero indiscutible del terror interactivo. Gestión estricta de inventario, puzles legendarios y tensión constante ante amenazas biológicas."
+        },
+        {
+          platform: "Saga · Narrativa / Acción",
+          desc: "Un viaje desgarrador sobre el apego, el duelo y los límites morales. Narrativa cinematográfica con una ambientación postapocalíptica sobrecogedora."
+        },
+        {
+          platform: "Saga · Aventura / Rol",
+          desc: "La máxima expresión de la aventura. Un sentido del descubrimiento inigualable, puzles ingeniosos y un diseño de mundo que ha dictado las reglas de la industria."
+        },
+        {
+          platform: "Saga · RPG de Fantasía",
+          desc: "Un mundo de fantasía oscura y madura donde los monstruos a menudo son humanos. Decisiones con peso real que te atrapan en una red de moralidad gris."
+        },
+        {
+          platform: "Saga · Mundo Abierto / Western",
+          desc: "El ocaso del Salvaje Oeste plasmado con un nivel de detalle obsesivo. Una obra maestra melancólica sobre la lealtad, el honor y el fin de una era."
+        }
+      ],
 
       // Sección Sobre mí
       sobreMiTitle: "Sobre mí",
@@ -258,6 +301,49 @@
         "Estudiant de 1r DAM a l'IES Simarro.",
         "Del codi naixen projectes funcionals i nets.",
         "Gamer, lector i futur desenvolupador de programari."
+      ],
+      gamesHeaderTitle: "Els meus jocs favorits",
+      gamesHeaderDesc:
+        "Gira el carrusel i toca una targeta per a veure més detalls.",
+      buscadorTitle: "Cercador de videojocs",
+      buscadorIntro:
+        "Escriu un títol i et mostre els resultats amb portada, plataformes i detalls. Dades de RAWG.",
+      buscadorBtn: "Cercar",
+      rawgFooter: "Dades de jocs: RAWG",
+      flipHint: "Girar",
+      gameCards: [
+        {
+          platform: "Saga · JRPG",
+          desc: "Màgia, cristalls i revolucions. Una franquícia que redefinix l'espectacle visual, les bandes sonores orquestrals i les històries memorables en cada entrega."
+        },
+        {
+          platform: "Saga · Sigil / Acció",
+          desc: "L'obra cimera de l'espionatge tàctic. Una narrativa complexa, reflexiva i antibèl·lica que va trencar la quarta paret i va transformar la indústria."
+        },
+        {
+          platform: "Saga · Acció / Aventura",
+          desc: "De la còlera mitològica a Grècia a la maduresa i la paternitat en terres nòrdiques. Un combat contundent amb una direcció artística monumental."
+        },
+        {
+          platform: "Saga · Survival Horror",
+          desc: "Pioner indiscutible del terror interactiu. Gestió estricta d'inventari, puzles llegendaris i tensió constant davant d'amenaces biològiques."
+        },
+        {
+          platform: "Saga · Narrativa / Acció",
+          desc: "Un viatge punyent sobre l'aferrament, el dol i els límits morals. Narrativa cinematogràfica amb una ambientació postapocalíptica colpidora."
+        },
+        {
+          platform: "Saga · Aventura / Rol",
+          desc: "La màxima expressió de l'aventura. Un sentit de la descoberta inigualable, puzles enginyosos i un disseny de món que ha marcat les regles de la indústria."
+        },
+        {
+          platform: "Saga · RPG de Fantasia",
+          desc: "Un món de fantasia fosca i madura on els monstres sovint són humans. Decisions amb pes real que t'atrapen en una xarxa de moralitat grisa."
+        },
+        {
+          platform: "Saga · Món Obert / Western",
+          desc: "L'ocàs del Salvatge Oest plasmat amb un nivell de detall obsessiu. Una obra mestra melancòlica sobre la lleialtat, l'honor i la fi d'una era."
+        }
       ],
 
       // Sección Sobre mi
@@ -570,8 +656,52 @@
     // Navegación en juegos.html
     const navHome = document.getElementById("navHome");
     const navReplay = document.getElementById("navReplay");
+    const navCine = document.getElementById("navCine");
     if (navHome) navHome.textContent = lang === "va" ? "Inici" : "Inicio";
     if (navReplay) navReplay.textContent = lang === "va" ? "Jugar de nou" : "Jugar de nuevo";
+    if (navCine) navCine.textContent = lang === "va" ? "Cinema & Anime" : "Cine & Anime";
+
+    // Cabecera en juegos.html
+    const gamesH2 = document.querySelector(".games-header h2");
+    if (gamesH2) gamesH2.textContent = t.gamesHeaderTitle;
+
+    const gamesP = document.querySelector(".games-header p");
+    if (gamesP) gamesP.textContent = t.gamesHeaderDesc;
+
+    // Buscador RAWG en juegos.html
+    const buscadorTitleEl = document.getElementById("buscadorTitulo");
+    if (buscadorTitleEl) buscadorTitleEl.textContent = t.buscadorTitle;
+
+    const buscadorIntroEl = document.querySelector(".buscador__intro");
+    if (buscadorIntroEl) buscadorIntroEl.textContent = t.buscadorIntro;
+
+    const buscadorSubmitBtn = document.querySelector(".buscador__btn");
+    if (buscadorSubmitBtn) buscadorSubmitBtn.textContent = t.buscadorBtn;
+
+    // Enlace RAWG en footer de juegos.html
+    const rawgFooterLink = document.querySelector('.contact-links a[href*="rawg.io"]');
+    if (rawgFooterLink) rawgFooterLink.textContent = t.rawgFooter;
+
+    // Traducir las tarjetas del carrusel en juegos.html
+    const carouselCards = document.querySelectorAll(".carousel-card");
+    if (carouselCards.length > 0 && t.gameCards) {
+      carouselCards.forEach((card, idx) => {
+        const cardData = t.gameCards[idx];
+        if (!cardData) return;
+
+        const platformEl = card.querySelector(".game-platform");
+        const descEl = card.querySelector(".game-desc");
+
+        if (platformEl) platformEl.textContent = cardData.platform;
+        if (descEl) descEl.textContent = cardData.desc;
+      });
+    }
+
+    // Traducir el texto de "Voltear" / "Girar"
+    document.querySelectorAll(".flip-hint").forEach((hint) => {
+      const svg = hint.querySelector("svg");
+      hint.replaceChildren(svg, document.createTextNode(" " + (t.flipHint || "Voltear")));
+    });
 
     // Hero & Status
     const statusText = document.querySelector(".status-pill span:last-child");
