@@ -407,9 +407,12 @@
       <a href="index.html" class="nav-logo" aria-label="Volver al inicio">SC</a>
       <!-- Enlaces con id o atributos para traducción -->
       <div class="nav-links-games">
-        <a href="index.html" id="navHome">Inicio</a>
-        <a href="minijuego.html" id="navReplay">Jugar de nuevo</a>
-        <a href="matrix_pills.html" id="navCine">Cine &amp; Anime</a>
+        <a href="index.html" id="navHome" data-nav="home">Inicio</a>
+        <a href="libros.html" data-nav="libros">Libros</a>
+        <a href="cine.html" data-nav="cine">Cine</a>
+        <a href="anime.html" data-nav="anime">Anime</a>
+        <a href="juegos.html" data-nav="juegos" aria-current="page">Videojuegos</a>
+        <a href="minijuego.html" data-nav="replay">Jugar de nuevo</a>
       </div>
       
       <!-- Controles de Idioma, Tema y Acento -->
@@ -905,5 +908,6 @@
   </footer>
   
   <script src="script.js"></script>
+  <script src="nav-i18n.js"></script>
 </body>
 </html>
