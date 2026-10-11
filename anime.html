@@ -1457,6 +1457,10 @@
               description(asHtml: false)
               genres
               siteUrl
+              trailer {
+                id
+                site
+              }
               studios(isMain: true) {
                 nodes {
                   name
@@ -1539,9 +1543,31 @@
         ? item.description.replace(/<[^>]*>?/gm, '') 
         : (isVal ? "Sense sinopsi disponible." : "Sin sinopsis disponible.");
 
+      // Comprobar si AniList devuelve tráiler de YouTube
+      const trailerYoutubeId = (item.trailer && item.trailer.site === "youtube") ? item.trailer.id : null;
+
+      const seccionTrailer = trailerYoutubeId
+        ? `
+          <div style="margin-top: 1.4rem; width: 100%;">
+            <p style="margin: 0 0 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 6px;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 22c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73z"/></svg>
+              ${isVal ? "Tràiler Oficial" : "Tráiler Oficial"}
+            </p>
+            <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--line); background: #000; box-shadow: 0 4px 18px rgba(0,0,0,0.45);">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/${trailerYoutubeId}"
+                title="Tráiler de ${titulo}"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+        `
+        : "";
+
       fichaAnime.innerHTML = `
         <div class="anime-detail-card">
-          
           <!-- Columna Imagen -->
           <div class="anime-detail-poster">
             <img src="${imagen}" alt="${titulo}" />
@@ -1564,7 +1590,7 @@
               ${sinopsisLimpia}
             </p>
 
-            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.4rem;">
+            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem;">
               ${generos}
             </div>
 
@@ -1573,8 +1599,10 @@
                 <span>${isVal ? "Veure en AniList" : "Ver en AniList"}</span> ↗
               </a>
             </div>
-          </div>
 
+            <!-- Reproductor incrustado si existe tráiler -->
+            ${seccionTrailer}
+          </div>
         </div>
       `;
 
