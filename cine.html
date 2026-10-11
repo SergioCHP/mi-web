@@ -395,6 +395,56 @@
       }
     }
 
+    /* Ficha de detalle de película */
+    #fichaCine {
+      width: 100% !important;
+      max-width: 100% !important;
+      display: block !important;
+      box-sizing: border-box !important;
+      margin-top: 1.8rem !important;
+    }
+
+    .cine-detail-card {
+      display: grid !important;
+      grid-template-columns: 240px 1fr !important;
+      gap: 2rem !important;
+      background: var(--surface-2) !important;
+      border: 1px solid var(--accent) !important;
+      padding: 1.6rem !important;
+      border-radius: var(--radius) !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      box-shadow: 0 0 25px color-mix(in srgb, var(--accent) 25%, transparent) !important;
+      align-items: start !important;
+    }
+
+    .cine-detail-poster {
+      width: 100% !important;
+      height: 340px !important;
+      border-radius: var(--radius-sm) !important;
+      overflow: hidden !important;
+      background: #000 !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .cine-detail-poster img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+
+    @media (max-width: 720px) {
+      .cine-detail-card {
+        grid-template-columns: 1fr !important;
+      }
+      .cine-detail-poster {
+        height: 300px !important;
+        max-width: 240px !important;
+        margin: 0 auto !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -649,6 +699,39 @@
         <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </button>
     </div>
+
+   <!-- Buscador de Cine (TMDB API) -->
+   <section class="card spotlight-card buscador" id="buscadorCine" role="region" aria-labelledby="buscadorCineTitulo" style="max-width: 980px; margin: 2rem auto; width: 100%; box-sizing: border-box;">
+     <div class="card-icon">
+       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <circle cx="11" cy="11" r="8"></circle>
+         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+       </svg>
+     </div>
+     <h3 id="buscadorCineTitulo" class="buscador__titulo" data-es="Explorador de Cine" data-ca="Explorador de Cinema">Explorador de Cine</h3>
+     <p class="buscador__intro" data-es="Busca cualquier película en el archivo de TMDB. Portadas oficiales, detalles y valoraciones." data-ca="Cerca qualsevol pel·lícula en l'arxiu de TMDB. Portades oficials, detalls i valoracions.">Busca cualquier película en el archivo de TMDB. Portadas oficiales, detalles y valoraciones.</p>
+
+     <form class="buscador__form" id="formCine" autocomplete="off">
+       <input type="search" id="inputCine" class="buscador__input" placeholder="Ej. Interstellar, Pulp Fiction, Oppenheimer..." aria-label="Buscar película" />
+       <button type="submit" class="btn btn--primary buscador__btn" id="btnBuscarCine">Buscar</button>
+     </form>
+
+     <!-- Chips de búsqueda rápida -->
+     <div class="buscador__chips" aria-label="Búsquedas sugeridas">
+       <button type="button" class="search-chip" data-query="Interstellar">Interstellar</button>
+       <button type="button" class="search-chip" data-query="Blade Runner 2049">Blade Runner 2049</button>
+       <button type="button" class="search-chip" data-query="Oppenheimer">Oppenheimer</button>
+       <button type="button" class="search-chip" data-query="Pulp Fiction">Pulp Fiction</button>
+     </div>
+
+     <p class="buscador__estado" id="estadoCine" aria-live="polite"></p>
+
+     <!-- Grid de resultados -->
+     <div class="buscador__grid" id="gridCine" hidden></div>
+
+     <!-- Ficha de detalle -->
+     <div id="fichaCine" hidden></div>
+   </section>
 
   </main>
 
@@ -1072,6 +1155,19 @@
 
         const mailLink = document.querySelector('.contact-links a[href^="mailto:"]');
         if (mailLink) mailLink.textContent = t.contactSend;
+
+        // Traducción del buscador de cine
+        const cTitulo = document.getElementById("buscadorCineTitulo");
+        const cIntro = document.querySelector("#buscadorCine .buscador__intro");
+        const cBtn = document.getElementById("btnBuscarCine");
+        const cInput = document.getElementById("inputCine");
+
+        if (cTitulo) cTitulo.textContent = lang === "va" ? "Explorador de Cinema" : "Explorador de Cine";
+        if (cIntro) cIntro.textContent = lang === "va"
+          ? "Cerca qualsevol pel·lícula en l'arxiu de TMDB. Portades oficials, detalls i valoracions."
+          : "Busca cualquier película en el archivo de TMDB. Portadas oficiales, detalles y valoraciones.";
+        if (cBtn) cBtn.textContent = lang === "va" ? "Cercar" : "Buscar";
+        if (cInput) cInput.placeholder = lang === "va" ? "Ex. Interstellar, Pulp Fiction, Oppenheimer..." : "Ej. Interstellar, Pulp Fiction, Oppenheimer...";
       }
 
       if (langToggle) {
@@ -1084,6 +1180,139 @@
 
       applyLanguage(currentLang);
     })();
+  </script>
+  <script>
+    /* =======================================================
+       BUSCADOR DE CINE CON TMDB API
+       ======================================================= */
+    // Sustituye con tu clave de The Movie Database
+    const TMDB_API_KEY = "8ae2b16796fd6fcb930176321ea1894c";
+
+    const formCine = document.getElementById("formCine");
+    const inputCine = document.getElementById("inputCine");
+    const estadoCine = document.getElementById("estadoCine");
+    const gridCine = document.getElementById("gridCine");
+    const fichaCine = document.getElementById("fichaCine");
+
+    async function buscarPelicula(query) {
+      if (!query.trim()) return;
+
+      const isVal = document.documentElement.getAttribute("lang") === "va";
+      estadoCine.textContent = isVal ? "Buscant en TMDB..." : "Buscando en TMDB...";
+      gridCine.hidden = true;
+      gridCine.innerHTML = "";
+      fichaCine.hidden = true;
+      fichaCine.innerHTML = "";
+
+      try {
+        const url = `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query.trim())}&language=es-ES&page=1&include_adult=false`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Error en la consulta");
+
+        const data = await res.json();
+        const peliculas = data.results?.slice(0, 8) || [];
+
+        if (peliculas.length === 0) {
+          estadoCine.textContent = isVal ? "No s'han trobat pel·lícules." : "No se han encontrado películas.";
+          return;
+        }
+
+        estadoCine.textContent = "";
+        gridCine.hidden = false;
+
+        peliculas.forEach(peli => {
+          const card = document.createElement("article");
+          card.className = "card-resultado";
+          card.style.cssText = "cursor: pointer; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s;";
+
+          const posterUrl = peli.poster_path
+            ? `https://image.tmdb.org/t/p/w500${peli.poster_path}`
+            : "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='450' fill='%23111'><rect width='100%' height='100%'/><text x='50%' y='50%' fill='%23666' dominant-baseline='middle' text-anchor='middle'>Sin Imagen</text></svg>";
+
+          const estreno = peli.release_date ? peli.release_date.substring(0, 4) : "Cine";
+          const nota = peli.vote_average ? peli.vote_average.toFixed(1) : "N/A";
+
+          card.innerHTML = `
+            <div style="height: 240px; overflow: hidden; background: #000;">
+              <img src="${posterUrl}" alt="${peli.title}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+            </div>
+            <div style="padding: 1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h4 style="margin: 0 0 0.4rem; font-size: 1rem; color: #fff;">${peli.title}</h4>
+                <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">${estreno} · ⭐ ${nota}</p>
+              </div>
+            </div>
+          `;
+
+          card.addEventListener("mouseenter", () => card.style.borderColor = "var(--accent)");
+          card.addEventListener("mouseleave", () => card.style.borderColor = "var(--line)");
+          card.addEventListener("click", () => mostrarDetallePelicula(peli));
+          gridCine.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error("Error TMDB:", err);
+        estadoCine.textContent = isVal ? "Error en connectar amb el servidor de cinema." : "Error al conectar con el servidor de cine.";
+      }
+    }
+
+    function mostrarDetallePelicula(peli) {
+      fichaCine.hidden = false;
+      const isVal = document.documentElement.getAttribute("lang") === "va";
+      const posterUrl = peli.poster_path
+        ? `https://image.tmdb.org/t/p/w500${peli.poster_path}`
+        : "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='450' fill='%23111'><rect width='100%' height='100%'/></svg>";
+
+      const estreno = peli.release_date || "Desconocida";
+      const nota = peli.vote_average ? peli.vote_average.toFixed(1) : "N/A";
+      const votos = peli.vote_count || 0;
+      const sinopsis = peli.overview || (isVal ? "Sense sinopsi disponible en castellà." : "Sin sinopsis disponible en español.");
+
+      fichaCine.innerHTML = `
+        <div class="cine-detail-card">
+          <div class="cine-detail-poster">
+            <img src="${posterUrl}" alt="${peli.title}" />
+          </div>
+
+          <div style="display: flex; flex-direction: column; justify-content: center; min-width: 0;">
+            <div>
+              <span class="game-platform" style="margin-bottom: 0.6rem; display: inline-block;">Película · TMDB</span>
+              <h3 style="margin: 0 0 0.5rem; font-size: clamp(1.4rem, 2.5vw, 1.8rem); color: #fff; line-height: 1.2;">${peli.title}</h3>
+
+              <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 0.9rem; line-height: 1.5;">
+                <strong style="color: var(--text);">${isVal ? "Estrena:" : "Estreno:"}</strong> ${estreno} &nbsp;|&nbsp;
+                <strong style="color: var(--text);">${isVal ? "Puntuació:" : "Puntuación:"}</strong> ⭐ <span style="color: var(--accent); font-weight: bold;">${nota}</span> (${votos} votos)
+              </p>
+            </div>
+
+            <p style="font-size: 0.88rem; line-height: 1.65; color: var(--text-muted); max-height: 140px; overflow-y: auto; margin: 0 0 1.2rem; padding-right: 0.5rem;">
+              ${sinopsis}
+            </p>
+
+            <div>
+              <a href="https://www.themoviedb.org/movie/${peli.id}" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="display: inline-flex; align-items: center; gap: 6px; width: fit-content; text-decoration: none; padding: 0.45rem 1.1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;">
+                <span>${isVal ? "Veure en TMDB" : "Ver en TMDB"}</span> ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+
+      fichaCine.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    formCine?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      buscarPelicula(inputCine.value);
+    });
+
+    document.querySelectorAll("#buscadorCine .search-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        const query = chip.getAttribute("data-query");
+        inputCine.value = query;
+        buscarPelicula(query);
+      });
+    });
   </script>
 </body>
 </html>
