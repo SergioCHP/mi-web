@@ -3,14 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Panel privado: que no lo indexen los buscadores -->
+  <meta name="robots" content="noindex, nofollow">
   <title>Acceso Privado | Sergio Chorques</title>
-  <!-- SDK oficial de Supabase para autenticación y base de datos segura -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Favicon (evita el 404 de /favicon.ico en consola) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23ff2e97' font-family='Arial'>SC</text></svg>">
+  <!-- SDK oficial de Supabase (versión fijada) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
   <style>
-    :root { 
-      --bg: #07080b; --surface: #0e1017; --surface-2: #141720; 
-      --accent: #ff2e97; --text: #e6edf3; --muted: #838a96; 
-      --line: rgba(255,255,255,0.08); 
+    :root {
+      --bg: #07080b; --surface: #0e1017; --surface-2: #141720;
+      --accent: #ff2e97; --text: #e6edf3; --muted: #838a96;
+      --line: rgba(255,255,255,0.08);
     }
     body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 1.5rem; }
     .container { max-width: 800px; margin: 0 auto; }
@@ -21,78 +25,102 @@
     input:focus { outline: 2px solid var(--accent); }
     button { background: var(--accent); color: white; border: none; cursor: pointer; font-weight: 600; transition: opacity 0.2s; }
     button:hover { opacity: 0.85; }
+    button:disabled { opacity: 0.5; cursor: wait; }
     .btn-secondary { background: var(--surface-2); border: 1px solid var(--line); }
     .btn-delete { background: #ef4444; }
-    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;}
-    .badge { background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--accent); padding: 2px 8px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; margin-left: 8px;}
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .top-bar h2 { margin: 0; }
+    .top-actions { display: flex; gap: 10px; }
+    .badge { background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--accent); padding: 2px 8px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; margin-left: 8px; }
     .meta { font-size: 0.85rem; color: var(--muted); margin: 0.3rem 0 0.8rem; }
+    .msg-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; }
+    .msg-name { font-size: 1.1rem; }
+    .msg-body { margin: 0.5rem 0 0; line-height: 1.5; background: var(--surface-2); padding: 10px; border-radius: 6px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .msg-empty { color: var(--muted); font-style: italic; }
     .actions { display: flex; gap: 0.5rem; }
     .login-box { max-width: 360px; margin: 15vh auto; text-align: center; }
+    .login-box h2 { margin-top: 0; }
+    .login-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .error { color: #ef4444; font-size: 0.9rem; margin-top: 0; }
+    .center { text-align: center; }
+    .muted { color: var(--muted); }
   </style>
 </head>
 <body>
-  <div class="container" id="app"></div>
+  <main class="container" id="app"></main>
 
   <script>
+    /* =========================================================
+       Panel de mensajes (Supabase Auth + RLS)
+       SEGURIDAD:
+       - Todo dato que viene de la base de datos lo escribe un
+         visitante anónimo → se escapa SIEMPRE con esc() antes de
+         meterlo en innerHTML (evita XSS con la sesión del admin).
+       - Sin onclick inline: eventos delegados con data-action.
+       - La clave anon es pública por diseño; la protección real
+         son las políticas RLS (ver supabase-rls.sql).
+       ========================================================= */
     const SUPABASE_URL = "https://kusmmtgvrecayytatvbf.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1c21tdGd2cmVjYXl5dGF0dmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2Mjc3NzgsImV4cCI6MjEwNjIwMzc3OH0.y_p7oKUQPueKn8fSqWGqlRafnDaQelFX0cvFmQv3AqI";
 
-    // Inicializamos el cliente de Supabase
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const app = document.getElementById("app");
 
-    // Dibuja el formulario de login con Email y Contraseña
+    /* Escapa texto para insertarlo de forma segura en HTML */
+    const esc = (valor) => String(valor ?? "").replace(/[&<>"']/g, (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    /* ---------- Login ---------- */
     function renderLogin(errorMsg = "") {
       app.innerHTML = `
-        <div class="card login-box">
-          <h2 style="margin-top:0">Acceso Privado</h2>
-          <p style="color:var(--muted); font-size:0.9rem; margin-bottom: 1.5rem;">Panel de control de mensajes</p>
-          ${errorMsg ? `<p style="color:#ef4444; font-size:0.9rem; margin-top:0;">${errorMsg}</p>` : ''}
-          <input type="email" id="adminEmail" placeholder="Correo electrónico" autocomplete="email">
-          <input type="password" id="adminPass" placeholder="Contraseña" autocomplete="current-password" onkeypress="if(event.key === 'Enter') iniciarSesion()">
-          <button style="width:100%" id="btnLogin" onclick="iniciarSesion()">Entrar al Panel</button>
-        </div>
+        <form class="card login-box" id="loginForm" novalidate>
+          <h2>Acceso Privado</h2>
+          <p class="login-sub">Panel de control de mensajes</p>
+          ${errorMsg ? `<p class="error" role="alert">${esc(errorMsg)}</p>` : ""}
+          <input type="email" id="adminEmail" placeholder="Correo electrónico" autocomplete="email" aria-label="Correo electrónico" required>
+          <input type="password" id="adminPass" placeholder="Contraseña" autocomplete="current-password" aria-label="Contraseña" required>
+          <button type="submit" style="width:100%" id="btnLogin">Entrar al Panel</button>
+        </form>
       `;
+      document.getElementById("loginForm").addEventListener("submit", iniciarSesion);
     }
 
-    // Inicia sesión usando Supabase Auth
-    async function iniciarSesion() {
+    async function iniciarSesion(e) {
+      e.preventDefault();
       const email = document.getElementById("adminEmail").value.trim();
       const password = document.getElementById("adminPass").value;
       const btn = document.getElementById("btnLogin");
 
-      if (!email || !password) {
-        return renderLogin("Introduce tu correo y contraseña.");
-      }
+      if (!email || !password) return renderLogin("Introduce tu correo y contraseña.");
 
       btn.disabled = true;
       btn.textContent = "Verificando...";
 
-      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
       if (error) {
-        renderLogin("Credenciales incorrectas: " + error.message);
+        // Mensaje genérico: no revela si el correo existe
+        renderLogin("Credenciales incorrectas.");
       } else {
         cargarMensajes();
       }
     }
 
-    // Carga los mensajes protegidos por RLS
+    /* ---------- Mensajes (protegidos por RLS) ---------- */
     async function cargarMensajes() {
       const { data: { session } } = await supabaseClient.auth.getSession();
       if (!session) return renderLogin();
 
-      app.innerHTML = '<p style="text-align:center; color:var(--muted)">Cargando mensajes...</p>';
+      app.innerHTML = '<p class="center muted">Cargando mensajes...</p>';
 
       const { data: mensajes, error } = await supabaseClient
-        .from('mensajes')
-        .select('*')
-        .order('fecha', { ascending: false });
+        .from("mensajes")
+        .select("id, nombre, email, telefono, disponibilidad, mensaje, fecha, leido")
+        .order("fecha", { ascending: false });
 
       if (error) {
         app.innerHTML = `
-          <p style="color:#ef4444; text-align:center;">Error cargando mensajes: ${error.message}</p>
-          <div style="text-align:center;"><button class="btn-secondary" onclick="cerrarSesion()">Cerrar sesión</button></div>
+          <p class="error center" role="alert">Error cargando mensajes: ${esc(error.message)}</p>
+          <div class="center"><button class="btn-secondary" data-action="logout">Cerrar sesión</button></div>
         `;
         return;
       }
@@ -100,67 +128,83 @@
       renderDashboard(mensajes || []);
     }
 
-    // Muestra la bandeja de entrada
     function renderDashboard(mensajes) {
       let html = `
         <div class="top-bar">
-          <h2 style="margin:0">Mensajes recibidos (${mensajes.length})</h2>
-          <div style="display: flex; gap: 10px;">
-            <button class="btn-secondary" onclick="cargarMensajes()">Actualizar</button>
-            <button class="btn-delete" onclick="cerrarSesion()">Cerrar sesión</button>
+          <h2>Mensajes recibidos (${mensajes.length})</h2>
+          <div class="top-actions">
+            <button class="btn-secondary" data-action="refresh">Actualizar</button>
+            <button class="btn-delete" data-action="logout">Cerrar sesión</button>
           </div>
         </div>
       `;
 
       if (mensajes.length === 0) {
-        html += '<div class="card"><p style="margin:0; color:var(--muted)">Bandeja de entrada vacía.</p></div>';
+        html += '<div class="card"><p class="muted" style="margin:0">Bandeja de entrada vacía.</p></div>';
       }
 
-      mensajes.forEach(m => {
-        const fecha = new Date(m.fecha).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
+      mensajes.forEach((m) => {
+        const id = Number(m.id); // solo números en los data-id
+        const fechaObj = new Date(m.fecha);
+        const fecha = Number.isNaN(fechaObj.getTime())
+          ? ""
+          : fechaObj.toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" });
+
         html += `
-          <div class="card ${m.leido ? 'leido' : ''}">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap: wrap; gap: 10px;">
+          <article class="card ${m.leido ? "leido" : ""}">
+            <div class="msg-head">
               <div>
-                <strong style="font-size: 1.1rem;">${m.nombre}</strong>
-                ${m.disponibilidad ? `<span class="badge">${m.disponibilidad}</span>` : ''}
-                <div class="meta">${m.email} &bull; ${m.telefono || 'Sin teléfono'} &bull; ${fecha}</div>
+                <strong class="msg-name">${esc(m.nombre)}</strong>
+                ${m.disponibilidad ? `<span class="badge">${esc(m.disponibilidad)}</span>` : ""}
+                <div class="meta">${esc(m.email)} &bull; ${esc(m.telefono || "Sin teléfono")} &bull; ${esc(fecha)}</div>
               </div>
               <div class="actions">
-                <button class="btn-secondary" onclick="toggleLeido(${m.id}, ${m.leido})">${m.leido ? 'Marcar como pendiente' : 'Marcar como leído'}</button>
-                <button class="btn-delete" onclick="borrarMensaje(${m.id})">Borrar</button>
+                <button class="btn-secondary" data-action="toggle" data-id="${id}" data-leido="${m.leido ? 1 : 0}">
+                  ${m.leido ? "Marcar como pendiente" : "Marcar como leído"}
+                </button>
+                <button class="btn-delete" data-action="delete" data-id="${id}">Borrar</button>
               </div>
             </div>
-            <p style="margin:0.5rem 0 0; line-height:1.5; background: var(--surface-2); padding: 10px; border-radius: 6px;">
-              ${m.mensaje || '<i style="color:var(--muted)">El usuario no dejó ningún mensaje adicional.</i>'}
-            </p>
-          </div>
+            <p class="msg-body">${m.mensaje ? esc(m.mensaje) : '<span class="msg-empty">El usuario no dejó ningún mensaje adicional.</span>'}</p>
+          </article>
         `;
       });
 
       app.innerHTML = html;
     }
 
-    // Actualiza el estado (leído / no leído)
     async function toggleLeido(id, estadoActual) {
-      await supabaseClient.from('mensajes').update({ leido: !estadoActual }).eq('id', id);
+      const { error } = await supabaseClient.from("mensajes").update({ leido: !estadoActual }).eq("id", id);
+      if (error) alert("No se pudo actualizar: " + error.message);
       cargarMensajes();
     }
 
-    // Borra un mensaje
     async function borrarMensaje(id) {
       if (!confirm("¿Eliminar este mensaje permanentemente?")) return;
-      await supabaseClient.from('mensajes').delete().eq('id', id);
+      const { error } = await supabaseClient.from("mensajes").delete().eq("id", id);
+      if (error) alert("No se pudo borrar: " + error.message);
       cargarMensajes();
     }
 
-    // Cierra la sesión
     async function cerrarSesion() {
       await supabaseClient.auth.signOut();
       renderLogin();
     }
 
-    // Comprobar sesión existente al abrir la página
+    /* ---------- Eventos delegados (sin onclick inline) ---------- */
+    app.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-action]");
+      if (!btn) return;
+      const id = Number(btn.dataset.id);
+      switch (btn.dataset.action) {
+        case "refresh": cargarMensajes(); break;
+        case "logout": cerrarSesion(); break;
+        case "toggle": if (id) toggleLeido(id, btn.dataset.leido === "1"); break;
+        case "delete": if (id) borrarMensaje(id); break;
+      }
+    });
+
+    /* ---------- Sesión existente al abrir ---------- */
     supabaseClient.auth.getSession().then(({ data: { session } }) => {
       session ? cargarMensajes() : renderLogin();
     });
