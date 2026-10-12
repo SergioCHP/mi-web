@@ -1396,9 +1396,9 @@
     const themeToggle = document.getElementById("themeToggle");
     const accentToggle = document.getElementById("accentToggle");
     const langToggle = document.getElementById("langToggle");
-    root.setAttribute("lang", currentLang);
 
     function applyLanguage() {
+      root.setAttribute("lang", currentLang === "va" ? "ca-ES-valencia" : "es");
       const isValencian = currentLang === "va";
       langToggle?.querySelector("span").replaceChildren(document.createTextNode(isValencian ? "ES" : "VA"));
       langToggle?.setAttribute("title", isValencian ? "Cambiar a castellano" : "Canviar a valencià");

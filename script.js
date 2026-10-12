@@ -637,7 +637,7 @@
     const t = translations[lang];
     if (!t) return;
 
-    root.setAttribute("lang", lang);
+    root.setAttribute("lang", lang === "va" ? "ca-ES-valencia" : "es");
 
     // Botón de idioma
     if (langButton) {
@@ -1131,7 +1131,7 @@
 
   if (!modal || !openBtn || !form) return;
 
-  const isVa = () => document.documentElement.getAttribute("lang") === "va";
+  const isVa = () => (document.documentElement.getAttribute("lang") || "").startsWith("ca");
   
   const setSubmitState = (disabled, text) => { 
     if (submitBtn) { submitBtn.disabled = disabled; submitBtn.textContent = text; } 
@@ -1331,7 +1331,7 @@
   let lastError = false;
 
   const getLang = () =>
-    document.documentElement.getAttribute("lang") === "va" ? "va" : "es";
+    (document.documentElement.getAttribute("lang") || "").startsWith("ca") ? "va" : "es";
 
   function describe(code) {
     return WEATHER_CODES[code] || WEATHER_CODES.default;

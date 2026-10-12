@@ -1128,7 +1128,7 @@
       /* ---------- 3. APLICAR TRADUCCIÓN ---------- */
       function applyLanguage(lang) {
         const t = translations[lang] || translations.es;
-        root.setAttribute("lang", lang);
+        root.setAttribute("lang", lang === "va" ? "ca-ES-valencia" : "es");
 
         if (langToggle) {
           const span = langToggle.querySelector("span");
@@ -1222,7 +1222,7 @@
     async function buscarPelicula(query) {
       if (!query.trim()) return;
 
-      const isVal = document.documentElement.getAttribute("lang") === "va";
+      const isVal = (document.documentElement.getAttribute("lang") || "").startsWith("ca");
       estadoCine.textContent = isVal ? "Buscant en TMDB..." : "Buscando en TMDB...";
       gridCine.hidden = true;
       gridCine.innerHTML = "";
@@ -1283,7 +1283,7 @@
 
     function mostrarDetallePelicula(peli) {
       fichaCine.hidden = false;
-      const isVal = document.documentElement.getAttribute("lang") === "va";
+      const isVal = (document.documentElement.getAttribute("lang") || "").startsWith("ca");
       const posterUrl = peli.poster_path
         ? `https://image.tmdb.org/t/p/w500${peli.poster_path}`
         : "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='450' fill='%23111'><rect width='100%' height='100%'/></svg>";
