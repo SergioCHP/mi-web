@@ -234,8 +234,8 @@
         },
         {
           desc: "Aplicación orientada a organizar colecciones de libros y mangas mediante estructuras de datos ordenadas y persistencia lógica.",
-          link: "Ver código",
-          aria: "Ver código del proyecto Gestor de biblioteca"
+          link: "Próximamente",
+          aria: "Código del Gestor de biblioteca: próximamente"
         },
         {
           desc: "Página web temática desarrollada con WordPress. Un proyecto del año pasado centrado en el diseño, personalización y gestión de contenidos.",
@@ -408,8 +408,8 @@
         },
         {
           desc: "Aplicació orientada a organitzar col·leccions de llibres i mangues mitjançant estructures de dades ordenades i persistència lògica.",
-          link: "Veure codi",
-          aria: "Veure codi del projecte Gestor de biblioteca"
+          link: "Pròximament",
+          aria: "Codi del Gestor de biblioteca: pròximament"
         },
         {
           desc: "Pàgina web temàtica desenvolupada amb WordPress. Un projecte de l'any passat centrat en el disseny, personalització i gestió de continguts.",

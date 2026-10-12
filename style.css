@@ -1095,6 +1095,18 @@ h2 {
   box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
+/* Botón de proyecto aún sin enlace */
+.project-link--soon,
+.project-link--soon:hover {
+  opacity: 0.6;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border-style: dashed;
+  border-color: var(--line-strong);
+  box-shadow: none;
+  cursor: default;
+}
+
 .project-card.is-hidden {
   display: none;
 }
