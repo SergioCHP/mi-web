@@ -6,14 +6,31 @@
   <meta name="theme-color" content="#07070a" />
   <title>Mi Biblioteca | Sergio Chorques</title>
 
+    <!-- Estilos globales de tu web (variables --accent, --text, navbar, footer...) -->
+    <!-- Aplica tema/acento guardados ANTES de pintar: evita el parpadeo oscuro→claro
+     y hace que cine/anime respeten también la preferencia del sistema -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      try {
+        var t = localStorage.getItem("sergio-theme");
+        if (t !== "light" && t !== "dark") {
+          t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+        d.setAttribute("data-theme", t);
+        var a = localStorage.getItem("sergio-accent");
+        if (a === "pink" || a === "blue") d.setAttribute("data-accent", a);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="theme-light.css" />
+
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23ff2e97' font-family='Arial'>SC</text></svg>" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-
-  <!-- Estilos globales de tu web (variables --accent, --text, navbar, footer...) -->
-  <link rel="stylesheet" href="style.css" />
 
   <style>
     /* =========================================================

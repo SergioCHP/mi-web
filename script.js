@@ -49,7 +49,7 @@
       themeButton.setAttribute("aria-pressed", String(isLight));
     }
     if (themeColorMeta) {
-      themeColorMeta.setAttribute("content", isLight ? "#f3efe4" : "#07070a");
+      themeColorMeta.setAttribute("content", isLight ? "#e8e1d5" : "#07070a");
     }
   };
 

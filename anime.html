@@ -12,7 +12,24 @@
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23ff2e97' font-family='Arial'>SC</text></svg>"
   />
 
+  <!-- Aplica tema/acento guardados ANTES de pintar: evita el parpadeo oscuro→claro
+     y hace que cine/anime respeten también la preferencia del sistema -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      try {
+        var t = localStorage.getItem("sergio-theme");
+        if (t !== "light" && t !== "dark") {
+          t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+        d.setAttribute("data-theme", t);
+        var a = localStorage.getItem("sergio-accent");
+        if (a === "pink" || a === "blue") d.setAttribute("data-accent", a);
+      } catch (e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="theme-light.css" />
   
   <style>
     /* =========================================================
@@ -1269,8 +1286,14 @@
       }
     ];
 
+// Acceso a localStorage que nunca rompe el script (modo privado, cookies bloqueadas)
+    const store = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    };
+
     let currentIdx = 0;
-    let currentLang = localStorage.getItem("sergio-lang") === "va" ? "va" : "es";
+    let currentLang = store.get("sergio-lang") === "va" ? "va" : "es";
     const cardEl = document.getElementById("showcaseCard");
     const mainPoster = document.getElementById("mainPoster");
     const mainBadge = document.getElementById("mainBadge");
@@ -1282,37 +1305,69 @@
     const mainAuthor = document.getElementById("mainAuthor");
     const dockContainer = document.getElementById("dockContainer");
 
-    function selectAnime(index) {
-      if (cardEl.classList.contains("is-flipped")) {
-        cardEl.classList.remove("is-flipped");
-      }
-      currentIdx = index;
-      const data = animesData[currentIdx];
+    const backdropEl = document.getElementById("mainBackdrop");
+    const quoteBadge = document.querySelector(".showcase-back .showcase-badge");
+    const QUOTE_BADGE = { es: "Cita de la obra", va: "Cita de l'obra" };
+    let renderToken = 0; // invalida renders pendientes si el usuario cambia rápido
+
+    function renderAnime(data) {
       const langData = data[currentLang] || data.es;
 
       mainPoster.src = data.img;
+      mainPoster.alt = langData.title;
       mainBadge.textContent = langData.platform;
       mainTitle.textContent = langData.title;
       mainDesc.textContent = langData.desc;
-      mainQuote.textContent = data.quote;
+      mainYear.textContent = data.year || "";
+
+      mainQuote.textContent = data.quote || "";
       mainAuthor.textContent = data.author || "";
+      mainAuthor.hidden = !data.author;
+      if (quoteBadge) quoteBadge.textContent = QUOTE_BADGE[currentLang] || QUOTE_BADGE.es;
 
-      // Aplica la foto difuminada (usa 'backdrop' si existe, o 'img' como alternativa)
-      const backdropEl = document.getElementById("mainBackdrop");
-      if (backdropEl) {
-        backdropEl.style.backgroundImage = `url('${data.backdrop || data.img}')`;
-      }
+      if (backdropEl) backdropEl.style.backgroundImage = `url("${data.backdrop || data.img}")`;
 
-      document.getElementById("mainYear").textContent = data.year || "";
+      // textContent en lugar de innerHTML: sin riesgo de inyectar HTML
+      mainTags.replaceChildren(...(data.tags || []).map((tag) => {
+        const span = document.createElement("span");
+        span.textContent = tag;
+        return span;
+      }));
+    }
 
-      const tagsEl = document.getElementById("mainTags");
-      if (tagsEl && data.tags) {
-        tagsEl.innerHTML = data.tags.map(t => `<span>${t}</span>`).join("");
-      }
+    function selectAnime(index) {
+      const data = animesData[index];
+      if (!data || !cardEl) return;
+
+      currentIdx = index;
+      const token = ++renderToken;
 
       Array.from(dockContainer.children).forEach((thumb, i) => {
-        thumb.classList.toggle("is-selected", i === currentIdx);
+        thumb.classList.toggle("is-selected", i === index);
+        thumb.setAttribute("aria-selected", String(i === index));
       });
+
+      // Tarjeta de frente: se actualiza al momento
+      if (!cardEl.classList.contains("is-flipped")) {
+        renderAnime(data);
+        return;
+      }
+
+      // Tarjeta girada: primero vuelve al frente y DESPUÉS cambia la cita,
+      // para que no se vea la del siguiente anime durante el giro
+      cardEl.classList.remove("is-flipped");
+
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        cardEl.removeEventListener("transitionend", onEnd);
+        if (token === renderToken) renderAnime(animesData[currentIdx]);
+      };
+      const onEnd = (e) => { if (e.propertyName === "transform") finish(); };
+
+      cardEl.addEventListener("transitionend", onEnd);
+      setTimeout(finish, 750); // respaldo si transitionend no llega (pestaña oculta, etc.)
     }
 
     animesData.forEach((item, index) => {
@@ -1336,13 +1391,6 @@
     const accentToggle = document.getElementById("accentToggle");
     const langToggle = document.getElementById("langToggle");
     root.setAttribute("lang", currentLang);
-
-    try {
-      const savedTheme = localStorage.getItem("sergio-theme");
-      const savedAccent = localStorage.getItem("sergio-accent");
-      if (savedTheme) root.setAttribute("data-theme", savedTheme);
-      if (savedAccent) root.setAttribute("data-accent", savedAccent);
-    } catch (e) {}
 
     function applyLanguage() {
       const isValencian = currentLang === "va";
@@ -1403,16 +1451,16 @@
     themeToggle?.addEventListener("click", () => {
       const theme = root.getAttribute("data-theme") === "light" ? "dark" : "light";
       root.setAttribute("data-theme", theme);
-      localStorage.setItem("sergio-theme", theme);
+      store.set("sergio-theme", theme);
     });
     accentToggle?.addEventListener("click", () => {
       const accent = root.getAttribute("data-accent") === "blue" ? "pink" : "blue";
       root.setAttribute("data-accent", accent);
-      localStorage.setItem("sergio-accent", accent);
+      store.set("sergio-accent", accent);
     });
     langToggle?.addEventListener("click", () => {
       currentLang = currentLang === "es" ? "va" : "es";
-      localStorage.setItem("sergio-lang", currentLang);
+      store.set("sergio-lang", currentLang);
       applyLanguage();
     });
 
