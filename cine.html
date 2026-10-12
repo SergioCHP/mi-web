@@ -1211,6 +1211,7 @@
        ======================================================= */
     // Sustituye con tu clave de The Movie Database
     const TMDB_API_KEY = "8ae2b16796fd6fcb930176321ea1894c";
+    const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 
     const formCine = document.getElementById("formCine");
     const inputCine = document.getElementById("inputCine");
@@ -1258,12 +1259,12 @@
 
           card.innerHTML = `
             <div style="height: 240px; overflow: hidden; background: #000;">
-              <img src="${posterUrl}" alt="${peli.title}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+              <img src="${posterUrl}" alt="${esc(peli.title)}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
             </div>
             <div style="padding: 1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
               <div>
-                <h4 style="margin: 0 0 0.4rem; font-size: 1rem; color: #fff;">${peli.title}</h4>
-                <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">${estreno} · ⭐ ${nota}</p>
+                <h4 style="margin: 0 0 0.4rem; font-size: 1rem; color: #fff;">${esc(peli.title)}</h4>
+                <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">${esc(estreno)} · ⭐ ${nota}</p>
               </div>
             </div>
           `;
@@ -1295,26 +1296,26 @@
       fichaCine.innerHTML = `
         <div class="cine-detail-card">
           <div class="cine-detail-poster">
-            <img src="${posterUrl}" alt="${peli.title}" />
+            <img src="${posterUrl}" alt="${esc(peli.title)}" />
           </div>
 
           <div style="display: flex; flex-direction: column; justify-content: center; min-width: 0;">
             <div>
               <span class="game-platform" style="margin-bottom: 0.6rem; display: inline-block;">Película · TMDB</span>
-              <h3 style="margin: 0 0 0.5rem; font-size: clamp(1.4rem, 2.5vw, 1.8rem); color: #fff; line-height: 1.2;">${peli.title}</h3>
+              <h3 style="margin: 0 0 0.5rem; font-size: clamp(1.4rem, 2.5vw, 1.8rem); color: #fff; line-height: 1.2;">${esc(peli.title)}</h3>
 
               <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 0.9rem; line-height: 1.5;">
-                <strong style="color: var(--text);">${isVal ? "Estrena:" : "Estreno:"}</strong> ${estreno} &nbsp;|&nbsp;
+                <strong style="color: var(--text);">${isVal ? "Estrena:" : "Estreno:"}</strong> ${esc(estreno)} &nbsp;|&nbsp;
                 <strong style="color: var(--text);">${isVal ? "Puntuació:" : "Puntuación:"}</strong> ⭐ <span style="color: var(--accent); font-weight: bold;">${nota}</span> (${votos} votos)
               </p>
             </div>
 
             <p style="font-size: 0.88rem; line-height: 1.65; color: var(--text-muted); max-height: 140px; overflow-y: auto; margin: 0 0 1.2rem; padding-right: 0.5rem;">
-              ${sinopsis}
+              ${esc(sinopsis)}
             </p>
 
             <div>
-              <a href="https://www.themoviedb.org/movie/${peli.id}" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="display: inline-flex; align-items: center; gap: 6px; width: fit-content; text-decoration: none; padding: 0.45rem 1.1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;">
+              <a href="https://www.themoviedb.org/movie/${Number(peli.id)}" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="display: inline-flex; align-items: center; gap: 6px; width: fit-content; text-decoration: none; padding: 0.45rem 1.1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;">
                 <span>${isVal ? "Veure en TMDB" : "Ver en TMDB"}</span> ↗
               </a>
             </div>

@@ -1481,6 +1481,8 @@
     const gridAnime = document.getElementById("gridAnime");
     const fichaAnime = document.getElementById("fichaAnime");
 
+    const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
     async function buscarAnime(query) {
       if (!query.trim()) return;
       
@@ -1563,12 +1565,12 @@
 
           card.innerHTML = `
             <div style="height: 240px; overflow: hidden; background: #000;">
-              <img src="${imagen}" alt="${titulo}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+              <img src="${esc(imagen)}" alt="${esc(titulo)}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
             </div>
             <div style="padding: 1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
               <div>
-                <h4 style="margin: 0 0 0.4rem; font-size: 1rem; color: #fff;">${titulo}</h4>
-                <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">${item.seasonYear || item.format || "Anime"} · ⭐ ${nota}</p>
+                <h4 style="margin: 0 0 0.4rem; font-size: 1rem; color: #fff;">${esc(titulo)}</h4>
+                <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">${esc(item.seasonYear || item.format || "Anime")} · ⭐ ${nota}</p>
               </div>
             </div>
           `;
@@ -1591,7 +1593,7 @@
       const titulo = item.title?.english || item.title?.romaji || "Anime";
       const imagen = item.coverImage?.extraLarge || item.coverImage?.large || "";
       const estudio = item.studios?.nodes?.[0]?.name || "Desconocido";
-      const generos = (item.genres || []).map(g => `<span style="font-size:0.75rem; padding:3px 9px; border-radius:6px; background:var(--surface); border:1px solid var(--line); color:var(--text);">${g}</span>`).join(" ");
+      const generos = (item.genres || []).map(g => `<span style="font-size:0.75rem; padding:3px 9px; border-radius:6px; background:var(--surface); border:1px solid var(--line); color:var(--text);">${esc(g)}</span>`).join(" ");
       const nota = item.averageScore ? (item.averageScore / 10).toFixed(1) : "N/A";
       
       const sinopsisLimpia = item.description 
@@ -1610,8 +1612,8 @@
             </p>
             <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--line); background: #000; box-shadow: 0 4px 18px rgba(0,0,0,0.45);">
               <iframe
-                src="https://www.youtube-nocookie.com/embed/${trailerYoutubeId}"
-                title="Tráiler de ${titulo}"
+                src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(trailerYoutubeId)}"
+                title="Tráiler de ${esc(titulo)}"
                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen>
@@ -1625,24 +1627,24 @@
         <div class="anime-detail-card">
           <!-- Columna Imagen -->
           <div class="anime-detail-poster">
-            <img src="${imagen}" alt="${titulo}" />
+            <img src="${esc(imagen)}" alt="${esc(titulo)}" />
           </div>
 
           <!-- Columna Información -->
           <div style="display: flex; flex-direction: column; justify-content: center; min-width: 0;">
             <div>
-              <span class="showcase-badge" style="margin-bottom: 0.6rem;">${item.format || "TV"} · ${item.status || ""}</span>
-              <h3 style="margin: 0 0 0.5rem; font-size: clamp(1.4rem, 2.5vw, 1.8rem); color: #fff; line-height: 1.2;">${titulo}</h3>
+              <span class="showcase-badge" style="margin-bottom: 0.6rem;">${esc(item.format || "TV")} · ${esc(item.status || "")}</span>
+              <h3 style="margin: 0 0 0.5rem; font-size: clamp(1.4rem, 2.5vw, 1.8rem); color: #fff; line-height: 1.2;">${esc(titulo)}</h3>
               
               <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 0.9rem; line-height: 1.5;">
-                <strong style="color: var(--text);">${isVal ? "Estudi:" : "Estudio:"}</strong> ${estudio} &nbsp;|&nbsp; 
+                <strong style="color: var(--text);">${isVal ? "Estudi:" : "Estudio:"}</strong> ${esc(estudio)} &nbsp;|&nbsp; 
                 <strong style="color: var(--text);">${isVal ? "Puntuació:" : "Puntuación:"}</strong> ⭐ <span style="color: var(--accent); font-weight: bold;">${nota}</span> &nbsp;|&nbsp; 
-                <strong style="color: var(--text);">${isVal ? "Episodis:" : "Episodios:"}</strong> ${item.episodes || '?'}
+                <strong style="color: var(--text);">${isVal ? "Episodis:" : "Episodios:"}</strong> ${esc(item.episodes || '?')}
               </p>
             </div>
 
             <p style="font-size: 0.88rem; line-height: 1.65; color: var(--text-muted); max-height: 140px; overflow-y: auto; margin: 0 0 1.2rem; padding-right: 0.5rem;">
-              ${sinopsisLimpia}
+              ${esc(sinopsisLimpia)}
             </p>
 
             <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem;">
@@ -1650,7 +1652,7 @@
             </div>
 
             <div>
-              <a href="${item.siteUrl}" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="display: inline-flex; align-items: center; gap: 6px; width: fit-content; text-decoration: none; padding: 0.45rem 1.1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;">
+              <a href="${esc(item.siteUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="display: inline-flex; align-items: center; gap: 6px; width: fit-content; text-decoration: none; padding: 0.45rem 1.1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;">
                 <span>${isVal ? "Veure en AniList" : "Ver en AniList"}</span> ↗
               </a>
             </div>
