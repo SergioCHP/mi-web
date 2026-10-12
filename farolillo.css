@@ -1,0 +1,790 @@
+/* ==========================================================
+   Farolillo · espíritu-farolillo interactivo
+   Hereda la paleta de mi-web: --accent, --accent-alt,
+   --surface, --text, --line, --font-display, --radius…
+   Si no existen (otra web), usa los mismos valores por defecto.
+   El JS pone data-tema="claro|oscuro" y data-cara / data-estado.
+   ========================================================== */
+
+.farolillo {
+  /* --- Paleta heredada de la web --- */
+  --farol-a: var(--accent, #ff2e97);
+  --farol-b: var(--accent-alt, #38bdf8);
+  --farol-fondo: var(--surface, #0e1017);
+  --farol-fondo-2: var(--surface-2, #141720);
+  --farol-texto: var(--text, #e6edf3);
+  --farol-muted: var(--text-muted, #838a96);
+  --farol-linea: var(--line, rgba(255, 255, 255, 0.07));
+  --farol-linea-fuerte: var(--line-strong, rgba(255, 255, 255, 0.14));
+  --farol-sombra: var(--shadow, 0 18px 40px rgba(0, 0, 0, 0.65));
+  --farol-radio: var(--radius, 20px);
+  --farol-radio-sm: var(--radius-sm, 10px);
+  --farol-fuente: var(--font-display, "Chakra Petch", "Segoe UI", sans-serif);
+  --farol-fuente-texto: var(--font-body, "Inter", "Segoe UI", sans-serif);
+  --farol-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* --- Piezas del farolillo (derivadas del acento) --- */
+  --farol-papel-centro: color-mix(in srgb, var(--farol-a) 14%, #fff);
+  --farol-papel-medio: color-mix(in srgb, var(--farol-a) 52%, #fff);
+  --farol-papel-borde: color-mix(in srgb, var(--farol-a) 86%, #000);
+  --farol-costilla: color-mix(in srgb, var(--farol-a) 65%, #000);
+  --farol-mejilla: color-mix(in srgb, var(--farol-a) 55%, #ff6b8b);
+  --farol-glow: color-mix(in srgb, var(--farol-a) 60%, transparent);
+  --farol-metal: #12131a;
+  --farol-tinta: #170a12;
+  --farol-luz-op: 1;
+  --farol-halo-op: 0.6;
+
+  --farol-tam: 92px;
+  --farol-alto: calc(var(--farol-tam) * 200 / 140);
+
+  position: fixed;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 1000;
+  font-family: var(--farol-fuente-texto);
+  color: var(--farol-texto);
+}
+
+.farolillo,
+.farolillo * {
+  box-sizing: border-box;
+}
+
+.farolillo--izquierda { left: max(20px, env(safe-area-inset-left)); }
+.farolillo--derecha { right: max(20px, env(safe-area-inset-right)); }
+
+/* Modo claro: menos neón, más farol de papel */
+.farolillo[data-tema="claro"] {
+  --farol-metal: #2a2420;
+  --farol-glow: color-mix(in srgb, var(--farol-a) 32%, transparent);
+  --farol-luz-op: 0.7;
+  --farol-halo-op: 0.3;
+}
+
+/* Lienzo de chispas (pantalla completa, no captura clics) */
+.farol-lienzo {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  pointer-events: none;
+}
+
+/* ==========================================================
+   Mascota
+   ========================================================== */
+
+.farol-boton {
+  position: relative;
+  display: block;
+  width: var(--farol-tam);
+  height: var(--farol-alto);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 45%;
+  background: none;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.farol-boton:focus-visible {
+  outline: 2px solid var(--farol-a);
+  outline-offset: 8px;
+}
+
+.farol-fisica,
+.farol-flotar {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.farol-fisica {
+  transform-origin: 50% 60%;
+  will-change: transform;
+}
+
+.farol-flotar {
+  animation: farol-flotar 4.6s ease-in-out infinite;
+}
+
+.farol-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-origin: 50% 55%;
+  filter: drop-shadow(0 0 14px var(--farol-glow)) drop-shadow(0 0 3px var(--farol-glow));
+  transition: transform 0.35s var(--farol-ease), filter 0.4s ease;
+}
+
+.farolillo[data-tema="claro"] .farol-svg {
+  filter: drop-shadow(0 10px 14px rgba(60, 45, 30, 0.22)) drop-shadow(0 0 10px var(--farol-glow));
+}
+
+.farol--hover .farol-svg { transform: scale(1.06); }
+
+.farolillo[data-tema="oscuro"].farol--hover .farol-svg,
+.farolillo[data-tema="oscuro"].farol--abierto .farol-svg {
+  filter: drop-shadow(0 0 22px var(--farol-glow)) drop-shadow(0 0 5px var(--farol-glow));
+}
+
+/* Colores de las piezas */
+.farol-stop-a { stop-color: var(--farol-a); }
+.farol-stop-b { stop-color: var(--farol-b); }
+.farol-stop-centro { stop-color: var(--farol-papel-centro); }
+.farol-stop-medio { stop-color: var(--farol-papel-medio); }
+.farol-stop-borde { stop-color: var(--farol-papel-borde); }
+
+.farolillo stop,
+.farol-tapa,
+.farol-costillas,
+.farol-mejilla,
+.farol-hud {
+  transition: stop-color 0.6s ease, fill 0.6s ease, stroke 0.6s ease, opacity 0.4s ease;
+}
+
+.farol-tapa {
+  fill: var(--farol-metal);
+  stroke: var(--farol-a);
+  stroke-width: 1;
+  stroke-opacity: 0.7;
+}
+
+.farol-costillas { stroke: var(--farol-costilla); opacity: 0.35; }
+.farol-brillo { opacity: 0.35; }
+.farol-mejilla { fill: var(--farol-mejilla); opacity: 0.55; }
+.farol-tinta { fill: var(--farol-tinta); }
+
+.farol-trazo {
+  fill: none;
+  stroke: var(--farol-tinta);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Halo y anillos HUD */
+.farol-halo {
+  opacity: var(--farol-halo-op);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: farol-halo 4.6s ease-in-out infinite;
+  transition: opacity 0.5s ease;
+}
+
+.farol--hover .farol-halo,
+.farol--abierto .farol-halo { opacity: calc(var(--farol-halo-op) + 0.3); }
+
+.farol-hud {
+  stroke: var(--farol-a);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: farol-girar 14s linear infinite;
+}
+
+.farol-hud--2 {
+  stroke: var(--farol-b);
+  animation-duration: 6s;
+  animation-direction: reverse;
+}
+
+.farol--hover .farol-hud,
+.farol--abierto .farol-hud,
+.farol--arrastrando .farol-hud { opacity: 0.8; }
+
+/* Luz interior y llama */
+.farol-luz {
+  opacity: var(--farol-luz-op);
+  animation: farol-titilar 3s ease-in-out infinite;
+}
+
+.farol-llama-g {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: transform 0.35s var(--farol-ease), opacity 0.4s ease;
+}
+
+.farol-llama,
+.farol-llama-nucleo {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: farol-llama 0.7s ease-in-out infinite alternate;
+}
+
+.farol-llama-nucleo {
+  opacity: 0.9;
+  animation-duration: 0.45s;
+  animation-direction: alternate-reverse;
+}
+
+.farol--hover .farol-llama-g,
+.farol--abierto .farol-llama-g { transform: scale(1.22); }
+.farol--arrastrando .farol-llama-g { transform: scale(1.35) skewX(-8deg); }
+.farolillo[data-cara="dormido"] .farol-llama-g { transform: scale(0.55); opacity: 0.75; }
+
+.farolillo[data-estado="pensando"] .farol-llama,
+.farolillo[data-estado="pensando"] .farol-llama-nucleo { animation-duration: 0.2s; }
+.farolillo[data-estado="pensando"] .farol-luz { animation-duration: 0.5s; }
+
+.farolillo[data-estado="escuchando"] .farol-llama-g {
+  transform: scale(1.12) skewX(var(--farol-escucha, -6deg));
+}
+.farolillo--derecha { --farol-escucha: 6deg; }
+
+/* Cola de espíritu */
+.farol-cola {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: farol-cola 2.4s ease-in-out infinite;
+}
+
+.farol--arrastrando .farol-cola { animation-duration: 0.6s; }
+
+/* Cuerpo: salto elástico al hacer clic */
+.farol-cuerpo {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.farol--salto .farol-cuerpo { animation: farol-salto 0.6s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.farol--mareo .farol-svg { animation: farol-voltereta 1s cubic-bezier(0.3, 0.9, 0.4, 1); }
+.farol--cambio .farol-luz { animation: farol-encender 0.9s ease-out; }
+
+/* ---------- Caras ---------- */
+
+.farol-ojos { transition: transform 0.15s ease-out, opacity 0.15s; }
+
+.farol-ojos-escala,
+.farol-ojo {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.12s ease;
+}
+
+.farol--parpadeo .farol-ojo { transform: scaleY(0.1); }
+
+.farol-cara-feliz,
+.farol-cara-dormido,
+.farol-cara-mareado,
+.farol-boca-abierta,
+.farol-boca-o {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.farol-boca { transition: opacity 0.15s; }
+
+.farolillo[data-cara="feliz"] .farol-ojos,
+.farolillo[data-cara="dormido"] .farol-ojos,
+.farolillo[data-cara="mareado"] .farol-ojos { opacity: 0; }
+
+.farolillo[data-cara="feliz"] .farol-cara-feliz,
+.farolillo[data-cara="dormido"] .farol-cara-dormido,
+.farolillo[data-cara="mareado"] .farol-cara-mareado { opacity: 1; }
+
+.farolillo[data-cara="sorpresa"] .farol-ojos-escala { transform: scale(1.25); }
+.farolillo[data-cara="sorpresa"] .farol-boca,
+.farolillo[data-cara="mareado"] .farol-boca { opacity: 0; }
+.farolillo[data-cara="sorpresa"] .farol-boca-o,
+.farolillo[data-cara="mareado"] .farol-boca-o { opacity: 1; }
+
+.farolillo[data-cara="mareado"] .farol-espiral {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: farol-girar 0.7s linear infinite;
+}
+
+.farolillo[data-estado="hablando"] .farol-boca { opacity: 0; }
+
+.farolillo[data-estado="hablando"] .farol-boca-abierta {
+  opacity: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: farol-hablar 0.16s ease-in-out infinite alternate;
+}
+
+/* ==========================================================
+   Bocadillo junto al farolillo
+   ========================================================== */
+
+.farol-pista {
+  position: absolute;
+  bottom: calc(var(--farol-alto) * 0.62);
+  width: max-content;
+  max-width: min(240px, calc(100vw - var(--farol-tam) - 56px));
+  margin: 0;
+  padding: 0.6rem 0.85rem;
+  font-family: var(--farol-fuente);
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--farol-texto);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--farol-a) 12%, transparent), transparent 60%),
+    var(--farol-fondo);
+  border: 1px solid color-mix(in srgb, var(--farol-a) 40%, var(--farol-linea-fuerte));
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35), 0 0 22px color-mix(in srgb, var(--farol-a) 20%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.35s var(--farol-ease);
+}
+
+.farolillo--izquierda .farol-pista {
+  left: calc(var(--farol-tam) * 0.92);
+  border-radius: 14px 14px 14px 4px;
+  transform: translate(-8px, 6px) scale(0.92);
+  transform-origin: 0 100%;
+}
+
+.farolillo--derecha .farol-pista {
+  right: calc(var(--farol-tam) * 0.92);
+  border-radius: 14px 14px 4px 14px;
+  transform: translate(8px, 6px) scale(0.92);
+  transform-origin: 100% 100%;
+}
+
+.farol-pista--visible {
+  opacity: 1;
+  transform: none !important;
+}
+
+.farolillo[data-tema="claro"] .farol-pista {
+  box-shadow: 0 12px 28px rgba(60, 45, 30, 0.16), 0 0 18px color-mix(in srgb, var(--farol-a) 14%, transparent);
+}
+
+/* ==========================================================
+   Panel de chat
+   ========================================================== */
+
+.farol-panel {
+  --farol-origen: 30px;
+  position: absolute;
+  bottom: calc(var(--farol-alto) + 14px);
+  width: min(352px, calc(100vw - 40px));
+  height: min(520px, calc(100dvh - var(--farol-alto) - 80px));
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  color: var(--farol-texto);
+  background:
+    radial-gradient(120% 60% at 0% 0%, color-mix(in srgb, var(--farol-a) 14%, transparent), transparent 60%),
+    radial-gradient(90% 50% at 100% 100%, color-mix(in srgb, var(--farol-b) 8%, transparent), transparent 60%),
+    var(--farol-fondo);
+  border: 1px solid var(--farol-linea-fuerte);
+  border-radius: var(--farol-radio);
+  box-shadow:
+    var(--farol-sombra),
+    0 0 40px color-mix(in srgb, var(--farol-a) 16%, transparent);
+  clip-path: circle(0% at var(--farol-origen) calc(100% + 40px));
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    clip-path 0.55s var(--farol-ease),
+    opacity 0.3s ease,
+    visibility 0s linear 0.55s;
+}
+
+.farolillo--izquierda .farol-panel { left: 0; }
+.farolillo--derecha .farol-panel { right: 0; --farol-origen: calc(100% - 30px); }
+
+/* Línea de neón superior */
+.farol-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, var(--farol-a), var(--farol-b));
+  box-shadow: 0 0 10px var(--farol-a);
+  z-index: 2;
+}
+
+.farol--abierto .farol-panel {
+  clip-path: circle(150% at var(--farol-origen) calc(100% + 40px));
+  opacity: 1;
+  visibility: visible;
+  transition:
+    clip-path 0.6s var(--farol-ease),
+    opacity 0.2s ease,
+    visibility 0s;
+}
+
+/* Cabecera */
+.farol-panel__cabecera {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1rem 0.85rem;
+  border-bottom: 1px solid var(--farol-linea);
+}
+
+/* Rejilla tenue, como la del hero */
+.farol-panel__cabecera::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--farol-texto) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--farol-texto) 6%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent 75%);
+  mask-image: linear-gradient(90deg, #000, transparent 75%);
+  pointer-events: none;
+}
+
+.farol-panel__avatar {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 58%, var(--farol-papel-centro), var(--farol-papel-medio) 55%, var(--farol-papel-borde));
+  box-shadow: 0 0 0 2px var(--farol-fondo), 0 0 0 3px color-mix(in srgb, var(--farol-a) 60%, transparent), 0 0 18px var(--farol-glow);
+  animation: farol-halo 3s ease-in-out infinite;
+}
+
+.farol-panel__titulos { flex: 1; min-width: 0; }
+
+.farol-panel__estado {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  font-family: var(--farol-fuente);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--farol-a);
+}
+
+.farol-panel__estado::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+  animation: farol-pulso 2.2s ease-in-out infinite;
+}
+
+.farol-panel__nombre {
+  margin: 0.1rem 0 0;
+  font-family: var(--farol-fuente);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--farol-texto);
+}
+
+.farol-panel__cerrar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--farol-linea);
+  border-radius: 50%;
+  background: var(--farol-fondo-2);
+  color: var(--farol-muted);
+  transition: color 0.25s, border-color 0.25s, transform 0.3s var(--farol-ease);
+}
+
+.farol-panel__cerrar svg { width: 15px; height: 15px; }
+
+.farol-panel__cerrar:hover,
+.farol-panel__cerrar:focus-visible {
+  color: var(--farol-a);
+  border-color: var(--farol-a);
+  transform: rotate(90deg);
+  outline: none;
+}
+
+/* Mensajes */
+.farol-panel__mensajes {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--farol-a) 50%, transparent) transparent;
+}
+
+.farol-msg {
+  max-width: 86%;
+  white-space: pre-line;
+  margin: 0;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  animation: farol-msg-entrar 0.35s var(--farol-ease) both;
+}
+
+.farol-msg--bot {
+  align-self: flex-start;
+  color: var(--farol-texto);
+  background: var(--farol-fondo-2);
+  border: 1px solid var(--farol-linea);
+  border-radius: 14px 14px 14px 4px;
+}
+
+.farol-msg--usuario {
+  align-self: flex-end;
+  color: #fff;
+  background: linear-gradient(135deg, var(--farol-a), var(--farol-b));
+  border-radius: 14px 14px 4px 14px;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--farol-a) 28%, transparent);
+}
+
+.farol-enlace {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+  padding: 0.38rem 0.85rem;
+  font-family: var(--farol-fuente);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--farol-a);
+  background: color-mix(in srgb, var(--farol-a) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--farol-a) 45%, transparent);
+  border-radius: 999px;
+  transition: background 0.25s, color 0.25s, transform 0.25s var(--farol-ease), box-shadow 0.25s;
+}
+
+.farol-enlace::after { content: "→"; transition: transform 0.25s var(--farol-ease); }
+
+.farol-enlace:hover,
+.farol-enlace:focus-visible {
+  color: #fff;
+  background: var(--farol-a);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--farol-a) 35%, transparent);
+  outline: none;
+}
+
+.farol-enlace:hover::after { transform: translateX(3px); }
+
+.farol-msg--puntos {
+  display: flex;
+  gap: 5px;
+  padding: 0.8rem 0.9rem;
+}
+
+.farol-msg--puntos span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--farol-a);
+  box-shadow: 0 0 8px var(--farol-a);
+  animation: farol-puntos 1s ease-in-out infinite;
+}
+
+.farol-msg--puntos span:nth-child(2) { animation-delay: 0.15s; background: color-mix(in srgb, var(--farol-a) 50%, var(--farol-b)); }
+.farol-msg--puntos span:nth-child(3) { animation-delay: 0.3s; background: var(--farol-b); box-shadow: 0 0 8px var(--farol-b); }
+
+/* Sugerencias rápidas */
+.farol-chips {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.15rem 1rem 0.7rem;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+  mask-image: linear-gradient(90deg, #000 85%, transparent);
+}
+
+.farol-chips::-webkit-scrollbar { display: none; }
+
+.farol-chip {
+  flex: none;
+  padding: 0.32rem 0.8rem;
+  font-family: var(--farol-fuente);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--farol-muted);
+  background: var(--farol-fondo-2);
+  border: 1px solid var(--farol-linea);
+  border-radius: 999px;
+  transition: color 0.25s, border-color 0.25s, background 0.25s, transform 0.25s var(--farol-ease);
+}
+
+.farol-chip:hover,
+.farol-chip:focus-visible {
+  color: var(--farol-a);
+  border-color: var(--farol-a);
+  background: color-mix(in srgb, var(--farol-a) 12%, var(--farol-fondo-2));
+  transform: translateY(-2px);
+  outline: none;
+}
+
+/* Formulario */
+.farol-panel__form {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.75rem;
+  border-top: 1px solid var(--farol-linea);
+}
+
+.farol-panel__entrada {
+  flex: 1;
+  min-width: 0;
+  padding: 0.65rem 0.9rem;
+  font-family: var(--farol-fuente-texto);
+  font-size: 16px; /* evita el zoom automático en iOS */
+  color: var(--farol-texto);
+  background: var(--farol-fondo-2);
+  border: 1px solid var(--farol-linea);
+  border-radius: var(--farol-radio-sm);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.farol-panel__entrada::placeholder { color: color-mix(in srgb, var(--farol-muted) 80%, transparent); }
+
+.farol-panel__entrada:focus {
+  outline: none;
+  border-color: var(--farol-a);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--farol-a) 25%, transparent);
+}
+
+.farol-panel__enviar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--farol-radio-sm);
+  color: #fff;
+  background: linear-gradient(135deg, var(--farol-a), var(--farol-b));
+  transition: transform 0.25s var(--farol-ease), box-shadow 0.25s;
+}
+
+.farol-panel__enviar svg { width: 18px; height: 18px; }
+
+.farol-panel__enviar:hover,
+.farol-panel__enviar:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--farol-a) 40%, transparent);
+  outline: none;
+}
+
+.farol-panel__enviar:active { transform: scale(0.94); }
+
+/* ==========================================================
+   Animaciones
+   ========================================================== */
+
+@keyframes farol-flotar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+@keyframes farol-halo {
+  0%, 100% { transform: scale(0.94); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes farol-girar {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes farol-titilar {
+  0%, 100% { opacity: var(--farol-luz-op); }
+  20% { opacity: calc(var(--farol-luz-op) * 0.75); }
+  24% { opacity: var(--farol-luz-op); }
+  60% { opacity: calc(var(--farol-luz-op) * 0.88); }
+}
+
+@keyframes farol-llama {
+  from { transform: scale(0.9, 1.08) skewX(-4deg); }
+  to { transform: scale(1.06, 0.94) skewX(4deg); }
+}
+
+@keyframes farol-cola {
+  0%, 100% { transform: rotate(7deg) skewX(5deg); }
+  50% { transform: rotate(-7deg) skewX(-5deg); }
+}
+
+@keyframes farol-hablar {
+  from { transform: scaleY(0.35); }
+  to { transform: scaleY(1.1); }
+}
+
+@keyframes farol-salto {
+  0% { transform: scale(1, 1); }
+  25% { transform: translateY(4px) scale(1.14, 0.84); }
+  55% { transform: translateY(-14px) scale(0.9, 1.12); }
+  100% { transform: scale(1, 1); }
+}
+
+@keyframes farol-voltereta {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(720deg); }
+}
+
+@keyframes farol-encender {
+  0% { opacity: 0; }
+  30% { opacity: calc(var(--farol-luz-op) * 0.3); }
+  45% { opacity: 1; }
+  60% { opacity: 0.2; }
+  100% { opacity: var(--farol-luz-op); }
+}
+
+@keyframes farol-pulso {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+@keyframes farol-msg-entrar {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes farol-puntos {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-4px); }
+}
+
+/* ==========================================================
+   Responsive y accesibilidad
+   ========================================================== */
+
+@media (max-width: 600px) {
+  .farolillo {
+    --farol-tam: 70px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+
+  .farolillo--izquierda { left: max(14px, env(safe-area-inset-left)); }
+  .farolillo--derecha { right: max(14px, env(safe-area-inset-right)); }
+  .farol-panel { width: calc(100vw - 28px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .farolillo *,
+  .farolillo *::before,
+  .farolillo *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .farol-panel { clip-path: none; }
+}

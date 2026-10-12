@@ -49,6 +49,7 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="theme-light.css" />
     <link rel="stylesheet" href="mobile.css" />
+    <link rel="stylesheet" href="farolillo.css" />
   </head>
 
   <body>
@@ -205,7 +206,7 @@
           <p>Perfil personal, académico y motivación principal.</p>
         </div>
 
-        <article class="card about-card spotlight-card">
+        <article class="card about-card spotlight-card card--static tilt" data-tilt-strength="0.3">
 
           <!-- Detalles visuales de editor de código -->
           <div style="display: flex; gap: 6px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--line); padding-bottom: 1rem;">
@@ -278,7 +279,7 @@
         </div>
 
         <div class="card-grid">
-          <article class="card spotlight-card">
+          <article class="card spotlight-card card--static tilt">
             <div class="card-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
@@ -289,7 +290,7 @@
             <p>Módulo de Grado Medio de SMR (Sistemas Microinformáticos y Redes) completado con éxito.</p>
           </article>
 
-          <article class="card spotlight-card">
+          <article class="card spotlight-card card--static tilt">
             <div class="card-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m18 16 4-4-4-4"></path>
@@ -301,7 +302,7 @@
             <p>Salto a 1º DAM orientado al dominio de desarrollo en lenguajes estructurados y POO.</p>
           </article>
 
-          <article class="card spotlight-card cert-card">
+          <article class="card spotlight-card cert-card card--static tilt"> 
             <div class="card-icon">
               <!-- Icono de certificación / escudo / medalla -->
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -325,7 +326,7 @@
             </div>
           </article>
 
-          <article class="card spotlight-card">
+          <article class="card spotlight-card card--static tilt">
             <div class="card-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -348,7 +349,7 @@
         <div class="card-grid">
           <a href="minijuego.html" style="text-decoration: none; color: inherit; display: block;">
             <!-- Tarjeta Videojuegos -->
-            <article class="card spotlight-card card-gaming" style="cursor: pointer;">
+            <article class="card spotlight-card card-gaming card--link"> 
               <!-- IMAGEN DEL MANDO DE PS5 -->
               <img 
                 src="images/mando-ps5.webp" 
@@ -375,7 +376,7 @@
           </a>
 
           <!-- Tarjeta Cine & Anime (Con la clase 'card-cinema' y la etiqueta <img> añadida) -->
-          <article class="card spotlight-card card-cinema">
+          <article class="card spotlight-card card-cinema card--link">
             <!-- IMAGEN DE LA ENTRADA DE CINE -->
             <img 
               src="images/ticket-cine.webp" 
@@ -398,7 +399,7 @@
           </article>
 
           <!-- Tarjeta Lectura -->
-          <article class="card spotlight-card card-reading">
+          <article class="card spotlight-card card-reading card--link">
             <!-- IMAGEN DE LECTURA (Libro / Manga) -->
             <img 
               src="images/libro.webp" 
@@ -446,7 +447,7 @@
         </div>
 
         <div class="projects-grid" id="projectsGrid">
-          <article class="project-card tilt spotlight-card" data-category="web js">
+          <article class="project-card tilt spotlight-card card--static" data-category="web js">
             <div class="project-card-inner">
               <header class="project-card-head">
                 <p class="project-type">Web / JS</p>
@@ -466,7 +467,7 @@
             </div>
           </article>
 
-          <article class="project-card tilt spotlight-card" data-category="dam js">
+          <article class="project-card tilt spotlight-card card--static" data-category="dam js">
             <div class="project-card-inner">
               <header class="project-card-head">
                 <p class="project-type">Práctica DAM</p>
@@ -486,7 +487,7 @@
             </div>
           </article>
 
-          <article class="project-card tilt spotlight-card" data-category="web">
+          <article class="project-card tilt spotlight-card card--static" data-category="web">
             <div class="project-card-inner">
               <header class="project-card-head">
                 <p class="project-type">Web / WordPress</p>
@@ -509,7 +510,7 @@
         </div>
         <!-- Widget Dinámico de GitHub dentro de Proyectos -->
         <div style="margin-top: 2rem;">
-          <article class="card spotlight-card github-card" id="githubWidget">
+          <article class="card spotlight-card github-card card--static tilt" data-tilt-strength="0.3" id="githubWidget">
             <div class="card-icon">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
@@ -681,6 +682,10 @@
 
       <script src="script.js"></script>
       <script src="mobile.js"></script>
+      <script type="module">
+        import { initFarolillo } from './farolillo.js';
+        initFarolillo();
+      </script>
 
   </body>
 </html>

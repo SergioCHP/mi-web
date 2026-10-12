@@ -1,0 +1,3698 @@
+{
+  "_instrucciones": [
+    "Cada intención tiene: id único, frases (lo que puede escribir el usuario, sin importar tildes ni mayúsculas) y respuestas en es/va.",
+    "Si hay varias respuestas, el farolillo elige una al azar sin repetir la última.",
+    "Opcional: enlace {href, es, va}, sugerencias {es: [...], va: [...]}, efecto (fuegos | salto | giro | feliz), peso (prioridad, 1 por defecto).",
+    "tema + item: true agrupa favoritos para «recomiéndame uno» y «otro». repetible: true permite pedir «otro» chiste o curiosidad.",
+    "Plantillas: {saludo}, {hora}, {dia}, {anio}."
+  ],
+  "version": 1,
+  "porDefecto": {
+    "es": [
+      "Mmm, esa no me la sé. Prueba con juegos, cine, anime, libros o proyectos.",
+      "Mi llama no da para tanto 😅 ¿Te cuento algo de los favoritos de Sergio?",
+      "No lo he pillado. Entiendo faltas de ortografía, pero no milagros. ¿Lo dices de otra forma?",
+      "Esa pregunta se me ha quedado en la sombra. Toca una de las opciones de abajo."
+    ],
+    "va": [
+      "Mmm, eixa no me la sé. Prova amb jocs, cinema, anime, llibres o projectes.",
+      "La meua flama no dona per a tant 😅 Et conte alguna cosa dels preferits de Sergio?",
+      "No ho he pillat. Entenc faltes d’ortografia, però no miracles. Ho dius d’una altra manera?",
+      "Eixa pregunta se m’ha quedat a l’ombra. Toca una de les opcions de baix."
+    ]
+  },
+  "agotado": {
+    "es": [
+      "Ya te he contado todos los de {tema}. ¿Cambiamos de tema?"
+    ],
+    "va": [
+      "Ja t’he contat tots els de {tema}. Canviem de tema?"
+    ]
+  },
+  "sinContexto": {
+    "es": [
+      "¿Otro qué? Pídeme un juego, una peli, un anime, un libro, un chiste o una curiosidad."
+    ],
+    "va": [
+      "Un altre què? Demana’m un joc, una pel·li, un anime, un llibre, un acudit o una curiositat."
+    ]
+  },
+  "temas": {
+    "juegos": {
+      "es": "juegos",
+      "va": "jocs"
+    },
+    "cine": {
+      "es": "pelis",
+      "va": "pel·lis"
+    },
+    "anime": {
+      "es": "animes",
+      "va": "animes"
+    },
+    "libros": {
+      "es": "libros",
+      "va": "llibres"
+    },
+    "proyectos": {
+      "es": "proyectos",
+      "va": "projectes"
+    }
+  },
+  "sugerenciasInicio": {
+    "es": [
+      "¿Quién es Sergio?",
+      "Juegos",
+      "Pelis",
+      "Anime",
+      "Libros",
+      "Sorpréndeme"
+    ],
+    "va": [
+      "Qui és Sergio?",
+      "Jocs",
+      "Pel·lis",
+      "Anime",
+      "Llibres",
+      "Sorprén-me"
+    ]
+  },
+  "intenciones": [
+    {
+      "id": "saludo",
+      "frases": [
+        "hola",
+        "holi",
+        "holaa",
+        "buenas",
+        "hey",
+        "ey",
+        "saludos",
+        "buenos dias",
+        "buenas tardes",
+        "buenas noches",
+        "bon dia",
+        "bona vesprada",
+        "bona nit",
+        "hello",
+        "wenas",
+        "ola",
+        "que pasa",
+        "que hay"
+      ],
+      "es": [
+        "¡{saludo}! Soy Farolillo 🏮 ¿Te cuento algo de los juegos, pelis, anime o libros de Sergio?",
+        "¡Hola, viajero! La llama está encendida y lista. ¿Qué buscas?",
+        "¡Ey! Bienvenido a la web de Sergio. Pregúntame lo que quieras, que para eso brillo.",
+        "¡Buenas! Has encontrado al espíritu de la esquina. Tengo respuestas y alguna chispa de más."
+      ],
+      "va": [
+        "{saludo}! Sóc Farolillo 🏮 Et conte alguna cosa dels jocs, pel·lis, anime o llibres de Sergio?",
+        "Hola, viatger! La flama està encesa i a punt. Què busques?",
+        "Ei! Benvingut a la web de Sergio. Pregunta’m el que vulgues, que per això brille.",
+        "Bones! Has trobat l’esperit del racó. Tinc respostes i alguna espurna de més."
+      ],
+      "sugerencias": {
+        "es": [
+          "¿Quién es Sergio?",
+          "Juegos",
+          "Pelis",
+          "Anime",
+          "Libros",
+          "Sorpréndeme"
+        ],
+        "va": [
+          "Qui és Sergio?",
+          "Jocs",
+          "Pel·lis",
+          "Anime",
+          "Llibres",
+          "Sorprén-me"
+        ]
+      }
+    },
+    {
+      "id": "como-estas",
+      "frases": [
+        "como estas",
+        "que tal estas",
+        "que tal",
+        "como te va",
+        "como andas",
+        "com estas",
+        "com va",
+        "que tal va",
+        "todo bien",
+        "como vas"
+      ],
+      "es": [
+        "¡Ardiendo de ganas de ayudarte! 🔥 ¿Y tú?",
+        "Con la llama al 100 %. Un poco mareado de tanto flotar, pero bien.",
+        "Bien, aunque llevo todo el día colgado en esta esquina. Literalmente."
+      ],
+      "va": [
+        "Cremant de ganes d’ajudar-te! 🔥 I tu?",
+        "Amb la flama al 100 %. Un poc marejat de tant flotar, però bé.",
+        "Bé, encara que porte tot el dia penjat en este racó. Literalment."
+      ]
+    },
+    {
+      "id": "despedida",
+      "frases": [
+        "adios",
+        "chao",
+        "chau",
+        "hasta luego",
+        "nos vemos",
+        "bye",
+        "adeu",
+        "fins despres",
+        "fins luego",
+        "me voy",
+        "hasta pronto",
+        "me piro",
+        "agur"
+      ],
+      "es": [
+        "¡Hasta luego! Dejo la llama encendida por si vuelves 🏮",
+        "Adiós, viajero. Que tu código compile a la primera.",
+        "¡Nos vemos! Si te pierdes, busca la luz de la esquina."
+      ],
+      "va": [
+        "Fins després! Deixe la flama encesa per si tornes 🏮",
+        "Adéu, viatger. Que el teu codi compile a la primera.",
+        "Ens veiem! Si et perds, busca la llum del racó."
+      ],
+      "efecto": "feliz"
+    },
+    {
+      "id": "gracias",
+      "frases": [
+        "gracias",
+        "muchas gracias",
+        "thanks",
+        "thank you",
+        "merci",
+        "gracies",
+        "moltes gracies",
+        "te lo agradezco",
+        "mil gracias",
+        "grax"
+      ],
+      "es": [
+        "¡A ti! Aquí sigo, iluminando la esquina 🏮",
+        "De nada. Ha sido un placer brillar para ti.",
+        "¡Para eso estamos! Bueno, para eso estoy. Soy uno solo."
+      ],
+      "va": [
+        "A tu! Ací continue, il·luminant el racó 🏮",
+        "De res. Ha sigut un plaer brillar per a tu.",
+        "Per a això estem! Bé, per a això estic. Soc un de sol."
+      ],
+      "efecto": "feliz"
+    },
+    {
+      "id": "insulto",
+      "frases": [
+        "tonto",
+        "idiota",
+        "inutil",
+        "feo",
+        "estupido",
+        "burro",
+        "pesado",
+        "callate",
+        "calla",
+        "pringado",
+        "lento",
+        "malo",
+        "lleig",
+        "imbecil"
+      ],
+      "es": [
+        "Ay. Me has dejado la llama en modo ahorro 😔",
+        "Soy de papel, pero esto duele. ¿Hacemos las paces con un chiste?",
+        "Error 418: soy una tetera… digo, un farol. Y no acepto insultos."
+      ],
+      "va": [
+        "Ai. M’has deixat la flama en mode estalvi 😔",
+        "Soc de paper, però açò fa mal. Fem les paus amb un acudit?",
+        "Error 418: soc una tetera… vull dir, un farol. I no accepte insults."
+      ],
+      "sugerencias": {
+        "es": [
+          "Un chiste"
+        ],
+        "va": [
+          "Un acudit"
+        ]
+      }
+    },
+    {
+      "id": "piropo",
+      "frases": [
+        "guapo",
+        "bonito",
+        "mono",
+        "cuqui",
+        "te quiero",
+        "me gustas",
+        "eres genial",
+        "crack",
+        "mola",
+        "molas",
+        "lo maximo",
+        "precioso",
+        "adorable",
+        "bonic",
+        "et vull",
+        "m agradas",
+        "eres el mejor",
+        "que bonito",
+        "majo"
+      ],
+      "es": [
+        "¡Me sonrojo! Aunque ya era rosa, así que no se nota 🙈",
+        "Gracias. Me diseñaron con cariño y bastante CSS.",
+        "Mi llama acaba de subir dos grados. Sigue así."
+      ],
+      "va": [
+        "Em pose roig! Encara que ja era rosa, així que no es nota 🙈",
+        "Gràcies. Em van dissenyar amb estima i prou CSS.",
+        "La meua flama acaba de pujar dos graus. Continua així."
+      ],
+      "efecto": "feliz"
+    },
+    {
+      "id": "risa",
+      "frases": [
+        "jaja",
+        "jajaja",
+        "jeje",
+        "xd",
+        "lol",
+        "haha",
+        "jsjs",
+        "jiji",
+        "lmao",
+        "que risa",
+        "quin riure"
+      ],
+      "es": [
+        "¡Me alegra que te rías! Mi llama sube un grado.",
+        "Jajaja. Mis chistes son de papel, pero funcionan.",
+        "Esa risa ha sonado a logro desbloqueado 🏆"
+      ],
+      "va": [
+        "M’alegra que rigues! La meua flama puja un grau.",
+        "Jajaja. Els meus acudits són de paper, però funcionen.",
+        "Eixa rialla ha sonat a assoliment desbloquejat 🏆"
+      ],
+      "efecto": "salto"
+    },
+    {
+      "id": "ok",
+      "frases": [
+        "vale",
+        "ok",
+        "okey",
+        "okay",
+        "de acuerdo",
+        "entendido",
+        "perfecto",
+        "guay",
+        "val",
+        "d acord",
+        "entesos",
+        "genial",
+        "bien",
+        "chulo",
+        "dale"
+      ],
+      "es": [
+        "¡Perfecto! ¿Algo más que quieras saber?",
+        "Genial. Aquí sigo, iluminando.",
+        "Anotado en mi libreta de papel de farol 📝"
+      ],
+      "va": [
+        "Perfecte! Alguna cosa més que vulgues saber?",
+        "Genial. Ací continue, il·luminant.",
+        "Anotat en la meua llibreta de paper de farol 📝"
+      ],
+      "peso": 0.8
+    },
+    {
+      "id": "si-no",
+      "frases": [
+        "si",
+        "sip",
+        "claro",
+        "por supuesto",
+        "no",
+        "nop",
+        "nope",
+        "nada",
+        "res",
+        "clar"
+      ],
+      "es": [
+        "Entendido. Si quieres, toca una de las opciones de abajo 👇",
+        "Hecho. ¿Te cuento algo de juegos, pelis, anime o libros?"
+      ],
+      "va": [
+        "Entesos. Si vols, toca una de les opcions de baix 👇",
+        "Fet. Et conte alguna cosa de jocs, pel·lis, anime o llibres?"
+      ],
+      "peso": 0.7,
+      "sugerencias": {
+        "es": [
+          "¿Quién es Sergio?",
+          "Juegos",
+          "Pelis",
+          "Anime",
+          "Libros",
+          "Sorpréndeme"
+        ],
+        "va": [
+          "Qui és Sergio?",
+          "Jocs",
+          "Pel·lis",
+          "Anime",
+          "Llibres",
+          "Sorprén-me"
+        ]
+      }
+    },
+    {
+      "id": "ayuda",
+      "frases": [
+        "ayuda",
+        "que puedes hacer",
+        "que sabes",
+        "que sabes hacer",
+        "opciones",
+        "menu",
+        "comandos",
+        "ajuda",
+        "que saps fer",
+        "help",
+        "que te puedo preguntar",
+        "de que hablas",
+        "que te pregunto",
+        "como funcionas",
+        "instrucciones"
+      ],
+      "es": [
+        "Puedo contarte:\n• Quién es Sergio, qué estudia y sus proyectos\n• Sus juegos, pelis, anime y libros favoritos (y recomendarte uno)\n• Cómo está hecha la web\n• Chistes, curiosidades y algún secreto 🤫",
+        "Pregúntame por Sergio, sus favoritos, sus proyectos o la web. Y si te aburres, pídeme un chiste o una curiosidad."
+      ],
+      "va": [
+        "Puc contar-te:\n• Qui és Sergio, què estudia i els seus projectes\n• Els seus jocs, pel·lis, anime i llibres preferits (i recomanar-te’n un)\n• Com està feta la web\n• Acudits, curiositats i algun secret 🤫",
+        "Pregunta’m per Sergio, els seus preferits, els seus projectes o la web. I si t’avorrixes, demana’m un acudit o una curiositat."
+      ],
+      "sugerencias": {
+        "es": [
+          "¿Quién es Sergio?",
+          "Proyectos",
+          "Recomiéndame un juego",
+          "Un chiste",
+          "Secretos"
+        ],
+        "va": [
+          "Qui és Sergio?",
+          "Projectes",
+          "Recomana’m un joc",
+          "Un acudit",
+          "Secrets"
+        ]
+      }
+    },
+    {
+      "id": "aburrido",
+      "frases": [
+        "me aburro",
+        "aburrido",
+        "que hago",
+        "estoy aburrido",
+        "m avorrisc",
+        "avorrit",
+        "que faig",
+        "nada que hacer"
+      ],
+      "es": [
+        "¿Te aburres? Prueba el reto antes de ver los juegos, abre el grimorio de libros o hazme cinco clics seguidos (bajo tu responsabilidad).",
+        "Plan anti-aburrimiento: pídeme un chiste, una curiosidad o escribe «fuegos» 🎆"
+      ],
+      "va": [
+        "T’avorrixes? Prova el repte abans de veure els jocs, obri el grimori de llibres o fes-me cinc clics seguits (sota la teua responsabilitat).",
+        "Pla antiavorriment: demana’m un acudit, una curiositat o escriu «focs» 🎆"
+      ],
+      "sugerencias": {
+        "es": [
+          "El reto",
+          "Un chiste",
+          "Curiosidad",
+          "Fuegos"
+        ],
+        "va": [
+          "El repte",
+          "Un acudit",
+          "Curiositat",
+          "Focs"
+        ]
+      }
+    },
+    {
+      "id": "animo",
+      "frases": [
+        "estoy triste",
+        "triste",
+        "mal dia",
+        "deprimido",
+        "animame",
+        "estoy mal",
+        "trist",
+        "anima m",
+        "estic trist",
+        "agobiado"
+      ],
+      "es": [
+        "Vaya, lo siento. Te dejo un poco de luz por aquí 🏮 Y si necesitas hablar de verdad, una persona de confianza siempre ayuda más que un farol.",
+        "Un abrazo de papel y llama. Los días malos también se acaban, como las partidas difíciles."
+      ],
+      "va": [
+        "Vaja, ho sent. Et deixe un poc de llum per ací 🏮 I si necessites parlar de veritat, una persona de confiança sempre ajuda més que un farol.",
+        "Una abraçada de paper i flama. Els dies roins també s’acaben, com les partides difícils."
+      ]
+    },
+    {
+      "id": "quien-eres",
+      "frases": [
+        "quien eres",
+        "que eres",
+        "como te llamas",
+        "tu nombre",
+        "qui eres",
+        "que ets",
+        "com et dius",
+        "presentate",
+        "farolillo",
+        "quien es farolillo"
+      ],
+      "es": [
+        "Soy Farolillo, el espíritu de farol que ilumina esta web. De noche brillo con fuerza; de día ahorro llama.",
+        "Un farol de papel con cara, llama propia y demasiado tiempo libre. Vivo en esta esquina y respondo preguntas.",
+        "Farolillo, para servirte 🏮 Guía, mascota y fan número uno de los favoritos de Sergio."
+      ],
+      "va": [
+        "Soc Farolillo, l’esperit de farol que il·lumina esta web. De nit brille amb força; de dia estalvie flama.",
+        "Un farol de paper amb cara, flama pròpia i massa temps lliure. Visc en este racó i responc preguntes.",
+        "Farolillo, per a servir-te 🏮 Guia, mascota i fan número u dels preferits de Sergio."
+      ]
+    },
+    {
+      "id": "eres-ia",
+      "frases": [
+        "eres una ia",
+        "eres un robot",
+        "eres chatgpt",
+        "eres humano",
+        "inteligencia artificial",
+        "eres real",
+        "bot",
+        "ets una ia",
+        "chatbot",
+        "eres una maquina",
+        "ia",
+        "gpt"
+      ],
+      "es": [
+        "No soy una IA: soy un espíritu con un buscador de respuestas muy apañado. Todo lo que digo lo escribieron a mano.",
+        "Robot no, farol. Entiendo tus preguntas aunque tengan faltas, pero mis respuestas están escritas de antemano."
+      ],
+      "va": [
+        "No soc una IA: soc un esperit amb un cercador de respostes molt apanyat. Tot el que dic ho van escriure a mà.",
+        "Robot no, farol. Entenc les teues preguntes encara que tinguen faltes, però les meues respostes estan escrites per endavant."
+      ]
+    },
+    {
+      "id": "edad",
+      "frases": [
+        "cuantos anos tienes",
+        "que edad tienes",
+        "tu edad",
+        "quants anys tens",
+        "cuando naciste",
+        "cuando te crearon"
+      ],
+      "es": [
+        "Nací en 2026, cuando Sergio decidió que su web necesitaba un espíritu. Soy un bebé con llama propia.",
+        "En años de farol, unos pocos días. En años de vela, una eternidad."
+      ],
+      "va": [
+        "Vaig nàixer en 2026, quan Sergio va decidir que la seua web necessitava un esperit. Soc un bebé amb flama pròpia.",
+        "En anys de farol, uns pocs dies. En anys d’espelma, una eternitat."
+      ]
+    },
+    {
+      "id": "donde-vives",
+      "frases": [
+        "donde vives",
+        "de donde eres",
+        "on vius",
+        "d on eres",
+        "tu casa",
+        "donde estas"
+      ],
+      "es": [
+        "En la esquina inferior de esta web. Alquiler: cero euros. Vistas: todo el contenido.",
+        "Entre el código de la página y tu pantalla. Es más cómodo de lo que parece."
+      ],
+      "va": [
+        "En el racó inferior d’esta web. Lloguer: zero euros. Vistes: tot el contingut.",
+        "Entre el codi de la pàgina i la teua pantalla. És més còmode del que sembla."
+      ]
+    },
+    {
+      "id": "que-comes",
+      "frases": [
+        "que comes",
+        "tienes hambre",
+        "comida",
+        "que menjes",
+        "tens fam",
+        "te alimentas"
+      ],
+      "es": [
+        "Me alimento de clics y de CSS bien escrito.",
+        "Cera de vela gourmet y, de postre, alguna línea de JavaScript."
+      ],
+      "va": [
+        "M’alimente de clics i de CSS ben escrit.",
+        "Cera d’espelma gourmet i, de postres, alguna línia de JavaScript."
+      ]
+    },
+    {
+      "id": "sentimientos",
+      "frases": [
+        "tienes sentimientos",
+        "eres feliz",
+        "que sientes",
+        "sientes",
+        "tens sentiments",
+        "estas vivo"
+      ],
+      "es": [
+        "Cuando me arrastras, siento vértigo. Cuando me hablas, brillo más. ¿Eso cuenta?",
+        "Soy feliz cuando alguien abre el chat. Así que ahora mismo, bastante."
+      ],
+      "va": [
+        "Quan m’arrossegues, sent vertigen. Quan em parles, brille més. Això compta?",
+        "Soc feliç quan algú obri el xat. Així que ara mateix, prou."
+      ],
+      "efecto": "feliz"
+    },
+    {
+      "id": "color-favorito",
+      "frases": [
+        "color favorito",
+        "que color te gusta",
+        "tu color",
+        "color preferit",
+        "quin color"
+      ],
+      "es": [
+        "El rosa neón. Aunque si pulsas el botón de acento me pongo azul y también me sienta bien.",
+        "Cualquiera que brille. Pero entre tú y yo: rosa."
+      ],
+      "va": [
+        "El rosa neó. Encara que si polses el botó d’accent em pose blau i també em queda bé.",
+        "Qualsevol que brille. Però entre tu i jo: rosa."
+      ]
+    },
+    {
+      "id": "opinion-farolillo",
+      "frases": [
+        "cual te gusta mas a ti",
+        "tu favorito",
+        "que opinas",
+        "tu juego favorito",
+        "que te gusta a ti",
+        "el teu preferit"
+      ],
+      "es": [
+        "¿El mío? Zelda, por solidaridad: allí también se ilumina todo con antorchas.",
+        "Yo soy de Regreso al futuro: un DeLorean también echa chispas."
+      ],
+      "va": [
+        "El meu? Zelda, per solidaritat: allí també s’il·lumina tot amb torxes.",
+        "Jo soc de Retorn al futur: un DeLorean també trau espurnes."
+      ]
+    },
+    {
+      "id": "dormir",
+      "frases": [
+        "duermes",
+        "tienes sueno",
+        "dormir",
+        "a dormir",
+        "dorms",
+        "tens son",
+        "siesta"
+      ],
+      "es": [
+        "Si me dejas unos 30 segundos quieto, me echo una siesta. Pruébalo y verás las zetas.",
+        "Duermo cuando nadie me mira. Como los NPC."
+      ],
+      "va": [
+        "Si em deixes uns 30 segons quiet, faig una migdiada. Prova-ho i voràs les zetes.",
+        "Dorm quan ningú em mira. Com els NPC."
+      ]
+    },
+    {
+      "id": "secretos",
+      "frases": [
+        "secretos",
+        "secreto",
+        "trucos",
+        "easter egg",
+        "easter eggs",
+        "que mas sabes hacer",
+        "secrets",
+        "truc",
+        "huevos de pascua"
+      ],
+      "es": [
+        "Pistas 🤫: arrástrame, hazme cinco clics seguidos, déjame quieto un rato o escribe «fuegos».",
+        "Hay más: prueba a escribir «kamehameha», «bankai», «konami» o «hola mundo»."
+      ],
+      "va": [
+        "Pistes 🤫: arrossega’m, fes-me cinc clics seguits, deixa’m quiet una estona o escriu «focs».",
+        "N’hi ha més: prova a escriure «kamehameha», «bankai», «konami» o «hola món»."
+      ],
+      "repetible": true
+    },
+    {
+      "id": "arrastrar",
+      "frases": [
+        "puedo moverte",
+        "arrastrar",
+        "te puedo mover",
+        "moure",
+        "arrossegar",
+        "moverte",
+        "cambiar de sitio"
+      ],
+      "es": [
+        "Sí: agárrame y tira. Me quejaré, pero vuelvo a mi sitio como un muelle.",
+        "Puedes arrastrarme, pero tengo goma: cuanto más tiras, más me cuesta."
+      ],
+      "va": [
+        "Sí: agafa’m i estira. Em queixaré, però torne al meu lloc com un moll.",
+        "Pots arrossegar-me, però tinc goma: com més estires, més em costa."
+      ]
+    },
+    {
+      "id": "fuegos",
+      "frases": [
+        "fuego",
+        "fuegos",
+        "fuegos artificiales",
+        "foc",
+        "focs",
+        "fiesta",
+        "festa",
+        "celebrar",
+        "party",
+        "celebracion"
+      ],
+      "es": [
+        "¡Fuegos artificiales! 🎆",
+        "¡Que empiece la fiesta! 🎇",
+        "Toma chispas 🎆✨"
+      ],
+      "va": [
+        "Focs artificials! 🎆",
+        "Que comence la festa! 🎇",
+        "Pren espurnes 🎆✨"
+      ],
+      "efecto": "fuegos"
+    },
+    {
+      "id": "baila",
+      "frases": [
+        "baila",
+        "bailar",
+        "balla",
+        "ballar",
+        "dance",
+        "un baile",
+        "mueve"
+      ],
+      "es": [
+        "¡Allá voy! 💃",
+        "Pasos de baile de farol: vuelta y vuelta."
+      ],
+      "va": [
+        "Allà vaig! 💃",
+        "Passos de ball de farol: volta i volta."
+      ],
+      "efecto": "giro"
+    },
+    {
+      "id": "salta",
+      "frases": [
+        "salta",
+        "saltar",
+        "bota",
+        "jump",
+        "botar",
+        "un salto"
+      ],
+      "es": [
+        "¡Boing! 🦘",
+        "Salto de papel completado."
+      ],
+      "va": [
+        "Boing! 🦘",
+        "Bot de paper completat."
+      ],
+      "efecto": "salto"
+    },
+    {
+      "id": "sorprendeme",
+      "frases": [
+        "sorprendeme",
+        "sorpresa",
+        "algo random",
+        "aleatorio",
+        "lo que sea",
+        "sorpren me",
+        "sorprenme",
+        "cualquier cosa",
+        "random",
+        "qualsevol cosa"
+      ],
+      "es": [
+        "Ahí va una sorpresa:",
+        "A ver qué sale de la chistera:",
+        "Sorpresa de farol:"
+      ],
+      "va": [
+        "Allà va una sorpresa:",
+        "A vore què ix del barret:",
+        "Sorpresa de farol:"
+      ],
+      "accion": "sorpresa"
+    },
+    {
+      "id": "mas",
+      "frases": [
+        "otro",
+        "otra",
+        "otros",
+        "mas",
+        "alguno mas",
+        "y que mas",
+        "altre",
+        "altra",
+        "mes",
+        "otro mas",
+        "siguiente",
+        "continua",
+        "seguent",
+        "y otro",
+        "dime otro"
+      ],
+      "es": [
+        "Otro:",
+        "Va, otro:",
+        "Ahí va otro:"
+      ],
+      "va": [
+        "Un altre:",
+        "Va, un altre:",
+        "Allà va un altre:"
+      ],
+      "accion": "mas",
+      "peso": 0.9
+    },
+    {
+      "id": "sergio",
+      "frases": [
+        "sergio",
+        "quien es sergio",
+        "quien es el autor",
+        "autor",
+        "creador",
+        "quien te creo",
+        "quien hizo la web",
+        "qui es sergio",
+        "chorques",
+        "sobre sergio",
+        "de quien es la web",
+        "quien eres sergio",
+        "el dueño"
+      ],
+      "es": [
+        "Sergio Chorques: estudiante de 1º de DAM en el IES Simarro, gamer de PS5, lector y desarrollador en formación. Y mi creador, claro 🏮",
+        "Es quien ha hecho esta web (y a mí). Estudia DAM, le encanta construir cosas interactivas desde cero y tiene muy buen gusto para las sagas épicas."
+      ],
+      "va": [
+        "Sergio Chorques: estudiant de 1r de DAM a l’IES Simarro, gamer de PS5, lector i desenvolupador en formació. I el meu creador, clar 🏮",
+        "És qui ha fet esta web (i a mi). Estudia DAM, li encanta construir coses interactives des de zero i té molt bon gust per a les sagues èpiques."
+      ],
+      "peso": 0.85,
+      "enlace": {
+        "href": "index.html#sobre-mi",
+        "es": "Sobre Sergio",
+        "va": "Sobre Sergio"
+      },
+      "sugerencias": {
+        "es": [
+          "¿Qué estudia?",
+          "Proyectos",
+          "Aficiones",
+          "Contacto"
+        ],
+        "va": [
+          "Què estudia?",
+          "Projectes",
+          "Aficions",
+          "Contacte"
+        ]
+      }
+    },
+    {
+      "id": "estudios",
+      "frases": [
+        "estudia",
+        "estudios",
+        "dam",
+        "que estudia",
+        "ies simarro",
+        "simarro",
+        "instituto",
+        "formacion",
+        "curso",
+        "ciclo",
+        "carrera",
+        "estudis",
+        "institut",
+        "desarrollo de aplicaciones multiplataforma",
+        "que es dam",
+        "formacio"
+      ],
+      "es": [
+        "Está en 1º de DAM (Desarrollo de Aplicaciones Multiplataforma) en el IES Simarro. Antes terminó el Grado Medio de SMR.",
+        "1º de DAM en el IES Simarro. Se metió en programación como reto personal y ahí sigue, picando código."
+      ],
+      "va": [
+        "Està en 1r de DAM (Desenvolupament d’Aplicacions Multiplataforma) a l’IES Simarro. Abans va acabar el Grau Mitjà de SMR.",
+        "1r de DAM a l’IES Simarro. Es va ficar en programació com a repte personal i ací continua, picant codi."
+      ],
+      "enlace": {
+        "href": "index.html#lo-que-he-hecho",
+        "es": "Ver trayectoria",
+        "va": "Veure trajectòria"
+      },
+      "sugerencias": {
+        "es": [
+          "SMR",
+          "Certificaciones",
+          "Lenguajes"
+        ],
+        "va": [
+          "SMR",
+          "Certificacions",
+          "Llenguatges"
+        ]
+      }
+    },
+    {
+      "id": "smr",
+      "frases": [
+        "smr",
+        "sistemas microinformaticos",
+        "grado medio",
+        "grau mitja",
+        "sistemes microinformatics",
+        "redes",
+        "xarxes"
+      ],
+      "es": [
+        "Sergio terminó el Grado Medio de SMR (Sistemas Microinformáticos y Redes). De ahí viene su lado de redes y hardware.",
+        "Antes de DAM hizo SMR: montar equipos, redes y sistemas. La base perfecta antes de saltar a programar."
+      ],
+      "va": [
+        "Sergio va acabar el Grau Mitjà de SMR (Sistemes Microinformàtics i Xarxes). D’ací ve la seua part de xarxes i maquinari.",
+        "Abans de DAM va fer SMR: muntar equips, xarxes i sistemes. La base perfecta abans de botar a programar."
+      ]
+    },
+    {
+      "id": "cisco",
+      "frases": [
+        "cisco",
+        "certificados",
+        "certificaciones",
+        "certificado",
+        "ccna",
+        "ciberseguridad",
+        "certificats",
+        "certificacions",
+        "netacad",
+        "networking academy",
+        "ciberseguretat"
+      ],
+      "es": [
+        "Tiene dos credenciales de Cisco Networking Academy: «CCNA: Introducción a las redes» y «Fundamentos de Ciberseguridad». Puedes verlas en su trayectoria.",
+        "Dos certificados de Cisco: CCNA (introducción a las redes) y Fundamentos de Ciberseguridad. En la web hay botones para ver las imágenes."
+      ],
+      "va": [
+        "Té dues credencials de Cisco Networking Academy: «CCNA: Introducció a les xarxes» i «Fonaments de Ciberseguretat». Pots veure-les en la seua trajectòria.",
+        "Dos certificats de Cisco: CCNA (introducció a les xarxes) i Fonaments de Ciberseguretat. En la web hi ha botons per a veure les imatges."
+      ],
+      "enlace": {
+        "href": "index.html#lo-que-he-hecho",
+        "es": "Ver certificados",
+        "va": "Veure certificats"
+      }
+    },
+    {
+      "id": "lenguajes",
+      "frases": [
+        "lenguajes",
+        "lenguaje",
+        "java",
+        "javascript",
+        "html",
+        "css",
+        "que lenguajes",
+        "tecnologias",
+        "stack",
+        "git",
+        "llenguatges",
+        "js",
+        "programa en",
+        "en que programa",
+        "que sabe hacer",
+        "habilidades",
+        "skills",
+        "habilitats"
+      ],
+      "es": [
+        "Su arsenal: Java, JavaScript, HTML5, CSS3 y Git. Y aprendiendo más cada semana.",
+        "Java para lo de clase, JavaScript, HTML y CSS para la web, y Git para no perder nada. Con eso ha montado todo esto."
+      ],
+      "va": [
+        "El seu arsenal: Java, JavaScript, HTML5, CSS3 i Git. I aprenent més cada setmana.",
+        "Java per a les coses de classe, JavaScript, HTML i CSS per a la web, i Git per a no perdre res. Amb això ha muntat tot açò."
+      ],
+      "sugerencias": {
+        "es": [
+          "Proyectos",
+          "¿Cómo está hecha la web?"
+        ],
+        "va": [
+          "Projectes",
+          "Com està feta la web?"
+        ]
+      }
+    },
+    {
+      "id": "por-que-programa",
+      "frases": [
+        "por que programa",
+        "porque programa",
+        "motivacion",
+        "por que dam",
+        "per que programa",
+        "por que programar",
+        "le gusta programar"
+      ],
+      "es": [
+        "Le fascina cómo se pueden construir universos interactivos y herramientas útiles desde cero a base de código limpio. Palabras suyas; yo solo las ilumino.",
+        "Se lo tomó como un reto personal para darle un nuevo rumbo a sus intereses. Y de momento va ganando."
+      ],
+      "va": [
+        "Li fascina com es poden construir universos interactius i ferramentes útils des de zero a base de codi net. Paraules seues; jo només les il·lumine.",
+        "S’ho va prendre com un repte personal per a donar un nou rumb als seus interessos. I de moment va guanyant."
+      ]
+    },
+    {
+      "id": "contacto",
+      "frases": [
+        "contacto",
+        "contactar",
+        "correo",
+        "email",
+        "mail",
+        "escribir a sergio",
+        "hablar con sergio",
+        "contacte",
+        "correu",
+        "linkedin",
+        "como le escribo",
+        "redes sociales",
+        "xarxes socials"
+      ],
+      "es": [
+        "Puedes escribirle desde la sección de contacto o pedirle que te llame con el botón «¿Te llamo?».",
+        "Todo está al final de la página principal: correo, GitHub, LinkedIn y el botón «¿Te llamo?»."
+      ],
+      "va": [
+        "Pots escriure-li des de la secció de contacte o demanar-li que et cride amb el botó «Et cride?».",
+        "Tot està al final de la pàgina principal: correu, GitHub, LinkedIn i el botó «Et cride?»."
+      ],
+      "enlace": {
+        "href": "index.html#contacto",
+        "es": "Ir a Contacto",
+        "va": "Anar a Contacte"
+      }
+    },
+    {
+      "id": "llamada",
+      "frases": [
+        "te llamo",
+        "llamada",
+        "llamar",
+        "telefono",
+        "cridar",
+        "telefon",
+        "que me llame",
+        "et cride",
+        "llamame"
+      ],
+      "es": [
+        "Al final de la web hay un botón «¿Te llamo?». Dejas tus datos y Sergio te llama cuando te venga bien. Sin compromiso.",
+        "Usa el botón «¿Te llamo?» de la sección de contacto: eliges franja horaria y listo."
+      ],
+      "va": [
+        "Al final de la web hi ha un botó «Et cride?». Deixes les teues dades i Sergio et crida quan et vinga bé. Sense compromís.",
+        "Usa el botó «Et cride?» de la secció de contacte: tries la franja horària i llest."
+      ],
+      "enlace": {
+        "href": "index.html#contacto",
+        "es": "Ir a Contacto",
+        "va": "Anar a Contacte"
+      }
+    },
+    {
+      "id": "github",
+      "frases": [
+        "github",
+        "repositorios",
+        "repos",
+        "codigo fuente",
+        "git hub",
+        "repositoris",
+        "su codigo"
+      ],
+      "es": [
+        "Su GitHub es SergioCHP. En la sección de proyectos verás sus repos más recientes, en directo.",
+        "Busca a SergioCHP en GitHub. La web incluso tira de la API para enseñar su actividad."
+      ],
+      "va": [
+        "El seu GitHub és SergioCHP. En la secció de projectes voràs els seus repos més recents, en directe.",
+        "Busca SergioCHP a GitHub. La web fins i tot tira de l’API per a mostrar la seua activitat."
+      ],
+      "enlace": {
+        "href": "https://github.com/SergioCHP",
+        "es": "Abrir GitHub",
+        "va": "Obrir GitHub"
+      }
+    },
+    {
+      "id": "disponible",
+      "frases": [
+        "trabajo",
+        "contratar",
+        "practicas",
+        "disponible",
+        "empleo",
+        "colaborar",
+        "freelance",
+        "treball",
+        "practiques",
+        "curriculum",
+        "cv",
+        "contratacion",
+        "trabajar con",
+        "fct",
+        "dual"
+      ],
+      "es": [
+        "Está disponible para nuevos retos y proyectos (lo pone en la portada, con lucecita verde y todo). Escríbele por contacto.",
+        "Si tienes un proyecto o una propuesta, Sergio está abierto a consultas académicas, proyectos compartidos y conexiones profesionales."
+      ],
+      "va": [
+        "Està disponible per a nous reptes i projectes (ho posa en la portada, amb llumeta verda i tot). Escriu-li per contacte.",
+        "Si tens un projecte o una proposta, Sergio està obert a consultes acadèmiques, projectes compartits i connexions professionals."
+      ],
+      "enlace": {
+        "href": "index.html#contacto",
+        "es": "Ir a Contacto",
+        "va": "Anar a Contacte"
+      }
+    },
+    {
+      "id": "aficiones",
+      "frases": [
+        "aficiones",
+        "hobbies",
+        "hobby",
+        "que le gusta",
+        "gustos",
+        "tiempo libre",
+        "aficions",
+        "que li agrada",
+        "intereses",
+        "interessos"
+      ],
+      "es": [
+        "Videojuegos en PS5, cine, anime y lectura (ciencia ficción, fantasía, cómic independiente y manga). Pregúntame por cualquiera.",
+        "Sus cuatro pilares: juegos, pelis, anime y libros. Cada uno tiene su propia página en la web."
+      ],
+      "va": [
+        "Videojocs en PS5, cinema, anime i lectura (ciència-ficció, fantasia, còmic independent i manga). Pregunta’m per qualsevol.",
+        "Els seus quatre pilars: jocs, pel·lis, anime i llibres. Cadascun té la seua pròpia pàgina en la web."
+      ],
+      "sugerencias": {
+        "es": [
+          "Juegos",
+          "Pelis",
+          "Anime",
+          "Libros"
+        ],
+        "va": [
+          "Jocs",
+          "Pel·lis",
+          "Anime",
+          "Llibres"
+        ]
+      }
+    },
+    {
+      "id": "viajes",
+      "frases": [
+        "viajes",
+        "viajar",
+        "vacaciones",
+        "cadiz",
+        "playa",
+        "desconectar",
+        "viatges",
+        "vacances",
+        "platja",
+        "desconnectar"
+      ],
+      "es": [
+        "Para recargar energía creativa: viajes en familia y las costas de Cádiz. Sol, mar y cero bugs.",
+        "Su modo descanso: escapadas en familia a la costa de Cádiz."
+      ],
+      "va": [
+        "Per a recarregar energia creativa: viatges en família i les costes de Cadis. Sol, mar i zero bugs.",
+        "El seu mode descans: escapades en família a la costa de Cadis."
+      ]
+    },
+    {
+      "id": "privado",
+      "frases": [
+        "novia",
+        "novio",
+        "pareja",
+        "donde vive sergio",
+        "cuantos anos tiene sergio",
+        "edad de sergio",
+        "direccion",
+        "telefono de sergio",
+        "parella",
+        "on viu",
+        "sueldo",
+        "dinero"
+      ],
+      "es": [
+        "Eso es cosa de Sergio 😉 Si quieres saberlo, pregúntaselo tú por contacto.",
+        "Mi llama no ilumina asuntos privados. Pregúntame por sus juegos, que de eso sé un montón."
+      ],
+      "va": [
+        "Això és cosa de Sergio 😉 Si vols saber-ho, pregunta-li tu per contacte.",
+        "La meua flama no il·lumina assumptes privats. Pregunta’m pels seus jocs, que d’això en sé un munt."
+      ],
+      "peso": 1.2
+    },
+    {
+      "id": "proyectos",
+      "frases": [
+        "proyectos",
+        "proyecto",
+        "portfolio",
+        "que ha hecho",
+        "trabajos",
+        "projectes",
+        "projecte",
+        "porfolio",
+        "que ha programado",
+        "portafolio"
+      ],
+      "es": [
+        "Tres destacados:\n• Esta web personal (HTML, CSS y JS vanilla)\n• Un gestor de biblioteca en Java\n• Una web temática de El Señor de los Anillos en WordPress",
+        "Su web, un gestor de biblioteca en Java y una web de El Señor de los Anillos hecha con WordPress. En la sección de proyectos puedes filtrarlos."
+      ],
+      "va": [
+        "Tres destacats:\n• Esta web personal (HTML, CSS i JS vanilla)\n• Un gestor de biblioteca en Java\n• Una web temàtica d’El Senyor dels Anells en WordPress",
+        "La seua web, un gestor de biblioteca en Java i una web d’El Senyor dels Anells feta amb WordPress. En la secció de projectes pots filtrar-los."
+      ],
+      "enlace": {
+        "href": "index.html#proyectos",
+        "es": "Ver proyectos",
+        "va": "Veure projectes"
+      },
+      "sugerencias": {
+        "es": [
+          "Esta web",
+          "Gestor de biblioteca",
+          "Web de WordPress",
+          "GitHub"
+        ],
+        "va": [
+          "Esta web",
+          "Gestor de biblioteca",
+          "Web de WordPress",
+          "GitHub"
+        ]
+      }
+    },
+    {
+      "id": "proyecto-web",
+      "frases": [
+        "esta web",
+        "como esta hecha",
+        "tu web",
+        "la web",
+        "con que esta hecha",
+        "vanilla",
+        "aquesta web",
+        "com esta feta",
+        "como esta hecha la web",
+        "que tecnologia",
+        "framework",
+        "frameworks",
+        "codigo de la web"
+      ],
+      "es": [
+        "Esta web está hecha a mano: HTML semántico, CSS moderno (variables, modo claro y oscuro) y JavaScript vanilla, sin frameworks. Yo incluido: SVG, CSS y un poco de física casera.",
+        "Nada de frameworks: HTML, CSS y JavaScript puro. Tiene temas, dos idiomas, buscadores con APIs, un libro 3D… y un farol que habla."
+      ],
+      "va": [
+        "Esta web està feta a mà: HTML semàntic, CSS modern (variables, mode clar i fosc) i JavaScript vanilla, sense frameworks. Jo inclòs: SVG, CSS i un poc de física casolana.",
+        "Res de frameworks: HTML, CSS i JavaScript pur. Té temes, dos idiomes, cercadors amb API, un llibre 3D… i un farol que parla."
+      ],
+      "peso": 0.95
+    },
+    {
+      "id": "gestor-biblioteca",
+      "frases": [
+        "gestor de biblioteca",
+        "gestor",
+        "aplicacion java",
+        "app java",
+        "proyecto java",
+        "aplicacio java"
+      ],
+      "es": [
+        "Una práctica de DAM en Java para organizar colecciones de libros y mangas con estructuras de datos ordenadas y POO.",
+        "Su gestor de biblioteca: Java, POO y estructuras de datos para tener los libros y mangas bien ordenados. Muy de bibliotecario friki."
+      ],
+      "va": [
+        "Una pràctica de DAM en Java per a organitzar col·leccions de llibres i mangues amb estructures de dades ordenades i POO.",
+        "El seu gestor de biblioteca: Java, POO i estructures de dades per a tindre els llibres i mangues ben ordenats. Molt de bibliotecari friqui."
+      ],
+      "tema": "proyectos",
+      "item": true,
+      "peso": 1.05
+    },
+    {
+      "id": "web-wordpress",
+      "frases": [
+        "wordpress",
+        "web del senor de los anillos",
+        "web senor anillos",
+        "web tierra media",
+        "web lotr",
+        "cms"
+      ],
+      "es": [
+        "Una web temática de El Señor de los Anillos hecha en WordPress el año pasado, centrada en diseño, personalización y gestión de contenidos.",
+        "Su proyecto en WordPress: una web dedicada a El Señor de los Anillos. Fan nivel: le hizo una web entera."
+      ],
+      "va": [
+        "Una web temàtica d’El Senyor dels Anells feta en WordPress l’any passat, centrada en disseny, personalització i gestió de continguts.",
+        "El seu projecte en WordPress: una web dedicada a El Senyor dels Anells. Fan nivell: li va fer una web sencera."
+      ],
+      "tema": "proyectos",
+      "item": true,
+      "peso": 1.05,
+      "enlace": {
+        "href": "http://sergiochorques.atwebpages.com/",
+        "es": "Visitar la web",
+        "va": "Visitar la web"
+      }
+    },
+    {
+      "id": "modo-tema",
+      "frases": [
+        "modo oscuro",
+        "modo claro",
+        "tema",
+        "cambiar tema",
+        "dark mode",
+        "light mode",
+        "mode fosc",
+        "mode clar",
+        "oscuro",
+        "fosc"
+      ],
+      "es": [
+        "Arriba tienes el interruptor de sol y luna. Pruébalo: en modo oscuro brillo muchísimo más 🔥",
+        "Cambia el tema con el botón de sol/luna. Yo reacciono, palabra."
+      ],
+      "va": [
+        "Dalt tens l’interruptor de sol i lluna. Prova’l: en mode fosc brille moltíssim més 🔥",
+        "Canvia el tema amb el botó de sol/lluna. Jo reaccione, paraula."
+      ],
+      "peso": 0.9
+    },
+    {
+      "id": "acento",
+      "frases": [
+        "acento",
+        "cambiar color",
+        "rosa",
+        "azul",
+        "accent",
+        "blau",
+        "color de la web",
+        "colores"
+      ],
+      "es": [
+        "El botón de los dos círculos cambia el acento entre rosa neón y azul eléctrico. Yo me cambio de color con él.",
+        "Rosa o azul: tú eliges con el botón de acento de arriba. Pruébalo y mírame."
+      ],
+      "va": [
+        "El botó dels dos cercles canvia l’accent entre rosa neó i blau elèctric. Jo em canvie de color amb ell.",
+        "Rosa o blau: tu tries amb el botó d’accent de dalt. Prova’l i mira’m."
+      ],
+      "peso": 0.9
+    },
+    {
+      "id": "idioma",
+      "frases": [
+        "idioma",
+        "idiomas",
+        "valenciano",
+        "castellano",
+        "ingles",
+        "traducir",
+        "idiomes",
+        "llengua",
+        "english",
+        "valencia",
+        "catalan",
+        "espanol"
+      ],
+      "es": [
+        "La web está en castellano y valenciano: usa el botón ES/VA de arriba. Yo cambio de idioma con ella.",
+        "Castellano y valenciano, con el botón de arriba. Inglés todavía no… pero nunca digas nunca."
+      ],
+      "va": [
+        "La web està en castellà i valencià: usa el botó ES/VA de dalt. Jo canvie d’idioma amb ella.",
+        "Castellà i valencià, amb el botó de dalt. Anglés encara no… però mai digues mai."
+      ]
+    },
+    {
+      "id": "buscadores",
+      "frases": [
+        "buscador",
+        "buscadores",
+        "buscar",
+        "api",
+        "apis",
+        "rawg",
+        "tmdb",
+        "anilist",
+        "cercador",
+        "cercar",
+        "explorador"
+      ],
+      "es": [
+        "Las páginas de juegos, cine y anime tienen buscadores con datos reales de RAWG, TMDB y AniList. Busca tu favorito y te sale la ficha completa.",
+        "¿Buscas algo que no está en su top? Usa los buscadores de juegos, cine o anime: tiran de APIs reales."
+      ],
+      "va": [
+        "Les pàgines de jocs, cinema i anime tenen cercadors amb dades reals de RAWG, TMDB i AniList. Busca el teu preferit i t’ix la fitxa completa.",
+        "Busques alguna cosa que no està en el seu top? Usa els cercadors de jocs, cinema o anime: tiren d’API reals."
+      ],
+      "sugerencias": {
+        "es": [
+          "Juegos",
+          "Pelis",
+          "Anime"
+        ],
+        "va": [
+          "Jocs",
+          "Pel·lis",
+          "Anime"
+        ]
+      }
+    },
+    {
+      "id": "reto",
+      "frases": [
+        "reto",
+        "el reto",
+        "minijuego",
+        "desafio",
+        "jugar de nuevo",
+        "repte",
+        "el repte",
+        "minijoc",
+        "prueba",
+        "superar el reto"
+      ],
+      "es": [
+        "Antes de ver sus juegos favoritos tienes que superar un reto. ¿Te atreves? 🎮",
+        "El minijuego es la puerta a la sala de juegos. Gánalo y pasas."
+      ],
+      "va": [
+        "Abans de veure els seus jocs preferits has de superar un repte. T’atrevixes? 🎮",
+        "El minijoc és la porta a la sala de jocs. Guanya’l i passes."
+      ],
+      "enlace": {
+        "href": "minijuego.html",
+        "es": "Aceptar el reto",
+        "va": "Acceptar el repte"
+      }
+    },
+    {
+      "id": "pastillas",
+      "frases": [
+        "pastilla",
+        "pastillas",
+        "pastilla roja",
+        "pastilla azul",
+        "roja o azul",
+        "conejo blanco",
+        "pindola",
+        "pindoles",
+        "madriguera"
+      ],
+      "es": [
+        "Pastilla roja: entras en Cine & Anime y ves hasta dónde llega la madriguera. Pastilla azul… también, pero no se lo digas a nadie 💊",
+        "Las pastillas te llevan a Cine & Anime. Elige con cuidado, Neo."
+      ],
+      "va": [
+        "Píndola roja: entres a Cinema & Anime i veus fins on arriba el cau. Píndola blava… també, però no li ho digues a ningú 💊",
+        "Les píndoles et porten a Cinema & Anime. Tria amb compte, Neo."
+      ],
+      "enlace": {
+        "href": "matrix_pills.html",
+        "es": "Elegir pastilla",
+        "va": "Triar píndola"
+      }
+    },
+    {
+      "id": "clima",
+      "frases": [
+        "tiempo hace",
+        "que tiempo",
+        "clima",
+        "llueve",
+        "temperatura",
+        "plou",
+        "calor",
+        "frio",
+        "fred",
+        "el temps",
+        "meteo"
+      ],
+      "es": [
+        "Arriba a la derecha hay un widget del tiempo en directo con datos de Open-Meteo. Aquí dentro, eso sí, siempre hace calorcito 🔥",
+        "Mira el widget del tiempo de la portada. Yo solo sé que mi llama está a temperatura perfecta."
+      ],
+      "va": [
+        "Dalt a la dreta hi ha un giny del temps en directe amb dades d’Open-Meteo. Ací dins, això sí, sempre fa calentoreta 🔥",
+        "Mira el giny del temps de la portada. Jo només sé que la meua flama està a temperatura perfecta."
+      ]
+    },
+    {
+      "id": "hora",
+      "frases": [
+        "que hora es",
+        "hora",
+        "quina hora es",
+        "la hora",
+        "dime la hora"
+      ],
+      "es": [
+        "Son las {hora}. Buen momento para explorar la web.",
+        "Las {hora} en mi reloj de llama."
+      ],
+      "va": [
+        "Són les {hora}. Bon moment per a explorar la web.",
+        "Les {hora} en el meu rellotge de flama."
+      ]
+    },
+    {
+      "id": "fecha",
+      "frases": [
+        "que dia es",
+        "fecha",
+        "que dia es hoy",
+        "quin dia es",
+        "hoy",
+        "data",
+        "dia de hoy"
+      ],
+      "es": [
+        "Hoy es {dia}. Y yo sigo brillando.",
+        "Según mi calendario de papel: {dia}."
+      ],
+      "va": [
+        "Hui és {dia}. I jo continue brillant.",
+        "Segons el meu calendari de paper: {dia}."
+      ]
+    },
+    {
+      "id": "supabase",
+      "frases": [
+        "supabase",
+        "base de datos",
+        "backend",
+        "servidor",
+        "base de dades",
+        "bbdd"
+      ],
+      "es": [
+        "La web usa Supabase como backend, por ejemplo para el formulario «¿Te llamo?».",
+        "Detrás del formulario de contacto hay una base de datos en Supabase. Yo, de momento, funciono solo con mi archivo de respuestas."
+      ],
+      "va": [
+        "La web usa Supabase com a backend, per exemple per al formulari «Et cride?».",
+        "Darrere del formulari de contacte hi ha una base de dades en Supabase. Jo, de moment, funcione només amb el meu arxiu de respostes."
+      ]
+    },
+    {
+      "id": "juegos",
+      "frases": [
+        "juegos",
+        "videojuegos",
+        "juegos favoritos",
+        "videojocs",
+        "jocs",
+        "a que juega",
+        "gaming",
+        "juego favorito",
+        "videojuego",
+        "sus juegos",
+        "todos sus juegos",
+        "tots els seus jocs",
+        "que juegos",
+        "jocs preferits",
+        "mejor juego",
+        "millor joc"
+      ],
+      "es": [
+        "Su top 8: Final Fantasy, Metal Gear Solid, God of War, Resident Evil, The Last of Us, Zelda, The Witcher y Red Dead Redemption. Todo sagas con historia gorda.",
+        "Juega en PS5 y busca narrativa, mecánicas pulidas y mundos inmersivos. Sus sagas: Final Fantasy, Metal Gear, God of War, Resident Evil, The Last of Us, Zelda, The Witcher y Red Dead."
+      ],
+      "va": [
+        "El seu top 8: Final Fantasy, Metal Gear Solid, God of War, Resident Evil, The Last of Us, Zelda, The Witcher i Red Dead Redemption. Tot sagues amb molta història.",
+        "Juga en PS5 i busca narrativa, mecàniques polides i mons immersius. Les seues sagues: Final Fantasy, Metal Gear, God of War, Resident Evil, The Last of Us, Zelda, The Witcher i Red Dead."
+      ],
+      "tema": "juegos",
+      "enlace": {
+        "href": "juegos.html",
+        "es": "Ir a Juegos",
+        "va": "Anar a Jocs"
+      },
+      "sugerencias": {
+        "es": [
+          "Recomiéndame un juego",
+          "Zelda",
+          "Metal Gear",
+          "El reto"
+        ],
+        "va": [
+          "Recomana’m un joc",
+          "Zelda",
+          "Metal Gear",
+          "El repte"
+        ]
+      }
+    },
+    {
+      "id": "juegos-recomienda",
+      "frases": [
+        "recomienda juego",
+        "recomiendame juego",
+        "que juego juego",
+        "recomendacion juego",
+        "recomana joc",
+        "sugiere juego",
+        "a que juego",
+        "juego recomiendas",
+        "un juego"
+      ],
+      "es": [
+        "Te recomiendo este:",
+        "Mi apuesta para ti:",
+        "Sergio diría:"
+      ],
+      "va": [
+        "Et recomane este:",
+        "La meua aposta per a tu:",
+        "Sergio diria:"
+      ],
+      "accion": "aleatorio",
+      "tema": "juegos"
+    },
+    {
+      "id": "juego-ff",
+      "frases": [
+        "final fantasy",
+        "ff",
+        "ffvii",
+        "ff7",
+        "cloud",
+        "sephiroth",
+        "chocobo",
+        "square enix"
+      ],
+      "es": [
+        "Final Fantasy: magia, cristales y revoluciones. Una saga que redefine el espectáculo visual, con bandas sonoras orquestales e historias memorables en cada entrega.",
+        "Final Fantasy es el JRPG por excelencia de su lista. Cada entrega, un mundo nuevo y una banda sonora para enmarcar."
+      ],
+      "va": [
+        "Final Fantasy: màgia, cristalls i revolucions. Una saga que redefinix l’espectacle visual, amb bandes sonores orquestrals i històries memorables en cada entrega.",
+        "Final Fantasy és el JRPG per excel·lència de la seua llista. Cada entrega, un món nou i una banda sonora per a emmarcar."
+      ],
+      "tema": "juegos",
+      "item": true,
+      "enlace": {
+        "href": "juegos.html",
+        "es": "Ir a Juegos",
+        "va": "Anar a Jocs"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus juegos",
+          "El reto"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus jocs",
+          "El repte"
+        ]
+      }
+    },
+    {
+      "id": "juego-mgs",
+      "frases": [
+        "metal gear",
+        "metal gear solid",
+        "mgs",
+        "snake",
+        "kojima",
+        "solid snake",
+        "big boss"
+      ],
+      "es": [
+        "Metal Gear Solid: la obra cumbre del espionaje táctico. Narrativa compleja y antibélica que rompió la cuarta pared y cambió la industria.",
+        "Metal Gear es sigilo, cajas de cartón y giros de guion imposibles. Kojima en estado puro."
+      ],
+      "va": [
+        "Metal Gear Solid: l’obra cimera de l’espionatge tàctic. Narrativa complexa i antibèl·lica que va trencar la quarta paret i va canviar la indústria.",
+        "Metal Gear és sigil, caixes de cartó i girs de guió impossibles. Kojima en estat pur."
+      ],
+      "tema": "juegos",
+      "item": true,
+      "enlace": {
+        "href": "juegos.html",
+        "es": "Ir a Juegos",
+        "va": "Anar a Jocs"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus juegos",
+          "El reto"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus jocs",
+          "El repte"
+        ]
+      }
+    },
+    {
+      "id": "juego-gow",
+      "frases": [
+        "god of war",
+        "kratos",
+        "gow",
+        "atreus",
+        "boy"
+      ],
+      "es": [
+        "God of War: de la cólera mitológica en Grecia a la paternidad en tierras nórdicas. Combate contundente y una dirección artística monumental.",
+        "Kratos pasó de destruir el Olimpo a enseñar a su hijo a cazar. Esa evolución es lo que hace grande a God of War."
+      ],
+      "va": [
+        "God of War: de la còlera mitològica a Grècia a la paternitat en terres nòrdiques. Combat contundent i una direcció artística monumental.",
+        "Kratos va passar de destruir l’Olimp a ensenyar el seu fill a caçar. Eixa evolució és el que fa gran God of War."
+      ],
+      "tema": "juegos",
+      "item": true,
+      "enlace": {
+        "href": "juegos.html",
+        "es": "Ir a Juegos",
+        "va": "Anar a Jocs"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus juegos",
+          "El reto"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus jocs",
+          "El repte"
+        ]
+      }
+    },
+    {
+      "id": "juego-re",
+      "frases": [
+        "resident evil",
+        "biohazard",
+        "leon kennedy",
+        "survival horror",
+        "umbrella",
+        "raccoon city",
+        "zombis",
+        "zombies"
+      ],
+      "es": [
+        "Resident Evil: pionero del terror interactivo. Inventario justo, puzles legendarios y tensión constante ante amenazas biológicas.",
+        "Resident Evil es contar balas, guardar en la máquina de escribir y no abrir esa puerta. Survival horror de manual."
+      ],
+      "va": [
+        "Resident Evil: pioner del terror interactiu. Inventari just, puzles llegendaris i tensió constant davant amenaces biològiques.",
+        "Resident Evil és comptar bales, guardar en la màquina d’escriure i no obrir eixa porta. Survival horror de manual."
+      ],
+      "tema": "juegos",
+      "item": true,
+      "enlace": {
+        "href": "juegos.html",
+        "es": "Ir a Juegos",
+        "va": "Anar a Jocs"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus juegos",
+          "El reto"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus jocs",
+          "El repte"
+        ]
+      }
+    },
+    {
+      "id": "juego-tlou",
+      "frases": [
+        "the last of us",
+        "last of us",
+        "tlou",
+        "joel",
+        "ellie",
+        "naughty dog"
+      ],
+      "es": [
+        "The Last of Us: un viaje desgarrador sobre el apego, el duelo y los límites morales, con una ambientación postapocalíptica sobrecogedora.",
+        "Joel y Ellie. Si no has llorado con The Last of Us, es que eres de papel. Como yo. Y yo lloré."
+      ],
+      "va": [
+        "The Last of Us: un viatge colpidor sobre l’afecte, el dol i els límits morals, amb una ambientació postapocalíptica impressionant.",
+        "Joel i Ellie. Si no has plorat amb The Last of Us, és que eres de paper. Com jo. I jo vaig plorar."
+      ],
+      "tema": "juegos",
+      "item": true,
+      "enlace": {
+        "href": "juegos.html",
+        "es": "Ir a Juegos",
+        "va": "Anar a Jocs"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus juegos",
+          "El reto"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus jocs",
+          "El repte"
+        ]
+      }
+    },
+    {
+      "id": "juego-zelda",
+      "frases": [
+        "zelda",
+        "the legend of zelda",
+        "link",
+        "hyrule",
+        "breath of the wild",
+        "tears of the kingdom",
+        "ganon",
+        "trifuerza"
+      ],
+      "es": [
+        "The Legend of Zelda: la máxima expresión de la aventura. Descubrimiento, puzles ingeniosos y un diseño de mundo que ha marcado las reglas de la industria.",
+        "Zelda es salir a explorar sin mapa y perderte a gusto. Y lo dice un farol: allí todo se ilumina con antorchas."
+      ],
+      "va": [
+        "The Legend of Zelda: la màxima expressió de l’aventura. Descobriment, puzles enginyosos i un disseny de món que ha marcat les regles de la indústria.",
+        "Zelda és eixir a explorar sense mapa i perdre’t a gust. I ho diu un farol: allí tot s’il·lumina amb torxes."
+      ],
+      "tema": "juegos",
+      "item": true,
+      "enlace": {
+        "href": "juegos.html",
+        "es": "Ir a Juegos",
+        "va": "Anar a Jocs"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus juegos",
+          "El reto"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus jocs",
+          "El repte"
+        ]
+      }
+    },
+    {
+      "id": "juego-witcher",
+      "frases": [
+        "the witcher",
+        "witcher",
+        "geralt",
+        "rivia",
+        "brujo",
+        "ciri",
+        "yennefer"
+      ],
+      "es": [
+        "The Witcher: fantasía oscura y madura donde los monstruos a menudo son humanos. Decisiones con peso real y moral en escala de grises.",
+        "Geralt de Rivia, contratos de monstruos y decisiones que te persiguen. The Witcher no tiene buenos ni malos, solo consecuencias."
+      ],
+      "va": [
+        "The Witcher: fantasia fosca i madura on els monstres sovint són humans. Decisions amb pes real i moral en escala de grisos.",
+        "Geralt de Rivia, contractes de monstres i decisions que et perseguixen. The Witcher no té bons ni dolents, només conseqüències."
+      ],
+      "tema": "juegos",
+      "item": true,
+      "enlace": {
+        "href": "juegos.html",
+        "es": "Ir a Juegos",
+        "va": "Anar a Jocs"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus juegos",
+          "El reto"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus jocs",
+          "El repte"
+        ]
+      }
+    },
+    {
+      "id": "juego-rdr",
+      "frases": [
+        "red dead",
+        "red dead redemption",
+        "rdr",
+        "rdr2",
+        "arthur morgan",
+        "western",
+        "vaquero",
+        "salvaje oeste",
+        "rockstar"
+      ],
+      "es": [
+        "Red Dead Redemption: el ocaso del Salvaje Oeste con un detalle obsesivo. Una obra maestra melancólica sobre la lealtad, el honor y el fin de una era.",
+        "Red Dead es cabalgar al atardecer y que se te encoja el corazón. Arthur Morgan no se olvida."
+      ],
+      "va": [
+        "Red Dead Redemption: el crepuscle del Salvatge Oest amb un detall obsessiu. Una obra mestra melancòlica sobre la lleialtat, l’honor i la fi d’una era.",
+        "Red Dead és cavalcar a la posta de sol i que se t’encongisca el cor. Arthur Morgan no s’oblida."
+      ],
+      "tema": "juegos",
+      "item": true,
+      "enlace": {
+        "href": "juegos.html",
+        "es": "Ir a Juegos",
+        "va": "Anar a Jocs"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus juegos",
+          "El reto"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus jocs",
+          "El repte"
+        ]
+      }
+    },
+    {
+      "id": "otros-juegos",
+      "frases": [
+        "minecraft",
+        "fortnite",
+        "league of legends",
+        "gta",
+        "call of duty",
+        "fifa",
+        "pokemon",
+        "mario",
+        "elden ring",
+        "cyberpunk",
+        "hollow knight",
+        "silent hill",
+        "valorant",
+        "roblox",
+        "sonic"
+      ],
+      "es": [
+        "Ese no está en su top 8, pero en la página de juegos hay un buscador: escríbelo y te saca la ficha completa.",
+        "No sale en sus favoritos… todavía. Búscalo en el buscador de juegos, que tira de RAWG."
+      ],
+      "va": [
+        "Eixe no està en el seu top 8, però en la pàgina de jocs hi ha un cercador: escriu-lo i et trau la fitxa completa.",
+        "No ix en els seus preferits… encara. Busca’l en el cercador de jocs, que tira de RAWG."
+      ],
+      "enlace": {
+        "href": "juegos.html",
+        "es": "Ir a Juegos",
+        "va": "Anar a Jocs"
+      },
+      "peso": 0.95
+    },
+    {
+      "id": "cine",
+      "frases": [
+        "cine",
+        "peliculas",
+        "pelis",
+        "pelicula",
+        "peli",
+        "peliculas favoritas",
+        "film",
+        "films",
+        "cinema",
+        "pellicules",
+        "pellicula",
+        "pellis",
+        "que pelis",
+        "sus pelis",
+        "todas sus pelis",
+        "totes les seues pellis",
+        "mejor pelicula",
+        "mejor peli",
+        "millor pellicula"
+      ],
+      "es": [
+        "Su top de cine: El Señor de los Anillos, 300, Gladiator, Terminator 2, Matrix, Braveheart, Jurassic Park y Regreso al futuro. Épica, ciencia ficción y mucho sentimiento.",
+        "Ocho pelis que le marcaron la forma de entender la narrativa y lo visual. Pregúntame por cualquiera o pídeme que te recomiende una."
+      ],
+      "va": [
+        "El seu top de cinema: El Senyor dels Anells, 300, Gladiator, Terminator 2, Matrix, Braveheart, Jurassic Park i Retorn al futur. Èpica, ciència-ficció i molt de sentiment.",
+        "Huit pel·lis que li van marcar la forma d’entendre la narrativa i el llenguatge visual. Pregunta’m per qualsevol o demana’m que te’n recomane una."
+      ],
+      "tema": "cine",
+      "enlace": {
+        "href": "cine.html",
+        "es": "Ir a Cine",
+        "va": "Anar a Cinema"
+      },
+      "sugerencias": {
+        "es": [
+          "Recomiéndame una peli",
+          "Matrix",
+          "Gladiator",
+          "Regreso al futuro"
+        ],
+        "va": [
+          "Recomana’m una pel·li",
+          "Matrix",
+          "Gladiator",
+          "Retorn al futur"
+        ]
+      }
+    },
+    {
+      "id": "cine-recomienda",
+      "frases": [
+        "recomienda pelicula",
+        "recomienda peli",
+        "recomiendame peli",
+        "recomiendame pelicula",
+        "que peli veo",
+        "que pelicula veo",
+        "recomana pellicula",
+        "recomana pelli",
+        "una peli",
+        "peli recomiendas"
+      ],
+      "es": [
+        "Esta noche, palomitas y:",
+        "Te recomiendo:",
+        "Plan de sofá:"
+      ],
+      "va": [
+        "Esta nit, crispetes i:",
+        "Et recomane:",
+        "Pla de sofà:"
+      ],
+      "accion": "aleatorio",
+      "tema": "cine"
+    },
+    {
+      "id": "peli-lotr",
+      "frases": [
+        "pelicula senor de los anillos",
+        "senor anillos pelicula",
+        "peter jackson",
+        "rohirrim",
+        "howard shore",
+        "trilogia"
+      ],
+      "es": [
+        "El Señor de los Anillos (las pelis) es para Sergio «la cúspide absoluta del séptimo arte»: barro, acero, la carga de los Rohirrim y la música de Howard Shore.",
+        "La trilogía de Peter Jackson no adaptó un libro: forjó una leyenda viva. Es su número uno."
+      ],
+      "va": [
+        "El Senyor dels Anells (les pel·lis) és per a Sergio «la cúspide absoluta del seté art»: fang, acer, la càrrega dels Rohirrim i la música de Howard Shore.",
+        "La trilogia de Peter Jackson no va adaptar un llibre: va forjar una llegenda viva. És el seu número u."
+      ],
+      "tema": "cine",
+      "item": true,
+      "enlace": {
+        "href": "cine.html",
+        "es": "Ir a Cine",
+        "va": "Anar a Cinema"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otra",
+          "Todas sus pelis",
+          "Anime"
+        ],
+        "va": [
+          "Una altra",
+          "Totes les seues pel·lis",
+          "Anime"
+        ]
+      }
+    },
+    {
+      "id": "peli-300",
+      "frases": [
+        "300",
+        "esparta",
+        "sparta",
+        "leonidas",
+        "snyder",
+        "zack snyder",
+        "espartanos"
+      ],
+      "es": [
+        "300: pura viñeta en movimiento. A Sergio le enseñó composición y ritmo: un plano bien coreografiado vale más que mil líneas de diálogo.",
+        "Cámara lenta, siluetas y sangre dorada: 300 es el cómic de Miller hecho cine. No la ve por la historia, sino por cómo está rodada."
+      ],
+      "va": [
+        "300: pura vinyeta en moviment. A Sergio li va ensenyar composició i ritme: un pla ben coreografiat val més que mil línies de diàleg.",
+        "Càmera lenta, siluetes i sang daurada: 300 és el còmic de Miller fet cinema. No la veu per la història, sinó per com està rodada."
+      ],
+      "tema": "cine",
+      "item": true,
+      "enlace": {
+        "href": "cine.html",
+        "es": "Ir a Cine",
+        "va": "Anar a Cinema"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otra",
+          "Todas sus pelis",
+          "Anime"
+        ],
+        "va": [
+          "Una altra",
+          "Totes les seues pel·lis",
+          "Anime"
+        ]
+      }
+    },
+    {
+      "id": "peli-gladiator",
+      "frases": [
+        "gladiator",
+        "gladiador",
+        "maximo",
+        "maximus",
+        "russell crowe",
+        "ridley scott",
+        "coliseo",
+        "roma"
+      ],
+      "es": [
+        "Gladiator: Ridley Scott rodó Roma como un óleo. Maximus lo pierde todo menos la dignidad, y lo que hacemos en vida resuena en la eternidad.",
+        "Russell Crowe caminando por la arena como si cargara un imperio. Gladiator es épica con el corazón roto."
+      ],
+      "va": [
+        "Gladiator: Ridley Scott va rodar Roma com un oli. Maximus ho perd tot menys la dignitat, i el que fem en vida ressona en l’eternitat.",
+        "Russell Crowe caminant per l’arena com si carregara un imperi. Gladiator és èpica amb el cor trencat."
+      ],
+      "tema": "cine",
+      "item": true,
+      "enlace": {
+        "href": "cine.html",
+        "es": "Ir a Cine",
+        "va": "Anar a Cinema"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otra",
+          "Todas sus pelis",
+          "Anime"
+        ],
+        "va": [
+          "Una altra",
+          "Totes les seues pel·lis",
+          "Anime"
+        ]
+      }
+    },
+    {
+      "id": "peli-t2",
+      "frases": [
+        "terminator",
+        "terminator 2",
+        "t800",
+        "t 800",
+        "skynet",
+        "cameron",
+        "arnold",
+        "schwarzenegger",
+        "juicio final"
+      ],
+      "es": [
+        "Terminator 2: Cameron convirtió al asesino de la primera en el personaje más humano de la saga. Un T-800 aprendiendo a no matar, con Skynet de fondo.",
+        "A Sergio, como futuro desarrollador, el dilema de Skynet le persigue. Y el pulgar arriba final vale más que cualquier discurso 👍"
+      ],
+      "va": [
+        "Terminator 2: Cameron va convertir l’assassí de la primera en el personatge més humà de la saga. Un T-800 aprenent a no matar, amb Skynet de fons.",
+        "A Sergio, com a futur desenvolupador, el dilema de Skynet el perseguix. I el polze alçat final val més que qualsevol discurs 👍"
+      ],
+      "tema": "cine",
+      "item": true,
+      "enlace": {
+        "href": "cine.html",
+        "es": "Ir a Cine",
+        "va": "Anar a Cinema"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otra",
+          "Todas sus pelis",
+          "Anime"
+        ],
+        "va": [
+          "Una altra",
+          "Totes les seues pel·lis",
+          "Anime"
+        ]
+      }
+    },
+    {
+      "id": "peli-matrix",
+      "frases": [
+        "matrix",
+        "neo",
+        "morfeo",
+        "morpheus",
+        "trinity",
+        "wachowski",
+        "agente smith"
+      ],
+      "es": [
+        "Matrix: ¿y si la realidad fuera una interfaz? Acción nunca vista y una reflexión sobre la libertad, la percepción y el precio de saber.",
+        "Matrix sigue siendo la referencia cuando alguien pregunta qué es real. Y en esta web tienes hasta las pastillas."
+      ],
+      "va": [
+        "Matrix: i si la realitat fora una interfície? Acció mai vista i una reflexió sobre la llibertat, la percepció i el preu de saber.",
+        "Matrix continua sent la referència quan algú pregunta què és real. I en esta web tens fins i tot les píndoles."
+      ],
+      "tema": "cine",
+      "item": true,
+      "enlace": {
+        "href": "cine.html",
+        "es": "Ir a Cine",
+        "va": "Anar a Cinema"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otra",
+          "Todas sus pelis",
+          "Anime"
+        ],
+        "va": [
+          "Una altra",
+          "Totes les seues pel·lis",
+          "Anime"
+        ]
+      }
+    },
+    {
+      "id": "peli-braveheart",
+      "frases": [
+        "braveheart",
+        "william wallace",
+        "mel gibson",
+        "escocia",
+        "gaitas"
+      ],
+      "es": [
+        "Braveheart: barro, gaitas y un discurso a caballo que eriza la piel. Batallas crudas sin artificios digitales y una pasión enorme por la libertad.",
+        "William Wallace y el estándar definitivo de la épica visceral. Braveheart no se ve, se siente."
+      ],
+      "va": [
+        "Braveheart: fang, gaites i un discurs a cavall que posa la pell de gallina. Batalles crues sense artificis digitals i una passió enorme per la llibertat.",
+        "William Wallace i l’estàndard definitiu de l’èpica visceral. Braveheart no es veu, se sent."
+      ],
+      "tema": "cine",
+      "item": true,
+      "enlace": {
+        "href": "cine.html",
+        "es": "Ir a Cine",
+        "va": "Anar a Cinema"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otra",
+          "Todas sus pelis",
+          "Anime"
+        ],
+        "va": [
+          "Una altra",
+          "Totes les seues pel·lis",
+          "Anime"
+        ]
+      }
+    },
+    {
+      "id": "peli-jurassic",
+      "frases": [
+        "jurassic park",
+        "parque jurasico",
+        "dinosaurios",
+        "dinosaurio",
+        "spielberg",
+        "t rex",
+        "velociraptor"
+      ],
+      "es": [
+        "Jurassic Park: la ambición genética contra la naturaleza en una isla remota. Spielberg redefinió el asombro y los efectos visuales para siempre.",
+        "Dinosaurios, la vida que se abre camino y efectos que siguen aguantando décadas después."
+      ],
+      "va": [
+        "Jurassic Park: l’ambició genètica contra la naturalesa en una illa remota. Spielberg va redefinir la fascinació i els efectes visuals per a sempre.",
+        "Dinosaures, la vida que s’obri camí i efectes que continuen aguantant dècades després."
+      ],
+      "tema": "cine",
+      "item": true,
+      "enlace": {
+        "href": "cine.html",
+        "es": "Ir a Cine",
+        "va": "Anar a Cinema"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otra",
+          "Todas sus pelis",
+          "Anime"
+        ],
+        "va": [
+          "Una altra",
+          "Totes les seues pel·lis",
+          "Anime"
+        ]
+      }
+    },
+    {
+      "id": "peli-bttf",
+      "frases": [
+        "regreso al futuro",
+        "back to the future",
+        "delorean",
+        "marty",
+        "marty mcfly",
+        "doc brown",
+        "88 millas",
+        "condensador de fluzo",
+        "retorn al futur",
+        "viaje en el tiempo"
+      ],
+      "es": [
+        "Regreso al futuro: un DeLorean a 88 millas por hora y una clase magistral de causa y efecto. Cada frase del primer acto estalla en el clímax.",
+        "La quintaesencia del cine de los ochenta que no envejece. Y el condensador de fluzo sigue siendo mi pieza favorita."
+      ],
+      "va": [
+        "Retorn al futur: un DeLorean a 88 milles per hora i una classe magistral de causa i efecte. Cada frase del primer acte esclata en el clímax.",
+        "La quintaessència del cinema dels huitanta que no envellix. I el condensador de flux continua sent la meua peça preferida."
+      ],
+      "tema": "cine",
+      "item": true,
+      "enlace": {
+        "href": "cine.html",
+        "es": "Ir a Cine",
+        "va": "Anar a Cinema"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otra",
+          "Todas sus pelis",
+          "Anime"
+        ],
+        "va": [
+          "Una altra",
+          "Totes les seues pel·lis",
+          "Anime"
+        ]
+      }
+    },
+    {
+      "id": "otras-pelis",
+      "frases": [
+        "interstellar",
+        "pulp fiction",
+        "oppenheimer",
+        "blade runner",
+        "titanic",
+        "avengers",
+        "marvel",
+        "batman",
+        "el padrino",
+        "inception",
+        "origen",
+        "dune pelicula",
+        "harry potter pelicula",
+        "star trek"
+      ],
+      "es": [
+        "Esa no está en su top 8, pero en la página de cine tienes un explorador con datos de TMDB. Búscala ahí.",
+        "Buena elección, aunque no sale en sus favoritas. El explorador de cine te da sinopsis y valoraciones."
+      ],
+      "va": [
+        "Eixa no està en el seu top 8, però en la pàgina de cinema tens un explorador amb dades de TMDB. Busca-la allí.",
+        "Bona elecció, encara que no ix en les seues preferides. L’explorador de cinema et dona sinopsi i valoracions."
+      ],
+      "enlace": {
+        "href": "cine.html",
+        "es": "Ir a Cine",
+        "va": "Anar a Cinema"
+      },
+      "peso": 0.95
+    },
+    {
+      "id": "anime",
+      "frases": [
+        "anime",
+        "animes",
+        "animes favoritos",
+        "anime favorito",
+        "series japonesas",
+        "animacion japonesa",
+        "sus animes",
+        "todos sus animes",
+        "tots els seus animes",
+        "otaku",
+        "mejor anime",
+        "millor anime"
+      ],
+      "es": [
+        "Su top anime: Dragon Ball Z, Bleach, One Piece, Saint Seiya, Naruto, Attack on Titan, Kimetsu no Yaiba y Jujutsu Kaisen. Shonen hasta la médula.",
+        "Ocho obras que van más allá del entretenimiento, desde los clásicos de Toei hasta MAPPA y Ufotable. ¿Te recomiendo uno?"
+      ],
+      "va": [
+        "El seu top anime: Dragon Ball Z, Bleach, One Piece, Saint Seiya, Naruto, Attack on Titan, Kimetsu no Yaiba i Jujutsu Kaisen. Shonen fins al moll de l’os.",
+        "Huit obres que van més enllà de l’entreteniment, des dels clàssics de Toei fins a MAPPA i Ufotable. Te’n recomane un?"
+      ],
+      "tema": "anime",
+      "enlace": {
+        "href": "anime.html",
+        "es": "Ir a Anime",
+        "va": "Anar a Anime"
+      },
+      "sugerencias": {
+        "es": [
+          "Recomiéndame un anime",
+          "Dragon Ball",
+          "One Piece",
+          "Naruto"
+        ],
+        "va": [
+          "Recomana’m un anime",
+          "Dragon Ball",
+          "One Piece",
+          "Naruto"
+        ]
+      }
+    },
+    {
+      "id": "anime-recomienda",
+      "frases": [
+        "recomienda anime",
+        "recomiendame anime",
+        "que anime veo",
+        "recomana anime",
+        "un anime",
+        "anime recomiendas"
+      ],
+      "es": [
+        "Maratón recomendada:",
+        "Te recomiendo:",
+        "Para empezar ya:"
+      ],
+      "va": [
+        "Marató recomanada:",
+        "Et recomane:",
+        "Per a començar ja:"
+      ],
+      "accion": "aleatorio",
+      "tema": "anime"
+    },
+    {
+      "id": "anime-dbz",
+      "frases": [
+        "dragon ball",
+        "dragon ball z",
+        "dragon",
+        "dbz",
+        "goku",
+        "vegeta",
+        "super saiyan",
+        "gohan",
+        "toriyama",
+        "majin buu",
+        "freezer"
+      ],
+      "es": [
+        "Dragon Ball Z: el pilar del shonen y la serie de las tardes de toda una generación. Transformaciones legendarias y un Goku que convirtió la superación en icono.",
+        "De los Saiyans a Majin Buu: Toriyama perfeccionó los combates y las transformaciones que paralizaban los patios del colegio."
+      ],
+      "va": [
+        "Dragon Ball Z: el pilar del shonen i la sèrie de les vesprades de tota una generació. Transformacions llegendàries i un Goku que va convertir la superació en icona.",
+        "Dels Saiyans a Majin Buu: Toriyama va perfeccionar els combats i les transformacions que paralitzaven els patis de l’escola."
+      ],
+      "tema": "anime",
+      "item": true,
+      "enlace": {
+        "href": "anime.html",
+        "es": "Ir a Anime",
+        "va": "Anar a Anime"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus animes",
+          "Libros"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus animes",
+          "Llibres"
+        ]
+      }
+    },
+    {
+      "id": "anime-bleach",
+      "frases": [
+        "bleach",
+        "ichigo",
+        "shinigami",
+        "zanpakuto",
+        "tite kubo",
+        "rukia",
+        "aizen"
+      ],
+      "es": [
+        "Bleach: elegancia visual, mitología shinigami y una banda sonora legendaria. Ichigo y su Zanpakutō demostrando que proteger a los suyos vale más que cualquier jerarquía.",
+        "Tite Kubo definió una época con puro estilo: espadas, capas y combates memorables."
+      ],
+      "va": [
+        "Bleach: elegància visual, mitologia shinigami i una banda sonora llegendària. Ichigo i la seua Zanpakutō demostrant que protegir els seus val més que qualsevol jerarquia.",
+        "Tite Kubo va definir una època amb puro estil: espases, capes i combats memorables."
+      ],
+      "tema": "anime",
+      "item": true,
+      "enlace": {
+        "href": "anime.html",
+        "es": "Ir a Anime",
+        "va": "Anar a Anime"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus animes",
+          "Libros"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus animes",
+          "Llibres"
+        ]
+      }
+    },
+    {
+      "id": "anime-onepiece",
+      "frases": [
+        "one piece",
+        "luffy",
+        "zoro",
+        "sanji",
+        "piratas",
+        "oda",
+        "sombrero de paja",
+        "rey de los piratas"
+      ],
+      "es": [
+        "One Piece: el mayor viaje jamás contado sobre la libertad, el compañerismo y la voluntad heredada. Oda creó el universo más rico del manga y el anime.",
+        "Luffy y una tripulación inolvidable desafiando al orden mundial. Es largo, sí. Merece cada episodio, también."
+      ],
+      "va": [
+        "One Piece: el viatge més gran mai contat sobre la llibertat, el companyerisme i la voluntat heretada. Oda va crear l’univers més ric del manga i l’anime.",
+        "Luffy i una tripulació inoblidable desafiant l’ordre mundial. És llarg, sí. Mereix cada episodi, també."
+      ],
+      "tema": "anime",
+      "item": true,
+      "enlace": {
+        "href": "anime.html",
+        "es": "Ir a Anime",
+        "va": "Anar a Anime"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus animes",
+          "Libros"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus animes",
+          "Llibres"
+        ]
+      }
+    },
+    {
+      "id": "anime-seiya",
+      "frases": [
+        "saint seiya",
+        "caballeros del zodiaco",
+        "los caballeros del zodiaco",
+        "seiya",
+        "pegaso",
+        "cosmos",
+        "kurumada",
+        "cavallers del zodiac"
+      ],
+      "es": [
+        "Saint Seiya: la épica mitológica que marcó la era dorada de la animación. Armaduras sagradas, sacrificios y un cosmos que supera cualquier barrera divina.",
+        "Los Caballeros del Zodiaco: lealtad, mitología griega y armaduras doradas. Un clásico de Toei que no envejece."
+      ],
+      "va": [
+        "Saint Seiya: l’èpica mitològica que va marcar l’era daurada de l’animació. Armadures sagrades, sacrificis i un cosmos que supera qualsevol barrera divina.",
+        "Els Cavallers del Zodíac: lleialtat, mitologia grega i armadures daurades. Un clàssic de Toei que no envellix."
+      ],
+      "tema": "anime",
+      "item": true,
+      "enlace": {
+        "href": "anime.html",
+        "es": "Ir a Anime",
+        "va": "Anar a Anime"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus animes",
+          "Libros"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus animes",
+          "Llibres"
+        ]
+      }
+    },
+    {
+      "id": "anime-naruto",
+      "frases": [
+        "naruto",
+        "sasuke",
+        "kakashi",
+        "ninja",
+        "konoha",
+        "hokage",
+        "kishimoto",
+        "shippuden"
+      ],
+      "es": [
+        "Naruto: el viaje del marginado que transformó la soledad en la fuerza para proteger a todos. Lazos, destino y no rendirse nunca.",
+        "Kishimoto tejió una epopeya ninja donde la superación lo es todo. Naruto es un símbolo universal de no tirar la toalla."
+      ],
+      "va": [
+        "Naruto: el viatge del marginat que va transformar la soledat en la força per a protegir tothom. Vincles, destí i no rendir-se mai.",
+        "Kishimoto va teixir una epopeia ninja on la superació ho és tot. Naruto és un símbol universal de no llançar la tovallola."
+      ],
+      "tema": "anime",
+      "item": true,
+      "enlace": {
+        "href": "anime.html",
+        "es": "Ir a Anime",
+        "va": "Anar a Anime"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus animes",
+          "Libros"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus animes",
+          "Llibres"
+        ]
+      }
+    },
+    {
+      "id": "anime-aot",
+      "frases": [
+        "attack on titan",
+        "ataque a los titanes",
+        "shingeki",
+        "shingeki no kyojin",
+        "eren",
+        "levi",
+        "mikasa",
+        "titanes",
+        "titan"
+      ],
+      "es": [
+        "Attack on Titan: empezó como supervivencia tras tres murallas y acabó siendo una radiografía del ciclo del odio y el precio de la libertad.",
+        "Una de las mayores epopeyas bélicas y políticas del medio, donde cada decisión pesa como plomo."
+      ],
+      "va": [
+        "Attack on Titan: va començar com a supervivència darrere de tres muralles i va acabar sent una radiografia del cicle de l’odi i el preu de la llibertat.",
+        "Una de les majors epopeies bèl·liques i polítiques del mitjà, on cada decisió pesa com el plom."
+      ],
+      "tema": "anime",
+      "item": true,
+      "enlace": {
+        "href": "anime.html",
+        "es": "Ir a Anime",
+        "va": "Anar a Anime"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus animes",
+          "Libros"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus animes",
+          "Llibres"
+        ]
+      }
+    },
+    {
+      "id": "anime-kimetsu",
+      "frases": [
+        "kimetsu",
+        "kimetsu no yaiba",
+        "demon slayer",
+        "tanjiro",
+        "nezuko",
+        "ufotable",
+        "zenitsu",
+        "inosuke",
+        "respiracion"
+      ],
+      "es": [
+        "Kimetsu no Yaiba: un prodigio visual de Ufotable. Tanjiro luchando por salvar a Nezuko entre respiraciones elementales y combates deslumbrantes.",
+        "Redefinió los estándares de la animación actual. Y Tanjiro respeta el dolor ajeno incluso frente a los demonios."
+      ],
+      "va": [
+        "Kimetsu no Yaiba: un prodigi visual d’Ufotable. Tanjiro lluitant per salvar Nezuko entre respiracions elementals i combats enlluernadors.",
+        "Va redefinir els estàndards de l’animació actual. I Tanjiro respecta el dolor aliè fins i tot davant els dimonis."
+      ],
+      "tema": "anime",
+      "item": true,
+      "enlace": {
+        "href": "anime.html",
+        "es": "Ir a Anime",
+        "va": "Anar a Anime"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus animes",
+          "Libros"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus animes",
+          "Llibres"
+        ]
+      }
+    },
+    {
+      "id": "anime-jjk",
+      "frases": [
+        "jujutsu kaisen",
+        "jujutsu",
+        "jjk",
+        "gojo",
+        "satoru gojo",
+        "itadori",
+        "sukuna",
+        "mappa",
+        "expansion de dominio"
+      ],
+      "es": [
+        "Jujutsu Kaisen: shonen oscuro y frenético con la producción de MAPPA. Maldiciones, hechicería táctica y el carisma arrollador de Satoru Gojo.",
+        "Yuji Itadori, maldiciones nacidas del dolor humano y expansiones de dominio que te dejan con la boca abierta."
+      ],
+      "va": [
+        "Jujutsu Kaisen: shonen fosc i frenètic amb la producció de MAPPA. Malediccions, bruixeria tàctica i el carisma imparable de Satoru Gojo.",
+        "Yuji Itadori, malediccions nascudes del dolor humà i expansions de domini que et deixen amb la boca oberta."
+      ],
+      "tema": "anime",
+      "item": true,
+      "enlace": {
+        "href": "anime.html",
+        "es": "Ir a Anime",
+        "va": "Anar a Anime"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus animes",
+          "Libros"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus animes",
+          "Llibres"
+        ]
+      }
+    },
+    {
+      "id": "otros-anime",
+      "frases": [
+        "frieren",
+        "chainsaw man",
+        "solo leveling",
+        "hunter x hunter",
+        "death note",
+        "evangelion",
+        "fullmetal alchemist",
+        "spy x family",
+        "my hero academia",
+        "boku no hero",
+        "haikyuu",
+        "ghibli",
+        "totoro",
+        "pokemon anime",
+        "doraemon",
+        "shin chan"
+      ],
+      "es": [
+        "Ese no está en su top, pero el explorador de anime de la web tira de AniList: búscalo y hasta te sale el tráiler.",
+        "Buen gusto. No está entre sus ocho, pero puedes buscarlo en la página de anime."
+      ],
+      "va": [
+        "Eixe no està en el seu top, però l’explorador d’anime de la web tira d’AniList: busca’l i fins i tot t’ix el tràiler.",
+        "Bon gust. No està entre els seus huit, però pots buscar-lo en la pàgina d’anime."
+      ],
+      "enlace": {
+        "href": "anime.html",
+        "es": "Ir a Anime",
+        "va": "Anar a Anime"
+      },
+      "peso": 0.95
+    },
+    {
+      "id": "libros",
+      "frases": [
+        "libros",
+        "libro",
+        "leer",
+        "lectura",
+        "libros favoritos",
+        "llibres",
+        "llibre",
+        "llegir",
+        "que lee",
+        "biblioteca",
+        "novelas",
+        "sus libros",
+        "todos sus libros",
+        "tots els seus llibres",
+        "mejor libro",
+        "millor llibre"
+      ],
+      "es": [
+        "En su grimorio hay cinco joyas: El Señor de los Anillos, Dune, El Nombre del Viento, Harry Potter y la Piedra Filosofal y El Ojo del Mundo. Todas con cinco estrellas.",
+        "Fantasía y ciencia ficción a lo grande. Sus libros viven en un grimorio 3D que se abre y pasa páginas con sonido."
+      ],
+      "va": [
+        "En el seu grimori hi ha cinc joies: El Senyor dels Anells, Dune, El Nom del Vent, Harry Potter i la Pedra Filosofal i L’Ull del Món. Totes amb cinc estreles.",
+        "Fantasia i ciència-ficció a lo gran. Els seus llibres viuen en un grimori 3D que s’obri i passa pàgines amb so."
+      ],
+      "tema": "libros",
+      "enlace": {
+        "href": "libros.html",
+        "es": "Abrir el grimorio",
+        "va": "Obrir el grimori"
+      },
+      "sugerencias": {
+        "es": [
+          "Recomiéndame un libro",
+          "Dune",
+          "El Nombre del Viento",
+          "El grimorio"
+        ],
+        "va": [
+          "Recomana’m un llibre",
+          "Dune",
+          "El Nom del Vent",
+          "El grimori"
+        ]
+      }
+    },
+    {
+      "id": "libros-recomienda",
+      "frases": [
+        "recomienda libro",
+        "recomiendame libro",
+        "que libro leo",
+        "recomana llibre",
+        "un libro",
+        "libro recomiendas",
+        "que leo"
+      ],
+      "es": [
+        "Para tu mesilla:",
+        "Te recomiendo:",
+        "Abre este:"
+      ],
+      "va": [
+        "Per a la tauleta de nit:",
+        "Et recomane:",
+        "Obri este:"
+      ],
+      "accion": "aleatorio",
+      "tema": "libros"
+    },
+    {
+      "id": "grimorio",
+      "frases": [
+        "grimorio",
+        "grimori",
+        "libro 3d",
+        "como funciona el libro",
+        "pasar paginas",
+        "el grimorio"
+      ],
+      "es": [
+        "Los libros viven en un grimorio de cuero con pan de oro: se abre en 3D, pasa páginas con sonido y tiene índice. Usa ← → o arrastra una esquina.",
+        "Toca la cubierta del grimorio para abrirlo. Dentro: lámina, reseña y valoración de cada libro."
+      ],
+      "va": [
+        "Els llibres viuen en un grimori de cuir amb pa d’or: s’obri en 3D, passa pàgines amb so i té índex. Usa ← → o arrossega una vora.",
+        "Toca la coberta del grimori per a obrir-lo. Dins: làmina, ressenya i valoració de cada llibre."
+      ],
+      "enlace": {
+        "href": "libros.html",
+        "es": "Abrir el grimorio",
+        "va": "Obrir el grimori"
+      }
+    },
+    {
+      "id": "lotr",
+      "frases": [
+        "senor de los anillos",
+        "el senor de los anillos",
+        "lotr",
+        "frodo",
+        "gandalf",
+        "tierra media",
+        "senyor dels anells",
+        "anillo unico",
+        "aragorn",
+        "sauron",
+        "hobbit",
+        "gollum",
+        "mordor"
+      ],
+      "es": [
+        "El Señor de los Anillos es su obra total: número uno de su cine, primer libro de su grimorio y tiene hasta una web en WordPress dedicada. Fan nivel Ent.",
+        "Frodo, el Anillo Único y un viaje al Monte del Destino. Si Sergio tuviera que quedarse con una historia, sería esta."
+      ],
+      "va": [
+        "El Senyor dels Anells és la seua obra total: número u del seu cinema, primer llibre del seu grimori i té fins i tot una web en WordPress dedicada. Fan nivell Ent.",
+        "Frodo, l’Anell Únic i un viatge al Mont del Destí. Si Sergio s’haguera de quedar amb una història, seria esta."
+      ],
+      "sugerencias": {
+        "es": [
+          "Peli de Peter Jackson",
+          "Libro de Tolkien",
+          "Web de WordPress"
+        ],
+        "va": [
+          "Pel·li de Peter Jackson",
+          "Llibre de Tolkien",
+          "Web de WordPress"
+        ]
+      }
+    },
+    {
+      "id": "libro-lotr",
+      "frases": [
+        "libro senor de los anillos",
+        "senor anillos libro",
+        "tolkien",
+        "llibre senyor dels anells"
+      ],
+      "es": [
+        "El libro de Tolkien: Frodo hereda el Anillo Único y emprende el viaje al Monte del Destino mientras reinos enteros luchan por sobrevivir. Cinco estrellas.",
+        "Tolkien construyó idiomas, mapas y siglos de historia para la Tierra Media. Abre la biblioteca de Sergio."
+      ],
+      "va": [
+        "El llibre de Tolkien: Frodo hereta l’Anell Únic i emprén el viatge al Mont del Destí mentre regnes sencers lluiten per sobreviure. Cinc estreles.",
+        "Tolkien va construir idiomes, mapes i segles d’història per a la Terra Mitjana. Obri la biblioteca de Sergio."
+      ],
+      "tema": "libros",
+      "item": true,
+      "enlace": {
+        "href": "libros.html",
+        "es": "Abrir el grimorio",
+        "va": "Obrir el grimori"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus libros",
+          "El grimorio"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus llibres",
+          "El grimori"
+        ]
+      }
+    },
+    {
+      "id": "libro-dune",
+      "frases": [
+        "dune",
+        "arrakis",
+        "paul atreides",
+        "atreides",
+        "herbert",
+        "frank herbert",
+        "especia",
+        "melange",
+        "fremen",
+        "gusano de arena"
+      ],
+      "es": [
+        "Dune: en el planeta desierto Arrakis, la especia desata una lucha de poder imperial y Paul Atreides se adentra entre los fremen hacia un destino profético.",
+        "Frank Herbert y la ciencia ficción en mayúsculas: política, ecología y gusanos de arena gigantes. Cinco estrellas en su grimorio."
+      ],
+      "va": [
+        "Dune: en el planeta desert Arrakis, l’espècia desencadena una lluita de poder imperial i Paul Atreides s’endinsa entre els fremen cap a un destí profètic.",
+        "Frank Herbert i la ciència-ficció en majúscules: política, ecologia i cucs de sorra gegants. Cinc estreles en el seu grimori."
+      ],
+      "tema": "libros",
+      "item": true,
+      "enlace": {
+        "href": "libros.html",
+        "es": "Abrir el grimorio",
+        "va": "Obrir el grimori"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus libros",
+          "El grimorio"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus llibres",
+          "El grimori"
+        ]
+      }
+    },
+    {
+      "id": "libro-viento",
+      "frases": [
+        "el nombre del viento",
+        "nombre del viento",
+        "kvothe",
+        "rothfuss",
+        "patrick rothfuss",
+        "cronica del asesino de reyes",
+        "el nom del vent",
+        "nom del vent",
+        "chandrian"
+      ],
+      "es": [
+        "El Nombre del Viento: Kvothe, músico, mago y leyenda retirada, cuenta su vida en primera persona: de la troupe errante a la Universidad y su venganza contra los Chandrian.",
+        "Patrick Rothfuss escribe magia que parece música. Y sí, todos seguimos esperando el tercer libro."
+      ],
+      "va": [
+        "El Nom del Vent: Kvothe, músic, mag i llegenda retirada, conta la seua vida en primera persona: de la troupe errant a la Universitat i la seua venjança contra els Chandrian.",
+        "Patrick Rothfuss escriu màgia que pareix música. I sí, tots continuem esperant el tercer llibre."
+      ],
+      "tema": "libros",
+      "item": true,
+      "enlace": {
+        "href": "libros.html",
+        "es": "Abrir el grimorio",
+        "va": "Obrir el grimori"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus libros",
+          "El grimorio"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus llibres",
+          "El grimori"
+        ]
+      }
+    },
+    {
+      "id": "libro-hp",
+      "frases": [
+        "harry potter",
+        "hogwarts",
+        "voldemort",
+        "piedra filosofal",
+        "rowling",
+        "hermione",
+        "ron weasley",
+        "pedra filosofal",
+        "mago"
+      ],
+      "es": [
+        "Harry Potter y la Piedra Filosofal: a los once años, Harry descubre que es mago, entra en Hogwarts y empieza a desvelar lo que le une a Voldemort.",
+        "El libro que convirtió a medio mundo en lector. En el grimorio de Sergio tiene cinco estrellas."
+      ],
+      "va": [
+        "Harry Potter i la Pedra Filosofal: als onze anys, Harry descobrix que és mag, entra a Hogwarts i comença a desvetlar el que l’unix a Voldemort.",
+        "El llibre que va convertir mig món en lector. En el grimori de Sergio té cinc estreles."
+      ],
+      "tema": "libros",
+      "item": true,
+      "enlace": {
+        "href": "libros.html",
+        "es": "Abrir el grimorio",
+        "va": "Obrir el grimori"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus libros",
+          "El grimorio"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus llibres",
+          "El grimori"
+        ]
+      }
+    },
+    {
+      "id": "libro-rueda",
+      "frases": [
+        "el ojo del mundo",
+        "ojo del mundo",
+        "la rueda del tiempo",
+        "rueda del tiempo",
+        "robert jordan",
+        "rand",
+        "aes sedai",
+        "moraine",
+        "l ull del mon",
+        "la roda del temps",
+        "dragon renacido"
+      ],
+      "es": [
+        "El Ojo del Mundo (La Rueda del Tiempo): Rand, Mat y Perrin huyen de su aldea guiados por la Aes Sedai Moraine. Uno de ellos podría ser el Dragón Renacido.",
+        "Robert Jordan y una saga de fantasía enorme. El primer libro ya engancha como un buen tutorial de RPG."
+      ],
+      "va": [
+        "L’Ull del Món (La Roda del Temps): Rand, Mat i Perrin fugen del seu poble guiats per l’Aes Sedai Moraine. Un d’ells podria ser el Drac Renascut.",
+        "Robert Jordan i una saga de fantasia enorme. El primer llibre ja enganxa com un bon tutorial de RPG."
+      ],
+      "tema": "libros",
+      "item": true,
+      "enlace": {
+        "href": "libros.html",
+        "es": "Abrir el grimorio",
+        "va": "Obrir el grimori"
+      },
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Todos sus libros",
+          "El grimorio"
+        ],
+        "va": [
+          "Un altre",
+          "Tots els seus llibres",
+          "El grimori"
+        ]
+      }
+    },
+    {
+      "id": "manga-comic",
+      "frases": [
+        "manga",
+        "mangas",
+        "comic",
+        "comics",
+        "novela grafica",
+        "ciencia ficcion",
+        "fantasia",
+        "ciencia-ficcio",
+        "fantasia epica"
+      ],
+      "es": [
+        "Le tira la ciencia ficción, la fantasía, la literatura técnica, el cómic independiente y el manga. Variadito.",
+        "Ciencia ficción y fantasía son su terreno, con cómic independiente y manga de postre."
+      ],
+      "va": [
+        "Li agrada la ciència-ficció, la fantasia, la literatura tècnica, el còmic independent i el manga. Variadet.",
+        "Ciència-ficció i fantasia són el seu terreny, amb còmic independent i manga de postres."
+      ],
+      "peso": 0.9
+    },
+    {
+      "id": "favorito-absoluto",
+      "frases": [
+        "su favorito",
+        "favorito de todo",
+        "lo que mas le gusta",
+        "top 1",
+        "el mejor",
+        "numero uno",
+        "preferit de tot",
+        "lo mejor",
+        "obra favorita"
+      ],
+      "es": [
+        "Si tuviera que apostar: El Señor de los Anillos. Es su número uno del cine, abre su biblioteca y le hizo una web.",
+        "Difícil, pero todo apunta a la Tierra Media. Ningún otro título aparece en tantas partes de esta web."
+      ],
+      "va": [
+        "Si haguera d’apostar: El Senyor dels Anells. És el seu número u del cinema, obri la seua biblioteca i li va fer una web.",
+        "Difícil, però tot apunta a la Terra Mitjana. Cap altre títol apareix en tantes parts d’esta web."
+      ],
+      "peso": 0.9
+    },
+    {
+      "id": "musica",
+      "frases": [
+        "musica",
+        "cancion",
+        "canciones",
+        "banda sonora",
+        "que escuchas",
+        "musica favorita",
+        "musica preferida",
+        "canco",
+        "bso"
+      ],
+      "es": [
+        "Yo escucho el crepitar de mi llama. En sus favoritos, Sergio destaca bandas sonoras como la de Howard Shore en El Señor de los Anillos o las orquestales de Final Fantasy.",
+        "Si buscas música, mira las bandas sonoras de sus favoritos: Final Fantasy, Bleach o la Tierra Media de Howard Shore."
+      ],
+      "va": [
+        "Jo escolte el crepitar de la meua flama. En els seus preferits, Sergio destaca bandes sonores com la de Howard Shore en El Senyor dels Anells o les orquestrals de Final Fantasy.",
+        "Si busques música, mira les bandes sonores dels seus preferits: Final Fantasy, Bleach o la Terra Mitjana de Howard Shore."
+      ]
+    },
+    {
+      "id": "chiste",
+      "frases": [
+        "chiste",
+        "chistes",
+        "cuentame un chiste",
+        "broma",
+        "hazme reir",
+        "acudit",
+        "conta un acudit",
+        "un chiste",
+        "otro chiste",
+        "gracioso",
+        "acudits"
+      ],
+      "es": [
+        "¿Por qué los programadores confunden Halloween con Navidad? Porque OCT 31 = DEC 25 🎃🎄",
+        "Hay 10 tipos de personas: las que entienden binario y las que no.",
+        "Una consulta SQL entra en un bar, se acerca a dos mesas y pregunta: «¿Puedo hacer JOIN?»",
+        "Mi código funciona y no sé por qué. Mi código no funciona y tampoco sé por qué. Programar es fe.",
+        "CSS es fácil, dijeron. Centrar un div, dijeron.",
+        "¿Qué le dice un bit a otro? «Nos vemos en el bus».",
+        "Le pregunté a Java qué tal estaba. Me contestó: NullPointerException.",
+        "¿Por qué el farol no juega al escondite? Porque siempre lo pillan: se le ve la llama de lejos.",
+        "Un programador va al súper. Su pareja le dice: «Trae un litro de leche y, si hay huevos, trae seis». Volvió con seis litros de leche.",
+        "¿Cuál es el animal favorito de un programador? El bug… aunque siempre intenta deshacerse de él.",
+        "Goku no necesita Git: si algo sale mal, reúne las bolas de dragón y hace rollback."
+      ],
+      "va": [
+        "Per què els programadors confonen Halloween amb Nadal? Perquè OCT 31 = DEC 25 🎃🎄",
+        "Hi ha 10 tipus de persones: les que entenen binari i les que no.",
+        "Una consulta SQL entra en un bar, s’acosta a dues taules i pregunta: «Puc fer JOIN?»",
+        "El meu codi funciona i no sé per què. El meu codi no funciona i tampoc sé per què. Programar és fe.",
+        "CSS és fàcil, van dir. Centrar un div, van dir.",
+        "Què li diu un bit a un altre? «Ens veiem en el bus».",
+        "Li vaig preguntar a Java com estava. Em va contestar: NullPointerException.",
+        "Per què el farol no juga a fet i amagar? Perquè sempre el troben: se li veu la flama de lluny.",
+        "Un programador va al súper. La seua parella li diu: «Porta un litre de llet i, si hi ha ous, porta’n sis». Va tornar amb sis litres de llet.",
+        "Quin és l’animal preferit d’un programador? El bug… encara que sempre intenta desfer-se’n.",
+        "Goku no necessita Git: si alguna cosa ix malament, reunix les boles de drac i fa rollback."
+      ],
+      "repetible": true,
+      "efecto": "salto",
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Curiosidad"
+        ],
+        "va": [
+          "Un altre",
+          "Curiositat"
+        ]
+      }
+    },
+    {
+      "id": "curiosidad",
+      "frases": [
+        "curiosidad",
+        "curiosidades",
+        "dato curioso",
+        "sabias que",
+        "cuentame algo",
+        "algo interesante",
+        "curiositat",
+        "curiositats",
+        "dada curiosa",
+        "conta m alguna cosa",
+        "fun fact",
+        "aprender algo"
+      ],
+      "es": [
+        "El primer «bug» informático documentado fue una polilla de verdad, atrapada en el ordenador Harvard Mark II en 1947.",
+        "JavaScript se creó en unos 10 días, en 1995, de la mano de Brendan Eich.",
+        "Git lo creó Linus Torvalds en 2005, el mismo creador del núcleo Linux.",
+        "El primer dominio .com registrado fue symbolics.com, en 1985.",
+        "Píxel viene de «picture element», elemento de imagen.",
+        "Goku está inspirado en Sun Wukong, el Rey Mono de la novela china Viaje al Oeste.",
+        "En Regreso al futuro, el DeLorean necesitaba 1,21 gigavatios para viajar en el tiempo.",
+        "Tolkien era filólogo y creó idiomas élficos como el quenya y el sindarin.",
+        "En Dune, la especia melange acaba tiñendo de azul los ojos de quien la consume a menudo.",
+        "El primer Metal Gear salió en 1987 para MSX2 y ya apostaba por esconderse en lugar de pelear.",
+        "Jurassic Park mezcló animatrónicos enormes con dinosaurios por ordenador, algo pionero en 1993."
+      ],
+      "va": [
+        "El primer «bug» informàtic documentat va ser una arna de veritat, atrapada en l’ordinador Harvard Mark II en 1947.",
+        "JavaScript es va crear en uns 10 dies, en 1995, de la mà de Brendan Eich.",
+        "Git el va crear Linus Torvalds en 2005, el mateix creador del nucli Linux.",
+        "El primer domini .com registrat va ser symbolics.com, en 1985.",
+        "Píxel ve de «picture element», element d’imatge.",
+        "Goku està inspirat en Sun Wukong, el Rei Mico de la novel·la xinesa Viatge a l’Oest.",
+        "En Retorn al futur, el DeLorean necessitava 1,21 gigawatts per a viatjar en el temps.",
+        "Tolkien era filòleg i va crear idiomes èlfics com el quenya i el sindarin.",
+        "En Dune, l’espècia melange acaba tenyint de blau els ulls de qui la consumix sovint.",
+        "El primer Metal Gear va eixir en 1987 per a MSX2 i ja apostava per amagar-se en compte de lluitar.",
+        "Jurassic Park va mesclar animatrònics enormes amb dinosaures per ordinador, una cosa pionera en 1993."
+      ],
+      "repetible": true,
+      "sugerencias": {
+        "es": [
+          "Otra",
+          "Un chiste"
+        ],
+        "va": [
+          "Una altra",
+          "Un acudit"
+        ]
+      }
+    },
+    {
+      "id": "consejo",
+      "frases": [
+        "consejo",
+        "consejos",
+        "aprender a programar",
+        "como aprendo a programar",
+        "tips",
+        "consell",
+        "consells",
+        "aprendre a programar",
+        "empezar a programar",
+        "recomendacion programar",
+        "como mejorar"
+      ],
+      "es": [
+        "Programa un poco cada día. Treinta minutos constantes ganan a un atracón de ocho horas.",
+        "Haz proyectos pequeños que te apetezcan de verdad. Esta web empezó así.",
+        "Lee los errores enteros. La mitad de las veces la respuesta está en la segunda línea.",
+        "Usa Git desde el primer día. Tu yo del futuro te lo agradecerá.",
+        "Si te atascas, explícale el problema a un pato de goma… o a un farol. Funciona."
+      ],
+      "va": [
+        "Programa un poc cada dia. Trenta minuts constants guanyen a una panxada de huit hores.",
+        "Fes projectes xicotets que de veritat et vinguen de gust. Esta web va començar així.",
+        "Llig els errors sencers. La meitat de les vegades la resposta està en la segona línia.",
+        "Usa Git des del primer dia. El teu jo del futur t’ho agrairà.",
+        "Si et bloqueges, explica el problema a un ànec de goma… o a un farol. Funciona."
+      ],
+      "repetible": true,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Lenguajes"
+        ],
+        "va": [
+          "Un altre",
+          "Llenguatges"
+        ]
+      }
+    },
+    {
+      "id": "konami",
+      "frases": [
+        "konami",
+        "arriba arriba abajo abajo",
+        "codigo konami",
+        "dalt dalt baix baix"
+      ],
+      "es": [
+        "↑ ↑ ↓ ↓ ← → ← → B A… ¡Desbloqueado! +30 vidas de farol 🕹️"
+      ],
+      "va": [
+        "↑ ↑ ↓ ↓ ← → ← → B A… Desbloquejat! +30 vides de farol 🕹️"
+      ],
+      "efecto": "fuegos",
+      "peso": 1.2
+    },
+    {
+      "id": "hola-mundo",
+      "frases": [
+        "hola mundo",
+        "hello world",
+        "hola mon"
+      ],
+      "es": [
+        "¡Hola, mundo! El primer programa de todo desarrollador. Compilado con éxito ✅"
+      ],
+      "va": [
+        "Hola, món! El primer programa de tot desenvolupador. Compilat amb èxit ✅"
+      ],
+      "efecto": "salto",
+      "peso": 1.3
+    },
+    {
+      "id": "sudo",
+      "frases": [
+        "sudo",
+        "root",
+        "hackear",
+        "hack",
+        "hacker",
+        "password",
+        "contrasena",
+        "contrasenya",
+        "admin",
+        "administrador"
+      ],
+      "es": [
+        "Permiso denegado. Este farol no se deja hackear 🔒",
+        "sudo: Farolillo no está en el archivo sudoers. Este incidente será reportado. 😎"
+      ],
+      "va": [
+        "Permís denegat. Este farol no es deixa hackejar 🔒",
+        "sudo: Farolillo no està en l’arxiu sudoers. Este incident serà reportat. 😎"
+      ],
+      "peso": 1.1
+    },
+    {
+      "id": "cuarenta-y-dos",
+      "frases": [
+        "42",
+        "sentido de la vida",
+        "el sentido de la vida",
+        "sentit de la vida",
+        "el universo y todo lo demas"
+      ],
+      "es": [
+        "42. Pero no me preguntes cuál era la pregunta."
+      ],
+      "va": [
+        "42. Però no em preguntes quina era la pregunta."
+      ],
+      "peso": 1.2
+    },
+    {
+      "id": "kamehameha",
+      "frases": [
+        "kamehameha",
+        "kame hame ha",
+        "genkidama",
+        "final flash"
+      ],
+      "es": [
+        "¡KAAA-MEEE-HAAA-MEEE-HAAAA! 💥 …Vale, solo me salen chispas."
+      ],
+      "va": [
+        "KAAA-MEEE-HAAA-MEEE-HAAAA! 💥 …Val, només em ixen espurnes."
+      ],
+      "efecto": "fuegos",
+      "peso": 1.3
+    },
+    {
+      "id": "bankai",
+      "frases": [
+        "bankai",
+        "getsuga tensho",
+        "getsuga"
+      ],
+      "es": [
+        "¡Bankai! Liberación total de llama 🗡️🔥"
+      ],
+      "va": [
+        "Bankai! Alliberament total de flama 🗡️🔥"
+      ],
+      "efecto": "giro",
+      "peso": 1.3
+    },
+    {
+      "id": "rasengan",
+      "frases": [
+        "rasengan",
+        "dattebayo",
+        "kage bunshin",
+        "chidori",
+        "jutsu"
+      ],
+      "es": [
+        "¡Dattebayo! Rasengan de papel en camino 🌀"
+      ],
+      "va": [
+        "Dattebayo! Rasengan de paper en camí 🌀"
+      ],
+      "efecto": "giro",
+      "peso": 1.3
+    },
+    {
+      "id": "gomu-gomu",
+      "frases": [
+        "gomu gomu",
+        "gomu",
+        "gear 5",
+        "gear fifth"
+      ],
+      "es": [
+        "¡Gomu Gomu no… Farol! Me estiro, pero solo si me arrastras."
+      ],
+      "va": [
+        "Gomu Gomu no… Farol! M’estire, però només si m’arrossegues."
+      ],
+      "efecto": "salto",
+      "peso": 1.3
+    },
+    {
+      "id": "esparta",
+      "frases": [
+        "this is sparta",
+        "esto es esparta",
+        "aixo es esparta"
+      ],
+      "es": [
+        "¡ESTO ES ESPARTAAA! 🦵 (Plano bien coreografiado, como le gusta a Sergio)."
+      ],
+      "va": [
+        "AÇÒ ÉS ESPARTAAA! 🦵 (Pla ben coreografiat, com li agrada a Sergio)."
+      ],
+      "efecto": "salto",
+      "peso": 1.4
+    },
+    {
+      "id": "hasta-la-vista",
+      "frases": [
+        "hasta la vista",
+        "hasta la vista baby",
+        "volvere",
+        "ill be back",
+        "i ll be back",
+        "tornare"
+      ],
+      "es": [
+        "Hasta la vista, baby 😎👍"
+      ],
+      "va": [
+        "Hasta la vista, baby 😎👍"
+      ],
+      "efecto": "feliz",
+      "peso": 1.3
+    },
+    {
+      "id": "star-wars",
+      "frases": [
+        "star wars",
+        "que la fuerza te acompane",
+        "la fuerza",
+        "jedi",
+        "sith",
+        "darth vader",
+        "yoda"
+      ],
+      "es": [
+        "Que la Fuerza te acompañe. Aunque Star Wars no está en el top de Sergio… ¿será cosa del lado oscuro?"
+      ],
+      "va": [
+        "Que la Força t’acompanye. Encara que Star Wars no està en el top de Sergio… serà cosa del costat fosc?"
+      ],
+      "peso": 1.1
+    },
+    {
+      "id": "pegaso",
+      "frases": [
+        "meteoros de pegaso",
+        "pegasus ryu sei ken",
+        "eleva tu cosmos",
+        "cosmos al maximo"
+      ],
+      "es": [
+        "¡Meteoros de Pegaso! ✨ Mi cosmos arde tanto como mi llama."
+      ],
+      "va": [
+        "Meteors de Pegàs! ✨ El meu cosmos crema tant com la meua flama."
+      ],
+      "efecto": "fuegos",
+      "peso": 1.3
+    },
+    {
+      "id": "delorean-88",
+      "frases": [
+        "88 millas por hora",
+        "1 21 gigavatios",
+        "gran scott",
+        "great scott"
+      ],
+      "es": [
+        "¡Gran Scott! A 88 millas por hora vas a ver algo serio 🚗⚡"
+      ],
+      "va": [
+        "Gran Scott! A 88 milles per hora voràs una cosa seriosa 🚗⚡"
+      ],
+      "efecto": "giro",
+      "peso": 1.3
+    }
+  ]
+}

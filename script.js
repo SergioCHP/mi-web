@@ -1007,8 +1007,9 @@
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        const rotateX = (y / rect.height - 0.5) * -10;
-        const rotateY = (x / rect.width - 0.5) * 12;
+        const strength = parseFloat(card.dataset.tiltStrength) || 1;
+        const rotateX = (y / rect.height - 0.5) * -10 * strength;
+        const rotateY = (x / rect.width - 0.5) * 12 * strength;
 
         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       });

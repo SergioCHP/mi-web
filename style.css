@@ -1225,7 +1225,7 @@ body {
 }
 
 /* Cursor mano neón para enlaces y botones (Azul base) - Tamaño 26x26 */
-a, button, .card, .tags li, .filter-btn, [role="button"], input[type="submit"], select, .theme-pill-track {
+a, button,.filter-btn, [role="button"], input[type="submit"], select, .theme-pill-track {
     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 36 36"><path d="M12 18v-8a3 3 0 016 0v2h1a2 2 0 012 2v1h1a2 2 0 012 2v2h1a2 2 0 012 2v5a7 7 0 01-7 7h-3a9 9 0 01-9-9v-4l-3.5-2.5a2 2 0 011.5-3.5L12 16z" fill="none" stroke="%2338bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="drop-shadow(0 0 4px %2338bdf8) drop-shadow(0 0 8px %2338bdf8)"/></svg>') 9 3, pointer !important;
 }
 
@@ -1236,8 +1236,6 @@ html[data-accent="pink"] body {
 
 html[data-accent="pink"] a, 
 html[data-accent="pink"] button, 
-html[data-accent="pink"] .card, 
-html[data-accent="pink"] .tags li, 
 html[data-accent="pink"] .filter-btn, 
 html[data-accent="pink"] [role="button"], 
 html[data-accent="pink"] input[type="submit"], 
@@ -1263,9 +1261,7 @@ html[data-theme="light"] body {
 }
 
 html[data-theme="light"] a, 
-html[data-theme="light"] button, 
-html[data-theme="light"] .card, 
-html[data-theme="light"] .tags li, 
+html[data-theme="light"] button,  
 html[data-theme="light"] .filter-btn, 
 html[data-theme="light"] [role="button"], 
 html[data-theme="light"] input[type="submit"], 
@@ -1281,8 +1277,6 @@ html[data-theme="light"][data-accent="pink"] body {
 
 html[data-theme="light"][data-accent="pink"] a, 
 html[data-theme="light"][data-accent="pink"] button, 
-html[data-theme="light"][data-accent="pink"] .card, 
-html[data-theme="light"][data-accent="pink"] .tags li, 
 html[data-theme="light"][data-accent="pink"] .filter-btn, 
 html[data-theme="light"][data-accent="pink"] [role="button"], 
 html[data-theme="light"][data-accent="pink"] input[type="submit"], 
@@ -2551,4 +2545,20 @@ main, footer {
 .card-reading .card-link:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
+}
+
+/* =========================================================
+   TARJETAS INFORMATIVAS (sin enlace)
+   ========================================================= */
+.card--static {
+  cursor: inherit;
+  border-radius: var(--radius) 6px var(--radius) 6px;
+  transition: none; /* el movimiento lo controla el efecto tilt */
+}
+
+/* Sin elevación ni borde de acento al pasar el ratón */
+.card--static:hover {
+  transform: none;
+  border-color: var(--line);
+  box-shadow: var(--neu-flat), var(--neu-bevel);
 }
