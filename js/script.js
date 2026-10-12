@@ -1,15 +1,14 @@
 /* =========================================================
-   script.js — Interacción, Spotlight, Tilt 3D y Controles
-   Versión corregida: typewriter multilenguaje, scroll spy
-   mejorado, aria-pressed correcto y traducción completa.
+   script.js — Portada (index) y juegos.html
+   Idioma ES/VA, typewriter, GitHub en vivo, reveal, spotlight,
+   tilt 3D, filtros de proyectos, formulario Supabase, tiempo,
+   buscador RAWG y carrusel del hero.
+   El tema y el acento están en js/theme.js.
    ========================================================= */
 
 (function () {
   const root = document.documentElement;
-  const accentButton = document.getElementById("accentToggle");
-  const themeButton = document.getElementById("themeToggle");
   const yearElement = document.getElementById("year");
-  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
   root.classList.add("js");
 
@@ -22,82 +21,7 @@
     yearElement.textContent = new Date().getFullYear();
   }
 
-  /* ---------- Tema Claro / Oscuro ---------- */
-  let theme = "dark";
-  try {
-    const savedTheme = localStorage.getItem("sergio-theme");
-    if (savedTheme === "light" || savedTheme === "dark") {
-      theme = savedTheme;
-    } else if (
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-color-scheme: light)").matches
-    ) {
-      theme = "light";
-    }
-  } catch (e) {}
-  root.setAttribute("data-theme", theme);
-
-  const updateThemeUI = () => {
-    const isLight = root.getAttribute("data-theme") === "light";
-    const label = isLight ? "Cambiar a modo oscuro" : "Cambiar a modo claro";
-    if (themeButton) {
-      themeButton.setAttribute("aria-label", label);
-      themeButton.setAttribute("title", label);
-      // aria-pressed debe indicar si el botón está "activado".
-      // El modo por defecto es oscuro, así que el botón NO está presionado
-      // cuando estamos en oscuro y SÍ cuando estamos en claro.
-      themeButton.setAttribute("aria-pressed", String(isLight));
-    }
-    if (themeColorMeta) {
-      themeColorMeta.setAttribute("content", isLight ? "#e8e1d5" : "#07070a");
-    }
-  };
-
-  if (themeButton) {
-    themeButton.addEventListener("click", () => {
-      theme = theme === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", theme);
-      try {
-        localStorage.setItem("sergio-theme", theme);
-      } catch (e) {}
-      updateThemeUI();
-    });
-  }
-
-  updateThemeUI();
-
-  /* ---------- Acento Rosa / Azul ---------- */
-  let accent = "pink";
-  try {
-    const savedAccent = localStorage.getItem("sergio-accent");
-    if (savedAccent === "blue" || savedAccent === "pink") {
-      accent = savedAccent;
-    }
-  } catch (e) {}
-  root.setAttribute("data-accent", accent);
-
-  const updateAccentUI = () => {
-    const isBlue = root.getAttribute("data-accent") === "blue";
-    const label = isBlue ? "Cambiar a acento rosa" : "Cambiar a acento azul";
-    if (accentButton) {
-      accentButton.setAttribute("aria-label", label);
-      accentButton.setAttribute("title", label);
-      accentButton.setAttribute("aria-pressed", String(isBlue));
-    }
-  };
-
-  if (accentButton) {
-    accentButton.addEventListener("click", () => {
-      accent = accent === "pink" ? "blue" : "pink";
-      root.setAttribute("data-accent", accent);
-      try {
-        localStorage.setItem("sergio-accent", accent);
-      } catch (e) {}
-      updateAccentUI();
-    });
-  }
-
-  updateAccentUI();
+  /* Tema y acento: los gestiona js/theme.js (compartido por todas las páginas) */
 
   /* =========================================================
      Selector de Idioma (ES / VA) Completo
@@ -205,6 +129,7 @@
 
       // Sección Intereses (Me gusta)
       interesesTitle: "Me gusta",
+      gamingCta: "¡Pulsa aquí para superar el reto y ver mis favoritos! ➔",
       interesesSub: "Aficiones, entretenimiento y áreas de inspiración.",
       interesesCards: [
         {
@@ -379,6 +304,7 @@
 
       // Sección Interessos (M'agrada)
       interesesTitle: "M'agrada",
+      gamingCta: "Prem ací per a superar el repte i veure els meus preferits! ➔",
       interesesSub: "Aficions, entreteniment i àrees d'inspiració.",
       interesesCards: [
         {
@@ -768,6 +694,9 @@
       if (p) p.textContent = cardData.desc;
     });
 
+    const gamingCta = document.querySelector("#me-gusta .card-cta");
+    if (gamingCta) gamingCta.textContent = t.gamingCta;
+
     // Sección: Proyectos
     const proyTitle = document.getElementById("proyectos-title");
     if (proyTitle) {
@@ -809,11 +738,6 @@
 
     const mailLink = document.querySelector('.contact-links a[href^="mailto:"]');
     if (mailLink) mailLink.textContent = t.contactSend;
-
-    const copyP = document.querySelector(".copy");
-    if (copyP) {
-      copyP.innerHTML = `© <span id="year">${new Date().getFullYear()}</span> Sergio Chorques · Web personal. <a href="admin.html" style="color: var(--text-muted); margin-left: 8px; opacity: 0.6; transition: opacity 0.2s;" aria-label="Acceso al panel de administración" title="Admin"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></a>`;
-    }
 
     // Botón de llamada en footer
     const callBtnSpan = document.querySelector("#openCall span");
@@ -1437,7 +1361,6 @@
 
       render();
     } catch (error) {
-      console.warn("No se pudo cargar el clima:", error);
       cached = null;
       showError();
     } finally {

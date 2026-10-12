@@ -1,0 +1,208 @@
+/* =========================================================
+   carousel.css — Carrusel 3D con tarjetas que se voltean
+   Compartido por juegos.html y cine.html.
+   Cargar después de pages.css y antes de mobile.css.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   ESCENA Y CARRUSEL 3D
+   --------------------------------------------------------- */
+.scene {
+    position: relative;
+    width: 100%;
+    height: 500px; /* Reducido para que el carrusel suba y quede pegado al texto */
+    perspective: 1600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.carousel {
+  position: relative;
+  width: 320px;
+  height: 460px;
+  transform-style: preserve-3d;
+}
+
+.carousel-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+  opacity: 1;
+  filter: blur(0.5px) brightness(0.75);
+  transition: filter 0.6s ease, box-shadow 0.6s ease;
+}
+
+.carousel-card.active {
+  opacity: 1;
+  filter: blur(0) brightness(1);
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius);
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.carousel-card.active .card-inner {
+  border-color: var(--accent);
+  box-shadow: 0 0 45px color-mix(in srgb, var(--accent) 35%, transparent), 
+              inset 0 0 20px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.carousel-card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: inherit;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------------------------------------------------------
+   REVERSO DE LA TARJETA MEJORADO (CARD-BACK)
+   --------------------------------------------------------- */
+.card-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(145deg, var(--surface), #0f121a);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.card-back::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.card-back::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: calc(var(--radius) - 6px);
+  pointer-events: none;
+}
+
+.card-back-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+}
+
+.game-platform {
+  display: inline-block;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.card-back h3 {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.card-back h3::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--accent);
+  margin: 12px auto 0;
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.game-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.flip-hint {
+  position: absolute;
+  bottom: 0;
+  font-size: 0.75rem;
+  color: color-mix(in srgb, var(--text-muted) 80%, transparent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.8;
+  font-weight: 600;
+}
+
+/* Ajustes base en móvil (mobile.css afina tamaños y reverso) */
+@media (max-width: 768px) {
+  .scene {
+    height: 440px;
+    perspective: 1000px;
+    margin-bottom: 1.5rem;
+  }
+  .carousel {
+    width: 240px;
+    height: 360px;
+  }
+  .card-back {
+    padding: 1.5rem 1rem;
+  }
+  .card-back h3 {
+    font-size: 1.25rem;
+  }
+  .game-desc {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+}

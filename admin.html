@@ -44,6 +44,8 @@
     .error { color: #ef4444; font-size: 0.9rem; margin-top: 0; }
     .center { text-align: center; }
     .muted { color: var(--muted); }
+    .m-0 { margin: 0; }
+    .btn-block { width: 100%; }
   </style>
 </head>
 <body>
@@ -79,7 +81,7 @@
           ${errorMsg ? `<p class="error" role="alert">${esc(errorMsg)}</p>` : ""}
           <input type="email" id="adminEmail" placeholder="Correo electrónico" autocomplete="email" aria-label="Correo electrónico" required>
           <input type="password" id="adminPass" placeholder="Contraseña" autocomplete="current-password" aria-label="Contraseña" required>
-          <button type="submit" style="width:100%" id="btnLogin">Entrar al Panel</button>
+          <button type="submit" class="btn-block" id="btnLogin">Entrar al Panel</button>
         </form>
       `;
       document.getElementById("loginForm").addEventListener("submit", iniciarSesion);
@@ -140,7 +142,7 @@
       `;
 
       if (mensajes.length === 0) {
-        html += '<div class="card"><p class="muted" style="margin:0">Bandeja de entrada vacía.</p></div>';
+        html += '<div class="card"><p class="muted m-0">Bandeja de entrada vacía.</p></div>';
       }
 
       mensajes.forEach((m) => {

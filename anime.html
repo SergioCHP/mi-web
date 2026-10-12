@@ -28,687 +28,16 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="theme-light.css" />
-  
-  <style>
-    /* =========================================================
-       ESTILOS ESPECÍFICOS: CARRUSEL 3D CON FLIP Y PARTÍCULAS
-       ========================================================= */
-    body {
-      overflow-x: hidden;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ---------------------------------------------------------
-       ESTILOS PARA EL MENÚ (Evita conflicto con script.js)
-       --------------------------------------------------------- */
-    .nav-links-games {
-      display: flex;
-      gap: 0.35rem;
-    }
-
-    .nav-links-games a {
-      padding: 0.4rem 0.85rem;
-      border-radius: 999px;
-      font-family: var(--font-display);
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      transition: color var(--transition), background var(--transition);
-      text-decoration: none;
-    }
-
-    .nav-links-games a:hover {
-      color: var(--text);
-      background: color-mix(in srgb, var(--text) 8%, transparent);
-    }
-
-    /* ---------------------------------------------------------
-       FORZAR CURSOR NEÓN (MANO) EN TARJETAS Y ENLACES
-       --------------------------------------------------------- */
-    .carousel-card, .showcase-card, .showcase-card *, .ctrl-btn, a {
-        cursor: pointer !important; 
-    }
-    
-    body {
-        cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"><path d="M4 4l9.5 24 3.5-9 9-3.5z" fill="none" stroke="%2338bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="drop-shadow(0 0 4px %2338bdf8) drop-shadow(0 0 8px %2338bdf8)"/></svg>') 3 3, auto !important;
-    }
-
-    .carousel-card, 
-    .showcase-card,
-    .showcase-card *,
-    .ctrl-btn, 
-    a {
-        cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 36 36"><path d="M12 18v-8a3 3 0 016 0v2h1a2 2 0 012 2v1h1a2 2 0 012 2v2h1a2 2 0 012 2v5a7 7 0 01-7 7h-3a9 9 0 01-9-9v-4l-3.5-2.5a2 2 0 011.5-3.5L12 16z" fill="none" stroke="%2338bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="drop-shadow(0 0 4px %2338bdf8) drop-shadow(0 0 8px %2338bdf8)"/></svg>') 9 3, pointer !important;
-    }
-
-    html[data-accent="pink"] body {
-        cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"><path d="M4 4l9.5 24 3.5-9 9-3.5z" fill="none" stroke="%23ff2e97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="drop-shadow(0 0 4px %23ff2e97) drop-shadow(0 0 8px %23ff2e97)"/></svg>') 3 3, auto !important;
-    }
-
-    html[data-accent="pink"] .carousel-card, 
-    html[data-accent="pink"] .showcase-card,
-    html[data-accent="pink"] .showcase-card *,
-    html[data-accent="pink"] .ctrl-btn, 
-    html[data-accent="pink"] a {
-        cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 36 36"><path d="M12 18v-8a3 3 0 016 0v2h1a2 2 0 012 2v1h1a2 2 0 012 2v2h1a2 2 0 012 2v5a7 7 0 01-7 7h-3a9 9 0 01-9-9v-4l-3.5-2.5a2 2 0 011.5-3.5L12 16z" fill="none" stroke="%23ff2e97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="drop-shadow(0 0 4px %23ff2e97) drop-shadow(0 0 8px %23ff2e97)"/></svg>') 9 3, pointer !important;
-    }
-
-    /* ---------------------------------------------------------
-       FONDO Y CABECERA
-       --------------------------------------------------------- */
-    #particles-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-      opacity: 0.95;
-    }
-
-    .games-header {
-      padding-top: 85px !important;
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center; 
-      text-align: center;
-      position: relative;
-      z-index: 10;
-      box-sizing: border-box;
-    }
-
-    .games-header h2 {
-      margin: 0.5rem 0 0.2rem 0;
-      font-size: clamp(2.2rem, 5vw, 3.2rem);
-      font-family: var(--font-display);
-      background: linear-gradient(100deg, var(--accent), var(--accent-alt), var(--accent));
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
-      animation: titleShine 9s linear infinite;
-    }
-
-    .games-header p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-
-    /* =========================================================
-       SHOWCASE / ARCHIVE DISPLAY (ESTILO VISUAL NOVEL & HUD)
-       ========================================================= */
-    .anime-stage {
-      width: 100%;
-      max-width: 980px;
-      margin: 0.8rem auto 1rem;
-      padding: 0 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1cm;
-      position: relative;
-      z-index: 10;
-      box-sizing: border-box;
-    }
-
-    /* Pantalla y Contenedor Principal */
-    .showcase-screen {
-      position: relative;
-      width: 100%;
-      height: 390px;
-      perspective: 1400px;
-    }
-
-    /* Animación en el contenedor: se agranda y regresa suavemente a su escala */
-    .showcase-screen:hover {
-      animation: cardPulse 0.45s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    }
-
-    @keyframes cardPulse {
-      0% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.025);
-      }
-      100% {
-        transform: scale(1.01);
-      }
-    }
-
-    /* Tarjeta 3D con Flip y Borde Neón */
-    .showcase-card {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      border-radius: var(--radius);
-      border: 1px solid var(--line-strong);
-      background: var(--surface);
-      box-shadow: var(--shadow);
-      transform-style: preserve-3d;
-      cursor: pointer;
-      /* Transición fluida del volteo y del borde iluminado */
-      transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  border-color 0.3s ease, 
-                  box-shadow 0.3s ease;
-    }
-
-    /* Borde y brillo al pasar el ratón */
-    .showcase-screen:hover .showcase-card {
-      border-color: var(--accent);
-      box-shadow: 0 0 25px color-mix(in srgb, var(--accent) 35%, transparent), var(--shadow);
-    }
-
-    /* Giro de 180 grados sin interferencias */
-    .showcase-card.is-flipped {
-      transform: rotateY(180deg);
-    }
-
-    .showcase-face {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      border-radius: inherit;
-      overflow: hidden;
-    }
-
-    /* Frontal: Imagen + Ficha técnica */
-    .showcase-front {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      background: linear-gradient(135deg, rgba(14, 16, 23, 0.98), rgba(8, 10, 15, 0.99));
-      z-index: 2;
-      pointer-events: auto;
-    }
-
-    .showcase-card.is-flipped .showcase-front {
-      pointer-events: none;
-    }
-
-    .showcase-poster {
-      position: relative;
-      height: 100%;
-      overflow: hidden;
-      border-right: 1px solid var(--line);
-    }
-
-    .showcase-poster img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      object-position: center;
-    }
-
-    .showcase-info {
-      position: relative;
-      padding: 2.2rem 2.6rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      overflow: hidden;
-      z-index: 2;
-    }
-
-    /* Imagen tenue de fondo ubicada en la derecha */
-    .showcase-info-backdrop {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 60%;
-      background-size: cover;
-      background-position: center top;
-      background-repeat: no-repeat;
-      opacity: 0.14;
-      mix-blend-mode: screen;
-      pointer-events: none;
-      z-index: 1;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.8) 70%, rgba(0,0,0,1) 100%);
-      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.8) 70%, rgba(0,0,0,1) 100%);
-      transition: background-image 0.5s ease-in-out, opacity 0.5s ease;
-    }
-
-    /* El texto y los botones siempre por encima de la imagen tenue */
-    .showcase-meta-header,
-    .showcase-title,
-    .showcase-desc,
-    .showcase-tags,
-    .showcase-actions {
-      position: relative;
-      z-index: 2;
-    }
-
-    .showcase-meta-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.8rem;
-    }
-
-    .showcase-year {
-      font-family: var(--font-display);
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      letter-spacing: 0.08em;
-    }
-
-    /* Barra de puntuación neón */
-    .showcase-score-wrap {
-      margin-bottom: 1rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--line);
-      padding: 0.6rem 0.85rem;
-      border-radius: var(--radius-sm);
-    }
-
-    .score-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.78rem;
-      font-family: var(--font-display);
-      margin-bottom: 0.35rem;
-      color: var(--text-muted);
-    }
-
-    .score-label strong {
-      color: var(--accent);
-    }
-
-    .score-bar-track {
-      width: 100%;
-      height: 4px;
-      background: var(--surface-2);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .score-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent-alt));
-      box-shadow: 0 0 8px var(--accent);
-      border-radius: 999px;
-      transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    /* Tags temáticos */
-    .showcase-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .showcase-tags span {
-      font-family: var(--font-display);
-      font-size: 0.74rem;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: color-mix(in srgb, var(--surface-2) 80%, transparent);
-      border: 1px solid var(--line);
-      color: var(--text);
-      letter-spacing: 0.03em;
-    }
-
-    /* Botón voltear alineado */
-    .showcase-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .showcase-badge {
-      display: inline-flex;
-      align-items: center;
-      background: color-mix(in srgb, var(--accent) 15%, transparent);
-      border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-family: var(--font-display);
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 0.8rem;
-      width: fit-content;
-    }
-
-    .showcase-title {
-      margin: 0 0 0.8rem;
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 3.2vw, 2.5rem);
-      color: #fff;
-      line-height: 1.1;
-    }
-
-    /* Descripción más espaciosa y con presencia */
-    .showcase-desc {
-      font-size: 0.98rem;
-      color: var(--text-muted);
-      line-height: 1.75;
-      margin: 0 0 1.4rem;
-      max-width: 620px;
-    }
-
-    .flip-trigger-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1.1rem;
-      border-radius: 999px;
-      border: 1px solid var(--line-strong);
-      background: var(--surface-2);
-      color: var(--text);
-      font-family: var(--font-display);
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      width: fit-content;
-      transition: all 0.3s ease;
-    }
-
-    .flip-trigger-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 10%, var(--surface-2));
-    }
-
-    /* Reverso: Modo Archivo / Cita filosófica */
-    .showcase-back {
-      transform: rotateY(180deg);
-      background: radial-gradient(circle at center, #171a26 0%, #0a0c14 100%);
-      padding: 2.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      box-sizing: border-box;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .showcase-card.is-flipped .showcase-back {
-      z-index: 5;
-      pointer-events: auto;
-    }
-
-    .showcase-back::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 24px 24px;
-      pointer-events: none;
-    }
-
-    .back-content {
-      position: relative;
-      z-index: 2;
-      max-width: 650px;
-    }
-
-    .back-quote {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-style: italic;
-      color: var(--text);
-      line-height: 1.6;
-      margin: 0 0 1.5rem 0;
-      max-width: 600px;
-    }
-
-    .quote-author {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin: -0.8rem 0 2rem 0;
-      text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 45%, transparent);
-    }
-
-    /* Dock de Miniaturas inferior */
-    .dock-container {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: center;
-      align-items: center;
-      padding: 0.5rem 0;
-    }
-
-    /* Contenedor miniatura: sin padding y con posición relativa */
-    .dock-item {
-      position: relative !important;
-      width: 72px !important;
-      height: 104px !important;
-      border-radius: var(--radius-sm);
-      overflow: hidden !important;
-      cursor: pointer;
-      border: 2px solid var(--line);
-      opacity: 0.55;
-      flex-shrink: 0;
-      background: #000 !important;
-      padding: 0 !important;
-      margin: 0;
-      transition: all 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
-    }
-
-    /* Imagen forzada a cubrir todo el contenedor de esquina a esquina */
-    .dock-item img {
-      position: absolute !important;
-      top: 0 !important;
-      left: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: cover !important;
-      object-position: center !important;
-      display: block !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: none !important;
-    }
-
-    .dock-item:hover {
-      opacity: 0.85;
-      transform: translateY(-4px);
-      border-color: var(--text-muted);
-    }
-
-    .dock-item.is-selected {
-      opacity: 1;
-      transform: translateY(-6px) scale(1.08);
-      border-color: var(--accent) !important;
-      box-shadow: 0 0 22px color-mix(in srgb, var(--accent) 55%, transparent) !important;
-    }
-
-    /* Responsive */
-    @media (max-width: 820px) {
-      .showcase-front {
-        grid-template-columns: 1fr;
-      }
-      .showcase-poster {
-        height: 240px;
-        border-right: none;
-        border-bottom: 1px solid var(--line);
-      }
-      .showcase-info {
-        padding: 1.5rem;
-      }
-      .dock-item {
-        width: 60px;
-        height: 85px;
-      }
-    }
-
-    /* ---------------------------------------------------------
-       CONTROLES Y RESPONSIVE
-       --------------------------------------------------------- */
-    .carousel-controls {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-      z-index: 10;
-    }
-
-    .ctrl-btn {
-      background: var(--surface-2);
-      border: 1px solid var(--line);
-      color: var(--accent);
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      transition: all 0.3s ease;
-    }
-
-    .ctrl-btn:hover {
-      background: var(--accent);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 40%, transparent);
-      transform: scale(1.05);
-    }
-
-    @media (max-width: 768px) {
-      .navbar {
-        gap: 0.5rem;
-        padding: 0.35rem 0.6rem;
-      }
-      .nav-links-games a {
-        padding: 0.3rem 0.55rem;
-        font-size: 0.8rem;
-      }
-      .controls {
-        gap: 0.2rem;
-        padding-left: 0.4rem;
-      }
-      .controls button {
-        width: 30px;
-        height: 30px;
-      }
-      .theme-pill-track {
-        width: 48px;
-        height: 26px;
-      }
-      .theme-pill-thumb {
-        width: 20px;
-        height: 20px;
-      }
-      html[data-theme="light"] .theme-pill-thumb {
-        transform: translateX(22px);
-      }
-
-      .games-header {
-        padding-top: 85px;
-      }
-      .games-header h2 {
-        font-size: 1.8rem;
-      }
-      .games-header p {
-        font-size: 0.85rem;
-      }
-
-      .scene { 
-        height: 440px; 
-        perspective: 1000px;
-        margin-bottom: 1.5rem;
-      }
-      .carousel { 
-        width: 240px; 
-        height: 360px; 
-      }
-      .card-back {
-        padding: 1.5rem 1rem;
-      }
-      .card-back h3 { 
-        font-size: 1.25rem; 
-      }
-      .game-desc { 
-        font-size: 0.8rem; 
-        line-height: 1.5;
-      }
-      .carousel-controls {
-        margin-bottom: 2rem;
-      }
-    }
-
-    /* Ficha de detalle del anime buscado */
-    #fichaAnime {
-      width: 100% !important;
-      max-width: 100% !important;
-      display: block !important;
-      box-sizing: border-box !important;
-      margin-top: 1.8rem !important;
-    }
-
-    .anime-detail-card {
-      display: grid !important;
-      grid-template-columns: 240px 1fr !important;
-      gap: 2rem !important;
-      background: var(--surface-2) !important;
-      border: 1px solid var(--accent) !important;
-      padding: 1.6rem !important;
-      border-radius: var(--radius) !important;
-      width: 100% !important;
-      box-sizing: border-box !important;
-      box-shadow: 0 0 25px color-mix(in srgb, var(--accent) 25%, transparent) !important;
-      align-items: start !important;
-    }
-
-    .anime-detail-poster {
-      width: 100% !important;
-      height: 340px !important;
-      border-radius: var(--radius-sm) !important;
-      overflow: hidden !important;
-      background: #000 !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
-    }
-
-    .anime-detail-poster img {
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: cover !important;
-      display: block !important;
-    }
-
-    @media (max-width: 720px) {
-      .anime-detail-card {
-        grid-template-columns: 1fr !important;
-      }
-      .anime-detail-poster {
-        height: 300px !important;
-        max-width: 240px !important;
-        margin: 0 auto !important;
-      }
-    }
-  </style>
-  <link rel="stylesheet" href="mobile.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/theme-light.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+  <link rel="stylesheet" href="css/anime.css" />
+  <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body>
 
   <!-- Lienzo de partículas -->
-  <canvas id="particles-canvas"></canvas>
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
 
   <header class="navbar-wrapper">
     <nav class="navbar" aria-label="Navegación secundaria">
@@ -775,10 +104,10 @@
     </nav>
   </header>
 
-  <main style="flex: 1; display: flex; flex-direction: column; max-width: 100%; width: 100%; padding: 0; margin: 0;">
+  <main class="page-main" id="contenido">
     <section class="games-header">
       <h2>Mis animes favoritos</h2>
-      <p style="color: var(--text-muted);">Gira el carrusel y toca una tarjeta para ver por qué me marcaron. Obras maestras de la animación japonesa que van más allá del entretenimiento.</p>
+      <p>Gira el carrusel y toca una tarjeta para ver por qué me marcaron. Obras maestras de la animación japonesa que van más allá del entretenimiento.</p>
     </section>
 
     <!-- SHOWCASE STAGE -->
@@ -821,7 +150,7 @@
           <!-- Cara Trasera: AQUÍ VA LA CITA Y EL AUTOR -->
           <div class="showcase-face showcase-back">
             <div class="back-content">
-              <span class="showcase-badge" style="margin: 0 auto 1.5rem;">Cita de la obra</span>
+              <span class="showcase-badge quote-badge">Cita de la obra</span>
               
               <p class="back-quote" id="mainQuote">
                 "Incluso un guerrero de clase baja puede superar a la élite si se esfuerza lo suficiente."
@@ -843,7 +172,7 @@
       </div>
 
       <!-- Controles Anterior / Siguiente -->
-      <div class="carousel-controls" style="margin-bottom: 1rem;">
+      <div class="carousel-controls carousel-controls--tight">
         <button class="ctrl-btn" id="btnPrevAnime" aria-label="Anterior">
           <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
@@ -854,183 +183,9 @@
 
     </div>
 
-    <template hidden>
-    <div class="scene">
-      <div class="carousel" id="carousel">
-        
-        <!-- Tarjeta 1: Dragon Ball Z -->
-        <article class="carousel-card active" data-index="0">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="images/anime1.webp" alt="Dragon Ball Z" onerror="this.style.backgroundColor='#d9531e'" />
-            </div>
-            <div class="card-back">
-              <div class="card-back-content">
-                <span class="game-platform">Anime · Shonen / Acción</span>
-                <h3>Dragon Ball Z</h3>
-                <p class="game-desc">El pilar indiscutible del shonen y la serie que definió las tardes de toda una generación. Desde la invasión de los Saiyans en la Tierra hasta el clímax contra Majin Buu, Toriyama perfeccionó la tensión de los combates cuerpo a cuerpo, las transformaciones legendarias que paralizaban patios de colegio y un sentido del sacrificio y superación que convirtió a Goku en un icono cultural imperecedero.</p>
-                <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                  Voltear
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Tarjeta 2: Bleach -->
-        <article class="carousel-card" data-index="1">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="images/anime2.webp" alt="Bleach" onerror="this.style.backgroundColor='#1a243b'" />
-            </div>
-            <div class="card-back">
-              <div class="card-back-content">
-                <span class="game-platform">Anime · Shonen / Sobrenatural</span>
-                <h3>Bleach</h3>
-                <p class="game-desc">Elegancia visual, mitología shinigami y una banda sonora legendaria. Tite Kubo definió toda una época con su derroche de estilo, combates de espada memorables y la evolución de Ichigo Kurosaki al empuñar su Zanpakutō.</p>
-                <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                  Voltear
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Tarjeta 3: One Piece -->
-        <article class="carousel-card" data-index="2">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="images/anime3.webp" alt="One Piece" onerror="this.style.backgroundColor='#2a173b'" />
-            </div>
-            <div class="card-back">
-              <div class="card-back-content">
-                <span class="game-platform">Anime · Aventura / Épica</span>
-                <h3>One Piece</h3>
-                <p class="game-desc">El mayor viaje jamás contado sobre el verdadero significado de la libertad, el compañerismo y la voluntad heredada. Eiichiro Oda construyó el universo de ficción más rico y expansivo de la animación japonesa.</p>
-                <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                  Voltear
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Tarjeta 4: Saint Seiya -->
-        <article class="carousel-card" data-index="3">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="images/anime4.webp" alt="Saint Seiya" onerror="this.style.backgroundColor='#1a243b'" />
-            </div>
-            <div class="card-back">
-              <div class="card-back-content">
-                <span class="game-platform">Anime · Acción / Mitología</span>
-                <h3>Saint Seiya</h3>
-                <p class="game-desc">La épica mitológica definitiva que marcó la era dorada de la animación. Masami Kurumada y Shingo Araki crearon una obra inmortal de caballeros con armaduras sagradas, sacrificios viscerales y batallas donde el cosmos supera cualquier barrera divina.</p>
-                <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                  Voltear
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Tarjeta 5: Naruto -->
-        <article class="carousel-card" data-index="4">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="images/anime5.webp" alt="Naruto" onerror="this.style.backgroundColor='#d9531e'" />
-            </div>
-            <div class="card-back">
-              <div class="card-back-content">
-                <span class="game-platform">Anime · Shonen / Aventura</span>
-                <h3>Naruto</h3>
-                <p class="game-desc">El viaje del marginado que transformó la soledad en la fuerza para proteger a todos. La voluntad inquebrantable de un ninja que desafió su destino para forjar su propio camino.</p>
-                <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                  Voltear
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-      <!-- Tarjeta 6: Attack on Titan -->
-        <article class="carousel-card" data-index="5">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="images/anime6.webp" alt="Attack on Titan" onerror="this.style.backgroundColor='#2b2416'" />
-            </div>
-            <div class="card-back">
-              <div class="card-back-content">
-                <span class="game-platform">Anime · Acción / Misterio</span>
-                <h3>Attack on Titan</h3>
-                <p class="game-desc">Empezó como una lucha desesperada contra monstruos tras murallas y se convirtió en una cruda radiografía del ciclo del odio, el fascismo y el precio inasumible de la libertad. Una estructura narrativa redonda de principio a fin.</p>
-                <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                  Voltear
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Tarjeta 7: Kimetsu no Yaiba -->
-        <article class="carousel-card" data-index="6">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="images/anime7.webp" alt="Kimetsu no Yaiba" onerror="this.style.backgroundColor='#1b3b32'" />
-            </div>
-            <div class="card-back">
-              <div class="card-back-content">
-                <span class="game-platform">Anime · Shonen / Acción</span>
-                <h3>Kimetsu no Yaiba</h3>
-                <p class="game-desc">Un prodigio visual firmado por Ufotable. La lucha inquebrantable de Tanjiro por salvar a su hermana Nezuko entre respiraciones elementales y combates deslumbrantes.</p>
-                <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                  Voltear
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Tarjeta 8: Jujutsu Kaisen -->
-        <article class="carousel-card" data-index="7">
-          <div class="card-inner">
-            <div class="card-front">
-              <img src="images/anime8.webp" alt="Jujutsu Kaisen" onerror="this.style.backgroundColor='#1a1a24'" />
-            </div>
-            <div class="card-back">
-              <div class="card-back-content">
-                <span class="game-platform">Anime · Acción / Sobrenatural</span>
-                <h3>Jujutsu Kaisen</h3>
-                <p class="game-desc">Maldiciones, combate táctico y la virtuosa producción de MAPPA. El oscuro viaje de Yuji Itadori y la sombra del hechicero más fuerte, Satoru Gojo.</p>
-                <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-                  Voltear
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-    <!-- Controles extra (flechas) -->
-    <div class="carousel-controls">
-      <button class="ctrl-btn" id="btnPrev" aria-label="Anterior">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-      </button>
-      <button class="ctrl-btn" id="btnNext" aria-label="Siguiente">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-      </button>
-    </div>
-    </template>
 
     <!-- Buscador de anime (AniList API) -->
-    <section class="card spotlight-card buscador" id="buscadorAnime" role="region" aria-labelledby="buscadorAnimeTitulo" style="max-width: 980px; margin: 2rem auto; width: 100%; box-sizing: border-box;">
+    <section class="card spotlight-card buscador buscador--wide" id="buscadorAnime" role="region" aria-labelledby="buscadorAnimeTitulo">
       <div class="card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"></circle>
@@ -1065,64 +220,6 @@
   </main>
 
   <script>
-    /* =======================================================
-       PARTÍCULAS DE FONDO
-       ======================================================= */
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height, particles;
-
-    function initParticles() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      particles = [];
-      const count = 130; 
-      
-      for(let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          r: Math.random() * 1.6 + 0.6,
-          dx: (Math.random() - 0.5) * 0.4,
-          dy: (Math.random() - 0.5) * 0.4,
-          alpha: Math.random() * 0.45 + 0.35
-        });
-      }
-    }
-
-    function drawParticles() {
-      ctx.clearRect(0, 0, width, height);
-      const rawColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-      const dotColor = rawColor ? rawColor : '#ff2e97';
-
-      particles.forEach(p => {
-        p.x += p.dx;
-        p.y += p.dy;
-        
-        if(p.x < 0) p.x = width;
-        if(p.x > width) p.x = 0;
-        if(p.y < 0) p.y = height;
-        if(p.y > height) p.y = 0;
-        
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = dotColor;
-        ctx.globalAlpha = p.alpha;
-        ctx.fill();
-      });
-      ctx.globalAlpha = 1;
-      requestAnimationFrame(drawParticles);
-    }
-
-    // La barra de direcciones del móvil cambia la altura al hacer scroll:
-    // solo se regeneran las partículas si cambia el ANCHO (evita el salto del fondo).
-    window.addEventListener('resize', () => {
-      if (window.innerWidth !== width) initParticles();
-      else height = canvas.height = window.innerHeight;
-    });
-    initParticles();
-    drawParticles();
-
     const animesData = [
       {
         id: "dbz",
@@ -1393,8 +490,6 @@
     document.getElementById("btnNextAnime")?.addEventListener("click", () => selectAnime((currentIdx + 1) % animesData.length));
 
     const root = document.documentElement;
-    const themeToggle = document.getElementById("themeToggle");
-    const accentToggle = document.getElementById("accentToggle");
     const langToggle = document.getElementById("langToggle");
 
     function applyLanguage() {
@@ -1454,16 +549,7 @@
       selectAnime(currentIdx);
     }
 
-    themeToggle?.addEventListener("click", () => {
-      const theme = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-      root.setAttribute("data-theme", theme);
-      store.set("sergio-theme", theme);
-    });
-    accentToggle?.addEventListener("click", () => {
-      const accent = root.getAttribute("data-accent") === "blue" ? "pink" : "blue";
-      root.setAttribute("data-accent", accent);
-      store.set("sergio-accent", accent);
-    });
+    /* Tema y acento: js/theme.js */
     langToggle?.addEventListener("click", () => {
       currentLang = currentLang === "es" ? "va" : "es";
       store.set("sergio-lang", currentLang);
@@ -1557,32 +643,28 @@
         resultados.forEach(item => {
           const card = document.createElement("article");
           card.className = "card-resultado";
-          card.style.cssText = "cursor: pointer; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s;";
           
           const titulo = item.title.english || item.title.romaji;
           const nota = item.averageScore ? (item.averageScore / 10).toFixed(1) : "N/A";
           const imagen = item.coverImage.extraLarge || item.coverImage.large;
 
           card.innerHTML = `
-            <div style="height: 240px; overflow: hidden; background: #000;">
-              <img src="${esc(imagen)}" alt="${esc(titulo)}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+            <div class="card-resultado__poster">
+              <img src="${esc(imagen)}" alt="${esc(titulo)}" loading="lazy">
             </div>
-            <div style="padding: 1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="card-resultado__body">
               <div>
-                <h4 style="margin: 0 0 0.4rem; font-size: 1rem; color: #fff;">${esc(titulo)}</h4>
-                <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">${esc(item.seasonYear || item.format || "Anime")} · ⭐ ${nota}</p>
+                <h4>${esc(titulo)}</h4>
+                <p class="card-resultado__meta">${esc(item.seasonYear || item.format || "Anime")} · ⭐ ${nota}</p>
               </div>
             </div>
           `;
 
-          card.addEventListener("mouseenter", () => card.style.borderColor = "var(--accent)");
-          card.addEventListener("mouseleave", () => card.style.borderColor = "var(--line)");
           card.addEventListener("click", () => mostrarDetalleAnime(item));
           gridAnime.appendChild(card);
         });
 
       } catch (err) {
-        console.error("Detalle del error:", err);
         estadoAnime.textContent = isVal ? "Error en connectar amb el servidor d'anime." : "Error al conectar con el servidor de anime.";
       }
     }
@@ -1593,7 +675,7 @@
       const titulo = item.title?.english || item.title?.romaji || "Anime";
       const imagen = item.coverImage?.extraLarge || item.coverImage?.large || "";
       const estudio = item.studios?.nodes?.[0]?.name || "Desconocido";
-      const generos = (item.genres || []).map(g => `<span style="font-size:0.75rem; padding:3px 9px; border-radius:6px; background:var(--surface); border:1px solid var(--line); color:var(--text);">${esc(g)}</span>`).join(" ");
+      const generos = (item.genres || []).map(g => `<span class="detail-genre">${esc(g)}</span>`).join(" ");
       const nota = item.averageScore ? (item.averageScore / 10).toFixed(1) : "N/A";
       
       const sinopsisLimpia = item.description 
@@ -1605,16 +687,15 @@
 
       const seccionTrailer = trailerYoutubeId
         ? `
-          <div style="margin-top: 1.4rem; width: 100%;">
-            <p style="margin: 0 0 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 6px;">
+          <div class="detail-trailer">
+            <p class="detail-trailer__label">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 22c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73z"/></svg>
               ${isVal ? "Tràiler Oficial" : "Tráiler Oficial"}
             </p>
-            <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--line); background: #000; box-shadow: 0 4px 18px rgba(0,0,0,0.45);">
+            <div class="detail-trailer__frame">
               <iframe
                 src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(trailerYoutubeId)}"
                 title="Tráiler de ${esc(titulo)}"
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen>
               </iframe>
@@ -1631,28 +712,28 @@
           </div>
 
           <!-- Columna Información -->
-          <div style="display: flex; flex-direction: column; justify-content: center; min-width: 0;">
+          <div class="detail-info">
             <div>
-              <span class="showcase-badge" style="margin-bottom: 0.6rem;">${esc(item.format || "TV")} · ${esc(item.status || "")}</span>
-              <h3 style="margin: 0 0 0.5rem; font-size: clamp(1.4rem, 2.5vw, 1.8rem); color: #fff; line-height: 1.2;">${esc(titulo)}</h3>
+              <span class="showcase-badge detail-badge">${esc(item.format || "TV")} · ${esc(item.status || "")}</span>
+              <h3 class="detail-title">${esc(titulo)}</h3>
               
-              <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 0.9rem; line-height: 1.5;">
-                <strong style="color: var(--text);">${isVal ? "Estudi:" : "Estudio:"}</strong> ${esc(estudio)} &nbsp;|&nbsp; 
-                <strong style="color: var(--text);">${isVal ? "Puntuació:" : "Puntuación:"}</strong> ⭐ <span style="color: var(--accent); font-weight: bold;">${nota}</span> &nbsp;|&nbsp; 
-                <strong style="color: var(--text);">${isVal ? "Episodis:" : "Episodios:"}</strong> ${esc(item.episodes || '?')}
+              <p class="detail-meta">
+                <strong>${isVal ? "Estudi:" : "Estudio:"}</strong> ${esc(estudio)} &nbsp;|&nbsp; 
+                <strong>${isVal ? "Puntuació:" : "Puntuación:"}</strong> ⭐ <span class="detail-score">${nota}</span> &nbsp;|&nbsp; 
+                <strong>${isVal ? "Episodis:" : "Episodios:"}</strong> ${esc(item.episodes || '?')}
               </p>
             </div>
 
-            <p style="font-size: 0.88rem; line-height: 1.65; color: var(--text-muted); max-height: 140px; overflow-y: auto; margin: 0 0 1.2rem; padding-right: 0.5rem;">
+            <p class="detail-synopsis">
               ${esc(sinopsisLimpia)}
             </p>
 
-            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem;">
+            <div class="detail-genres">
               ${generos}
             </div>
 
             <div>
-              <a href="${esc(item.siteUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="display: inline-flex; align-items: center; gap: 6px; width: fit-content; text-decoration: none; padding: 0.45rem 1.1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;">
+              <a href="${esc(item.siteUrl)}" target="_blank" rel="noopener noreferrer" class="detail-link">
                 <span>${isVal ? "Veure en AniList" : "Ver en AniList"}</span> ↗
               </a>
             </div>
@@ -1704,8 +785,8 @@
       <p class="copy">
         © <span id="year">2026</span> Sergio Chorques · Web personal. ·
         <a href="index.html" class="copy__link" data-es="Inicio" data-ca="Inici">Inicio</a>
-        <a href="admin.html" style="color: var(--text-muted); margin-left: 8px; opacity: 0.6; transition: opacity 0.2s;" aria-label="Acceso al panel de administración" title="Admin">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
+        <a href="admin.html" class="admin-link" aria-label="Acceso al panel de administración" title="Admin">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
@@ -1713,8 +794,10 @@
       </p>
     </div>
   </footer>
-  <script src="nav-i18n.js"></script>
-  <script src="mobile.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/nav-i18n.js"></script>
+  <script src="js/mobile.js"></script>
 
 </body>
 </html>

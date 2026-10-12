@@ -52,22 +52,31 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 
 ```
 mi-web/
-├── index.html            Portada
-├── juegos.html · cine.html · anime.html · libros.html
+├── index.html · juegos.html · cine.html · anime.html · libros.html
 ├── minijuego.html · matrix_pills.html · admin.html
-├── style.css             Estilos base y tema oscuro (variables de diseño)
-├── theme-light.css       Tema claro (contrastes revisados según WCAG)
-├── mobile.css            Capa de ajustes para móvil (360–860 px)
-├── farolillo.css         Estilos de la mascota-chatbot
-├── script.js             Tema, idioma, GitHub, formulario, tiempo, buscador RAWG
-├── mobile.js             Menú hamburguesa y mejoras táctiles compartidas
-├── nav-i18n.js           Traducción del menú en las páginas secundarias
-├── farolillo.js          Módulo ES de la mascota-chatbot
-├── respuestas.json       «Cerebro» de Farolillo (intenciones y respuestas ES/VA)
+├── css/
+│   ├── style.css         Estilos base y tema oscuro (variables de diseño)
+│   ├── theme-light.css   Tema claro (contrastes revisados según WCAG)
+│   ├── pages.css         Común a las páginas secundarias: menú, cabecera, cursores, buscadores
+│   ├── carousel.css      Carrusel 3D (juegos y cine)
+│   ├── anime.css · libros.css · minijuego.css · matrix.css   Estilos propios de cada página
+│   ├── farolillo.css     Mascota-chatbot
+│   └── mobile.css        Ajustes para móvil (360–860 px); se carga siempre la última
+├── js/
+│   ├── theme.js          Tema claro/oscuro y acento (todas las páginas)
+│   ├── particles.js      Fondo de partículas (juegos, cine y anime)
+│   ├── carousel3d.js     Carrusel 3D con tarjetas que se voltean (juegos y cine)
+│   ├── script.js         Portada: idioma, GitHub, formulario, tiempo, buscador RAWG
+│   ├── nav-i18n.js       Traducción del menú en las páginas secundarias
+│   ├── mobile.js         Menú hamburguesa y mejoras táctiles
+│   └── farolillo.js      Módulo ES de la mascota-chatbot
+├── data/respuestas.json  «Cerebro» de Farolillo (intenciones y respuestas ES/VA)
 ├── images/               Imágenes en WebP
 ├── assets/               Sprites y fondo del minijuego
 └── supabase/rls.sql      Políticas de seguridad de la base de datos
 ```
+
+**Componentes reutilizables:** el tema, las partículas y el carrusel 3D se escribieron una sola vez y se cargan en cada página que los necesita (antes estaban copiados en varias). Las páginas no tienen bloques `<style>` ni atributos `style=""`: todo el CSS está en `css/`.
 
 ---
 
@@ -78,7 +87,7 @@ mi-web/
    git clone https://github.com/SergioCHP/mi-web.git
    cd mi-web
    ```
-2. Ábrelo con un **servidor local**. No basta con abrir el HTML con doble clic: `farolillo.js` es un módulo ES y `respuestas.json` se carga con `fetch`, y el navegador bloquea ambos con `file://`. Elige una opción:
+2. Ábrelo con un **servidor local**. No basta con abrir el HTML con doble clic: `js/farolillo.js` es un módulo ES y `data/respuestas.json` se carga con `fetch`, y el navegador bloquea ambos con `file://`. Elige una opción:
    - **VS Code:** instala la extensión *Live Server*, clic derecho en `index.html` → *Open with Live Server*.
    - **Python:** `python -m http.server 5500` y entra en `http://localhost:5500`.
 3. Todo funciona sin configurar nada más. La web usa el proyecto de Supabase ya creado y claves públicas de solo lectura.
@@ -101,7 +110,7 @@ mi-web/
    ```
 3. Ejecuta `supabase/rls.sql`, cambiando antes `TU_EMAIL_ADMIN` por tu correo.
 4. En **Authentication → Users**, crea tu usuario administrador y desactiva el registro público.
-5. Sustituye `SUPABASE_URL` y `SUPABASE_ANON_KEY` en `script.js` y en `admin.html`.
+5. Sustituye `SUPABASE_URL` y `SUPABASE_ANON_KEY` en `js/script.js` y en `admin.html`.
 
 ---
 
@@ -127,7 +136,7 @@ En lugar de conectar un modelo de lenguaje (coste, latencia y una clave que no s
 - Tolera faltas con la **distancia de Levenshtein** y detecta letras intercambiadas.
 - Puntúa las «intenciones» de `respuestas.json` y recuerda el último tema («otro», «recomiéndame uno»).
 
-Todo el contenido está en un JSON editable sin tocar código. La función `responder` se puede sustituir por un backend en el futuro, porque `initFarolillo()` la acepta como opción.
+Todo el contenido está en `data/respuestas.json`, editable sin tocar código. La función `responder` se puede sustituir por un backend en el futuro, porque `initFarolillo()` la acepta como opción.
 
 ### 4. Temas e idiomas sin parpadeo
 - Un pequeño script en el `<head>` aplica el tema y el acento guardados **antes de pintar** la página: evita el destello oscuro → claro.

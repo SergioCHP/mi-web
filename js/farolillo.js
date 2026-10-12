@@ -9,7 +9,7 @@
  *   posicion     'izquierda' (por defecto) | 'derecha'.
  *   contenedor   Elemento donde se inserta (por defecto document.body).
  *   textos       { es: {...}, va: {...} } para sobrescribir textos.
- *   respuestas   URL del archivo de respuestas (por defecto 'respuestas.json').
+ *   respuestas   URL del archivo de respuestas (por defecto 'data/respuestas.json').
  *   responder    async (texto, { idioma }) => string | { texto, enlace, efecto, sugerencias }
  *                Solo si quieres sustituir el buscador por otro sistema (backend, IA…).
  *   detectar     () => 'claro' | 'oscuro'. Por defecto lee data-theme.
@@ -434,7 +434,7 @@ export function crearCerebro(datos) {
 
 /* Carga respuestas.json una sola vez (y usa el respaldo si falla) */
 const cerebros = new Map();
-export function cargarCerebro(url = 'respuestas.json') {
+export function cargarCerebro(url = 'data/respuestas.json') {
   if (!cerebros.has(url)) {
     cerebros.set(url, fetch(url)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
@@ -480,7 +480,7 @@ export function initFarolillo(opciones = {}) {
     posicion = 'izquierda',
     contenedor = document.body,
     textos = {},
-    respuestas = 'respuestas.json',
+    respuestas = 'data/respuestas.json',
     responder = null,
     detectar = detectarTema,
     comentarios = true,

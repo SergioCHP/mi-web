@@ -2542,17 +2542,20 @@ main, footer {
   color: var(--text-muted);
 }
 
-/* Tarjetas clicables (patrón pseudo-enlace) */
+/* Tarjetas clicables (patrón pseudo-enlace: el <a> cubre toda la tarjeta) */
+.card-gaming,
 .card-cinema,
 .card-reading { position: relative; }
 
+.card-gaming .card-link,
 .card-cinema .card-link,
 .card-reading .card-link {
-  position: absolute; inset: 0; z-index: 2;
+  position: absolute; inset: 0; z-index: 3;
   color: inherit; text-decoration: none;
   border-radius: inherit;
 }
 
+.card-gaming .card-link:focus-visible,
 .card-cinema .card-link:focus-visible,
 .card-reading .card-link:focus-visible {
   outline: 2px solid var(--accent);
@@ -2573,4 +2576,69 @@ main, footer {
   transform: none;
   border-color: var(--line);
   box-shadow: var(--neu-flat), var(--neu-bevel);
+}
+
+/* =========================================================
+   UTILIDADES DE LA PORTADA (antes eran estilos en línea)
+   ========================================================= */
+
+/* Barra decorativa tipo editor de código en "Sobre mí" */
+.editor-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.editor-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.editor-dot--red { background: #ff5f56; }
+.editor-dot--yellow { background: #ffbd2e; }
+.editor-dot--green { background: #27c93f; }
+
+.editor-title {
+  margin-left: 10px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Llamada a la acción dentro de una tarjeta */
+.card p.card-cta {
+  margin-top: 8px;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+html[data-theme="light"] .card p.card-cta {
+  color: var(--accent-text);
+}
+
+/* Separación del widget de GitHub bajo los proyectos */
+.github-wrap {
+  margin-top: 2rem;
+}
+
+/* Enlace discreto al panel de administración (footer) */
+.admin-link {
+  margin-left: 8px;
+  color: var(--text-muted);
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.admin-link:hover,
+.admin-link:focus-visible {
+  opacity: 1;
+}
+
+.admin-link svg {
+  vertical-align: middle;
 }

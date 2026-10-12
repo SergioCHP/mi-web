@@ -46,10 +46,10 @@
         } catch (e) {}
       })();
     </script>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="theme-light.css" />
-    <link rel="stylesheet" href="mobile.css" />
-    <link rel="stylesheet" href="farolillo.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/theme-light.css" />
+    <link rel="stylesheet" href="css/farolillo.css" />
+    <link rel="stylesheet" href="css/mobile.css" />
   </head>
 
   <body>
@@ -209,11 +209,11 @@
         <article class="card about-card spotlight-card card--static tilt" data-tilt-strength="0.3">
 
           <!-- Detalles visuales de editor de código -->
-          <div style="display: flex; gap: 6px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--line); padding-bottom: 1rem;">
-            <span style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></span>
-            <span style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></span>
-            <span style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></span>
-            <span style="margin-left: 10px; font-family: var(--font-display); font-size: 0.75rem; color: var(--text-muted);">sergio_chorques — IES_Simarro</span>
+          <div class="editor-bar" aria-hidden="true">
+            <span class="editor-dot editor-dot--red"></span>
+            <span class="editor-dot editor-dot--yellow"></span>
+            <span class="editor-dot editor-dot--green"></span>
+            <span class="editor-title">sergio_chorques — IES_Simarro</span>
           </div>
           
           <p>Soy Sergio Chorques, estudiante del ciclo superior de 1º DAM en el IES Simarro.</p>
@@ -347,9 +347,8 @@
         </div>
 
         <div class="card-grid">
-          <a href="minijuego.html" style="text-decoration: none; color: inherit; display: block;">
-            <!-- Tarjeta Videojuegos -->
-            <article class="card spotlight-card card-gaming card--link"> 
+          <!-- Tarjeta Videojuegos -->
+          <article class="card spotlight-card card-gaming card--link">
               <!-- IMAGEN DEL MANDO DE PS5 -->
               <img 
                 src="images/mando-ps5.webp" 
@@ -368,12 +367,12 @@
                 </svg>
               </div>
               <h3>Videojuegos 🎮</h3>
-              <p>
-                Jugador en PS5, priorizando títulos con narrativa elaborada, mecánicas pulidas y diseño inmersivo.
-                <span style="display: block; margin-top: 8px; color: var(--accent); font-weight: bold; font-family: var(--font-display);">¡Pulsa aquí para superar el reto y ver mis favoritos! ➔</span>
-              </p>
+              <p>Jugador en PS5, priorizando títulos con narrativa elaborada, mecánicas pulidas y diseño inmersivo.</p>
+              <p class="card-cta">¡Pulsa aquí para superar el reto y ver mis favoritos! ➔</p>
+
+              <!-- Enlace al minijuego (cubre toda la tarjeta) -->
+              <a class="card-link" href="minijuego.html" aria-label="Superar el reto y ver mis videojuegos favoritos"></a>
             </article>
-          </a>
 
           <!-- Tarjeta Cine & Anime (Con la clase 'card-cinema' y la etiqueta <img> añadida) -->
           <article class="card spotlight-card card-cinema card--link">
@@ -509,7 +508,7 @@
           </article>
         </div>
         <!-- Widget Dinámico de GitHub dentro de Proyectos -->
-        <div style="margin-top: 2rem;">
+        <div class="github-wrap">
           <article class="card spotlight-card github-card card--static tilt" data-tilt-strength="0.3" id="githubWidget">
             <div class="card-icon">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -573,8 +572,8 @@
           © <span id="year"></span> Sergio Chorques · Web personal.
           
           <!-- Enlace discreto al panel de Admin -->
-          <a href="admin.html" style="color: var(--text-muted); margin-left: 8px; opacity: 0.6; transition: opacity 0.2s;" aria-label="Acceso al panel de administración" title="Admin">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
+          <a href="admin.html" class="admin-link" aria-label="Acceso al panel de administración" title="Admin">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
@@ -680,10 +679,11 @@
         </div>
       </div>
 
-      <script src="script.js"></script>
-      <script src="mobile.js"></script>
+      <script src="js/theme.js"></script>
+      <script src="js/script.js"></script>
+      <script src="js/mobile.js"></script>
       <script type="module">
-        import { initFarolillo } from './farolillo.js';
+        import { initFarolillo } from './js/farolillo.js';
         initFarolillo();
       </script>
 
