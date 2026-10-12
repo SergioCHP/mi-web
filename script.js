@@ -900,26 +900,41 @@
     console.warn("No se pudo aplicar el idioma:", e);
   }
 
-  (async function initGitHub() {
+    (async function initGitHub() {
     if (!document.getElementById("ghBio") || !document.getElementById("ghRepos")) return;
 
     const username = "SergioCHP";
+    const CACHE_KEY = "sergio-gh-cache";
+    const CACHE_MS = 60 * 60 * 1000; // 1 hora: la API sin token solo permite 60 peticiones/hora
+
+    let cache = null;
+    try { cache = JSON.parse(localStorage.getItem(CACHE_KEY)); } catch (e) {}
+
+    // Copia reciente → no se llama a la API
+    if (cache && Date.now() - cache.t < CACHE_MS) {
+      cachedGitHubData = { user: cache.user, repos: cache.repos };
+      renderGitHubWidget();
+      return;
+    }
+
     try {
       const [userRes, reposRes] = await Promise.all([
         fetch(`https://api.github.com/users/${username}`),
         fetch(`https://api.github.com/users/${username}/repos?sort=pushed&per_page=3`)
       ]);
-
-      if (!userRes.ok || !reposRes.ok) throw new Error("Error consultando la API");
+      if (!userRes.ok || !reposRes.ok) throw new Error("API GitHub");
 
       const user = await userRes.json();
       const repos = await reposRes.json();
-      if (!Array.isArray(repos)) throw new Error("La API devolvió una lista de repositorios no válida");
+      if (!Array.isArray(repos)) throw new Error("Repos no válidos");
 
       cachedGitHubData = { user, repos };
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), user, repos }));
+      } catch (e) {}
     } catch (error) {
-      console.error("No se pudieron cargar los datos de GitHub:", error);
-      cachedGitHubData = { error: true };
+      // Sin console.error: se usa la copia antigua si existe, o el aviso "Desconectado"
+      cachedGitHubData = cache ? { user: cache.user, repos: cache.repos } : { error: true };
     }
 
     renderGitHubWidget();
