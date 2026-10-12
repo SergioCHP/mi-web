@@ -413,6 +413,7 @@
     }
 
   </style>
+  <link rel="stylesheet" href="mobile.css" />
 </head>
 <body>
 
@@ -756,7 +757,12 @@
       requestAnimationFrame(drawParticles);
     }
 
-    window.addEventListener('resize', initParticles);
+    // La barra de direcciones del móvil cambia la altura al hacer scroll:
+    // solo se regeneran las partículas si cambia el ANCHO (evita el salto del fondo).
+    window.addEventListener('resize', () => {
+      if (window.innerWidth !== width) initParticles();
+      else height = canvas.height = window.innerHeight;
+    });
     initParticles();
     drawParticles();
 
@@ -926,5 +932,6 @@
   
   <script src="script.js"></script>
   <script src="nav-i18n.js"></script>
+  <script src="mobile.js"></script>
 </body>
 </html>

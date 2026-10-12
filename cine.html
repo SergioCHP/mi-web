@@ -30,6 +30,7 @@
   </script>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="theme-light.css" />
+  <link rel="stylesheet" href="mobile.css" />
   
   <style>
     /* =========================================================
@@ -805,7 +806,12 @@
       requestAnimationFrame(drawParticles);
     }
 
-    window.addEventListener('resize', initParticles);
+    // La barra de direcciones del móvil cambia la altura al hacer scroll:
+    // solo se regeneran las partículas si cambia el ANCHO (evita el salto del fondo).
+    window.addEventListener('resize', () => {
+      if (window.innerWidth !== width) initParticles();
+      else height = canvas.height = window.innerHeight;
+    });
     initParticles();
     drawParticles();
 
@@ -1333,5 +1339,6 @@
     });
   </script>
   <script src="nav-i18n.js"></script>
+  <script src="mobile.js"></script>
 </body>
 </html>
