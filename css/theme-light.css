@@ -208,12 +208,12 @@ html[data-theme="light"] .card-back::after {
   border-color: color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
-html[data-theme="light"] .card-back h3 {
+html[data-theme="light"] .card-back h2 {
   color: var(--text);
   text-shadow: none;
 }
 
-html[data-theme="light"] .card-back h3::after {
+html[data-theme="light"] .card-back h2::after {
   box-shadow: none;
 }
 

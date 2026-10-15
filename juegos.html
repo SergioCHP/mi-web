@@ -17,6 +17,7 @@
   <script>
     (function () {
       var d = document.documentElement;
+      d.classList.add("js"); // hay JavaScript: se activan animaciones como .reveal
       try {
         var t = localStorage.getItem("sergio-theme");
         if (t !== "light" && t !== "dark") {
@@ -35,6 +36,7 @@
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body>
+  <a class="skip-link" href="#contenido" data-nav="skip">Saltar al contenido principal</a>
 
   <!-- Lienzo de partículas -->
   <canvas id="particles-canvas" aria-hidden="true"></canvas>
@@ -108,7 +110,7 @@
 
   <main class="page-main" id="contenido">
     <section class="games-header">
-      <h2>Mis juegos favoritos</h2>
+      <h1>Mis juegos favoritos</h1>
       <p>Gira el carrusel y toca una tarjeta para ver más detalles.</p>
     </section>
 
@@ -117,7 +119,7 @@
       <div class="carousel" id="carousel">
         
         <!-- Tarjeta 1: Final Fantasy -->
-        <article class="carousel-card active" data-index="0">
+        <div class="carousel-card active" data-index="0">
           <div class="card-inner">
             <div class="card-front">
               <img src="images/juego1.webp" alt="Final Fantasy" onerror="this.style.backgroundColor='#1a1f36'" />
@@ -125,19 +127,19 @@
             <div class="card-back">
               <div class="card-back-content">
                 <span class="game-platform">Saga · JRPG</span>
-                <h3>Final Fantasy</h3>
+                <h2>Final Fantasy</h2>
                 <p class="game-desc">Magia, cristales y revoluciones. Una franquicia que redefine el espectáculo visual, las bandas sonoras orquestales y las historias memorables en cada entrega.</p>
                 <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
                 </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 2: Metal Gear Solid -->
-        <article class="carousel-card" data-index="1">
+        <div class="carousel-card" data-index="1">
           <div class="card-inner">
             <div class="card-front">
               <img src="images/juego2.webp" alt="Metal Gear Solid" onerror="this.style.backgroundColor='#2b2b2b'" />
@@ -145,19 +147,19 @@
             <div class="card-back">
               <div class="card-back-content">
                 <span class="game-platform">Saga · Stealth / Acción</span>
-                <h3>Metal Gear Solid</h3>
+                <h2>Metal Gear Solid</h2>
                 <p class="game-desc">La obra cumbre del espionaje táctico. Una narrativa compleja, reflexiva y antibélica que rompió la cuarta pared y transformó la industria.</p>
                 <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
                 </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 3: God of War -->
-        <article class="carousel-card" data-index="2">
+        <div class="carousel-card" data-index="2">
           <div class="card-inner">
             <div class="card-front">
               <img src="images/juego3.webp" alt="God of War" onerror="this.style.backgroundColor='#361a1a'" />
@@ -165,19 +167,19 @@
             <div class="card-back">
               <div class="card-back-content">
                 <span class="game-platform">Saga · Acción / Aventura</span>
-                <h3>God of War</h3>
+                <h2>God of War</h2>
                 <p class="game-desc">De la cólera mitológica en Grecia a la madurez y la paternidad en tierras nórdicas. Un combate contundente con una dirección artística monumental.</p>
                 <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
                 </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 4: Resident Evil -->
-        <article class="carousel-card" data-index="3">
+        <div class="carousel-card" data-index="3">
           <div class="card-inner">
             <div class="card-front">
               <img src="images/juego4.webp" alt="Resident Evil" onerror="this.style.backgroundColor='#111111'" />
@@ -185,19 +187,19 @@
             <div class="card-back">
               <div class="card-back-content">
                 <span class="game-platform">Saga · Survival Horror</span>
-                <h3>Resident Evil</h3>
+                <h2>Resident Evil</h2>
                 <p class="game-desc">Pionero indiscutible del terror interactivo. Gestión estricta de inventario, puzles legendarios y tensión constante ante amenazas biológicas.</p>
                 <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
                 </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 5: The Last of Us -->
-        <article class="carousel-card" data-index="4">
+        <div class="carousel-card" data-index="4">
           <div class="card-inner">
             <div class="card-front">
               <img src="images/juego5.webp" alt="The Last of Us" onerror="this.style.backgroundColor='#1f2b1c'" />
@@ -205,19 +207,19 @@
             <div class="card-back">
               <div class="card-back-content">
                 <span class="game-platform">Saga · Narrativa / Acción</span>
-                <h3>The Last of Us</h3>
+                <h2>The Last of Us</h2>
                 <p class="game-desc">Un viaje desgarrador sobre el apego, el duelo y los límites morales. Narrativa cinematográfica con una ambientación postapocalíptica sobrecogedora.</p>
                 <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
                 </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 6: The Legend of Zelda -->
-        <article class="carousel-card" data-index="5">
+        <div class="carousel-card" data-index="5">
           <div class="card-inner">
             <div class="card-front">
               <img src="images/juego6.webp" alt="The Legend of Zelda" onerror="this.style.backgroundColor='#1a241c'" />
@@ -225,19 +227,19 @@
             <div class="card-back">
               <div class="card-back-content">
                 <span class="game-platform">Saga · Aventura / Rol</span>
-                <h3>The Legend of Zelda</h3>
+                <h2>The Legend of Zelda</h2>
                 <p class="game-desc">La máxima expresión de la aventura. Un sentido del descubrimiento inigualable, puzles ingeniosos y un diseño de mundo que ha dictado las reglas de la industria.</p>
                 <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
                 </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 7: The Witcher -->
-        <article class="carousel-card" data-index="6">
+        <div class="carousel-card" data-index="6">
           <div class="card-inner">
             <div class="card-front">
               <img src="images/juego7.webp" alt="The Witcher" onerror="this.style.backgroundColor='#2a1a1a'" />
@@ -245,19 +247,19 @@
             <div class="card-back">
               <div class="card-back-content">
                 <span class="game-platform">Saga · RPG de Fantasía</span>
-                <h3>The Witcher</h3>
+                <h2>The Witcher</h2>
                 <p class="game-desc">Un mundo de fantasía oscura y madura donde los monstruos a menudo son humanos. Decisiones con peso real que te atrapan en una red de moralidad gris.</p>
                 <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
                 </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 8: Red Dead Redemption -->
-        <article class="carousel-card" data-index="7">
+        <div class="carousel-card" data-index="7">
           <div class="card-inner">
             <div class="card-front">
               <img src="images/juego8.webp" alt="Red Dead Redemption" onerror="this.style.backgroundColor='#2b1111'" />
@@ -265,16 +267,16 @@
             <div class="card-back">
               <div class="card-back-content">
                 <span class="game-platform">Saga · Mundo Abierto / Western</span>
-                <h3>Red Dead Redemption</h3>
+                <h2>Red Dead Redemption</h2>
                 <p class="game-desc">El ocaso del Salvaje Oeste plasmado con un nivel de detalle obsesivo. Una obra maestra melancólica sobre la lealtad, el honor y el fin de una era.</p>
                 <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
                 </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
       </div>
     </div>
@@ -282,22 +284,22 @@
     <!-- Controles extra (flechas) -->
     <div class="carousel-controls">
       <button class="ctrl-btn" id="btnPrev" aria-label="Anterior">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <button class="ctrl-btn" id="btnNext" aria-label="Siguiente">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </button>
     </div>
 
     <!-- Buscador de videojuegos (RAWG) -->
     <section class="card spotlight-card buscador" id="buscador" role="region" aria-labelledby="buscadorTitulo">
       <div class="card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </div>
-      <h3 id="buscadorTitulo" class="buscador__titulo" data-es="Buscador de videojuegos" data-ca="Cercador de videojocs">Buscador de videojuegos</h3>
+      <h2 id="buscadorTitulo" class="buscador__titulo" data-es="Buscador de videojuegos" data-ca="Cercador de videojocs">Buscador de videojuegos</h2>
       <p class="buscador__intro" data-es="Escribe un título y te muestro los resultados con portada, plataformas y detalles. Datos de RAWG." data-ca="Escriu un títol i et mostro els resultats amb portada, plataformes i detalls. Dades de RAWG.">Escribe un título y te muestro los resultados con portada, plataformas y detalles. Datos de RAWG.</p>
 
       <form class="buscador__form" id="buscadorForm" autocomplete="off">
@@ -364,6 +366,7 @@
   
   <script src="js/particles.js"></script>
   <script src="js/carousel3d.js"></script>
+  <script src="js/a11y.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/script.js"></script>
   <script src="js/nav-i18n.js"></script>

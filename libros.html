@@ -12,6 +12,7 @@
   <script>
     (function () {
       var d = document.documentElement;
+      d.classList.add("js"); // hay JavaScript: se activan animaciones como .reveal
       try {
         var t = localStorage.getItem("sergio-theme");
         if (t !== "light" && t !== "dark") {
@@ -37,6 +38,7 @@
 
 </head>
 <body>
+  <a class="skip-link" href="#contenido" data-nav="skip">Saltar al contenido principal</a>
 
   <canvas id="particles-canvas" aria-hidden="true"></canvas>
 
@@ -148,7 +150,7 @@
 
   <main class="page-main" id="contenido">
     <section class="games-header">
-      <h2 id="headerTitle">Biblioteca Personal</h2>
+      <h1 id="headerTitle">Biblioteca Personal</h1>
       <p id="headerDesc">Abre el libro para recorrer las historias que han moldeado mi forma de pensar. Toca la cubierta para empezar a leer.</p>
     </section>
 
@@ -661,8 +663,8 @@
              '<div class="cover-frame"></div><div class="cover-panel" aria-hidden="true"></div>' + corners() +
              '<p class="cover-author" aria-hidden="true">Sergio Chorques</p>' +
              '<svg class="sigil" viewBox="0 0 200 200" aria-hidden="true"><use href="#sigil"/></svg>' +
-             '<h1 class="cover-title" aria-label="' + esc(coverLabel) + '">' +
-               (t.coverKicker ? '<span class="cover-kicker">' + foil(t.coverKicker, 'foil-sm') + '</span>' : '') + foil(t.coverTitle, 'foil-lg') + '</h1>' +
+             '<div class="cover-title" role="heading" aria-level="2" aria-label="' + esc(coverLabel) + '">' +
+               (t.coverKicker ? '<span class="cover-kicker">' + foil(t.coverKicker, 'foil-sm') + '</span>' : '') + foil(t.coverTitle, 'foil-lg') + '</div>' +
              '<div class="cover-orn" aria-hidden="true"><span></span><i></i><span></span></div>' +
              '<p class="cover-sub">' + esc(t.coverSub) + '</p>' +
              '<p class="cover-hint" aria-hidden="true">' + esc(t.coverHint) + '</p>' +

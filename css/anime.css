@@ -429,3 +429,19 @@
     height: 85px;
   }
 }
+
+/* Foco visible con teclado: tarjeta giratoria y miniaturas */
+.showcase-card:focus {
+  outline: none;
+}
+
+.showcase-card:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 6px;
+}
+
+.dock-item:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}

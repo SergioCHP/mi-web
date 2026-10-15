@@ -132,6 +132,26 @@ a {
   background: var(--accent);
 }
 
+/* Foco visible por defecto para todo lo interactivo (teclado).
+   :where() tiene especificidad 0: cualquier estilo propio lo sustituye. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Texto solo para lectores de pantalla */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Skip link */
 .skip-link {
   position: absolute;
@@ -1016,6 +1036,11 @@ h2 {
   box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
+/* Modo oscuro: el blanco sobre rosa/azul neón no llega a 4.5:1 → texto oscuro */
+html:not([data-theme="light"]) .filter-btn.is-active {
+  color: #0b0b10;
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1211,8 +1236,10 @@ footer {
 
 /* =========================================================
    09) REVEAL
+   Solo se ocultan si hay JavaScript (clase .js en <html>, la pone
+   el script del <head>): sin JS el contenido se ve siempre.
    ========================================================= */
-.reveal {
+.js .reveal {
   opacity: 0;
   transform: translateY(28px) scale(0.985);
   filter: blur(10px);
@@ -1221,7 +1248,7 @@ footer {
     filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal.visible {
+.js .reveal.visible {
   opacity: 1;
   transform: none;
   filter: blur(0);

@@ -489,6 +489,7 @@
   /* ---------- Typewriter multilenguaje ---------- */
   const typewriterCtrl = (function () {
     const textEl = document.getElementById("typeText");
+    const srEl = document.getElementById("typeTextSr"); // versión para lectores de pantalla
     if (!textEl) return { restart: () => {} };
 
     let phrases = translations[currentLang].typePhrases;
@@ -537,6 +538,7 @@
     function start() {
       clearTimer();
       phrases = translations[currentLang].typePhrases;
+      if (srEl) srEl.textContent = phrases.join(" ");
       phraseIdx = 0;
       charIdx = 0;
       deleting = false;
@@ -588,7 +590,7 @@
     if (navCine) navCine.textContent = lang === "va" ? "Cinema & Anime" : "Cine & Anime";
 
     // Cabecera en juegos.html
-    const gamesH2 = document.querySelector(".games-header h2");
+    const gamesH2 = document.querySelector(".games-header h1");
     if (gamesH2) gamesH2.textContent = t.gamesHeaderTitle;
 
     const gamesP = document.querySelector(".games-header p");
@@ -913,11 +915,11 @@
 
       filterButtons.forEach((b) => {
         b.classList.remove("is-active");
-        b.setAttribute("aria-selected", "false");
+        b.setAttribute("aria-pressed", "false");
       });
 
       btn.classList.add("is-active");
-      btn.setAttribute("aria-selected", "true");
+      btn.setAttribute("aria-pressed", "true");
 
       projectCards.forEach((card) => {
         const categories = card.dataset.category || "";
@@ -1083,18 +1085,22 @@
     } 
   };
   
+  // Foco atrapado en el diálogo, Esc para cerrar y vuelta al botón (js/a11y.js)
+  const focus = window.a11y ? window.a11y.modal(modal, () => closeModal()) : null;
+
   const openModal = () => {
-    modal.classList.add("is-open"); 
-    modal.setAttribute("aria-hidden", "false"); 
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
     document.body.classList.add("modal-open");
-    const first = modal.querySelector("#cf-name"); 
-    if (first) first.focus();
+    if (focus) focus.abierto(modal.querySelector("#cf-name"));
   };
-  
+
   const closeModal = () => {
-    modal.classList.remove("is-open"); 
-    modal.setAttribute("aria-hidden", "true"); 
+    if (!modal.classList.contains("is-open")) return;
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
+    if (focus) focus.cerrado();
   };
 
   openBtn.addEventListener("click", openModal);
@@ -1167,6 +1173,9 @@
 
   if (!modal || !modalImg || !modalTitle) return;
 
+  // Foco atrapado en el visor, Esc para cerrar y vuelta al botón (js/a11y.js)
+  const focus = window.a11y ? window.a11y.modal(modal, () => closeCert()) : null;
+
   const openCert = (src, title) => {
     modalImg.src = src;
     modalImg.alt = title;
@@ -1174,13 +1183,16 @@
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
     document.body.classList.add("modal-open");
+    if (focus) focus.abierto(modal.querySelector(".modal__close"));
   };
 
   const closeCert = () => {
+    if (!modal.classList.contains("is-open")) return;
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
     modalImg.src = "";
+    if (focus) focus.cerrado();
   };
 
   certBtns.forEach((btn) => {
@@ -1195,12 +1207,6 @@
     el.addEventListener("click", closeCert);
   });
 
-  // Cerrar con la tecla Esc
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("is-open")) {
-      closeCert();
-    }
-  });
 })();
 
 /* =========================================================
@@ -1478,6 +1484,7 @@ function renderFicha(j) {
   buscadorFicha.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
+
 function renderGrid(games) {
   if (!buscadorGrid) return;
   buscadorGrid.innerHTML = "";
@@ -1501,6 +1508,7 @@ function renderGrid(games) {
       card.classList.add("is-selected");
       renderFicha(game);
     });
+    a11y.hacerAccesible(card, year ? `${game.name} (${year})` : game.name);
 
     buscadorGrid.appendChild(card);
   });
@@ -1710,9 +1718,13 @@ searchChips.forEach((chip) => {
     e.preventDefault();
     e.stopPropagation();
     showNextImage();
-    startAutoPlay();
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) startAutoPlay();
   });
 
-  // Arrancar autoplay
-  startAutoPlay();
+  // Autoplay: no con "reducir movimiento" (WCAG 2.2.2), y en pausa con la pestaña oculta
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduceMotion) {
+    startAutoPlay();
+    document.addEventListener("visibilitychange", () => (document.hidden ? stopAutoPlay() : startAutoPlay()));
+  }
 })();

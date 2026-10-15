@@ -388,7 +388,7 @@ body::after {
   }
 
   /* Reveal sin blur: el filtro sobre secciones enteras es caro en móvil */
-  .reveal {
+  .js .reveal {
     filter: none;
     transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
       transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -591,7 +591,7 @@ body::after {
     padding-right: 1.25rem;
   }
 
-  .games-header h2 {
+  .games-header :is(h1, h2) {
     font-size: clamp(1.6rem, 7vw, 2rem);
     line-height: 1.15;
   }
@@ -665,13 +665,13 @@ body::after {
     letter-spacing: 0.1em;
   }
 
-  .card-back h3 {
+  .card-back h2 {
     margin-bottom: 0.6rem;
     font-size: clamp(1.1rem, 5.4vw, 1.3rem);
     line-height: 1.2;
   }
 
-  .card-back h3::after {
+  .card-back h2::after {
     margin-top: 8px;
   }
 

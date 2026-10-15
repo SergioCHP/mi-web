@@ -67,6 +67,8 @@ body, html {
 
 /* Estilo base de las pastillas */
 .pill {
+    padding: 0;
+    border: 0;
     width: 140px;
     height: 65px;
     border-radius: 40px;
@@ -189,3 +191,44 @@ body, html {
 
 .pill-label--blue { color: #4a8deb; }
 .pill-label--red { color: #e85a5a; }
+
+/* Pastillas como <button>: foco visible con teclado */
+.pill:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 6px;
+}
+
+/* Texto solo para lectores de pantalla */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Enlace para volver sin elegir */
+.matrix-back {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 30;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid rgba(0, 255, 0, 0.35);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #b8ffb8;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.matrix-back:hover,
+.matrix-back:focus-visible {
+    border-color: #0f0;
+    color: #fff;
+    outline: none;
+}

@@ -17,6 +17,7 @@
   <script>
     (function () {
       var d = document.documentElement;
+      d.classList.add("js"); // hay JavaScript: se activan animaciones como .reveal
       try {
         var t = localStorage.getItem("sergio-theme");
         if (t !== "light" && t !== "dark") {
@@ -35,6 +36,7 @@
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body>
+  <a class="skip-link" href="#contenido" data-nav="skip">Saltar al contenido principal</a>
 
   <!-- Lienzo de partículas -->
   <canvas id="particles-canvas" aria-hidden="true"></canvas>
@@ -108,7 +110,7 @@
 
   <main class="page-main" id="contenido">
     <section class="games-header">
-      <h2>Mis películas favoritas</h2>
+      <h1>Mis películas favoritas</h1>
       <p>Gira el carrusel y toca una tarjeta para ver por qué me marcaron. Obras que definieron mi forma de entender la narrativa y lo visual.</p>
     </section>
 
@@ -117,7 +119,7 @@
       <div class="carousel" id="carousel">
         
         <!-- Tarjeta 1: El señor de los anillos -->
-        <article class="carousel-card active" data-index="0">
+        <div class="carousel-card active" data-index="0">
         <div class="card-inner">
             <div class="card-front">
             <img src="images/cine1.webp" alt="El señor de los anillos" onerror="this.style.backgroundColor='#1f3d2b'" />
@@ -125,19 +127,19 @@
             <div class="card-back">
             <div class="card-back-content">
                 <span class="game-platform">Cine · Fantasía épica</span>
-                <h3>El señor de los anillos</h3>
+                <h2>El señor de los anillos</h2>
                 <p class="game-desc">La cúspide absoluta del séptimo arte. Jackson no adaptó un libro: forjó una leyenda viva a base de barro, acero, la carga inmortal de los Rohirrim y la banda sonora de Howard Shore. Un viaje colosal donde hasta el detalle más pequeño pesa y la épica no es artificio, es pura alma.</p>
                 <div class="flip-hint">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                 Voltear
                 </div>
             </div>
             </div>
         </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 2: 300 -->
-        <article class="carousel-card" data-index="1">
+        <div class="carousel-card" data-index="1">
         <div class="card-inner">
             <div class="card-front">
             <img src="images/cine2.webp" alt="300" onerror="this.style.backgroundColor='#7a2a05'" />
@@ -145,19 +147,19 @@
             <div class="card-back">
             <div class="card-back-content">
                 <span class="game-platform">Cine · Acción épica</span>
-                <h3>300</h3>
+                <h2>300</h2>
                 <p class="game-desc">Pura viñeta en movimiento: Snyder convierte el cómic de Miller en un festival de slow motion, sangre dorada y siluetas. No la veo por el rigor histórico, sino por lo que me enseñó de composición y ritmo. "¡This is Sparta!" sigue siendo mi ejemplo de que un plano bien coreografiado vale más que mil líneas de diálogo.</p>
                 <div class="flip-hint">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                 Voltear
                 </div>
             </div>
             </div>
         </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 3: Gladiator -->
-        <article class="carousel-card" data-index="2">
+        <div class="carousel-card" data-index="2">
         <div class="card-inner">
             <div class="card-front">
             <img src="images/cine3.webp" alt="Gladiator" onerror="this.style.backgroundColor='#6b4a2b'" />
@@ -165,19 +167,19 @@
             <div class="card-back">
             <div class="card-back-content">
                 <span class="game-platform">Cine · Drama histórico / Épico</span>
-                <h3>Gladiator</h3>
+                <h2>Gladiator</h2>
                 <p class="game-desc">Ridley Scott rodó Roma como un óleo y le puso encima una venganza de familia. Maximus lo pierde todo menos la dignidad, y ese "lo que hacemos en vida resuena en la eternidad" me sirve de vara para casi todo. Crowe camina por la arena como si cargara un imperio entero encima.</p>
                 <div class="flip-hint">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                 Voltear
                 </div>
             </div>
             </div>
         </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 4: Terminator 2 -->
-        <article class="carousel-card" data-index="3">
+        <div class="carousel-card" data-index="3">
         <div class="card-inner">
             <div class="card-front">
             <img src="images/cine4.webp" alt="Terminator 2" onerror="this.style.backgroundColor='#243447'" />
@@ -185,19 +187,19 @@
             <div class="card-back">
             <div class="card-back-content">
                 <span class="game-platform">Cine · Acción / Ciencia ficción</span>
-                <h3>Terminator 2</h3>
+                <h2>Terminator 2</h2>
                 <p class="game-desc">Cameron hizo lo imposible: convertir al asesino de la primera en el personaje más humano de la saga. Ver a un T-800 aprender a no matar, con el dilema de Skynet de fondo, me persigue como desarrollador de IA. El pulgar en alto al final sigue valiendo más que cualquier discurso.</p>
                 <div class="flip-hint">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                 Voltear
                 </div>
             </div>
             </div>
         </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 5: Matrix -->
-        <article class="carousel-card" data-index="4">
+        <div class="carousel-card" data-index="4">
         <div class="card-inner">
             <div class="card-front">
             <img src="images/cine5.webp" alt="Matrix" onerror="this.style.backgroundColor='#0d3d2a'" />
@@ -205,19 +207,19 @@
             <div class="card-back">
             <div class="card-back-content">
                 <span class="game-platform">Cine · Ciencia ficción</span>
-                <h3>Matrix</h3>
+                <h2>Matrix</h2>
                 <p class="game-desc">Los hermanos Wachowski proponen que la realidad puede ser una interfaz y lo sostienen con una coreografía de acción inédita hasta entonces. Más que ciencia ficción, es una reflexión sobre la libertad, la percepción y el precio de saber. Sigue siendo la referencia cuando alguien pregunta qué es real.</p>
                 <div class="flip-hint">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                 Voltear
                 </div>
             </div>
             </div>
         </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 6: Braveheart -->
-        <article class="carousel-card" data-index="5">
+        <div class="carousel-card" data-index="5">
           <div class="card-inner">
             <div class="card-front">
               <img src="images/cine6.webp" alt="Braveheart" onerror="this.style.backgroundColor='#1c2a38'" />
@@ -225,19 +227,19 @@
             <div class="card-back">
               <div class="card-back-content">
                 <span class="game-platform">Cine · Drama histórico / Épico</span>
-                <h3>Braveheart</h3>
+                <h2>Braveheart</h2>
                 <p class="game-desc">Barro, gaitas y un discurso a caballo que eriza la piel cada vez que suena. Gibson convirtió la leyenda de William Wallace en el estándar definitivo de la épica visceral: batallas crudas sin artificios digitales y una pasión desmedida por la libertad que trasciende la pantalla.</p>
                 <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
                 </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 7: Jurassic Park -->
-        <article class="carousel-card" data-index="6">
+        <div class="carousel-card" data-index="6">
           <div class="card-inner">
             <div class="card-front">
               <img src="images/cine7.webp" alt="Jurassic Park" onerror="this.style.backgroundColor='#4a2d0d'" />
@@ -245,19 +247,19 @@
             <div class="card-back">
               <div class="card-back-content">
                 <span class="game-platform">Cine · Aventura / Ciencia ficción</span>
-                <h3>Jurassic Park</h3>
+                <h2>Jurassic Park</h2>
                 <p class="game-desc">La ambición genética desafía a la naturaleza en una isla remota donde la vida se abre camino. Spielberg redefinió el asombro cinematográfico y los efectos visuales para siempre.</p>
                 <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
                 </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
         <!-- Tarjeta 8: Regreso al futuro -->
-        <article class="carousel-card" data-index="7">
+        <div class="carousel-card" data-index="7">
           <div class="card-inner">
             <div class="card-front">
               <img src="images/cine8.webp" alt="Regreso al futuro" onerror="this.style.backgroundColor='#1a2b4c'" />
@@ -265,38 +267,38 @@
             <div class="card-back">
               <div class="card-back-content">
                 <span class="game-platform">Ciencia ficción · Aventura · Comedia</span>
-                <h3>Regreso al futuro</h3>
+                <h2>Regreso al futuro</h2>
                 <p class="game-desc">Un DeLorean a 88 mph, condensadores de fluzo y la paradoja de salvar tu propia existencia antes de que se agote el tiempo. Zemeckis y Gale construyeron una clase magistral de causa y efecto: cada frase del primer acto detona en el clímax con la precisión de un reloj suizo. La quintaesencia del cine de los ochenta que no envejece jamás.</p>
                 <div class="flip-hint">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
                   Voltear
                 </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
       </div>
     </div>
 
     <!-- Controles extra (flechas) -->
     <div class="carousel-controls">
       <button class="ctrl-btn" id="btnPrev" aria-label="Anterior">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <button class="ctrl-btn" id="btnNext" aria-label="Siguiente">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </button>
     </div>
 
    <!-- Buscador de Cine (TMDB API) -->
    <section class="card spotlight-card buscador buscador--wide" id="buscadorCine" role="region" aria-labelledby="buscadorCineTitulo">
      <div class="card-icon">
-       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
          <circle cx="11" cy="11" r="8"></circle>
          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
        </svg>
      </div>
-     <h3 id="buscadorCineTitulo" class="buscador__titulo" data-es="Explorador de Cine" data-ca="Explorador de Cinema">Explorador de Cine</h3>
+     <h2 id="buscadorCineTitulo" class="buscador__titulo" data-es="Explorador de Cine" data-ca="Explorador de Cinema">Explorador de Cine</h2>
      <p class="buscador__intro" data-es="Busca cualquier película en el archivo de TMDB. Portadas oficiales, detalles y valoraciones." data-ca="Cerca qualsevol pel·lícula en l'arxiu de TMDB. Portades oficials, detalls i valoracions.">Busca cualquier película en el archivo de TMDB. Portadas oficiales, detalles y valoraciones.</p>
 
      <form class="buscador__form" id="formCine" autocomplete="off">
@@ -498,7 +500,7 @@
         const navHome = document.getElementById("navHome");
         if (navHome) navHome.textContent = t.navHome;
 
-        const headerH2 = document.querySelector(".games-header h2");
+        const headerH2 = document.querySelector(".games-header h1");
         if (headerH2) headerH2.textContent = t.headerTitle;
 
         const headerP = document.querySelector(".games-header p");
@@ -511,7 +513,7 @@
           if (!data) return;
 
           const platformEl = card.querySelector(".game-platform");
-          const titleEl = card.querySelector(".card-back h3");
+          const titleEl = card.querySelector(".card-back h2");
           const descEl = card.querySelector(".game-desc");
 
           if (platformEl) platformEl.textContent = data.platform;
@@ -577,6 +579,8 @@
     const gridCine = document.getElementById("gridCine");
     const fichaCine = document.getElementById("fichaCine");
 
+
+
     async function buscarPelicula(query) {
       if (!query.trim()) return;
 
@@ -627,6 +631,7 @@
           `;
 
           card.addEventListener("click", () => mostrarDetallePelicula(peli));
+          a11y.hacerAccesible(card, `${peli.title} (${estreno})`);
           gridCine.appendChild(card);
         });
 
@@ -695,6 +700,7 @@
   </script>
   <script src="js/particles.js"></script>
   <script src="js/carousel3d.js"></script>
+  <script src="js/a11y.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/nav-i18n.js"></script>
   <script src="js/mobile.js"></script>

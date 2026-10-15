@@ -17,6 +17,7 @@
   <script>
     (function () {
       var d = document.documentElement;
+      d.classList.add("js"); // hay JavaScript: se activan animaciones como .reveal
       try {
         var t = localStorage.getItem("sergio-theme");
         if (t !== "light" && t !== "dark") {
@@ -35,6 +36,7 @@
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body>
+  <a class="skip-link" href="#contenido" data-nav="skip">Saltar al contenido principal</a>
 
   <!-- Lienzo de partículas -->
   <canvas id="particles-canvas" aria-hidden="true"></canvas>
@@ -106,7 +108,7 @@
 
   <main class="page-main" id="contenido">
     <section class="games-header">
-      <h2>Mis animes favoritos</h2>
+      <h1>Mis animes favoritos</h1>
       <p>Gira el carrusel y toca una tarjeta para ver por qué me marcaron. Obras maestras de la animación japonesa que van más allá del entretenimiento.</p>
     </section>
 
@@ -115,10 +117,11 @@
       
       <!-- Pantalla Principal -->
       <div class="showcase-screen">
-        <article class="showcase-card" id="showcaseCard">
+        <article class="showcase-card" id="showcaseCard" tabindex="0" aria-describedby="flipHelp">
+          <span class="sr-only" id="flipHelp">Pulsa Intro para ver la cita de la obra</span>
           
           <!-- Cara Frontal (Portada + Información) -->
-          <div class="showcase-face showcase-front">
+          <div class="showcase-face showcase-front" id="showcaseFront">
             <div class="showcase-poster">
               <img id="mainPoster" src="images/anime1.webp" alt="Dragon Ball Z" onerror="this.style.backgroundColor='#d9531e'" />
             </div>
@@ -131,7 +134,7 @@
                 <span class="showcase-year" id="mainYear">1989 · Toei Animation</span>
               </div>
 
-              <h3 class="showcase-title" id="mainTitle">Dragon Ball Z</h3>
+              <h2 class="showcase-title" id="mainTitle">Dragon Ball Z</h2>
 
               <p class="showcase-desc" id="mainDesc">
                 El pilar indiscutible del shonen y la serie que definió las tardes de toda una generación. Desde la invasión de los Saiyans en la Tierra hasta el clímax contra Majin Buu, Toriyama perfeccionó la tensión de los combates cuerpo a cuerpo, las transformaciones legendarias que paralizaban patios de colegio y un sentido del sacrificio y superación que convirtió a Goku en un icono cultural imperecedero.
@@ -148,7 +151,7 @@
           </div>
 
           <!-- Cara Trasera: AQUÍ VA LA CITA Y EL AUTOR -->
-          <div class="showcase-face showcase-back">
+          <div class="showcase-face showcase-back" id="showcaseBack" aria-hidden="true">
             <div class="back-content">
               <span class="showcase-badge quote-badge">Cita de la obra</span>
               
@@ -167,17 +170,17 @@
       </div>
 
       <!-- Dock horizontal de miniaturas -->
-      <div class="dock-container" id="dockContainer" role="tablist" aria-label="Seleccionar anime">
+      <div class="dock-container" id="dockContainer" role="group" aria-label="Seleccionar anime">
         <!-- Generado dinámicamente -->
       </div>
 
       <!-- Controles Anterior / Siguiente -->
       <div class="carousel-controls carousel-controls--tight">
         <button class="ctrl-btn" id="btnPrevAnime" aria-label="Anterior">
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
         <button class="ctrl-btn" id="btnNextAnime" aria-label="Siguiente">
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
       </div>
 
@@ -187,12 +190,12 @@
     <!-- Buscador de anime (AniList API) -->
     <section class="card spotlight-card buscador buscador--wide" id="buscadorAnime" role="region" aria-labelledby="buscadorAnimeTitulo">
       <div class="card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </div>
-      <h3 id="buscadorAnimeTitulo" class="buscador__titulo" data-es="Explorador de Anime" data-ca="Explorador d'Anime">Explorador de Anime</h3>
+      <h2 id="buscadorAnimeTitulo" class="buscador__titulo" data-es="Explorador de Anime" data-ca="Explorador d'Anime">Explorador de Anime</h2>
       <p class="buscador__intro" data-es="Busca cualquier serie o película japonesa. Portadas, sinopsis y valoraciones con datos de MyAnimeList." data-ca="Cerca qualsevol sèrie o pel·lícula japonesa. Portades, sinopsi i valoracions amb dades de MyAnimeList.">Busca cualquier serie o película japonesa. Portadas, sinopsis y valoraciones con datos de MyAnimeList.</p>
 
       <form class="buscador__form" id="formAnime" autocomplete="off">
@@ -447,7 +450,7 @@
 
       Array.from(dockContainer.children).forEach((thumb, i) => {
         thumb.classList.toggle("is-selected", i === index);
-        thumb.setAttribute("aria-selected", String(i === index));
+        thumb.setAttribute("aria-pressed", String(i === index));
       });
 
       // Tarjeta de frente: se actualiza al momento
@@ -458,7 +461,7 @@
 
       // Tarjeta girada: primero vuelve al frente y DESPUÉS cambia la cita,
       // para que no se vea la del siguiente anime durante el giro
-      cardEl.classList.remove("is-flipped");
+      setFlipped(false);
 
       let done = false;
       const finish = () => {
@@ -477,14 +480,27 @@
       const thumb = document.createElement("button");
       thumb.type = "button";
       thumb.className = `dock-item ${index === 0 ? "is-selected" : ""}`;
-      thumb.setAttribute("role", "tab");
+      thumb.setAttribute("aria-pressed", String(index === 0));
       thumb.innerHTML = `<img src="${item.img}" alt="${item.es.title}" loading="lazy" />`;
       thumb.addEventListener("click", () => selectAnime(index));
       dockContainer.appendChild(thumb);
     });
 
-    cardEl.addEventListener("click", () => {
-      cardEl.classList.toggle("is-flipped");
+    /* Girar la tarjeta: ratón, Intro o Espacio. Solo la cara visible
+       queda en el árbol de accesibilidad (la otra se oculta a los lectores). */
+    const frontFace = document.getElementById("showcaseFront");
+    const backFace = document.getElementById("showcaseBack");
+    function setFlipped(flipped) {
+      cardEl.classList.toggle("is-flipped", flipped);
+      frontFace?.setAttribute("aria-hidden", String(flipped));
+      backFace?.setAttribute("aria-hidden", String(!flipped));
+    }
+    cardEl.addEventListener("click", () => setFlipped(!cardEl.classList.contains("is-flipped")));
+    cardEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setFlipped(!cardEl.classList.contains("is-flipped"));
+      }
     });
     document.getElementById("btnPrevAnime")?.addEventListener("click", () => selectAnime((currentIdx - 1 + animesData.length) % animesData.length));
     document.getElementById("btnNextAnime")?.addEventListener("click", () => selectAnime((currentIdx + 1) % animesData.length));
@@ -498,7 +514,7 @@
       langToggle?.querySelector("span").replaceChildren(document.createTextNode(isValencian ? "ES" : "VA"));
       langToggle?.setAttribute("title", isValencian ? "Cambiar a castellano" : "Canviar a valencià");
       document.getElementById("navHome").textContent = isValencian ? "Inici" : "Inicio";
-      document.querySelector(".games-header h2").textContent = isValencian ? "Els meus animes favorits" : "Mis animes favoritos";
+      document.querySelector(".games-header h1").textContent = isValencian ? "Els meus animes favorits" : "Mis animes favoritos";
       document.querySelector(".games-header p").textContent = isValencian
         ? "Selecciona una obra per a obrir el seu arxiu de producció, sinopsi i filosofia."
         : "Selecciona una obra para abrir su archivo de producción, sinopsis y filosofía.";
@@ -545,6 +561,9 @@
         : "Busca cualquier serie o película japonesa. Portadas, sinopsis y valoraciones con datos de MyAnimeList.";
       if (bBtn) bBtn.textContent = isValencian ? "Cercar" : "Buscar";
       if (bInput) bInput.placeholder = isValencian ? "Ex. Naruto, Bleach, Frieren, Chainsaw Man..." : "Ej. Naruto, Bleach, Frieren, Chainsaw Man...";
+      const flipHelp = document.getElementById("flipHelp");
+      if (flipHelp) flipHelp.textContent = isValencian ? "Prem Intro per a veure la cita de l'obra" : "Pulsa Intro para ver la cita de la obra";
+      dockContainer.setAttribute("aria-label", isValencian ? "Triar anime" : "Seleccionar anime");
 
       selectAnime(currentIdx);
     }
@@ -568,6 +587,8 @@
     const fichaAnime = document.getElementById("fichaAnime");
 
     const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+
 
     async function buscarAnime(query) {
       if (!query.trim()) return;
@@ -661,6 +682,7 @@
           `;
 
           card.addEventListener("click", () => mostrarDetalleAnime(item));
+          a11y.hacerAccesible(card, titulo);
           gridAnime.appendChild(card);
         });
 
@@ -689,7 +711,7 @@
         ? `
           <div class="detail-trailer">
             <p class="detail-trailer__label">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 22c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73z"/></svg>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 22c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73z"/></svg>
               ${isVal ? "Tràiler Oficial" : "Tráiler Oficial"}
             </p>
             <div class="detail-trailer__frame">
@@ -795,6 +817,7 @@
     </div>
   </footer>
   <script src="js/particles.js"></script>
+  <script src="js/a11y.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/nav-i18n.js"></script>
   <script src="js/mobile.js"></script>

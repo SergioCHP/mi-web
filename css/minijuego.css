@@ -444,7 +444,7 @@ html[data-theme="light"] .jrpg-container {
     margin: 1.4rem 0 0;
     font-size: 0.75rem;
     letter-spacing: 0.3px;
-    opacity: 0.8;
+    /* Sin opacity: con ella el gris quedaba en 3.9:1 (WCAG pide 4.5:1) */
 }
 
 .btn-start {

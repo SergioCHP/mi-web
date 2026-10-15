@@ -17,6 +17,7 @@
     <script>
     (function () {
         var d = document.documentElement;
+        d.classList.add("js"); // hay JavaScript: se activan animaciones como .reveal
         try {
         var t = localStorage.getItem("sergio-theme");
         if (t !== "light" && t !== "dark") {
@@ -44,6 +45,7 @@
 <body>
 
     <main class="jrpg-container" id="jrpg">
+        <h1 class="sr-only">Combate JRPG: supera el reto para entrar en Videojuegos</h1>
         <!-- Botones flotantes: saltar en cualquier momento y filtro CRT -->
         <div class="battle-topbar">
             <button class="btn-fx-toggle" id="btnFx" type="button" aria-pressed="true"

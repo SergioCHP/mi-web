@@ -61,8 +61,9 @@
         card.classList.add('active');
       } else {
         card.classList.remove('active');
-        if (Math.abs(targetAngle - currentAngle) < 1) {
-           card.classList.remove('flipped');
+        if (Math.abs(targetAngle - currentAngle) < 1 && card.classList.contains('flipped')) {
+          card.classList.remove('flipped');
+          card.setAttribute('aria-pressed', 'false');
         }
       }
     });
@@ -78,22 +79,74 @@
   targetAngle = Math.round(targetAngle / theta) * theta + theta;
   });
 
+  /* Gira el anillo hasta dejar la tarjeta i de frente */
+  function bringToFront(i) {
+    const currentSnap = Math.round(targetAngle / theta) * theta;
+    const activeI = Math.round((360 - (((currentSnap % 360) + 360) % 360)) / theta) % numCards;
+    let dist = i - activeI;
+    if (dist > numCards / 2) dist -= numCards;
+    if (dist < -numCards / 2) dist += numCards;
+    targetAngle = currentSnap - (dist * theta);
+  }
+
+  function activate(card, i) {
+    if (card.classList.contains('active')) {
+      card.classList.toggle('flipped');
+    } else {
+      bringToFront(i);
+    }
+    syncPressed();
+  }
+
+  /* aria-pressed = la tarjeta muestra su reverso */
+  function syncPressed() {
+    cards.forEach((c) => c.setAttribute('aria-pressed', String(c.classList.contains('flipped'))));
+  }
+
+  /* ---------- Accesibilidad: cada tarjeta es un botón usable con teclado ---------- */
+  const isVa = () => (document.documentElement.getAttribute('lang') || '').startsWith('ca');
+  function labelCards() {
+    const hint = isVa() ? 'prem Intro per a girar-la' : 'pulsa Intro para girarla';
+    cards.forEach((card) => {
+      const title = card.querySelector('.card-back :is(h2, h3)');
+      card.setAttribute('aria-label', (title ? title.textContent.trim() : '') + ': ' + hint);
+    });
+  }
+
   cards.forEach((card, i) => {
-    card.addEventListener('click', () => {
-      if (card.classList.contains('active')) {
-        card.classList.toggle('flipped'); 
-      } else {
-        let currentSnap = Math.round(targetAngle / theta) * theta;
-        let activeI = Math.round((360 - (((currentSnap % 360) + 360) % 360)) / theta) % numCards;
-        let dist = i - activeI;
-      
-        if (dist > numCards / 2) dist -= numCards;
-        if (dist < -numCards / 2) dist += numCards;
-      
-        targetAngle = currentSnap - (dist * theta);
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+
+    card.addEventListener('click', () => activate(card, i));
+
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate(card, i);
+      } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        // Flechas: pasar a la tarjeta siguiente / anterior y llevar el foco
+        e.preventDefault();
+        const next = (i + (e.key === 'ArrowRight' ? 1 : -1) + numCards) % numCards;
+        bringToFront(next);
+        cards[next].focus({ preventScroll: true });
       }
     });
+
+    // Al llegar con Tab, la tarjeta gira hasta quedar de frente
+    card.addEventListener('focus', () => {
+      if (!card.classList.contains('active')) bringToFront(i);
+    });
   });
+
+  // Con el foco dentro del carrusel deja de girar solo (igual que con el ratón encima)
+  carousel.addEventListener('focusin', () => { isHovered = true; });
+  carousel.addEventListener('focusout', (e) => {
+    if (!carousel.contains(e.relatedTarget)) isHovered = false;
+  });
+
+  new MutationObserver(labelCards).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  labelCards();
+  syncPressed();
 
   // Eventos para PAUSAR solo cuando estás realmente encima de las tarjetas
   carousel.addEventListener('mouseenter', () => isHovered = true);

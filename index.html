@@ -35,6 +35,7 @@
     <script>
       (function () {
         var d = document.documentElement;
+        d.classList.add("js"); // hay JavaScript: se activan animaciones como .reveal
         try {
           var t = localStorage.getItem("sergio-theme");
           if (t !== "light" && t !== "dark") {
@@ -57,10 +58,10 @@
     <div id="scrollProgressBar" aria-hidden="true"></div>
 
     <!-- Widget del clima (fijo arriba a la derecha) -->
-    <div id="weatherWidget" class="weather-widget is-loading" aria-live="polite" aria-atomic="true">
+    <aside id="weatherWidget" class="weather-widget is-loading" aria-label="El tiempo en Enguera" aria-live="polite" aria-atomic="true">
       <span id="weatherIcon" class="weather-icon" aria-hidden="true">…</span>
       <span id="weatherText" class="weather-text">Cargando el tiempo…</span>
-    </div>
+    </aside>
 
     <!-- Enlace de accesibilidad -->
     <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
@@ -128,13 +129,13 @@
     </header>
 
     <!-- Sección Hero con foto panorámica de fondo -->
-    <section class="hero hero--full" id="inicio">
+    <section class="hero hero--full" id="inicio" aria-label="Presentación">
       <!-- Fondo con la nueva foto panorámica -->
       <div class="hero-bg-photo" aria-hidden="true">
         <img
           id="heroBgImg"
           src="images/new hero.webp"
-          alt="Fondo Sergio Chorques"
+          alt=""
           class="hero-bg-img"
           loading="eager"
           decoding="async"
@@ -158,6 +159,7 @@
           stroke-width="2.5"
           stroke-linecap="round"
           stroke-linejoin="round"
+          aria-hidden="true"
         >
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
@@ -166,7 +168,7 @@
       <div class="hero-inner">
         <!-- Badge de estado -->
         <div class="status-pill">
-          <span class="status-dot"></span>
+          <span class="status-dot" aria-hidden="true"></span>
           <span>Disponible para nuevos retos &amp; proyectos</span>
         </div>
 
@@ -176,8 +178,10 @@
 
           <h1>Sergio Chorques</h1>
 
-          <p class="tagline" aria-live="polite">
-            <span id="typeText">Construyo universos interactivos desde cero.</span><span id="typeCursor" aria-hidden="true">▍</span>
+          <!-- El texto que se escribe solo es decorativo: los lectores de pantalla
+               leen una sola vez todas las frases (span .sr-only) -->
+          <p class="tagline">
+            <span class="sr-only" id="typeTextSr">Construyo universos interactivos desde cero.</span><span id="typeText" aria-hidden="true">Construyo universos interactivos desde cero.</span><span id="typeCursor" aria-hidden="true">▍</span>
           </p>
 
           <p class="hero-text">
@@ -281,7 +285,7 @@
         <div class="card-grid">
           <article class="card spotlight-card card--static tilt">
             <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
                 <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
               </svg>
@@ -292,7 +296,7 @@
 
           <article class="card spotlight-card card--static tilt">
             <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="m18 16 4-4-4-4"></path>
                 <path d="m6 8-4 4 4 4"></path>
                 <path d="m14.5 4-5 16"></path>
@@ -305,7 +309,7 @@
           <article class="card spotlight-card cert-card card--static tilt"> 
             <div class="card-icon">
               <!-- Icono de certificación / escudo / medalla -->
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M12 15l-2 5l4-2l4 2l-2-5"></path>
                 <circle cx="12" cy="9" r="6"></circle>
               </svg>
@@ -315,12 +319,12 @@
             
             <div class="cert-buttons">
               <button type="button" class="cert-btn" data-cert-src="images/cert-cisco-redes.webp" data-cert-title="Cisco — CCNA: Introducción a las redes">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 <span>CCNA: Introducción a las redes</span>
               </button>
 
               <button type="button" class="cert-btn" data-cert-src="images/cert-cisco-ciberseguridad.webp" data-cert-title="Cisco — Fundamentos de Ciberseguridad">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 <span>Fundamentos de Ciberseguridad</span>
               </button>
             </div>
@@ -328,7 +332,7 @@
 
           <article class="card spotlight-card card--static tilt">
             <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polygon points="12 6 12 12 16 14"></polygon>
               </svg>
@@ -352,13 +356,13 @@
               <!-- IMAGEN DEL MANDO DE PS5 -->
               <img 
                 src="images/mando-ps5.webp" 
-                alt="Mando PS5 DualSense" 
+                alt="" 
                 class="mando-corner-img" 
                 loading="lazy"
               />
 
               <div class="card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <line x1="6" y1="12" x2="10" y2="12"></line>
                   <line x1="8" y1="10" x2="8" y2="14"></line>
                   <line x1="15" y1="13" x2="15.01" y2="13"></line>
@@ -379,13 +383,13 @@
             <!-- IMAGEN DE LA ENTRADA DE CINE -->
             <img 
               src="images/ticket-cine.webp" 
-              alt="Entrada de cine" 
+              alt="" 
               class="cinema-corner-img" 
               loading="lazy"
             />
 
             <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect width="20" height="15" x="2" y="7" rx="2" ry="2"></rect>
                 <polyline points="17 2 12 7 7 2"></polyline>
               </svg>
@@ -402,13 +406,13 @@
             <!-- IMAGEN DE LECTURA (Libro / Manga) -->
             <img 
               src="images/libro.webp" 
-              alt="Libro de ciencia ficción" 
+              alt="" 
               class="reading-corner-img" 
               loading="lazy"
             />
 
             <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
                 <path d="M6 6h10"></path>
                 <path d="M6 10h10"></path>
@@ -430,17 +434,17 @@
           <p>Prácticas, experimentos y aplicaciones donde aplico código real y diseño de interfaces.</p>
         </div>
 
-        <div class="filter-bar" role="tablist" aria-label="Filtrar proyectos">
-          <button type="button" class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true">
+        <div class="filter-bar" role="group" aria-label="Filtrar proyectos">
+          <button type="button" class="filter-btn is-active" data-filter="all" aria-pressed="true">
             Todos
           </button>
-          <button type="button" class="filter-btn" data-filter="web" role="tab" aria-selected="false">
+          <button type="button" class="filter-btn" data-filter="web" aria-pressed="false">
             Web
           </button>
-          <button type="button" class="filter-btn" data-filter="js" role="tab" aria-selected="false">
+          <button type="button" class="filter-btn" data-filter="js" aria-pressed="false">
             JavaScript
           </button>
-          <button type="button" class="filter-btn" data-filter="dam" role="tab" aria-selected="false">
+          <button type="button" class="filter-btn" data-filter="dam" aria-pressed="false">
             DAM
           </button>
         </div>
@@ -670,7 +674,7 @@
         <div class="modal__backdrop" data-close-cert></div>
         <div class="cert-modal__panel" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
           <button type="button" class="modal__close" data-close-cert aria-label="Cerrar visor">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
           <h3 id="certModalTitle" class="cert-modal__title"></h3>
           <div class="cert-modal__img-wrap">
@@ -679,6 +683,7 @@
         </div>
       </div>
 
+      <script src="js/a11y.js"></script>
       <script src="js/theme.js"></script>
       <script src="js/script.js"></script>
       <script src="js/mobile.js"></script>

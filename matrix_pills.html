@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix - La Elección</title>
+    <meta name="description" content="Elige pastilla: la azul lleva a mis películas favoritas y la roja a mis animes favoritos.">
+    <title>La Elección | Sergio Chorques</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23ff2e97' font-family='Arial'>SC</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,29 +15,34 @@
 <body>
 
     <!-- Canvas para la lluvia digital -->
-    <canvas id="matrix-canvas"></canvas>
+    <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+
+    <!-- Salida para quien no quiera elegir -->
+    <nav class="matrix-nav" aria-label="Navegación">
+        <a class="matrix-back" href="index.html">← Volver al inicio</a>
+    </nav>
 
     <!-- Interfaz principal con las pastillas -->
-    <div id="ui-layer">
+    <main id="ui-layer">
         <h1 class="title">Elige tu destino</h1>
         <div class="hands-container">
             <!-- Pastilla Azul -> Cine -->
             <div class="pill-option">
-                <div class="pill pill-blue" id="blue-pill" title="Entrar a Cine"></div>
-                <span class="pill-label pill-label--blue">CINE</span>
+                <button type="button" class="pill pill-blue" id="blue-pill" aria-describedby="label-cine" title="Entrar a Cine"><span class="sr-only">Pastilla azul</span></button>
+                <span class="pill-label pill-label--blue" id="label-cine">CINE</span>
             </div>
 
             <!-- Pastilla Roja -> Anime -->
             <div class="pill-option">
-                <div class="pill pill-red" id="red-pill" title="Entrar a Anime"></div>
-                <span class="pill-label pill-label--red">ANIME</span>
+                <button type="button" class="pill pill-red" id="red-pill" aria-describedby="label-anime" title="Entrar a Anime"><span class="sr-only">Pastilla roja</span></button>
+                <span class="pill-label pill-label--red" id="label-anime">ANIME</span>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- Capa para el desvanecimiento y texto final -->
     <div id="fade-overlay">
-        <div id="final-message"></div>
+        <div id="final-message" role="status" aria-live="polite"></div>
     </div>
 
     <script>
