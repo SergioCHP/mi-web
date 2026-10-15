@@ -1908,6 +1908,67 @@ body.modal-open {
   transform: translateX(-40px) rotate(0deg) scale(1.05);
 }
 
+/* ---------- Postal de playa (tarjeta «Desconexión») ----------
+   Igual que el mando, pero entra desde la esquina INFERIOR derecha
+   girando como una foto que se deja caer sobre la mesa. */
+.card-travel {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-travel .card-icon,
+.card-travel h3,
+.card-travel p {
+  position: relative;
+  z-index: 2;
+}
+
+.travel-corner-img {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  width: 150px;
+  height: auto;
+  padding: 6px 6px 18px; /* marco blanco de foto revelada */
+  border-radius: 4px;
+  background: #fbf8f2;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transform: translate(140px, 120px) rotate(28deg) scale(0.9);
+  transition: transform 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.15),
+              opacity 0.35s ease;
+}
+
+.card-travel:hover .travel-corner-img {
+  opacity: 1;
+  transform: translate(0, 0) rotate(-7deg) scale(1);
+  /* Cuando ya ha llegado, se mece suavemente como si la moviera la brisa */
+  animation: postal-brisa 3.2s ease-in-out 0.55s infinite;
+}
+
+@keyframes postal-brisa {
+  0%, 100% { transform: translate(0, 0) rotate(-7deg); }
+  50%      { transform: translate(-3px, -4px) rotate(-4deg); }
+}
+
+/* Que el texto no quede debajo de la postal */
+@media (hover: hover) and (min-width: 768px) {
+  .card-travel p {
+    max-width: calc(100% - 150px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .travel-corner-img {
+    transition: opacity 0.3s ease;
+  }
+  .card-travel:hover .travel-corner-img {
+    animation: none;
+  }
+}
+
 /* =========================================================
    WIDGET DINÁMICO API GITHUB
    ========================================================= */

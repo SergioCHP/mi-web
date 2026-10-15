@@ -123,7 +123,7 @@
         },
         {
           title: "Desconexión",
-          desc: "Viajes de desconexión en familia, costas de Cádiz y recarga de energía creativa."
+          desc: "Este verano lo he pasado entre una casa de campo en Enguera y un viaje en familia a El Puerto de Santa María (Cádiz) para recargar energía."
         }
       ],
 
@@ -299,7 +299,7 @@
         },
         {
           title: "Desconnexió",
-          desc: "Viatges de desconnexió en família, costes de Cadis i recàrrega d'energia creativa."
+          desc: "Aquest estiu l'he passat entre una casa de camp a Enguera i un viatge en família a El Puerto de Santa María (Cadis) per a recarregar energia."
         }
       ],
 

@@ -507,7 +507,8 @@ body::after {
      tapaban el texto de la tarjeta (además no se descargan) */
   .mando-corner-img,
   .cinema-corner-img,
-  .reading-corner-img {
+  .reading-corner-img,
+  .travel-corner-img {
     display: none;
   }
 
