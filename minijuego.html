@@ -2,7 +2,9 @@
 <html lang="es" data-accent="pink" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#07070a">
+    <meta name="description" content="Minijuego de combate JRPG por turnos ATB: supéralo para entrar en Videojuegos.">
     <title>Combate JRPG | Sergio Chorques</title>
 
     <!-- Favicon SVG -->
@@ -11,8 +13,7 @@
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23ff2e97' font-family='Arial'>SC</text></svg>"
     />
 
-    <!-- Aplica tema/acento guardados ANTES de pintar: evita el parpadeo oscuro→claro
-     y hace que cine/anime respeten también la preferencia del sistema -->
+    <!-- Aplica tema/acento guardados ANTES de pintar: evita el parpadeo oscuro→claro -->
     <script>
     (function () {
         var d = document.documentElement;
@@ -27,473 +28,95 @@
         } catch (e) {}
     })();
     </script>
+
+    <!-- Precarga de los sprites del combate (se pintan en el primer frame) -->
+    <link rel="preload" as="image" href="assets/combat/heroe_idle.png">
+    <link rel="preload" as="image" href="assets/combat/monstruo_idle.png">
+
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/theme-light.css" />
     <link rel="stylesheet" href="css/minijuego.css" />
     <link rel="stylesheet" href="css/mobile.css" />
+
+    <!-- Motor del combate: módulos ES (requiere servidor: GitHub Pages, Live Server…) -->
+    <script type="module" src="js/jrpg/main.js"></script>
 </head>
 <body>
 
-    <div class="jrpg-container">
-        <!-- Botón flotante para saltar en cualquier momento -->
-        <button class="btn-skip-battle" id="btnQuickSkip" title="Saltar combate">Saltar ➔</button>
+    <main class="jrpg-container" id="jrpg">
+        <!-- Botones flotantes: saltar en cualquier momento y filtro CRT -->
+        <div class="battle-topbar">
+            <button class="btn-fx-toggle" id="btnFx" type="button" aria-pressed="true"
+                    data-i18n="ui.crt" data-i18n-title="ui.crtTitle">CRT</button>
+            <a class="btn-skip-battle" id="btnQuickSkip" href="juegos.html"
+               data-i18n="ui.skipBattle" data-i18n-title="ui.skipTitle">Saltar ➔</a>
+        </div>
 
-        <div class="battle-message" id="battleMessage">¡Combate Iniciado!</div>
-        
-        <!-- Cartel de inicio con opción de jugar o saltar -->
+        <div class="battle-message" id="battleMessage" role="status" aria-live="polite"></div>
+
+        <!-- Cartel de inicio (y de derrota) con opción de jugar o saltar -->
         <div class="intro-overlay" id="introOverlay">
-            <div class="intro-modal">
-                <h2>¡Encuentro!</h2>
-                <p>Juega para avanzar y desbloquear el siguiente nivel.</p>
+            <div class="intro-modal" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+                <h2 id="introTitle" data-i18n="ui.encounter">¡Encuentro!</h2>
+                <p id="introText" data-i18n="ui.introText">Juega para avanzar y desbloquear el siguiente nivel.</p>
                 <div class="intro-actions">
-                    <button class="btn-start" id="btnStartGame">Jugar</button>
-                    <button class="btn-skip" id="btnIntroSkip">Saltar</button>
+                    <button class="btn-start" id="btnStartGame" type="button" disabled data-i18n="ui.play">Jugar</button>
+                    <a class="btn-skip" id="btnIntroSkip" href="juegos.html" data-i18n="ui.skip">Saltar</a>
                 </div>
+                <p class="intro-controls" data-i18n="ui.controls">Ratón o táctil · Teclado: ↑↓ elegir · Enter confirmar · Esc volver</p>
             </div>
         </div>
-        
-        <!-- Contenedor del Canvas -->
-        <div class="battle-arena" id="arena">
-            <canvas id="battleCanvas"></canvas>
+
+        <!-- Escenario: todo el combate se dibuja en este canvas -->
+        <div class="battle-arena" id="arena" tabindex="-1">
+            <canvas id="battleCanvas" role="img" data-i18n-aria="ui.canvasLabel" aria-label="Escenario del combate"></canvas>
+            <p class="target-hint" id="targetHint" hidden></p>
         </div>
 
         <div class="battle-ui">
-            <div class="command-menu" id="cmd-menu">
-                <button class="cmd-btn" id="btn-attack" disabled>Atacar</button>
-                <button class="cmd-btn" id="btn-magic" disabled>Magia (15 MP)</button>
-                <button class="cmd-btn" id="btn-defend" disabled>Defender</button>
-            </div>
+            <nav class="command-menu" id="cmd-menu" data-i18n-aria="ui.commands" aria-label="Comandos">
+                <div class="cmd-list" id="cmdRoot" role="menu" hidden></div>
+                <div class="cmd-list cmd-submenu" id="cmdSub" role="menu" hidden></div>
+                <p class="cmd-idle" id="cmdIdle" data-i18n="ui.waiting">Esperando turno…</p>
+            </nav>
 
-            <div class="status-window">
-                <div class="entity-status">
-                    <img src="./assets/Heroe.png" alt="Héroe" class="status-portrait">
-                    <div class="stat-info">
-                        <div>
-                            <div class="stat-name">S. CHORQUES</div>
-                            <div class="bar-group">
-                                <div class="bar-container"><div class="bar-fill hp-fill" id="p-hp-bar"></div></div>
-                                <div class="bar-container"><div class="bar-fill mp-fill" id="p-mp-bar"></div></div>
-                                <div class="stat-numbers">HP: <span id="p-hp-txt"></span> | MP: <span id="p-mp-txt"></span></div>
-                            </div>
-                        </div>
-                        <div class="bar-group">
-                            <div class="stat-numbers atb-label">ATB</div>
-                            <div class="bar-container"><div class="bar-fill atb-fill" id="p-atb-bar"></div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="entity-status">
-                    <img src="./assets/Monstruo.png" alt="Monstruo" class="status-portrait enemy-portrait">
-                    <div class="stat-info">
-                        <div>
-                            <div class="stat-name stat-name--enemy">BUG FATAL</div>
-                            <div class="bar-group">
-                                <div class="bar-container"><div class="bar-fill hp-fill" id="e-hp-bar"></div></div>
-                                <div class="bar-container bar-container--empty" aria-hidden="true"><div class="bar-fill mp-fill"></div></div>
-                                <div class="stat-numbers">HP: <span id="e-hp-txt"></span></div>
-                            </div>
-                        </div>
-                        <div class="bar-group">
-                            <div class="stat-numbers atb-label">ATB</div>
-                            <div class="bar-container"><div class="bar-fill atb-fill" id="e-atb-bar"></div></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="status-window" id="partyStatus" role="group" data-i18n-aria="ui.party" aria-label="Grupo"></div>
         </div>
-    </div>
 
+        <!-- Plantilla de fila de personaje (se clona por cada héroe: 1 a 3) -->
+        <template id="tplPartyRow">
+            <div class="entity-status">
+                <img class="status-portrait" src="assets/Heroe.png" alt="" width="58" height="58">
+                <div class="stat-info">
+                    <div>
+                        <div class="stat-name"><span class="js-name"></span><span class="status-chips"></span></div>
+                        <div class="bar-group">
+                            <div class="bar-container"><div class="bar-ghost"></div><div class="bar-fill hp-fill"></div></div>
+                            <div class="bar-container"><div class="bar-fill mp-fill"></div></div>
+                            <div class="stat-numbers">HP <span class="js-hp"></span> · MP <span class="js-mp"></span></div>
+                        </div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="stat-numbers atb-label">ATB</div>
+                        <div class="bar-container"><div class="bar-fill atb-fill"></div></div>
+                        <div class="stat-numbers limit-label">LÍMITE</div>
+                        <div class="bar-container bar-container--limit"><div class="bar-fill limit-fill"></div></div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </main>
+
+    <!-- Los módulos ES no cargan con file://: aviso para quien abra el HTML con doble clic -->
     <script>
-        class Entity {
-            constructor(id, name, hp, mp, speed, isPlayer) {
-                this.id = id;
-                this.name = name;
-                this.maxHp = hp;
-                this.hp = hp;
-                this.maxMp = mp;
-                this.mp = mp;
-                this.speed = speed;
-                this.atb = 0;
-                this.isPlayer = isPlayer;
-                this.isDefending = false;
-            }
-
-            takeDamage(amount) {
-                if (this.isDefending) amount = Math.floor(amount * 0.5);
-                this.hp = Math.max(0, this.hp - amount);
-                return amount;
-            }
-
-            useMp(amount) {
-                if (this.mp >= amount) {
-                    this.mp -= amount;
-                    return true;
-                }
-                return false;
-            }
+        if (location.protocol === 'file:') {
+            document.getElementById('introText').textContent =
+                'Abre la web con un servidor local (p. ej. Live Server): los módulos ES no funcionan con file://';
         }
-
-        class BattleManager {
-            constructor() {
-                this.player = new Entity('player', 'Sergio', 250, 45, 1.1, true);
-                this.enemy = new Entity('enemy', 'Bug Fatal', 380, 0, 0.75, false);
-                
-                this.state = 'WAITING';
-                this.loopInterval = null;
-
-                this.ui = {
-                    p_hp: document.getElementById('p-hp-bar'), p_hp_txt: document.getElementById('p-hp-txt'),
-                    p_mp: document.getElementById('p-mp-bar'), p_mp_txt: document.getElementById('p-mp-txt'),
-                    p_atb: document.getElementById('p-atb-bar'),
-                    e_hp: document.getElementById('e-hp-bar'), e_hp_txt: document.getElementById('e-hp-txt'),
-                    e_atb: document.getElementById('e-atb-bar'),
-                    msg: document.getElementById('battleMessage')
-                };
-
-                // Inicializar Canvas
-                this.canvas = document.getElementById('battleCanvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.resizeCanvas();
-                window.addEventListener('resize', () => this.resizeCanvas());
-
-                // Cargar Sprites
-                this.images = {
-                    heroIdle: this.loadImage('./assets/heroe_idle.png'),
-                    heroAttack: this.loadImage('./assets/heroe_ataque.png'),
-                    monsterIdle: this.loadImage('./assets/monstruo_idle.png'),
-                    monsterAttack: this.loadImage('./assets/monstruo_ataque.png')
-                };
-
-                // Variables de Renderizado
-                this.heroState = { action: 'idle', frame: 0, xOffset: 0, shake: 0 };
-                this.monsterState = { action: 'idle', frame: 0, xOffset: 0, shake: 0 };
-                this.animTimer = 0;
-
-                this.bindControls();
-                this.updateUI();
-            }
-
-            loadImage(src) {
-                const img = new Image();
-                img.src = src;
-                return img;
-            }
-
-            resizeCanvas() {
-                this.canvas.width = this.canvas.parentElement.clientWidth;
-                this.canvas.height = this.canvas.parentElement.clientHeight;
-            }
-
-            start() {
-                this.showMessage("¡Combate Iniciado!");
-                // Bucle de lógica ATB
-                this.loopInterval = setInterval(() => this.gameLoop(), 16);
-                // Bucle de dibujo fluido en Canvas
-                requestAnimationFrame(() => this.renderLoop());
-            }
-
-            gameLoop() {
-                if (this.state === 'ANIMATING' || this.state === 'GAME_OVER') return;
-
-                if (this.player.atb < 100 && this.state !== 'PLAYER_TURN') {
-                    this.player.atb = Math.min(100, this.player.atb + this.player.speed);
-                    this.ui.p_atb.style.width = `${this.player.atb}%`;
-                    if (this.player.atb >= 100) this.readyPlayerTurn();
-                }
-
-                if (this.enemy.atb < 100 && this.state === 'WAITING') {
-                    this.enemy.atb = Math.min(100, this.enemy.atb + this.enemy.speed);
-                    this.ui.e_atb.style.width = `${this.enemy.atb}%`;
-                    if (this.enemy.atb >= 100) this.executeEnemyTurn();
-                }
-            }
-
-            renderLoop() {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-                this.animTimer++;
-                // Velocidad de animación de fotogramas (cambia cada 8 ticks)
-                if (this.animTimer % 8 === 0) {
-                    if (this.heroState.action === 'idle') {
-                        this.heroState.frame = (this.heroState.frame + 1) % 6;
-                    }
-                    if (this.monsterState.action === 'idle') {
-                        this.monsterState.frame = (this.monsterState.frame + 1) % 6;
-                    }
-                }
-
-                // Escala y posición adaptativa según resolución
-                const isMobile = this.canvas.width < 600;
-                const scale = isMobile ? 0.72 : 1;
-                
-                const baseY = this.canvas.height - (isMobile ? 165 : 230);
-                const heroBaseX = this.canvas.width * (isMobile ? 0.22 : 0.18) + (this.heroState.xOffset * scale) + (this.heroState.shake ? (Math.random()*12 - 6) : 0);
-                const monsterBaseX = this.canvas.width * (isMobile ? 0.78 : 0.82) + (this.monsterState.xOffset * scale) + (this.monsterState.shake ? (Math.random()*12 - 6) : 0);
-
-                // Dibujar Héroe
-                const hImg = this.heroState.action === 'attack' ? this.images.heroAttack : this.images.heroIdle;
-                const hTotalFrames = 6;
-                if (hImg.complete && hImg.naturalWidth > 0) {
-                    const frameWidth = hImg.naturalWidth / hTotalFrames;
-                    const frameHeight = hImg.naturalHeight;
-                    const drawWidth = isMobile ? 135 : 190;
-    const drawHeight = (frameHeight / frameWidth) * drawWidth;
-
-                    const recorte = 3; // Ajusta a 2 si se sigue viendo un borde
-
-                    this.ctx.drawImage(
-                        hImg,
-                        Math.floor(this.heroState.frame * frameWidth), 0, Math.floor(frameWidth) - recorte, frameHeight,
-                        heroBaseX - drawWidth / 2, baseY, drawWidth, drawHeight
-                    );
-                }
-
-                // Dibujar Monstruo (Invertido horizontalmente para mirar al héroe)
-                const mImg = this.monsterState.action === 'attack' ? this.images.monsterAttack : this.images.monsterIdle;
-                const mTotalFrames = this.monsterState.action === 'attack' ? 5 : 6;
-                if (mImg.complete && mImg.naturalWidth > 0) {
-                    const frameWidth = mImg.naturalWidth / mTotalFrames;
-                    const frameHeight = mImg.naturalHeight;
-                    const drawWidth = isMobile ? 140 : 200;
-                    const drawHeight = (frameHeight / frameWidth) * drawWidth;
-
-                    this.ctx.save();
-                    this.ctx.translate(monsterBaseX, baseY);
-                    this.ctx.scale(-1, 1); // Efecto espejo
-
-                    const recorte = 2; // Ajusta a 2 si se sigue viendo un borde
-
-                    this.ctx.drawImage(
-                        mImg,
-                        Math.floor(this.monsterState.frame * frameWidth), 0, Math.floor(frameWidth) - recorte, frameHeight,
-                        -drawWidth / 2, 0, drawWidth, drawHeight
-                    );
-                    this.ctx.restore();
-                }
-
-                requestAnimationFrame(() => this.renderLoop());
-            }
-
-            readyPlayerTurn() {
-                this.state = 'PLAYER_TURN';
-                this.ui.p_atb.classList.add('ready');
-                this.player.isDefending = false;
-                
-                document.querySelectorAll('.cmd-btn').forEach(btn => {
-                    btn.disabled = false;
-                    btn.classList.add('active');
-                });
-                this.showMessage("¡Tu turno!");
-            }
-
-            bindControls() {
-                document.getElementById('btn-attack').onclick = () => this.executePlayerAction('ATTACK');
-                document.getElementById('btn-magic').onclick = () => this.executePlayerAction('MAGIC');
-                document.getElementById('btn-defend').onclick = () => this.executePlayerAction('DEFEND');
-            }
-
-            async executePlayerAction(action) {
-                if (this.state !== 'PLAYER_TURN') return;
-                
-                this.state = 'ANIMATING';
-                this.resetPlayerMenu();
-
-                if (action === 'ATTACK') {
-                    this.showMessage("¡Estocada!");
-                    
-                    this.heroState.action = 'attack';
-                    this.heroState.xOffset = 180; // Embestida hacia el enemigo
-
-                    // Reproducir los 6 frames de ataque secuencialmente
-                    for (let f = 0; f < 6; f++) {
-                        this.heroState.frame = f;
-                        await this.sleep(90);
-                    }
-                    
-                    const dmg = this.enemy.takeDamage(Math.floor(Math.random() * 20) + 35);
-                    this.monsterState.shake = 1;
-                    this.spawnDamage(dmg, this.canvas.width * 0.78, this.canvas.height * 0.45);
-                    this.updateUI();
-
-                    await this.sleep(250);
-                    this.monsterState.shake = 0;
-
-                    // Volver a la posición inicial
-                    this.heroState.action = 'idle';
-                    this.heroState.xOffset = 0;
-                    this.heroState.frame = 0;
-
-                } else if (action === 'MAGIC') {
-                    if (this.player.useMp(15)) {
-                        this.showMessage("¡Compilación Pura!");
-
-                        // --- 1. AURA DE CARGA DEL HÉROE ---
-                        const heroAura = document.createElement('div');
-                        heroAura.className = 'hero-aura';
-                        // El héroe está posicionado en el 18% del ancho del canvas
-                        heroAura.style.left = `${this.canvas.width * 0.18}px`;
-                        heroAura.style.top = `${this.canvas.height - 140}px`; 
-                        document.getElementById('arena').appendChild(heroAura);
-                        
-                        setTimeout(() => heroAura.remove(), 400);
-
-                        // Esperamos a que la animación de carga casi termine
-                        await this.sleep(300);
-
-                        // --- INICIO EFECTO VISUAL DE MAGIA ---
-                        const magicFx = document.createElement('div');
-                        magicFx.className = 'magic-effect';
-                        // Centramos el efecto en la posición X del monstruo (82% del ancho) y la altura base (Y)
-                        magicFx.style.left = `${this.canvas.width * 0.82}px`;
-                        magicFx.style.top = `${this.canvas.height - 240}px`;
-                        document.getElementById('arena').appendChild(magicFx);
-                        
-                        // Limpiamos el div del efecto después de la animación
-                        setTimeout(() => magicFx.remove(), 400);
-                        // --- FIN EFECTO VISUAL DE MAGIA ---
-
-                        await this.sleep(300);
-                        
-                        const dmg = this.enemy.takeDamage(Math.floor(Math.random() * 30) + 65);
-                        this.monsterState.shake = 1;
-                        this.spawnDamage(dmg, this.canvas.width * 0.78, this.canvas.height * 0.45, '#38bdf8');
-                        this.updateUI();
-                        
-                        await this.sleep(350);
-                        this.monsterState.shake = 0;
-                    } else {
-                        this.showMessage("MP Insuficiente");
-                        this.state = 'PLAYER_TURN';
-                        this.readyPlayerTurn();
-                        return;
-                    }
-                } else if (action === 'DEFEND') {
-                    this.showMessage("¡Posición Defensiva!");
-                    this.player.isDefending = true;
-                    await this.sleep(450);
-                }
-
-                this.finishTurn(this.player, this.ui.p_atb);
-            }
-
-            async executeEnemyTurn() {
-                this.state = 'ANIMATING';
-                this.ui.e_atb.classList.add('ready');
-
-                await this.sleep(400);
-
-                const isCrit = Math.random() > 0.65;
-                this.showMessage(isCrit ? "¡Zarpazo Crítico!" : "¡Ataque del Bug!");
-                
-                this.monsterState.action = 'attack';
-                this.monsterState.xOffset = -180; // Embestida hacia el héroe
-
-                // Reproducir los 5 frames de ataque del monstruo
-                for (let f = 0; f < 5; f++) {
-                    this.monsterState.frame = f;
-                    await this.sleep(110);
-                }
-
-                let rawDmg = isCrit ? Math.floor(Math.random() * 25) + 40 : Math.floor(Math.random() * 15) + 20;
-                const finalDmg = this.player.takeDamage(rawDmg);
-                
-                this.heroState.shake = 1;
-                this.spawnDamage(finalDmg, this.canvas.width * 0.22, this.canvas.height * 0.45);
-                this.updateUI();
-
-                await this.sleep(250);
-                this.heroState.shake = 0;
-
-                this.monsterState.action = 'idle';
-                this.monsterState.xOffset = 0;
-                this.monsterState.frame = 0;
-
-                this.finishTurn(this.enemy, this.ui.e_atb);
-            }
-
-            finishTurn(entity, atbBar) {
-                entity.atb = 0;
-                atbBar.style.width = '0%';
-                atbBar.classList.remove('ready');
-
-                if (this.enemy.hp <= 0) {
-                    this.state = 'GAME_OVER';
-                    this.showMessage("¡VICTORIA! Accediendo...");
-                    setTimeout(() => { window.location.href = 'juegos.html'; }, 2200);
-                } else if (this.player.hp <= 0) {
-                    this.state = 'GAME_OVER';
-                    this.showMessage("HAS SIDO DERROTADO");
-                    setTimeout(() => { location.reload(); }, 2200);
-                } else {
-                    this.state = 'WAITING';
-                }
-            }
-
-            resetPlayerMenu() {
-                document.querySelectorAll('.cmd-btn').forEach(btn => {
-                    btn.disabled = true;
-                    btn.classList.remove('active');
-                });
-            }
-
-            updateUI() {
-                this.ui.p_hp.style.width = `${(this.player.hp / this.player.maxHp) * 100}%`;
-                this.ui.p_hp_txt.innerText = `${this.player.hp}/${this.player.maxHp}`;
-                
-                this.ui.p_mp.style.width = `${(this.player.mp / this.player.maxMp) * 100}%`;
-                this.ui.p_mp_txt.innerText = `${this.player.mp}/${this.player.maxMp}`;
-
-                this.ui.e_hp.style.width = `${(this.enemy.hp / this.enemy.maxHp) * 100}%`;
-                this.ui.e_hp_txt.innerText = `${this.enemy.hp}/${this.enemy.maxHp}`;
-            }
-
-            spawnDamage(amount, x, y, color = '#fff') {
-                const popup = document.createElement('div');
-                popup.innerText = amount;
-                popup.className = 'damage-popup';
-                popup.style.color = color;
-                popup.style.left = `${x}px`;
-                popup.style.top = `${y}px`;
-                
-                document.getElementById('arena').appendChild(popup);
-                setTimeout(() => popup.remove(), 900);
-            }
-
-            showMessage(text) {
-                this.ui.msg.innerText = text;
-                this.ui.msg.style.opacity = '1';
-                clearTimeout(this.msgTimeout);
-                this.msgTimeout = setTimeout(() => { this.ui.msg.style.opacity = '0'; }, 1400);
-            }
-
-            sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-        }
-
-        window.onload = () => {
-            const battle = new BattleManager();
-
-            const overlay = document.getElementById('introOverlay');
-            const startBtn = document.getElementById('btnStartGame');
-            const introSkipBtn = document.getElementById('btnIntroSkip');
-            const quickSkipBtn = document.getElementById('btnQuickSkip');
-
-            // Comenzar el combate
-            startBtn.addEventListener('click', () => {
-                overlay.classList.add('hidden');
-                battle.start();
-            });
-
-            // Función para saltarse el minijuego
-            const skipGame = () => {
-                window.location.href = 'juegos.html';
-            };
-
-            introSkipBtn.addEventListener('click', skipGame);
-            quickSkipBtn.addEventListener('click', skipGame);
-        };
     </script>
+
+    <noscript>
+        <p class="jrpg-noscript">El combate necesita JavaScript. <a href="juegos.html">Ir a Videojuegos</a></p>
+    </noscript>
 </body>
 </html>

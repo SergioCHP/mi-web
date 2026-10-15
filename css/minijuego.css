@@ -1,10 +1,13 @@
 /* =========================================================
    minijuego.css — Combate JRPG (minijuego.html)
+   El escenario se dibuja en <canvas>; aquí solo vive el HUD,
+   los carteles y la adaptación a temas claro/oscuro y móvil.
    ========================================================= */
 
 body {
     margin: 0;
     height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,63 +16,80 @@ body {
 }
 
 .jrpg-container {
+    /* Tokens del HUD (se redefinen en tema claro) */
+    --hud-bg: linear-gradient(180deg, var(--surface) 0%, #050608 100%);
+    --panel-bg: rgba(0, 0, 0, 0.5);
+    --hud-text: #ffffff;
+    --bar-track: #10121a;
+
     width: 100%;
-    max-width: 950px;
+    max-width: 980px;
     height: 100vh;
-    max-height: 620px;
+    height: 100dvh;
+    max-height: 640px;
+    margin: 0;
+    padding: 0; /* anula el padding genérico de <main> en style.css */
     display: flex;
     flex-direction: column;
     border: 1px solid var(--line-strong);
     background-color: var(--surface);
-    box-shadow: 0 0 50px rgba(0,0,0,0.85);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.85);
     position: relative;
+    z-index: 2; /* por encima de la textura de ruido global (body::after) */
     overflow: hidden;
+}
+
+html[data-theme="light"] .jrpg-container {
+    --hud-bg: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+    --panel-bg: rgba(255, 255, 255, 0.55);
+    --hud-text: var(--text);
+    --bar-track: #d9d1c3;
 }
 
 /* ESCENARIO CANVAS */
 .battle-arena {
     flex: 1;
+    min-height: 0;
     position: relative;
-    /* 1. Añadimos la imagen de fondo */
-    background-image: 
-        /* Opcional: un degradado oscuro superpuesto para que los personajes y texto resalten mejor */
-        linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.65)),
-        url('../assets/fondo_combate.jpg');
-    background-size: cover;
-    background-position: center bottom;
-    background-repeat: no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: #020306;
     overflow: hidden;
-}
-
-.battle-arena::before {
-    content: '';
-    position: absolute;
-    bottom: -25%; left: 0; right: 0; height: 65%;
-    background-image: linear-gradient(var(--line) 1px, transparent 1px),
-                      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 40px 40px;
-    transform: perspective(600px) rotateX(70deg);
-    opacity: 0.35;
-    pointer-events: none;
+    outline: none;
 }
 
 #battleCanvas {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     z-index: 10;
+    display: block;
+    touch-action: manipulation;
     image-rendering: pixelated;
+}
+
+.target-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    transform: translateX(-50%);
+    z-index: 30;
+    margin: 0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.72);
+    border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    pointer-events: none;
 }
 
 /* INTERFAZ HUD */
 .battle-ui {
-    height: 190px;
-    background: linear-gradient(180deg, var(--surface) 0%, #050608 100%);
+    min-height: 190px;
+    background: var(--hud-bg);
     border-top: 2px solid var(--accent);
     display: grid;
     grid-template-columns: 210px 1fr;
@@ -85,10 +105,48 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    background: rgba(0,0,0,0.5);
+    background: var(--panel-bg);
+    min-width: 0;
+}
+
+.cmd-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cmd-list[hidden] {
+    display: none;
+}
+
+.cmd-idle {
+    margin: auto 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.cmd-idle[hidden] {
+    display: none;
+}
+
+.cmd-title {
+    margin: 0 0 4px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
 }
 
 .cmd-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     background: transparent;
     border: 1px solid transparent;
     color: var(--text-muted);
@@ -99,30 +157,72 @@ body {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: color 0.15s, background 0.15s, padding 0.15s, border-color 0.15s;
 }
 
 .cmd-btn.active {
-    color: #fff;
-    border-left: 3px solid var(--accent);
+    color: var(--hud-text);
+    border-left: 3px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    background: transparent;
+    padding-left: 13px;
+}
+
+/* El elemento con foco/hover es el "cursor" del menú (mano de FFVII) */
+.cmd-btn.active:hover,
+.cmd-btn.active:focus-visible {
+    outline: none;
+    border-left-color: var(--accent);
     background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 25%, transparent) 0%, transparent 100%);
     padding-left: 16px;
 }
 
 .cmd-btn:disabled {
-    opacity: 0.25;
+    opacity: 0.3;
     cursor: not-allowed;
+}
+
+.cmd-btn--back {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.cmd-btn--limit {
+    color: #fff !important;
+    background: linear-gradient(90deg, var(--accent), var(--accent-alt), var(--accent));
+    background-size: 200% 100%;
+    border-left-color: #fff !important;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    animation: limitShine 1.6s linear infinite;
+}
+
+.cmd-elem {
+    width: 8px;
+    height: 8px;
+    flex: none;
+    border-radius: 2px;
+    background: var(--elem);
+    box-shadow: 0 0 6px var(--elem);
+    transform: rotate(45deg);
+}
+
+.cmd-cost {
+    margin-left: auto;
+    font-family: monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0;
+    color: var(--text-muted);
 }
 
 .status-window {
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
     padding: 12px 16px;
-    background: rgba(0,0,0,0.5);
+    background: var(--panel-bg);
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     justify-content: center;
+    min-width: 0;
 }
 
 .entity-status {
@@ -130,6 +230,23 @@ body {
     grid-template-columns: 60px 1fr;
     gap: 14px;
     align-items: center;
+    padding: 4px 6px;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid transparent;
+    transition: background 0.2s, border-color 0.2s, opacity 0.3s;
+}
+
+.entity-status.is-active {
+    border-left-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.entity-status.is-ko {
+    opacity: 0.55;
+}
+
+.entity-status.is-ko .status-portrait {
+    filter: grayscale(1) !important;
 }
 
 .status-portrait {
@@ -140,6 +257,11 @@ body {
     object-fit: cover;
     background: #000;
 }
+
+.entity-status.is-active .status-portrait {
+    border-color: var(--accent);
+}
+
 .enemy-portrait {
     border-color: #ff3366;
 }
@@ -152,10 +274,14 @@ body {
 }
 
 .stat-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 0.95rem;
     margin-bottom: 3px;
+    color: var(--hud-text);
 }
 
 .bar-group {
@@ -165,22 +291,54 @@ body {
 }
 
 .bar-container {
+    position: relative;
     height: 8px;
-    background: #10121a;
+    background: var(--bar-track);
     border: 1px solid var(--line);
     border-radius: 999px;
     overflow: hidden;
 }
 
+/* Las barras se escalan con transform (solo composición, sin recalcular layout) */
+.bar-fill,
+.bar-ghost {
+    position: absolute;
+    inset: 0;
+    transform-origin: left center;
+    transform: scaleX(1);
+}
+
 .bar-fill {
-    height: 100%;
-    transition: width 0.3s ease-out;
+    transition: transform 0.25s ease-out;
+}
+
+/* Daño "fantasma": la barra blanca se vacía con retraso tras la verde */
+.bar-ghost {
+    background: rgba(255, 255, 255, 0.8);
+    transition: transform 0.6s ease-in 0.35s;
 }
 
 .hp-fill { background: linear-gradient(90deg, #22c55e, #4ade80); }
 .mp-fill { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
-.atb-fill { background: linear-gradient(90deg, #eab308, #facc15); transition: width 0.08s linear; }
-.atb-fill.ready { background: linear-gradient(90deg, #ff2e97, #ff7eb3); box-shadow: 0 0 10px #ff2e97; }
+.atb-fill { background: linear-gradient(90deg, #eab308, #facc15); transition: none; }
+.atb-fill.ready,
+.entity-status.is-ready .atb-fill { background: linear-gradient(90deg, #ff2e97, #ff7eb3); box-shadow: 0 0 10px #ff2e97; }
+.limit-fill { background: linear-gradient(90deg, var(--accent-alt), var(--accent)); }
+
+.entity-status.is-low .hp-fill {
+    background: linear-gradient(90deg, #ef4444, #f97316);
+    animation: lowHp 0.9s ease-in-out infinite;
+}
+
+.entity-status.is-limit .limit-fill {
+    background: linear-gradient(90deg, var(--accent), #fff, var(--accent-alt), var(--accent));
+    background-size: 200% 100%;
+    animation: limitShine 1.2s linear infinite;
+}
+
+.bar-container--limit {
+    height: 6px;
+}
 
 .stat-numbers {
     font-size: 0.72rem;
@@ -188,30 +346,30 @@ body {
     color: var(--text-muted);
 }
 
-.damage-popup {
-    position: absolute;
-    font-family: var(--font-display);
-    font-size: 2.2rem;
-    font-weight: 900;
-    text-shadow: 0 0 12px #ff0000, 2px 2px 0 #000;
-    pointer-events: none;
-    z-index: 100;
-    animation: popup 0.9s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+.status-chips {
+    display: inline-flex;
+    gap: 4px;
 }
 
-@keyframes popup {
-    0% { transform: translateY(20px) scale(0.5); opacity: 0; }
-    25% { transform: translateY(-35px) scale(1.2); opacity: 1; }
-    80% { transform: translateY(-45px) scale(1); opacity: 1; }
-    100% { transform: translateY(-55px) scale(1); opacity: 0; }
+.status-chip {
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.5px;
+    color: #05060a;
+    background: var(--chip);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--chip) 60%, transparent);
 }
 
+/* Mensajes de combate */
 .battle-message {
     position: absolute;
     top: 18px;
     left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.85);
+    transform: translate(-50%, -6px);
+    max-width: calc(100% - 220px);
+    background: rgba(0, 0, 0, 0.85);
     border: 1px solid var(--accent);
     padding: 8px 24px;
     border-radius: 999px;
@@ -219,54 +377,28 @@ body {
     font-weight: 700;
     color: #fff;
     letter-spacing: 2px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     z-index: 200;
     opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.magic-effect {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, rgba(56, 189, 248, 1) 0%, rgba(56, 189, 248, 0) 70%);
-    border-radius: 50%;
     pointer-events: none;
-    z-index: 50;
-    mix-blend-mode: screen;
-    box-shadow: 0 0 40px #38bdf8;
-    animation: magic-blast 0.4s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+    transition: opacity 0.25s, transform 0.25s;
 }
 
-@keyframes magic-blast {
-    0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+.battle-message.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
 }
 
-.hero-aura {
-    position: absolute;
-    width: 120px;
-    height: 200px;
-    background: linear-gradient(0deg, rgba(56, 189, 248, 0) 0%, rgba(56, 189, 248, 0.8) 50%, rgba(56, 189, 248, 0) 100%);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 15;
-    mix-blend-mode: screen;
-    filter: drop-shadow(0 0 15px #38bdf8);
-    animation: aura-charge 0.4s ease-out forwards;
-}
-
-@keyframes aura-charge {
-    0% { transform: translate(-50%, -50%) scaleX(0.2) scaleY(0.5) translateY(40px); opacity: 0; }
-    50% { transform: translate(-50%, -50%) scaleX(1) scaleY(1.2) translateY(0); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scaleX(1.5) scaleY(1.5) translateY(-40px); opacity: 0; }
-}
-
-/* Pantalla / Cartel inicial */
+/* Pantalla / Cartel inicial (también se reutiliza en la derrota) */
 .intro-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(5, 6, 8, 0.88);
-    backdrop-filter: blur(4px);
+    background: rgba(5, 6, 8, 0.72);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -296,16 +428,23 @@ body {
     font-family: var(--font-display, sans-serif);
     font-size: 1.6rem;
     letter-spacing: 2px;
-    color: #fff;
+    color: var(--text);
     text-transform: uppercase;
 }
 
 .intro-modal p {
     margin: 0 0 1.8rem 0;
-    font-family: sans-serif;
+    font-family: var(--font-body, sans-serif);
     color: var(--text-muted, #a1a1aa);
     font-size: 0.95rem;
     line-height: 1.5;
+}
+
+.intro-modal .intro-controls {
+    margin: 1.4rem 0 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.3px;
+    opacity: 0.8;
 }
 
 .btn-start {
@@ -321,12 +460,19 @@ body {
     border-radius: 4px;
     cursor: pointer;
     box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 50%, transparent);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
-.btn-start:hover {
+.btn-start:hover:not(:disabled),
+.btn-start:focus-visible {
+    outline: none;
     transform: scale(1.05);
     box-shadow: 0 0 25px var(--accent);
+}
+
+.btn-start:disabled {
+    opacity: 0.5;
+    cursor: progress;
 }
 
 /* Botones y acciones de salto */
@@ -338,6 +484,9 @@ body {
 }
 
 .btn-skip {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
     background: transparent;
     color: var(--text-muted, #a1a1aa);
     border: 1px solid var(--line, #333);
@@ -351,21 +500,32 @@ body {
     transition: all 0.2s ease;
 }
 
-.btn-skip:hover {
-    color: #fff;
+.btn-skip:hover,
+.btn-skip:focus-visible {
+    outline: none;
+    color: var(--text);
     border-color: var(--accent);
     background: rgba(255, 255, 255, 0.05);
 }
 
-/* Botón de saltar flotante durante el combate */
-.btn-skip-battle {
+/* Barra superior flotante durante el combate */
+.battle-topbar {
     position: absolute;
     top: 16px;
     right: 16px;
     z-index: 150;
+    display: flex;
+    gap: 8px;
+}
+
+.btn-skip-battle,
+.btn-fx-toggle {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
     background: rgba(0, 0, 0, 0.65);
-    border: 1px solid var(--line, #333);
-    color: var(--text-muted, #a1a1aa);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #b7bcc6;
     padding: 6px 14px;
     font-family: var(--font-display, sans-serif);
     font-size: 0.8rem;
@@ -376,10 +536,26 @@ body {
     transition: all 0.2s;
 }
 
-.btn-skip-battle:hover {
+.btn-skip-battle:hover,
+.btn-fx-toggle:hover,
+.btn-skip-battle:focus-visible,
+.btn-fx-toggle:focus-visible {
+    outline: none;
     color: #fff;
     border-color: var(--accent);
     background: rgba(0, 0, 0, 0.9);
+}
+
+.btn-fx-toggle[aria-pressed="false"] {
+    opacity: 0.55;
+    text-decoration: line-through;
+}
+
+.jrpg-noscript {
+    position: fixed;
+    inset: auto 0 2rem;
+    text-align: center;
+    color: #fff;
 }
 
 @keyframes modalIn {
@@ -387,44 +563,81 @@ body {
     to { transform: scale(1); opacity: 1; }
 }
 
+@keyframes limitShine {
+    to { background-position: -200% 0; }
+}
+
+@keyframes lowHp {
+    50% { opacity: 0.6; }
+}
+
 /* =========================================================
    ADAPTACIÓN RESPONSIVA (MÓVIL Y TABLET)
    ========================================================= */
 @media (max-width: 768px) {
     .jrpg-container {
-        max-height: 100vh;
-        height: 100vh;
+        max-height: none;
         border: none;
     }
 
-    /* Reducir altura del HUD inferior y apilar columnas */
+    /* HUD inferior apilado */
     .battle-ui {
-        height: auto;
-        min-height: 175px;
+        min-height: 0;
         grid-template-columns: 1fr;
         gap: 8px;
-        padding: 8px 10px;
+        padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
     }
 
     /* Menú de botones horizontal compacto */
     .command-menu {
-        flex-direction: row;
-        gap: 6px;
         padding: 6px;
+        min-height: 44px;
+        justify-content: center;
+    }
+
+    .cmd-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .cmd-title {
+        width: 100%;
+        margin: 0;
+        text-align: center;
+        font-size: 0.75rem;
     }
 
     .cmd-btn {
-        flex: 1;
+        flex: 1 1 0;
+        min-width: max-content;
+        justify-content: center;
         text-align: center;
-        padding: 7px 4px;
+        min-height: 40px; /* objetivo táctil cómodo */
+        padding: 7px 8px;
         font-size: 0.72rem;
         letter-spacing: 0.5px;
     }
 
-    .cmd-btn.active {
-        padding-left: 4px;
-        border-left: none;
-        border-bottom: 2px solid var(--accent);
+    .cmd-btn.active,
+    .cmd-btn.active:hover,
+    .cmd-btn.active:focus-visible {
+        padding-left: 8px;
+        border-left: 1px solid transparent;
+        border-bottom: 2px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    }
+
+    .cmd-btn.active:hover,
+    .cmd-btn.active:focus-visible {
+        border-bottom-color: var(--accent);
+    }
+
+    .cmd-cost {
+        margin-left: 4px;
+    }
+
+    .cmd-idle {
+        font-size: 0.7rem;
     }
 
     /* Ventana de estados compacta */
@@ -436,6 +649,7 @@ body {
     .entity-status {
         grid-template-columns: 36px 1fr;
         gap: 8px;
+        padding: 2px 4px;
     }
 
     .status-portrait {
@@ -444,7 +658,7 @@ body {
     }
 
     .stat-info {
-        grid-template-columns: 1fr 65px;
+        grid-template-columns: 1fr 90px;
         gap: 8px;
     }
 
@@ -461,6 +675,31 @@ body {
         height: 6px;
     }
 
+    .bar-container--limit {
+        height: 5px;
+    }
+
+    .battle-topbar {
+        top: 10px;
+        right: 10px;
+        gap: 6px;
+    }
+
+    .btn-skip-battle,
+    .btn-fx-toggle {
+        min-height: 40px;
+        padding: 5px 12px;
+        font-size: 0.7rem;
+    }
+
+    .battle-message {
+        top: 52px;
+        max-width: calc(100% - 24px);
+        padding: 6px 16px;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+
     /* Modal de inicio */
     .intro-modal {
         margin: 0 16px;
@@ -475,16 +714,18 @@ body {
         font-size: 0.85rem;
         margin-bottom: 1.2rem;
     }
-
-    .damage-popup {
-        font-size: 1.6rem;
-    }
 }
 
-/* Etiquetas del HUD (antes estilos en línea) */
+/* Etiquetas del HUD */
 .atb-label {
     color: #eab308;
     font-weight: bold;
+}
+
+.limit-label {
+    color: var(--accent);
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 .stat-name--enemy {
@@ -494,4 +735,12 @@ body {
 /* Hueco reservado para la barra de MP del enemigo (no tiene) */
 .bar-container--empty {
     visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cmd-btn--limit,
+    .entity-status.is-limit .limit-fill,
+    .entity-status.is-low .hp-fill {
+        animation: none;
+    }
 }
