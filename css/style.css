@@ -1132,6 +1132,12 @@ html:not([data-theme="light"]) .filter-btn.is-active {
   cursor: default;
 }
 
+.project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
 .project-card.is-hidden {
   display: none;
 }

@@ -49,7 +49,11 @@
       if (!lista.length) return;
       const primero = lista[0];
       const ultimo = lista[lista.length - 1];
-      if (e.shiftKey && document.activeElement === primero) {
+      // Si el foco quedó fuera del diálogo, se devuelve dentro
+      if (!modalEl.contains(document.activeElement)) {
+        e.preventDefault();
+        (e.shiftKey ? ultimo : primero).focus();
+      } else if (e.shiftKey && document.activeElement === primero) {
         e.preventDefault();
         ultimo.focus();
       } else if (!e.shiftKey && document.activeElement === ultimo) {
@@ -61,12 +65,19 @@
     return {
       abierto(destino) {
         anterior = document.activeElement;
-        modalEl.addEventListener("keydown", onKeydown);
-        const el = destino || enfocables()[0];
-        if (el) el.focus();
+        // En document (no en el diálogo): Esc funciona aunque el foco no haya entrado
+        document.addEventListener("keydown", onKeydown);
+        // El diálogo aparece con una transición CSS: se enfoca en el siguiente
+        // fotograma y se reintenta por si aún no era visible
+        const enfocar = () => {
+          const el = destino || enfocables()[0];
+          if (el && !modalEl.contains(document.activeElement)) el.focus();
+        };
+        requestAnimationFrame(enfocar);
+        setTimeout(enfocar, 120);
       },
       cerrado() {
-        modalEl.removeEventListener("keydown", onKeydown);
+        document.removeEventListener("keydown", onKeydown);
         if (anterior && typeof anterior.focus === "function") anterior.focus();
         anterior = null;
       }

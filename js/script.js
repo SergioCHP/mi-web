@@ -134,15 +134,15 @@
       interesesCards: [
         {
           title: "Videojuegos",
-          desc: "Jugador en PS5, priorizando títulos con narrativa elaborada, mecánicas pulidas y diseño inmersivo."
+          desc: "Juego en todas las consolas, de Nintendo a Xbox, pero mi favorita es la PS5. Lo que más me engancha es una buena historia, y si además tiene unos gráficos bonitos, mejor."
         },
         {
           title: "Cine & Anime",
-          desc: "Apreciación del lenguaje audiovisual contemporáneo y series clásicas de animación japonesa."
+          desc: "Me quedo con la épica y la ciencia ficción, como El señor de los anillos o Matrix. En anime disfruto tanto de clásicos como Dragon Ball Z como de las series más actuales."
         },
         {
           title: "Lectura",
-          desc: "Constante interés por novelas de ciencia ficción, literatura técnica, cómic independiente y manga."
+          desc: "Leo cuando me queda tiempo, sobre todo fantasía y ciencia ficción. También cómics de superhéroes de Marvel y DC, y algo de manga."
         }
       ],
 
@@ -155,7 +155,8 @@
         {
           desc: "Portal personal con soporte para temas dinámicos, microinteracciones reactivas y accesibilidad integrada.",
           link: "Ver código",
-          aria: "Ver código del proyecto Mi web personal"
+          aria: "Ver código del proyecto Mi web personal",
+          caseLink: "Caso de estudio"
         },
         {
           desc: "Aplicación orientada a organizar colecciones de libros y mangas mediante estructuras de datos ordenadas y persistencia lógica.",
@@ -222,7 +223,7 @@
 
       // Frases del typewriter
       typePhrases: [
-        "Construeix universos interactius des de zero.",
+        "Construïsc universos interactius des de zero.",
         "Estudiant de 1r DAM a l'IES Simarro.",
         "Del codi naixen projectes funcionals i nets.",
         "Gamer, lector i futur desenvolupador de programari."
@@ -309,15 +310,15 @@
       interesesCards: [
         {
           title: "Videojocs",
-          desc: "Jugador en PS5, prioritzant títols amb narrativa elaborada, mecàniques polides i disseny immersiu."
+          desc: "Jugue en totes les consoles, de Nintendo a Xbox, però la meua preferida és la PS5. El que més m'enganxa és una bona història, i si a més té uns gràfics bonics, millor."
         },
         {
           title: "Cinema & Anime",
-          desc: "Apreciació del llenguatge audiovisual contemporani i sèries clàssiques d'animació japonesa."
+          desc: "Em quede amb l'èpica i la ciència-ficció, com El senyor dels anells o Matrix. En anime gaudisc tant de clàssics com Dragon Ball Z com de les sèries més actuals."
         },
         {
           title: "Lectura",
-          desc: "Interès constant per novel·les de ciència-ficció, literatura tècnica, còmic independent i manga."
+          desc: "Llig quan em queda temps, sobretot fantasia i ciència-ficció. També còmics de superherois de Marvel i DC, i una mica de manga."
         }
       ],
 
@@ -330,7 +331,8 @@
         {
           desc: "Portal personal amb suport per a temes dinàmics, microinteraccions reactives i accessibilitat integrada.",
           link: "Veure codi",
-          aria: "Veure codi del projecte La meua web personal"
+          aria: "Veure codi del projecte La meua web personal",
+          caseLink: "Cas d'estudi"
         },
         {
           desc: "Aplicació orientada a organitzar col·leccions de llibres i mangues mitjançant estructures de dades ordenades i persistència lògica.",
@@ -724,6 +726,8 @@
         aLink.textContent = cardData.link;
         if (cardData.aria) aLink.setAttribute("aria-label", cardData.aria);
       }
+      const caseLink = card.querySelector(".project-link--case");
+      if (caseLink && cardData.caseLink) caseLink.textContent = cardData.caseLink;
     });
 
     // Sección: Contacto y Footer

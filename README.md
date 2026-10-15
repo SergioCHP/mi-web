@@ -4,6 +4,7 @@ Web personal y portfolio interactivo de **Sergio Chorques**, estudiante de 1º d
 Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supabase** como backend.
 
 🔗 **Web publicada:** https://sergiochp.github.io/mi-web/
+📄 **Caso de estudio y vídeo demo:** https://sergiochp.github.io/mi-web/caso-estudio.html
 
 ---
 
@@ -18,6 +19,7 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 | `cine.html` | Carrusel 3D de películas + explorador de cine (API de **TMDB**) |
 | `anime.html` | Vitrina con tarjeta giratoria y citas + explorador de anime (API GraphQL de **AniList**, con tráiler) |
 | `libros.html` | «Grimorio 3D»: libro que se abre y pasa páginas con sonido generado con Web Audio (GSAP + St.PageFlip) |
+| `caso-estudio.html` | Caso de estudio: objetivos, proceso, arquitectura, problemas y soluciones, demo en vídeo con subtítulos y aprendizajes |
 | `admin.html` | Panel privado con login (Supabase Auth) para leer, marcar y borrar los mensajes de contacto |
 
 **En todas las páginas:**
@@ -52,28 +54,21 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 
 ```
 mi-web/
-├── index.html · juegos.html · cine.html · anime.html · libros.html
+├── index.html              Portada
+├── caso-estudio.html       Caso de estudio del proyecto (con vídeo demo)
+├── juegos.html · cine.html · anime.html · libros.html
 ├── minijuego.html · matrix_pills.html · admin.html
-├── css/
-│   ├── style.css         Estilos base y tema oscuro (variables de diseño)
-│   ├── theme-light.css   Tema claro (contrastes revisados según WCAG)
-│   ├── pages.css         Común a las páginas secundarias: menú, cabecera, cursores, buscadores
-│   ├── carousel.css      Carrusel 3D (juegos y cine)
-│   ├── anime.css · libros.css · minijuego.css · matrix.css   Estilos propios de cada página
-│   ├── farolillo.css     Mascota-chatbot
-│   └── mobile.css        Ajustes para móvil (360–860 px); se carga siempre la última
-├── js/
-│   ├── theme.js          Tema claro/oscuro y acento (todas las páginas)
-│   ├── particles.js      Fondo de partículas (juegos, cine y anime)
-│   ├── carousel3d.js     Carrusel 3D con tarjetas que se voltean (juegos y cine)
-│   ├── script.js         Portada: idioma, GitHub, formulario, tiempo, buscador RAWG
-│   ├── nav-i18n.js       Traducción del menú en las páginas secundarias
-│   ├── mobile.js         Menú hamburguesa y mejoras táctiles
-│   └── farolillo.js      Módulo ES de la mascota-chatbot
-├── data/respuestas.json  «Cerebro» de Farolillo (intenciones y respuestas ES/VA)
-├── images/               Imágenes en WebP
-├── assets/               Sprites y fondo del minijuego
-└── supabase/rls.sql      Políticas de seguridad de la base de datos
+├── css/                    style.css (base y variables), theme-light.css, pages.css,
+│                           mobile.css y una hoja por página
+├── js/                     script.js (portada), componentes compartidos
+│   │                       (theme, nav-i18n, particles, carousel3d, a11y, mobile),
+│   │                       farolillo.js (módulo ES del chatbot) y caso.js
+│   └── jrpg/               Minijuego en módulos ES: core, data, battle, render, ui
+├── data/respuestas.json    «Cerebro» de Farolillo (intenciones y respuestas ES/VA)
+├── images/                 Imágenes en WebP
+├── assets/                 Sprites del minijuego y vídeo demo (MP4 + subtítulos VTT)
+├── tools/                  Scripts de apoyo del minijuego (simulación en Node, sprites)
+└── supabase/rls.sql        Políticas de seguridad de la base de datos
 ```
 
 **Componentes reutilizables:** el tema, las partículas y el carrusel 3D se escribieron una sola vez y se cargan en cada página que los necesita (antes estaban copiados en varias). Las páginas no tienen bloques `<style>` ni atributos `style=""`: todo el CSS está en `css/`.

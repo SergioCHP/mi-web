@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es" data-accent="pink" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07070a" />
+  <title>Caso de estudio: Mi web personal | Sergio Chorques</title>
+  <meta name="description" content="Cómo construí mi portfolio con HTML, CSS y JavaScript sin frameworks: objetivos, proceso, arquitectura, problemas reales, demo en vídeo y lo que aprendí." />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Caso de estudio: Mi web personal | Sergio Chorques" />
+  <meta property="og:description" content="Proceso, decisiones técnicas y aprendizajes de mi portfolio en HTML, CSS y JavaScript vanilla." />
+  <meta property="og:url" content="https://sergiochp.github.io/mi-web/caso-estudio.html" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23ff2e97' font-family='Arial'>SC</text></svg>" />
+
+  <!-- Aplica tema/acento guardados ANTES de pintar (evita el parpadeo) -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add("js"); // hay JavaScript: se activan animaciones como .reveal
+      try {
+        var t = localStorage.getItem("sergio-theme");
+        if (t !== "light" && t !== "dark") {
+          t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+        d.setAttribute("data-theme", t);
+        var a = localStorage.getItem("sergio-accent");
+        if (a === "pink" || a === "blue") d.setAttribute("data-accent", a);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/theme-light.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+  <link rel="stylesheet" href="css/caso.css" />
+  <link rel="stylesheet" href="css/mobile.css" />
+</head>
+<body>
+  <a class="skip-link" href="#contenido" data-nav="skip">Saltar al contenido principal</a>
+
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <header class="navbar-wrapper">
+    <nav class="navbar" aria-label="Navegación secundaria">
+      <a href="index.html" class="nav-logo" aria-label="Volver al inicio">SC</a>
+
+      <div class="nav-links-games">
+        <a href="index.html" data-nav="home">Inicio</a>
+        <a href="libros.html" data-nav="libros">Libros</a>
+        <a href="cine.html" data-nav="cine">Cine</a>
+        <a href="anime.html" data-nav="anime">Anime</a>
+        <a href="juegos.html" data-nav="juegos">Videojuegos</a>
+      </div>
+
+      <div class="controls">
+        <button id="langToggle" type="button" aria-label="Canviar idioma a valencià" title="Canviar a valencià" class="lang-btn">
+          <span>VA</span>
+        </button>
+
+        <button id="themeToggle" type="button" aria-pressed="false" aria-label="Cambiar tema" title="Cambiar tema" class="theme-pill-btn">
+          <span class="theme-pill-track">
+            <span class="theme-pill-thumb">
+              <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+              <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+              </svg>
+            </span>
+          </span>
+        </button>
+
+        <button id="accentToggle" type="button" aria-pressed="false" aria-label="Cambiar tono de acento" title="Cambiar color de acento">
+          <svg class="icon-accent" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="9" cy="12" r="6" fill="var(--pink)"></circle>
+            <circle cx="15" cy="12" r="6" fill="var(--blue)" fill-opacity="0.92"></circle>
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="contenido" class="case">
+    <!-- ================= CABECERA ================= -->
+    <header class="case-hero">
+      <p class="case-kicker" data-i18n="kicker">Caso de estudio</p>
+      <h1 data-i18n="title">Mi web personal</h1>
+      <p class="case-lead" data-i18n="lead">
+        Cómo construí un portfolio interactivo con HTML, CSS y JavaScript, sin frameworks:
+        qué quería conseguir, cómo lo organicé, qué problemas encontré y qué aprendí.
+      </p>
+
+      <dl class="case-meta">
+        <div>
+          <dt data-i18n="metaRoleT">Rol</dt>
+          <dd data-i18n="metaRole">Diseño y desarrollo (proyecto individual)</dd>
+        </div>
+        <div>
+          <dt data-i18n="metaDateT">Fechas</dt>
+          <dd data-i18n="metaDate">Septiembre – octubre de 2026</dd>
+        </div>
+        <div>
+          <dt data-i18n="metaStackT">Tecnologías</dt>
+          <dd>HTML5 · CSS3 · JavaScript · Supabase</dd>
+        </div>
+        <div>
+          <dt data-i18n="metaDeployT">Despliegue</dt>
+          <dd>GitHub Pages</dd>
+        </div>
+      </dl>
+
+      <div class="case-actions">
+        <a class="project-link case-btn--primary" href="index.html" data-i18n="ctaSite">Ver la web</a>
+        <a class="project-link" href="https://github.com/SergioCHP/mi-web" target="_blank" rel="noopener noreferrer" data-i18n="ctaCode">Ver código en GitHub</a>
+      </div>
+
+      <ul class="case-stats" aria-label="El proyecto en cifras" data-i18n-aria="statsAria">
+        <li><strong>9</strong> <span data-i18n="stPages">páginas</span></li>
+        <li><strong>+30</strong> <span data-i18n="stCommits">commits</span></li>
+        <li><strong>+20 000</strong> <span data-i18n="stLines">líneas de código</span></li>
+        <li><strong>5</strong> <span data-i18n="stApis">APIs externas</span></li>
+        <li><strong>2</strong> <span data-i18n="stLangs">idiomas</span></li>
+        <li><strong>0</strong> <span data-i18n="stAxe">errores de accesibilidad (axe)</span></li>
+      </ul>
+    </header>
+
+    <!-- ================= 01 RETO ================= -->
+    <section class="section reveal" aria-labelledby="reto-title">
+      <div class="section-head">
+        <h2 id="reto-title" data-i18n="retoTitle">El reto</h2>
+        <p data-i18n="retoSub">Qué necesitaba y qué me exigí antes de escribir código.</p>
+      </div>
+
+      <div class="case-cols">
+        <div class="case-prose" data-i18n="retoText">
+          <p>Necesitaba un portfolio para presentarme como estudiante de DAM. No quería un CV en HTML: quería una web que enseñara <strong>quién soy</strong> (videojuegos, cine, anime y libros) y que, a la vez, <strong>demostrara lo que sé programar</strong>.</p>
+          <p>El reto era hacerlo sin frameworks, para entender de verdad el DOM, los eventos, el CSS y las peticiones a APIs antes de apoyarme en herramientas que lo esconden.</p>
+        </div>
+
+        <article class="card spotlight-card card--static case-req">
+          <h3 data-i18n="reqTitle">Requisitos que me puse</h3>
+          <ul class="case-checks" data-i18n="reqList">
+            <li>Sin frameworks ni paso de compilación</li>
+            <li>Responsive desde 360 px</li>
+            <li>Tema claro y oscuro, y dos colores de acento</li>
+            <li>Castellano y valenciano</li>
+            <li>Accesible con teclado y lector de pantalla</li>
+            <li>Datos en directo de APIs reales</li>
+            <li>Formulario de contacto con backend seguro</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= 02 PROCESO ================= -->
+    <section class="section reveal" aria-labelledby="proceso-title">
+      <div class="section-head">
+        <h2 id="proceso-title" data-i18n="procTitle">Proceso</h2>
+        <p data-i18n="procSub">Cuatro fases, reconstruidas a partir del historial de commits.</p>
+      </div>
+
+      <ol class="case-timeline">
+        <li>
+          <p class="case-when" data-i18n="ph1When">22 – 29 sept.</p>
+          <h3 data-i18n="ph1Title">Base</h3>
+          <p data-i18n="ph1Text">Portada, formulario «¿Te llamo?», versión en valenciano, selector de color y panel de administración con Supabase. Primer prototipo del minijuego.</p>
+        </li>
+        <li>
+          <p class="case-when" data-i18n="ph2When">1 – 6 oct.</p>
+          <h3 data-i18n="ph2Title">Contenido dinámico</h3>
+          <p data-i18n="ph2Text">Página de videojuegos con carrusel 3D, certificados de Cisco, actividad de GitHub en directo y buscador de RAWG con <em>debounce</em> y caché.</p>
+        </li>
+        <li>
+          <p class="case-when" data-i18n="ph3When">8 – 12 oct.</p>
+          <h3 data-i18n="ph3Title">Páginas temáticas</h3>
+          <p data-i18n="ph3Text">Elección de Matrix, cine (TMDB), anime (AniList, con tráiler), el grimorio 3D de libros y Farolillo, la mascota-chatbot.</p>
+        </li>
+        <li>
+          <p class="case-when" data-i18n="ph4When">12 – 15 oct.</p>
+          <h3 data-i18n="ph4Title">Calidad</h3>
+          <p data-i18n="ph4Text">Políticas de seguridad RLS, escape de datos contra XSS, código de idioma válido, reorganización en carpetas, minijuego modular y accesibilidad con teclado.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ================= 03 ARQUITECTURA ================= -->
+    <section class="section reveal" aria-labelledby="arq-title">
+      <div class="section-head">
+        <h2 id="arq-title" data-i18n="arqTitle">Arquitectura</h2>
+        <p data-i18n="arqSub">Web estática: cada página carga solo lo que necesita y comparte los componentes comunes.</p>
+      </div>
+
+      <div class="case-arch">
+        <div class="case-arch__col">
+          <h3 data-i18n="arqPages">Páginas</h3>
+          <ul>
+            <li>index</li><li>juegos · minijuego</li><li>cine · anime</li><li>libros · matrix</li><li>admin</li><li data-i18n="arqCase">caso de estudio</li>
+          </ul>
+        </div>
+        <span class="case-arch__arrow" aria-hidden="true">→</span>
+        <div class="case-arch__col">
+          <h3 data-i18n="arqShared">Componentes compartidos</h3>
+          <ul>
+            <li>theme.js · nav-i18n.js</li><li>particles.js · carousel3d.js</li><li>a11y.js · mobile.js</li><li>style.css · pages.css · mobile.css</li>
+          </ul>
+        </div>
+        <span class="case-arch__arrow" aria-hidden="true">→</span>
+        <div class="case-arch__col">
+          <h3 data-i18n="arqExt">Servicios externos</h3>
+          <ul>
+            <li>Supabase (Auth + PostgreSQL)</li><li>GitHub · RAWG · TMDB</li><li>AniList (GraphQL)</li><li>Open-Meteo</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="case-note" data-i18n="arqNote">El minijuego está separado en 29 módulos ES por capas (lógica, datos, render e interfaz): la lógica del combate no toca el DOM, así que se puede simular en Node sin navegador.</p>
+    </section>
+
+    <!-- ================= 04 RETOS ================= -->
+    <section class="section reveal" aria-labelledby="retos-title">
+      <div class="section-head">
+        <h2 id="retos-title" data-i18n="chTitle">Problemas y soluciones</h2>
+        <p data-i18n="chSub">Los problemas que más me hicieron aprender.</p>
+      </div>
+
+      <div class="case-grid">
+        <article class="card spotlight-card card--static case-challenge">
+          <h3 data-i18n="c1Title">Guardar mensajes sin exponer los datos</h3>
+          <p data-i18n="c1Problem"><strong>Problema:</strong> en una web estática la clave de Supabase es pública. Cualquiera podría leer o borrar los mensajes del formulario.</p>
+          <p data-i18n="c1Solution"><strong>Solución:</strong> la seguridad está en la base de datos, con <abbr title="Row Level Security">RLS</abbr>. Los visitantes solo pueden insertar; solo mi cuenta puede leer, editar y borrar. El panel escapa todo lo que muestra para evitar XSS.</p>
+          <pre class="case-code"><code>create policy "anon_inserta_mensajes"
+on public.mensajes for insert to anon
+with check (coalesce(leido, false) = false);</code></pre>
+        </article>
+
+        <article class="card spotlight-card card--static case-challenge">
+          <h3 data-i18n="c2Title">Destello al cargar con tema claro</h3>
+          <p data-i18n="c2Problem"><strong>Problema:</strong> la página se pintaba en oscuro y luego cambiaba a claro: un destello molesto en cada visita.</p>
+          <p data-i18n="c2Solution"><strong>Solución:</strong> un script mínimo en el <code>&lt;head&gt;</code> aplica el tema guardado antes de pintar. Todos los colores son variables CSS, así que cambiar de tema es cambiar un atributo.</p>
+          <pre class="case-code"><code>var t = localStorage.getItem("sergio-theme");
+document.documentElement
+  .setAttribute("data-theme", t);</code></pre>
+        </article>
+
+        <article class="card spotlight-card card--static case-challenge">
+          <h3 data-i18n="c3Title">Un carrusel 3D que funcione con teclado</h3>
+          <p data-i18n="c3Problem"><strong>Problema:</strong> las tarjetas solo respondían al ratón. Con teclado o lector de pantalla no se podían usar.</p>
+          <p data-i18n="c3Solution"><strong>Solución:</strong> foco con Tab, giro con Intro o Espacio, flechas para cambiar de tarjeta, <code>aria-pressed</code> para el estado y pausa del giro automático mientras hay foco. Resultado: 0 errores en axe.</p>
+        </article>
+
+        <article class="card spotlight-card card--static case-challenge">
+          <h3 data-i18n="c4Title">Código repetido en cuatro páginas</h3>
+          <p data-i18n="c4Problem"><strong>Problema:</strong> las partículas, el tema y muchos estilos estaban copiados en cada página. Un arreglo había que hacerlo cuatro veces.</p>
+          <p data-i18n="c4Solution"><strong>Solución:</strong> reorganicé el proyecto en <code>css/</code>, <code>js/</code> y <code>data/</code> y saqué los componentes comunes a archivos compartidos.</p>
+        </article>
+
+        <article class="card spotlight-card card--static case-challenge">
+          <h3 data-i18n="c5Title">Un chatbot sin IA ni servidor</h3>
+          <p data-i18n="c5Problem"><strong>Problema:</strong> un modelo de IA cuesta dinero, añade latencia y necesita una clave que no se puede esconder en el navegador.</p>
+          <p data-i18n="c5Solution"><strong>Solución:</strong> un buscador difuso propio con distancia de Levenshtein, que entiende faltas de ortografía, y 116 intenciones en un JSON editable sin tocar código.</p>
+        </article>
+
+        <article class="card spotlight-card card--static case-challenge">
+          <h3 data-i18n="c6Title">Los límites de las APIs</h3>
+          <p data-i18n="c6Problem"><strong>Problema:</strong> la API de GitHub sin token solo permite 60 peticiones por hora, y los buscadores lanzaban una petición por cada letra.</p>
+          <p data-i18n="c6Solution"><strong>Solución:</strong> caché de una hora en <code>localStorage</code> para GitHub y, en los buscadores, espera de 500 ms antes de buscar y caché por búsqueda.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= 05 DEMO ================= -->
+    <section class="section reveal" aria-labelledby="demo-title">
+      <div class="section-head">
+        <h2 id="demo-title" data-i18n="demoTitle">Demo en vídeo</h2>
+        <p data-i18n="demoSub">Un recorrido de menos de dos minutos por la web, con subtítulos en castellano y valenciano.</p>
+      </div>
+
+      <figure class="case-video">
+        <video controls preload="none" playsinline width="1280" height="720" poster="images/demo-poster.webp" aria-describedby="demoTranscriptTitle">
+          <source src="assets/video/demo.mp4" type="video/mp4" />
+          <track kind="captions" src="assets/video/demo-es.vtt" srclang="es" label="Castellano" default />
+          <track kind="captions" src="assets/video/demo-va.vtt" srclang="ca" label="Valencià" />
+          <a href="assets/video/demo.mp4" data-i18n="demoFallback">Descargar el vídeo</a>
+        </video>
+        <figcaption>
+          <details class="case-transcript">
+            <summary id="demoTranscriptTitle" data-i18n="demoTranscriptT">Ver lo que aparece en el vídeo</summary>
+            <ol data-i18n="demoTranscript">
+              <li>Portada con el hero rotativo y la presentación.</li>
+              <li>Cambio a tema claro, color azul y valenciano.</li>
+              <li>Proyectos filtrables y visor de certificados.</li>
+              <li>Farolillo, la mascota-chatbot, respondiendo preguntas.</li>
+              <li>Carrusel 3D de videojuegos manejado con el teclado.</li>
+              <li>Elección de Matrix y página de anime con la tarjeta giratoria.</li>
+              <li>El grimorio 3D de libros pasando páginas.</li>
+              <li>Combate del minijuego JRPG.</li>
+              <li>Versión móvil de la portada y de este caso de estudio.</li>
+            </ol>
+          </details>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ================= 06 RESULTADO ================= -->
+    <section class="section reveal" aria-labelledby="res-title">
+      <div class="section-head">
+        <h2 id="res-title" data-i18n="resTitle">Resultado y aprendizajes</h2>
+        <p data-i18n="resSub">Lo que funciona, lo que aprendí y lo que haría diferente.</p>
+      </div>
+
+      <div class="case-grid case-grid--3">
+        <article class="card spotlight-card card--static">
+          <h3 data-i18n="resOkT">Resultado</h3>
+          <ul class="case-checks" data-i18n="resOk">
+            <li>Web publicada en GitHub Pages</li>
+            <li>9 páginas en castellano y valenciano</li>
+            <li>Funciona en móvil, tablet y escritorio</li>
+            <li>0 errores de axe (WCAG 2.1 AA) en las páginas públicas</li>
+            <li>Formulario de contacto protegido con RLS</li>
+          </ul>
+        </article>
+
+        <article class="card spotlight-card card--static">
+          <h3 data-i18n="resLearnT">Qué aprendí</h3>
+          <ul class="case-list" data-i18n="resLearn">
+            <li>La seguridad está en el servidor, no en esconder claves.</li>
+            <li>La accesibilidad cuesta menos si se piensa desde el principio.</li>
+            <li>Commits pequeños con mensajes claros me ahorraron tiempo al buscar errores.</li>
+            <li>Una buena estructura de carpetas hace que el proyecto crezca sin romperse.</li>
+          </ul>
+        </article>
+
+        <article class="card spotlight-card card--static">
+          <h3 data-i18n="resNextT">Qué haría diferente y próximos pasos</h3>
+          <ul class="case-list" data-i18n="resNext">
+            <li>Organizar las carpetas desde el primer día, no al final.</li>
+            <li>Llevar las claves de RAWG y TMDB a una Edge Function de Supabase.</li>
+            <li>Enviar un correo de confirmación al usar el formulario.</li>
+            <li>Añadir pruebas automáticas.</li>
+          </ul>
+        </article>
+      </div>
+
+      <p class="case-back">
+        <a class="project-link" href="index.html#proyectos" data-i18n="backProjects">← Volver a proyectos</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="section" aria-labelledby="contacto-title">
+    <div class="footer-inner">
+      <div class="section-head">
+        <h2 id="contacto-title" data-i18n="contactTitle">Contacto</h2>
+        <p data-i18n="contactDesc">¿Interesado en hablar sobre desarrollo de software, proyectos o colaborar? Escríbeme.</p>
+      </div>
+
+      <address class="contact-address" data-i18n="contactAddress">
+        Abierto a consultas académicas, proyectos compartidos y conexiones profesionales.
+      </address>
+
+      <ul class="contact-links">
+        <li><a href="mailto:serchoper@alu.edu.gva.es" data-i18n="contactSend">Enviar Correo</a></li>
+        <li><a href="https://github.com/SergioCHP" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/tu-perfil" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+      </ul>
+
+      <p class="copy">
+        © 2026 Sergio Chorques · <span data-i18n="copyWeb">Web personal.</span> ·
+        <a href="index.html" class="copy__link" data-nav="home">Inicio</a>
+        <a href="admin.html" class="admin-link" aria-label="Acceso al panel de administración" title="Admin">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/caso.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/nav-i18n.js"></script>
+  <script src="js/mobile.js"></script>
+</body>
+</html>
