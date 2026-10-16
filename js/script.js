@@ -1124,7 +1124,7 @@
 
     setSubmitState(true, isVa() ? "Enviant…" : "Enviando…");
 
-    // Preparamos los datos para la base de datos
+    // Datos que se envían (los nombres coinciden con las columnas de la tabla)
     const payload = {
       nombre: formData.get("Nombre"),
       email: formData.get("Email"),
@@ -1133,35 +1133,75 @@
       mensaje: formData.get("Mensaje")
     };
 
-    try {
+    const headers = {
+      "Content-Type": "application/json",
+      "apikey": SUPABASE_ANON_KEY,
+      "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+    };
+    const textoBoton = () => (isVa() ? "Enviar sol·licitud" : "Enviar solicitud");
+
+    /* 1) Edge Function «contacto»: guarda el mensaje, me avisa por correo
+          y envía la respuesta automática (supabase/functions/contacto).
+       2) Plan B: si la función aún no está desplegada (404) o no responde,
+          se guarda directamente en la tabla como antes, sin correo. */
+    const enviarPorFuncion = async () => {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/contacto`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ ...payload, idioma: isVa() ? "va" : "es" })
+      });
+      if (res.status === 404) throw new Error("sin-funcion");
+      const datos = await res.json().catch(() => ({}));
+      return { ok: res.ok, status: res.status, correo: Boolean(datos.correo) };
+    };
+
+    const enviarDirecto = async () => {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/mensajes`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-          "Prefer": "return=minimal"
-        },
+        headers: { ...headers, "Prefer": "return=minimal" },
         body: JSON.stringify(payload)
       });
+      return { ok: res.ok, status: res.status, correo: false };
+    };
 
-      if (res.ok) {
-        form.hidden = true;
-        successEl.hidden = false;
-        setTimeout(() => {
-          closeModal();
-          form.reset();
-          form.hidden = false;
-          successEl.hidden = true;
-          setSubmitState(false, isVa() ? "Enviar sol·licitud" : "Enviar solicitud");
-        }, 2600);
-      } else {
-        setStatus(isVa() ? "No s'ha pogut enviar." : "No se pudo enviar.", true);
-        setSubmitState(false, isVa() ? "Enviar sol·licitud" : "Enviar solicitud");
+    let resultado;
+    try {
+      try {
+        resultado = await enviarPorFuncion();
+      } catch {
+        resultado = await enviarDirecto();
       }
     } catch {
       setStatus(isVa() ? "Error de connexió." : "Error de conexión.", true);
-      setSubmitState(false, isVa() ? "Enviar sol·licitud" : "Enviar solicitud");
+      setSubmitState(false, textoBoton());
+      return;
+    }
+
+    if (resultado.ok) {
+      // Si ha salido el correo de confirmación, se avisa en el mensaje de éxito
+      const extra = successEl.querySelector(".modal__success-mail");
+      if (extra) {
+        extra.hidden = !resultado.correo;
+        extra.textContent = isVa()
+          ? "T'he enviat un correu de confirmació."
+          : "Te he enviado un correo de confirmación.";
+      }
+      form.hidden = true;
+      successEl.hidden = false;
+      setTimeout(() => {
+        closeModal();
+        form.reset();
+        form.hidden = false;
+        successEl.hidden = true;
+        setSubmitState(false, textoBoton());
+      }, resultado.correo ? 3600 : 2600);
+    } else {
+      const mensajes = {
+        400: isVa() ? "Revisa les dades del formulari." : "Revisa los datos del formulario.",
+        429: isVa() ? "Has enviat massa sol·licituds. Torna-ho a provar d'ací una estona." : "Has enviado demasiadas solicitudes. Inténtalo de nuevo en un rato."
+      };
+      setStatus(mensajes[resultado.status] || (isVa() ? "No s'ha pogut enviar." : "No se pudo enviar."), true);
+      setSubmitState(false, textoBoton());
     }
   });
 })();

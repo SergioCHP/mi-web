@@ -633,17 +633,17 @@
 
             <div class="field">
               <label for="cf-name">Nombre</label>
-              <input id="cf-name" name="Nombre" type="text" required autocomplete="name" placeholder="Tu nombre">
+              <input id="cf-name" name="Nombre" type="text" required maxlength="100" autocomplete="name" placeholder="Tu nombre">
             </div>
 
             <div class="field-row">
               <div class="field">
                 <label for="cf-email">Email</label>
-                <input id="cf-email" name="Email" type="email" required autocomplete="email" placeholder="tucorreo@dominio.com">
+                <input id="cf-email" name="Email" type="email" required maxlength="254" autocomplete="email" placeholder="tucorreo@dominio.com">
               </div>
               <div class="field">
                 <label for="cf-phone">Teléfono</label>
-                <input id="cf-phone" name="Teléfono" type="tel" required autocomplete="tel" inputmode="tel" placeholder="+34 600 000 000">
+                <input id="cf-phone" name="Teléfono" type="tel" required maxlength="30" autocomplete="tel" inputmode="tel" placeholder="+34 600 000 000">
               </div>
             </div>
 
@@ -660,7 +660,7 @@
 
             <div class="field">
               <label for="cf-msg">¿Sobre qué? <span class="opt">(opcional)</span></label>
-              <textarea id="cf-msg" name="Mensaje" rows="3" placeholder="Proyecto, práctica, colaboración…"></textarea>
+              <textarea id="cf-msg" name="Mensaje" rows="3" maxlength="2000" placeholder="Proyecto, práctica, colaboración…"></textarea>
             </div>
 
             <input type="hidden" name="_subject" value="Nueva llamada solicitada desde la web">
@@ -675,6 +675,7 @@
               <path d="M20 6 9 17l-5-5"/>
             </svg>
             <p><strong>¡Solicitud enviada!</strong><br>Te llamaré muy pronto.</p>
+            <p class="modal__success-mail" hidden></p>
           </div>
         </div>
       </div>

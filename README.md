@@ -30,7 +30,7 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 
 **Extras en la portada:**
 - **Farolillo**, una mascota-chatbot con física, partículas y un motor de respuestas propio. Entiende faltas de ortografía y sinónimos.
-- Formulario **«¿Te llamo?»** que guarda las solicitudes en Supabase.
+- Formulario **«¿Te llamo?»** que guarda las solicitudes en Supabase, me avisa por correo y envía una **respuesta automática** al visitante en su idioma (Edge Function `contacto`).
 - Widget del tiempo de Enguera (API de **Open-Meteo**).
 
 ---
@@ -41,7 +41,8 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
   - HTML5 semántico.
   - CSS3 con variables, `color-mix()`, grid y media queries.
   - JavaScript ES6+ con módulos (`farolillo.js`).
-- **Backend:** Supabase (PostgreSQL + Auth + Row Level Security).
+- **Backend:** Supabase (PostgreSQL + Auth + Row Level Security + Edge Functions en Deno/TypeScript).
+- **Correo:** Gmail por SMTP (puerto 465) desde la Edge Function, con la contraseña guardada en los *Secrets* de Supabase.
 - **APIs externas:** GitHub REST, RAWG, TMDB, AniList (GraphQL), Open-Meteo.
 - **Librerías**, solo en `libros.html` y con versiones fijadas:
   - GSAP 3.12;
@@ -68,7 +69,9 @@ mi-web/
 ├── images/                 Imágenes en WebP
 ├── assets/                 Sprites del minijuego y vídeo demo (MP4 + subtítulos VTT)
 ├── tools/                  Scripts de apoyo del minijuego (simulación en Node, sprites)
-└── supabase/rls.sql        Políticas de seguridad de la base de datos
+└── supabase/
+    ├── rls.sql             Políticas de seguridad de la base de datos
+    └── functions/contacto/ Edge Function del formulario (index.ts) y sus pruebas (index.test.ts)
 ```
 
 **Componentes reutilizables:** el tema, las partículas y el carrusel 3D se escribieron una sola vez y se cargan en cada página que los necesita (antes estaban copiados en varias). Las páginas no tienen bloques `<style>` ni atributos `style=""`: todo el CSS está en `css/`.
@@ -106,6 +109,18 @@ mi-web/
 3. Ejecuta `supabase/rls.sql`, cambiando antes `TU_EMAIL_ADMIN` por tu correo.
 4. En **Authentication → Users**, crea tu usuario administrador y desactiva el registro público.
 5. Sustituye `SUPABASE_URL` y `SUPABASE_ANON_KEY` en `js/script.js` y en `admin.html`.
+6. (Opcional) Despliega la Edge Function de correo siguiendo [`docs/CONTACTO_CORREO.md`](docs/CONTACTO_CORREO.md). Sin ella, el formulario sigue guardando los mensajes, pero no envía correos.
+
+### Pruebas automáticas
+
+La Edge Function tiene 15 pruebas (validación, CORS, antispam, límite de envíos y fallos de correo) que no envían correos reales. Con [Deno](https://deno.com) instalado:
+
+```bash
+# Linux / macOS
+CONTACTO_TEST=1 deno test --allow-env --allow-read --allow-net --allow-sys supabase/functions/contacto
+# Windows (PowerShell)
+$env:CONTACTO_TEST=1; deno test --allow-env --allow-read --allow-net --allow-sys supabase/functions/contacto
+```
 
 ---
 
@@ -124,6 +139,11 @@ Una web estática no puede guardar secretos, así que la clave `anon` de Supabas
 Además:
 - El panel `admin.html` **escapa todo** lo que muestra, para evitar XSS: los mensajes los escriben desconocidos.
 - El formulario lleva un campo *honeypot* antispam.
+
+**Correo de aviso y respuesta automática.** El formulario llama a la Edge Function `contacto`, que valida los datos, limita los envíos (3 por email y 20 en total por hora), guarda el mensaje y envía dos correos: un aviso para mí (al pulsar «Responder» contesto al visitante) y una confirmación para el visitante.
+- La contraseña de Gmail vive en los *Secrets* de Supabase, nunca en el código ni en GitHub.
+- La respuesta automática **no copia el mensaje** del visitante: así nadie puede usar el formulario para mandar texto a otra persona.
+- Si la función no está disponible, el formulario guarda el mensaje directamente en la tabla (plan B), sin correo.
 
 ### 3. Farolillo: un chatbot sin IA ni servidor
 En lugar de conectar un modelo de lenguaje (coste, latencia y una clave que no se puede esconder en el frontend), Farolillo usa un **motor de búsqueda difusa** propio:
@@ -158,7 +178,8 @@ Todo el contenido está en `data/respuestas.json`, editable sin tocar código. L
 ## Seguridad: notas
 
 - Las claves de RAWG y TMDB están en el cliente porque la web es estática. Son claves gratuitas, solo de lectura y con límite de uso.
-- Mejora prevista: llevarlas a una *Edge Function* de Supabase que haga de proxy.
+- Mejora prevista: llevarlas a una *Edge Function* de Supabase que haga de proxy, como ya hace el formulario de contacto con la contraseña del correo.
+- La contraseña del correo es una **contraseña de aplicación** de Gmail: se puede revocar en cualquier momento sin cambiar la contraseña de la cuenta.
 
 ---
 

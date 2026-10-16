@@ -118,7 +118,8 @@
       "<li>9 pàgines en castellà i valencià</li>" +
       "<li>Funciona en mòbil, tauleta i escriptori</li>" +
       "<li>0 errors d'axe (WCAG 2.1 AA) en les pàgines públiques</li>" +
-      "<li>Formulari de contacte protegit amb RLS</li>",
+      "<li>Formulari de contacte protegit amb RLS</li>" +
+      "<li>Avís per correu i resposta automàtica amb una Edge Function, amb 15 proves automàtiques</li>",
     resLearnT: "Què he aprés",
     resLearn:
       "<li>La seguretat està en el servidor, no en amagar claus.</li>" +
@@ -129,8 +130,8 @@
     resNext:
       "<li>Organitzar les carpetes des del primer dia, no al final.</li>" +
       "<li>Portar les claus de RAWG i TMDB a una Edge Function de Supabase.</li>" +
-      "<li>Enviar un correu de confirmació en usar el formulari.</li>" +
-      "<li>Afegir proves automàtiques.</li>",
+      "<li>Usar un domini propi per a enviar els correus.</li>" +
+      "<li>Ampliar les proves automàtiques a la resta de la web.</li>",
     backProjects: "← Tornar a projectes",
 
     contactTitle: "Contacte",
