@@ -118,7 +118,7 @@
       "<li>9 pàgines en castellà i valencià</li>" +
       "<li>Funciona en mòbil, tauleta i escriptori</li>" +
       "<li>0 errors d'axe (WCAG 2.1 AA) en les pàgines públiques</li>" +
-      "<li>Lighthouse: 100 en accessibilitat i SEO en totes les pàgines</li>" +
+      "<li>PageSpeed: 90 en mòbil i 100 en ordinador; 100 en accessibilitat, bones pràctiques i SEO</li>" +
       "<li>Formulari de contacte protegit amb RLS</li>" +
       "<li>Avís per correu i resposta automàtica amb una Edge Function, amb 15 proves automàtiques</li>",
     resLearnT: "Què he aprés",
