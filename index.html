@@ -47,6 +47,11 @@
         } catch (e) {}
       })();
     </script>
+    <!-- Fuentes de la primera pantalla: se piden ya, sin esperar al CSS (evita saltos al cargar) -->
+    <link rel="preload" href="assets/fonts/poppins-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/chakra-petch-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="css/fonts.css" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/theme-light.css" />
     <link rel="stylesheet" href="css/farolillo.css" />
@@ -134,10 +139,13 @@
       <div class="hero-bg-photo" aria-hidden="true">
         <img
           id="heroBgImg"
-          src="images/new hero.webp"
+          src="images/hero-1.webp"
           alt=""
           class="hero-bg-img"
+          width="3168"
+          height="1344"
           loading="eager"
+          fetchpriority="high"
           decoding="async"
         />
         <div class="hero-bg-overlay"></div>
@@ -700,7 +708,13 @@
       <script src="js/mobile.js"></script>
       <script type="module">
         import { initFarolillo } from './js/farolillo.js';
-        initFarolillo();
+        // Farolillo no es imprescindible para ver la página: se crea cuando el
+        // navegador queda libre tras la carga (mejora el tiempo de bloqueo).
+        const iniciar = () => initFarolillo();
+        const cuandoLibre = () =>
+          "requestIdleCallback" in window ? requestIdleCallback(iniciar, { timeout: 2500 }) : setTimeout(iniciar, 800);
+        if (document.readyState === "complete") cuandoLibre();
+        else window.addEventListener("load", cuandoLibre, { once: true });
       </script>
 
   </body>

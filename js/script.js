@@ -1694,14 +1694,14 @@ searchChips.forEach((chip) => {
   if (!heroImg || !nextBtn) return;
 
   const heroImages = [
-    "images/new hero.webp",
-    "images/new hero 1.webp",
-    "images/new hero 2.webp",
-    "images/new hero 3.webp",
-    "images/new hero 4.webp",
-    "images/new hero 5.webp",
-    "images/new hero 6.webp",
-    "images/new hero 7.webp"
+    "images/hero-1.webp",
+    "images/hero-2.webp",
+    "images/hero-3.webp",
+    "images/hero-4.webp",
+    "images/hero-5.webp",
+    "images/hero-6.webp",
+    "images/hero-7.webp",
+    "images/hero-8.webp"
   ];
 
   let currentIndex = 0;

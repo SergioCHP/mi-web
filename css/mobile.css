@@ -155,9 +155,11 @@ body::after {
     display: inline-grid;
   }
 
-  /* Panel desplegable: solo opacity + transform (sin reflow → sin saltos) */
-  .navbar-wrapper.has-nav-toggle .nav-links,
-  .navbar-wrapper.has-nav-toggle .nav-links-games {
+  /* Panel desplegable: solo opacity + transform (sin reflow → sin saltos).
+     Se activa con la clase .js que pone el <head> ANTES de pintar: así los
+     enlaces nunca aparecen en la píldora para luego esconderse (evita CLS). */
+  .js .navbar-wrapper .nav-links,
+  .js .navbar-wrapper .nav-links-games {
     position: absolute;
     top: calc(100% + 0.6rem);
     left: 1rem;
@@ -190,8 +192,8 @@ body::after {
     transition-delay: 0s;
   }
 
-  .navbar-wrapper.has-nav-toggle .nav-links a,
-  .navbar-wrapper.has-nav-toggle .nav-links-games a {
+  .js .navbar-wrapper .nav-links a,
+  .js .navbar-wrapper .nav-links-games a {
     display: flex;
     align-items: center;
     min-height: 48px;
@@ -200,9 +202,17 @@ body::after {
     font-size: 1rem;
   }
 
+  /* Hueco del botón ☰ mientras mobile.js aún no lo ha creado (evita CLS) */
+  .js .navbar-wrapper:not(.has-nav-toggle) .navbar::after {
+    content: "";
+    flex: none;
+    width: 40px;
+    height: 40px;
+  }
+
   /* Sin JS: los enlaces de páginas secundarias se desplazan en horizontal
      en lugar de reventar la píldora */
-  .navbar-wrapper:not(.has-nav-toggle) .nav-links-games {
+  html:not(.js) .navbar-wrapper .nav-links-games {
     max-width: 42vw;
     overflow-x: auto;
     scrollbar-width: none;

@@ -27,6 +27,9 @@
   let isHovered = false;
   // Con "reducir movimiento" el carrusel no gira solo
   const autoSpeed = REDUCED ? 0 : 0.12;
+  // El giro automático espera a que la página termine de cargar: así la
+  // primera portada se pinta quieta y antes (mejor LCP en móvil)
+  let autoSpinOn = false;
 
   function calculateRadius() {
     const isMobile = window.innerWidth <= 768;
@@ -45,8 +48,8 @@
   }
 
   function renderCarousel() {
-    if (!isHovered) {
-      targetAngle -= autoSpeed; 
+    if (!isHovered && autoSpinOn) {
+      targetAngle -= autoSpeed;
     }
   
     currentAngle += (targetAngle - currentAngle) * 0.08;
@@ -188,4 +191,8 @@
   window.addEventListener('resize', updateCarouselPositions);
   updateCarouselPositions();
   requestAnimationFrame(renderCarousel);
+
+  const startSpin = () => setTimeout(() => { autoSpinOn = true; }, 1200);
+  if (document.readyState === 'complete') startSpin();
+  else window.addEventListener('load', startSpin, { once: true });
 })();

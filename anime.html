@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#07070a" />
   <title>Mis Animes Favoritos | Sergio Chorques</title>
+  <meta name="description" content="Vitrina interactiva con mis animes favoritos, sus citas más míticas y un explorador con datos de AniList. Portfolio de Sergio Chorques." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Mis Animes Favoritos | Sergio Chorques" />
+  <meta property="og:description" content="Vitrina interactiva con mis animes favoritos, sus citas más míticas y un explorador con datos de AniList. Portfolio de Sergio Chorques." />
+  <meta property="og:url" content="https://sergiochp.github.io/mi-web/anime.html" />
 
   <!-- Favicon SVG -->
   <link
@@ -29,6 +34,11 @@
       } catch (e) {}
     })();
   </script>
+  <!-- Fuentes de la primera pantalla: se piden ya, sin esperar al CSS (evita saltos al cargar) -->
+  <link rel="preload" href="assets/fonts/chakra-petch-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/chakra-petch-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/theme-light.css" />
   <link rel="stylesheet" href="css/pages.css" />
@@ -481,7 +491,9 @@
       thumb.type = "button";
       thumb.className = `dock-item ${index === 0 ? "is-selected" : ""}`;
       thumb.setAttribute("aria-pressed", String(index === 0));
-      thumb.innerHTML = `<img src="${item.img}" alt="${item.es.title}" loading="lazy" />`;
+      // Miniatura de 160 px (images/thumbs/): la portada grande solo se baja al elegirla
+      const thumbSrc = item.thumb || item.img.replace("images/", "images/thumbs/");
+      thumb.innerHTML = `<img src="${thumbSrc}" alt="${item.es.title}" width="160" height="230" loading="lazy" decoding="async" />`;
       thumb.addEventListener("click", () => selectAnime(index));
       dockContainer.appendChild(thumb);
     });

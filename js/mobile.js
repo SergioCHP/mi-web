@@ -141,7 +141,9 @@
     if (!box) return;
 
     const update = () => {
-      const src = img.getAttribute("src");
+      // img.src es la URL absoluta: una ruta relativa dentro de var() se
+      // resolvería desde css/mobile.css (css/images/…) y daría 404
+      const src = img.getAttribute("src") ? img.src : "";
       if (src) box.style.setProperty("--poster-img", "url(" + JSON.stringify(src) + ")");
     };
 

@@ -29,6 +29,11 @@
       } catch (e) {}
     })();
   </script>
+  <!-- Fuentes de la primera pantalla: se piden ya, sin esperar al CSS (evita saltos al cargar) -->
+  <link rel="preload" href="assets/fonts/chakra-petch-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/chakra-petch-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/theme-light.css" />
   <link rel="stylesheet" href="css/pages.css" />
@@ -317,6 +322,7 @@ document.documentElement
             <li>9 páginas en castellano y valenciano</li>
             <li>Funciona en móvil, tablet y escritorio</li>
             <li>0 errores de axe (WCAG 2.1 AA) en las páginas públicas</li>
+            <li>Lighthouse: 100 en accesibilidad y SEO en todas las páginas</li>
             <li>Formulario de contacto protegido con RLS</li>
             <li>Aviso por correo y respuesta automática con una Edge Function, con 15 pruebas automáticas</li>
           </ul>

@@ -416,6 +416,15 @@
   .showcase-front {
     grid-template-columns: 1fr;
   }
+  /* Año siempre en su propia línea: si cabía o no dependía de la fuente
+     y al cargarla saltaba todo el texto hacia arriba (CLS) */
+  .showcase-meta-header {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .showcase-year {
+    flex-basis: 100%;
+  }
   .showcase-poster {
     height: 240px;
     border-right: none;

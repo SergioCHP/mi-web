@@ -463,6 +463,12 @@ html[data-theme="light"] .jrpg-container {
     transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
+/* Tema oscuro: el acento (rosa o azul) es claro, así que el texto va oscuro
+   (blanco sobre #ff2e97 solo daba 3,4:1; ahora supera el 4,5:1 de WCAG) */
+html:not([data-theme="light"]) .btn-start {
+    color: #0b0b10;
+}
+
 .btn-start:hover:not(:disabled),
 .btn-start:focus-visible {
     outline: none;

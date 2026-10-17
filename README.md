@@ -66,8 +66,8 @@ mi-web/
 │   │                       farolillo.js (módulo ES del chatbot) y caso.js
 │   └── jrpg/               Minijuego en módulos ES: core, data, battle, render, ui
 ├── data/respuestas.json    «Cerebro» de Farolillo (intenciones y respuestas ES/VA)
-├── images/                 Imágenes en WebP
-├── assets/                 Sprites del minijuego y vídeo demo (MP4 + subtítulos VTT)
+├── images/                 Imágenes en WebP (hero-1…8, portadas, thumbs/ para miniaturas)
+├── assets/                 Sprites del minijuego, vídeo demo (MP4 + VTT) y fuentes (fonts/)
 ├── tools/                  Scripts de apoyo del minijuego (simulación en Node, sprites)
 └── supabase/
     ├── rls.sql             Políticas de seguridad de la base de datos
@@ -159,10 +159,39 @@ Todo el contenido está en `data/respuestas.json`, editable sin tocar código. L
 - El idioma se guarda en `localStorage` y las páginas reaccionan al cambio del atributo `lang` con `MutationObserver`.
 
 ### 5. Rendimiento y límites de las APIs
-- **Imágenes:** todas en WebP y con `loading="lazy"` fuera de la primera pantalla.
+- **Imágenes:** todas en WebP, con `loading="lazy"` fuera de la primera pantalla y redimensionadas al tamaño al que se ven:
+  - portadas del carrusel a 480 px de ancho;
+  - miniaturas de 160 px para el selector de anime (`images/thumbs/`);
+  - decoraciones de esquina a 360 px.
+
+  En total, de unos 9,4 MB a 2 MB. La imagen principal de la portada lleva `fetchpriority="high"` y tamaño declarado.
+- **Tipografías alojadas en la web** (`css/fonts.css` + `assets/fonts/`): antes llegaban de Google Fonts con un `@import` que bloqueaba el pintado (HTML → CSS → CSS de Google → fuentes) y enviaba la IP del visitante a Google. Las de la primera pantalla se piden con `preload` para que el texto no salte al cargar.
+- **Sin saltos de diseño (CLS):**
+  - el menú móvil se oculta con CSS antes de pintar, sin esperar a JavaScript;
+  - los textos que dependían del ancho de la fuente tienen un diseño fijo.
+- **Trabajo diferido:** Farolillo se crea cuando el navegador queda libre. Las partículas y el giro del carrusel empiezan tras la carga y en móvil hay menos partículas.
 - **Animaciones:** se pausan con la pestaña oculta y respetan `prefers-reduced-motion`.
 - **GitHub:** la respuesta se guarda en caché una hora, porque su API sin token permite solo 60 peticiones por hora.
 - **Buscadores:** los resultados se cachean por búsqueda y el campo espera 500 ms antes de buscar (*debounce*).
+
+---
+
+## Calidad medida (Lighthouse)
+
+Medido con Lighthouse 12 en local (perfil móvil simulado, rendimiento móvil / escritorio), antes y después de las mejoras de rendimiento:
+
+| Página | Rendimiento antes | Rendimiento después | Accesibilidad | Buenas prácticas | SEO |
+|---|---|---|---|---|---|
+| Portada | 63 / 98 | 83–87 / 99 | 100 | 96* | 100 |
+| Caso de estudio | 76 / 99 | 97 / 100 | 100 | 100 | 100 |
+| Videojuegos | 54 / 95 | 86 / 99 | 100 | 100 | 100 (antes 91) |
+| Cine | 57 / 92 | 84 / 99 | 100 | 100 | 100 (antes 91) |
+| Anime | 68 / 82 | 94 / 100 | 100 | 100 | 100 (antes 91) |
+| Libros | 71 / 98 | 92 / 99 | 100 | 100 | 100 (antes 90) |
+| Matrix | 100 / 100 | 100 / 100 | 100 | 100 | 100 |
+| Minijuego | 90 / 99 | 91 / 100 | 100 | 100 | 100 |
+
+\* En local las APIs externas (GitHub, tiempo) no responden y eso deja errores en la consola; en la web publicada no ocurre.
 
 ---
 
@@ -187,7 +216,7 @@ Todo el contenido está en `data/respuestas.json`, editable sin tocar código. L
 
 - Datos: [RAWG](https://rawg.io), [TMDB](https://www.themoviedb.org) (este producto usa la API de TMDB, pero TMDB no lo respalda ni certifica), [AniList](https://anilist.co), [Open-Meteo](https://open-meteo.com), [GitHub API](https://docs.github.com/rest).
 - Librerías: [GSAP](https://gsap.com), [St.PageFlip](https://github.com/Nodlik/StPageFlip), [Supabase JS](https://supabase.com/docs/reference/javascript).
-- Tipografías: Chakra Petch, Inter, Poppins, Cinzel y Playfair Display (Google Fonts).
+- Tipografías: Chakra Petch, Inter, Poppins, Cinzel, Playfair Display y Courier Prime (SIL Open Font License), alojadas en la web a partir de [Fontsource](https://fontsource.org).
 
 ---
 

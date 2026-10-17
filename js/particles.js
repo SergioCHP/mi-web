@@ -6,6 +6,7 @@
    - Se pausa con la pestaña oculta (no gasta batería).
    - Respeta prefers-reduced-motion (dibuja un fotograma fijo).
    - Lee el color de acento solo cuando cambia, no en cada fotograma.
+   - Menos partículas en móvil y la animación empieza tras la carga.
    ========================================================= */
 (function () {
   "use strict";
@@ -16,7 +17,9 @@
 
   const root = document.documentElement;
   const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const COUNT = 130;
+  // Densidad según el tamaño de pantalla: 130 en escritorio, ~40 en móvil
+  const MAX = 130;
+  const count = () => Math.max(30, Math.min(MAX, Math.round((window.innerWidth * window.innerHeight) / 9000)));
 
   let width = 0;
   let height = 0;
@@ -31,7 +34,7 @@
   function init() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
-    particles = Array.from({ length: COUNT }, () => ({
+    particles = Array.from({ length: count() }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
       r: Math.random() * 1.6 + 0.6,
@@ -95,5 +98,8 @@
 
   readColor();
   init();
-  start();
+  // La animación arranca cuando la página ya ha cargado: el fondo no compite
+  // con las portadas y el texto por el procesador (mejor LCP en móvil)
+  if (document.readyState === "complete") start();
+  else window.addEventListener("load", start, { once: true });
 })();

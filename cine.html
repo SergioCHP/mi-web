@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#07070a" />
   <title>Mis Películas Favoritas | Sergio Chorques</title>
+  <meta name="description" content="Carrusel 3D con las películas que más me han marcado y explorador de cine con datos de TMDB. Portfolio de Sergio Chorques, estudiante de 1º DAM." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Mis Películas Favoritas | Sergio Chorques" />
+  <meta property="og:description" content="Carrusel 3D con las películas que más me han marcado y explorador de cine con datos de TMDB. Portfolio de Sergio Chorques, estudiante de 1º DAM." />
+  <meta property="og:url" content="https://sergiochp.github.io/mi-web/cine.html" />
 
   <!-- Favicon SVG -->
   <link
@@ -29,6 +34,11 @@
       } catch (e) {}
     })();
   </script>
+  <!-- Fuentes de la primera pantalla: se piden ya, sin esperar al CSS (evita saltos al cargar) -->
+  <link rel="preload" href="assets/fonts/chakra-petch-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/chakra-petch-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/theme-light.css" />
   <link rel="stylesheet" href="css/pages.css" />
