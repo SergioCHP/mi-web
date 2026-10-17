@@ -277,11 +277,12 @@ body::after {
     align-items: flex-end;
   }
 
+  /* En móvil llega hero-N-movil.webp (recorte vertical ya centrado en mí) */
   .hero-bg-img {
     left: 0;
     right: 0;
     width: 100%;
-    object-position: 68% center;
+    object-position: 50% 20%;
   }
 
   /* Flecha arriba a la derecha, fuera del bloque de texto */

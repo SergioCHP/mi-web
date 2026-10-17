@@ -137,17 +137,21 @@
     <section class="hero hero--full" id="inicio" aria-label="Presentación">
       <!-- Fondo con la nueva foto panorámica -->
       <div class="hero-bg-photo" aria-hidden="true">
-        <img
-          id="heroBgImg"
-          src="images/hero-1.webp"
-          alt=""
-          class="hero-bg-img"
-          width="3168"
-          height="1344"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        />
+        <picture>
+          <!-- Móvil: recorte vertical centrado (pesa la mitad y se me ve mejor) -->
+          <source id="heroBgSource" media="(max-width: 768px)" srcset="images/hero-1-movil.webp" width="1008" height="1344" />
+          <img
+            id="heroBgImg"
+            src="images/hero-1.webp"
+            alt=""
+            class="hero-bg-img"
+            width="3168"
+            height="1344"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
         <div class="hero-bg-overlay"></div>
         <div class="hero-grid"></div>
       </div>

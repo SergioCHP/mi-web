@@ -1688,63 +1688,67 @@ searchChips.forEach((chip) => {
   const heroImg =
     document.getElementById("heroBgImg") ||
     document.querySelector(".hero-bg-img");
+  const heroSource = document.getElementById("heroBgSource"); // <source> de móvil en el <picture>
   const nextBtn =
     document.getElementById("heroNextBtn") ||
     document.querySelector(".hero-arrow-btn");
   if (!heroImg || !nextBtn) return;
 
-  const heroImages = [
-    "images/hero-1.webp",
-    "images/hero-2.webp",
-    "images/hero-3.webp",
-    "images/hero-4.webp",
-    "images/hero-5.webp",
-    "images/hero-6.webp",
-    "images/hero-7.webp",
-    "images/hero-8.webp"
-  ];
+  /* Fotos hero-1 … hero-8. En móvil se usa un recorte vertical centrado en mí
+     (hero-N-movil.webp, la mitad de peso) y se saltan la 3 y la 8, porque en
+     pantalla estrecha casi no se me ve. */
+  const TOTAL = 8;
+  const SOLO_ESCRITORIO = [3, 8];
+  const MOVIL = window.matchMedia("(max-width: 768px)"); // = media del <source>
 
-  let currentIndex = 0;
-  const AUTOPLAY_TIME = 7000;
-  let autoPlayTimer = null;
+  const disponibles = () => {
+    const todas = Array.from({ length: TOTAL }, (_, i) => i + 1);
+    return MOVIL.matches ? todas.filter((n) => !SOLO_ESCRITORIO.includes(n)) : todas;
+  };
+  const rutaEscritorio = (n) => `images/hero-${n}.webp`;
+  const rutaMovil = (n) => (SOLO_ESCRITORIO.includes(n) ? rutaEscritorio(n) : `images/hero-${n}-movil.webp`);
 
-  // Restaurar imagen guardada si existe en localStorage
+  let actual = 1;
+
+  function pintar(n) {
+    actual = n;
+    if (heroSource) heroSource.srcset = rutaMovil(n);
+    heroImg.src = rutaEscritorio(n);
+  }
+
+  // Restaurar la última foto vista (si sigue disponible en este tamaño de pantalla)
   try {
-    const saved = localStorage.getItem("sergio-hero-idx");
-    if (saved !== null) {
-      const idx = parseInt(saved, 10);
-      if (!isNaN(idx) && idx >= 0 && idx < heroImages.length) {
-        currentIndex = idx;
-        heroImg.src = heroImages[currentIndex];
-      }
-    }
+    const guardada = parseInt(localStorage.getItem("sergio-hero"), 10);
+    if (disponibles().includes(guardada) && guardada !== 1) pintar(guardada);
   } catch (e) {}
 
-  // Función principal para cambiar de imagen
+  // Si se estrecha la ventana mostrando la 3 o la 8, se pasa a la siguiente válida
+  const alCambiarTamano = () => {
+    if (!disponibles().includes(actual)) showNextImage();
+  };
+  if (MOVIL.addEventListener) MOVIL.addEventListener("change", alCambiarTamano);
+
+  let autoPlayTimer = null;
+  const AUTOPLAY_TIME = 7000;
+
   function showNextImage() {
-    currentIndex = (currentIndex + 1) % heroImages.length;
-    const nextPath = heroImages[currentIndex];
+    const lista = disponibles();
+    const pos = lista.indexOf(actual);
+    // Si la actual no está en la lista (p. ej. la 3 en móvil), se sigue por la siguiente mayor
+    const siguiente = pos === -1
+      ? (lista.find((n) => n > actual) ?? lista[0])
+      : lista[(pos + 1) % lista.length];
 
     heroImg.classList.add("is-switching");
-
-    setTimeout(() => {
-      heroImg.src = nextPath;
-    }, 150);
-
-    heroImg.onload = () => {
-      heroImg.classList.remove("is-switching");
-    };
-
-    heroImg.onerror = () => {
-      heroImg.classList.remove("is-switching");
-    };
+    setTimeout(() => pintar(siguiente), 150);
+    heroImg.onload = () => heroImg.classList.remove("is-switching");
+    heroImg.onerror = () => heroImg.classList.remove("is-switching");
 
     try {
-      localStorage.setItem("sergio-hero-idx", currentIndex);
+      localStorage.setItem("sergio-hero", String(siguiente));
     } catch (e) {}
   }
 
-  // Iniciar el carrusel automático
   function startAutoPlay() {
     stopAutoPlay();
     autoPlayTimer = setInterval(showNextImage, AUTOPLAY_TIME);
