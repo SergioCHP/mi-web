@@ -68,9 +68,11 @@ mi-web/
 │   └── jrpg/               Minijuego en módulos ES: core, data, battle, render, ui
 ├── data/respuestas.json    «Cerebro» de Farolillo (intenciones y respuestas ES/VA)
 ├── images/                 Imágenes en WebP (hero-1…8 y sus recortes -movil, portadas, thumbs/)
+│                           y logo.svg (logo SC propio)
 ├── assets/                 Sprites del minijuego, vídeo demo (MP4 + VTT) y fuentes (fonts/)
 ├── tools/                  Scripts de apoyo del minijuego (simulación en Node, sprites)
-├── docs/                   Guías (correo de contacto, sprites del minijuego)
+├── docs/                   Guías (correo de contacto, sprites del minijuego) y PROMPTS.md
+│                           (órdenes clave a la IA)
 ├── CHANGELOG.md            Historial de versiones
 └── supabase/
     ├── rls.sql             Políticas de seguridad de la base de datos
@@ -176,6 +178,65 @@ Todo el contenido está en `data/respuestas.json`, editable sin tocar código. L
 - **Animaciones:** se pausan con la pestaña oculta y respetan `prefers-reduced-motion`.
 - **GitHub:** la respuesta se guarda en caché una hora, porque su API sin token permite solo 60 peticiones por hora.
 - **Buscadores:** los resultados se cachean por búsqueda y el campo espera 500 ms antes de buscar (*debounce*).
+
+---
+
+## Decisiones de diseño
+
+La idea de partida: que la web se parezca a mí. Me gustan los videojuegos, el cine, el anime y los libros, así que la marca es **oscura, con neón y con un punto de videojuego**. Cada página temática tiene su propia ambientación, pero sin perder esa base.
+
+### 1. Paleta: fondo oscuro y dos neones
+- **Fondo casi negro** (`#07080b`) y superficies un poco más claras (`#0e1017`, `#141720`): el neón destaca sin cansar la vista.
+- **Dos acentos:** rosa `#ff2e97` y azul `#38bdf8`. El visitante elige cuál manda con un botón, y el otro queda como secundario (`--accent` y `--accent-alt`).
+- **Modo oscuro por defecto**, porque es donde el neón tiene sentido.
+- **Modo claro cálido:** fondo crema (`#ece6dc`), no blanco puro, para que no deslumbre y combine con el tono «papel» de la sección de libros.
+- **Contraste:** el neón no se lee sobre crema (rosa 2,8:1, azul 1,7:1). En modo claro uso versiones «tinta» del mismo tono, rosa `#c2185b` y azul `#0b6aa2`, que superan 4,5:1 (WCAG AA).
+- Todo son **variables CSS**: cambiar de tema o de acento es cambiar un atributo en `<html>`.
+
+### 2. Tipografía con un papel para cada fuente
+| Fuente | Dónde | Por qué |
+|---|---|---|
+| **Chakra Petch** | Títulos, menú y botones | Sus esquinas cortadas recuerdan a la interfaz de un videojuego. |
+| **Inter** | Texto | Muy legible en tamaños pequeños y en pantallas de móvil. |
+| **Poppins 900** | Solo mi nombre en la portada | Un único golpe de impacto; usarla en más sitios le quitaría fuerza. |
+| **Cinzel + Playfair Display** | Grimorio de libros | Inscripción antigua para los títulos y libro clásico para el texto. |
+| **Courier Prime** | Elección de Matrix | Letra de terminal, como la película. |
+
+Todas están alojadas en la propia web: no dependen de Google Fonts y no hacen saltar el texto al cargar.
+
+### 3. Logo SC
+El logo es un monograma propio en SVG (`images/logo.svg`):
+- Las letras son trazos rectos con **las esquinas cortadas, igual que Chakra Petch**: el logo y los títulos hablan el mismo idioma.
+- Debajo lleva un **eco desplazado en el acento secundario**, como un neón doble.
+- El mismo dibujo sirve de favicon y de logo del menú. En el menú usa `currentColor`, así que cambia solo con el tema y el acento.
+
+### 4. Relieve en lugar de bordes
+- Las tarjetas usan **sombras neumórficas** (`--neu-flat`, `--neu-inset`): se separan del fondo por relieve, sin líneas que recarguen la página.
+- Los radios (`--radius` 20 px, `--radius-sm` 10 px) y el ancho máximo (`--maxw` 1100 px) son variables comunes, así que todas las páginas tienen el mismo ritmo.
+
+### 5. Microinteracciones con intención
+Cada animación tiene una función, no está solo de adorno:
+- **Inclinación y foco de luz** en las tarjetas al mover el ratón: invitan a explorar.
+- **Aparición suave** de cada sección al llegar a ella con el scroll.
+- **Objetos que asoman** en las tarjetas de «Me gusta» (el mando, el ticket de cine, el libro y la postal de «Desconexión»): enseñan cada afición sin añadir texto.
+- **El logo parpadea** como un neón al pasar el ratón o llegar con el teclado.
+- **Cursor de mano en neón** sobre lo que se puede pulsar. En pantallas táctiles se quita.
+- **Farolillo** cambia de brillo según el tema.
+
+Todas se desactivan con `prefers-reduced-motion` y se pausan si la pestaña está oculta.
+
+### 6. Misma marca, distinta ambientación
+Las páginas comparten menú, logo, tema, acentos y pie de página. Dentro, cada una tiene su escenario:
+- **Videojuegos y cine:** carruseles 3D, como elegir un juego o una película en una estantería.
+- **Anime:** una vitrina giratoria con tráiler.
+- **Libros:** un grimorio dorado que pasa páginas, con partículas de polvo.
+- **Matrix:** lluvia digital verde y la elección de pastilla.
+- **Minijuego:** combate por turnos inspirado en los JRPG clásicos.
+
+### 7. Pensada también para el móvil
+- **Menú desplegable propio** y zonas táctiles de 44 px como mínimo.
+- **Recortes verticales del hero** (`hero-N-movil.webp`) para que siempre se me vea en pantalla. Las dos fotos en las que salgo muy a un lado no se usan en móvil.
+- **Animaciones de ratón desactivadas en pantallas táctiles**, porque ahí no aportan.
 
 ---
 
