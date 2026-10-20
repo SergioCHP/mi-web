@@ -216,12 +216,58 @@ html[data-theme="light"] .navbar {
   background: rgba(251, 248, 241, 0.9);
 }
 
+/* Logo SC (SVG propio, mismo dibujo que images/logo.svg).
+   Trazos rectos con esquinas cortadas, como la Chakra Petch de los títulos.
+   El eco usa el acento secundario: al pasar el ratón se separa un poco,
+   como un neón que parpadea, y vuelve a su sitio. */
 .nav-logo {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
   color: var(--accent);
-  letter-spacing: 0.05em;
+  line-height: 0;
+}
+
+.logo-sc {
+  width: 2.6rem;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke-width: 4.5;
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+}
+
+.logo-sc__trazo {
+  stroke: currentColor;
+}
+
+.logo-sc__eco {
+  stroke: var(--accent-alt);
+  opacity: 0.75;
+  transform: translate(1.6px, 1.6px);
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.nav-logo:hover .logo-sc__eco,
+.nav-logo:focus-visible .logo-sc__eco {
+  transform: translate(3.2px, 2.4px);
+  opacity: 1;
+  animation: logo-parpadeo 0.45s steps(2, jump-none) 1;
+}
+
+@keyframes logo-parpadeo {
+  0%   { transform: translate(-2px, 1px); }
+  50%  { transform: translate(4px, 3px); }
+  100% { transform: translate(3.2px, 2.4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-sc__eco,
+  .nav-logo:hover .logo-sc__eco,
+  .nav-logo:focus-visible .logo-sc__eco {
+    animation: none;
+    transition: none;
+  }
 }
 
 .nav-links {
