@@ -14,6 +14,32 @@ Las versiones anteriores a la 1.0.0 se han reconstruido a partir del historial d
 
 _Nada todavía._
 
+## [1.2.0] — 2026-10-20
+
+Privacidad y protección de datos (RGPD) del formulario «¿Te llamo?». Hecho en la rama `privacidad-rgpd` y fusionado con un Pull Request.
+
+### Añadido
+- **Política de privacidad** (`privacidad.html`, en castellano y valenciano): responsable, datos que recoge el formulario, finalidad y base legal, plazo de conservación, encargados (Supabase y Gmail), derechos y reclamación ante la AEPD, almacenamiento local sin cookies y servicios externos.
+- **Información básica de protección de datos** en el formulario «¿Te llamo?», justo encima de «Enviar solicitud», con enlace a la política completa.
+- Enlace «Privacidad» en el pie de todas las páginas con pie.
+- `supabase/retencion.sql`: tarea diaria con `pg_cron` que borra las solicitudes con más de 6 meses.
+  - Activada en el proyecto de Supabase el 20-10-2026 (tarea `borrar-mensajes-antiguos`, a las 03:00 UTC).
+  - Al activarla no se borró nada: la solicitud más antigua es del 28-09-2026.
+- `js/page-i18n.js`: cambio de idioma compartido por las páginas de texto (caso de estudio y privacidad).
+
+### Cambiado
+- `js/caso.js` usa `page-i18n.js` en lugar de su propia copia de la lógica de idioma.
+- Caso de estudio: 10 páginas en las cifras, el resultado y el esquema de arquitectura.
+- README: versión actual v1.2.0.
+
+### Corregido
+- README: el último commit de la 1.1.0 (`5f83c4d`) lo sustituyó por una copia antigua. Se recuperan desde el historial:
+  - la sección «Decisiones de diseño»;
+  - la línea de versión actual;
+  - la estructura con `docs/`, `CHANGELOG.md` y el logo;
+  - las notas de imágenes por tamaño de pantalla;
+  - la tabla de PageSpeed de la web publicada y la cifra de rendimiento de la portada (92 / 99).
+
 ## [1.1.0] — 2026-10-20
 
 Mejoras a partir de la revisión con la rúbrica. Hechas en la rama `mejoras-rubrica` y fusionadas con un Pull Request.
@@ -143,6 +169,7 @@ Primera versión estable: la web completa, segura, accesible, documentada y opti
 - Selector de color de acento y modo claro/oscuro.
 - Primer prototipo del minijuego JRPG.
 
-[Sin publicar]: https://github.com/SergioCHP/mi-web/compare/v1.1.0...HEAD
+[Sin publicar]: https://github.com/SergioCHP/mi-web/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/SergioCHP/mi-web/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/SergioCHP/mi-web/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/SergioCHP/mi-web/releases/tag/v1.0.0

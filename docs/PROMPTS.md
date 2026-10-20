@@ -177,3 +177,37 @@ Todo se hizo en la rama `mejoras-rubrica`, con un commit por paso, y se fusionó
 - Documentar como issue un fallo real que ya había arreglado (el formulario descolocado).
 - Revisar cada paso en Live Server antes de hacer el commit.
 - Qué imágenes borrar después de comprobar que no se usaban.
+
+## 20 oct · Política de privacidad (versión 1.2.0)
+
+**Órdenes (textual):**
+> Que me aconsejas para mejorar mi-web, que se puede añadir o cambiar para mejorar.
+
+La IA revisó el código y propuso una lista de mejoras por prioridad. Elegí empezar por la primera y se la copié de vuelta:
+
+> Aviso de privacidad en «¿Te llamo?». El formulario pide nombre, email y teléfono, y no hay ninguna cláusula informativa ni página de privacidad. […]
+
+> Ejecuta `supabase/retencion.sql` en el SQL Editor de Supabase antes de publicar. […]
+
+> Use Supabase for this.
+
+> Ahora hay que documentar esto y hacer el commit y push, como quedará después de la versión 1.1.0.
+
+Al documentarlo, la IA vio que al README le faltaba la sección «Decisiones de diseño» que dice el CHANGELOG de la 1.1.0. Me preguntó si quería recuperarla y respondí:
+
+> Sí.
+
+**Qué salió:**
+- `privacidad.html` en castellano y valenciano, con un resumen arriba y 9 apartados.
+- Un resumen de protección de datos encima del botón «Enviar solicitud», con enlace a la política.
+- El enlace «Privacidad» en el pie de todas las páginas.
+- `supabase/retencion.sql`: borrado automático de las solicitudes con más de 6 meses. La IA lo activó en Supabase con el conector, después de comprobar que no borraba nada (la solicitud más antigua era del 28 de septiembre).
+- `js/page-i18n.js`: la lógica de idioma del caso de estudio pasa a un archivo compartido, para no copiarla en la página nueva.
+- El README recuperado desde el historial de git: el último commit de la 1.1.0 (`5f83c4d`) lo había sustituido por una copia antigua sin «Decisiones de diseño», sin la línea de versión y con cifras viejas.
+
+**Qué decidí yo:**
+- Empezar por la privacidad, de toda la lista de mejoras.
+- Que la tarea de borrado se activara directamente en mi proyecto de Supabase.
+- Publicarlo como versión 1.2.0 con el mismo flujo que la 1.1.0: rama, Pull Request y etiqueta.
+
+**Resultado:** rama `privacidad-rgpd`, Pull Request y etiqueta `v1.2.0`.

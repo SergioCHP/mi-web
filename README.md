@@ -5,7 +5,7 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 
 🔗 **Web publicada:** https://sergiochp.github.io/mi-web/
 📄 **Caso de estudio y vídeo demo:** https://sergiochp.github.io/mi-web/caso-estudio.html
-🏷️ **Versión actual:** [v1.1.0](https://github.com/SergioCHP/mi-web/releases/tag/v1.1.0) · cambios en [CHANGELOG.md](CHANGELOG.md)
+🏷️ **Versión actual:** [v1.2.0](https://github.com/SergioCHP/mi-web/releases/tag/v1.2.0) · cambios en [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -21,6 +21,7 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 | `anime.html` | Vitrina con tarjeta giratoria y citas + explorador de anime (API GraphQL de **AniList**, con tráiler) |
 | `libros.html` | «Grimorio 3D»: libro que se abre y pasa páginas con sonido generado con Web Audio (GSAP + St.PageFlip) |
 | `caso-estudio.html` | Caso de estudio: objetivos, proceso, arquitectura, problemas y soluciones, demo en vídeo con subtítulos y aprendizajes |
+| `privacidad.html` | Política de privacidad: qué datos recoge el formulario, para qué, cuánto tiempo se guardan y cómo ejercer los derechos (RGPD) |
 | `admin.html` | Panel privado con login (Supabase Auth) para leer, marcar y borrar los mensajes de contacto |
 
 **En todas las páginas:**
@@ -58,13 +59,14 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 mi-web/
 ├── index.html              Portada
 ├── caso-estudio.html       Caso de estudio del proyecto (con vídeo demo)
+├── privacidad.html         Política de privacidad (RGPD)
 ├── juegos.html · cine.html · anime.html · libros.html
 ├── minijuego.html · matrix_pills.html · admin.html
 ├── css/                    style.css (base y variables), theme-light.css, pages.css,
 │                           mobile.css y una hoja por página
 ├── js/                     script.js (portada), componentes compartidos
-│   │                       (theme, nav-i18n, particles, carousel3d, a11y, mobile),
-│   │                       farolillo.js (módulo ES del chatbot) y caso.js
+│   │                       (theme, nav-i18n, page-i18n, particles, carousel3d, a11y, mobile),
+│   │                       farolillo.js (módulo ES del chatbot), caso.js y privacidad.js
 │   └── jrpg/               Minijuego en módulos ES: core, data, battle, render, ui
 ├── data/respuestas.json    «Cerebro» de Farolillo (intenciones y respuestas ES/VA)
 ├── images/                 Imágenes en WebP (hero-1…8 y sus recortes -movil, portadas, thumbs/)
@@ -76,6 +78,7 @@ mi-web/
 ├── CHANGELOG.md            Historial de versiones
 └── supabase/
     ├── rls.sql             Políticas de seguridad de la base de datos
+    ├── retencion.sql       Borrado automático de solicitudes con más de 6 meses (pg_cron)
     └── functions/contacto/ Edge Function del formulario (index.ts) y sus pruebas (index.test.ts)
 ```
 
@@ -111,7 +114,7 @@ mi-web/
      fecha timestamptz default now()
    );
    ```
-3. Ejecuta `supabase/rls.sql`, cambiando antes `TU_EMAIL_ADMIN` por tu correo.
+3. Ejecuta `supabase/rls.sql`, cambiando antes `TU_EMAIL_ADMIN` por tu correo, y después `supabase/retencion.sql` (borra cada noche las solicitudes con más de 6 meses, como dice la política de privacidad).
 4. En **Authentication → Users**, crea tu usuario administrador y desactiva el registro público.
 5. Sustituye `SUPABASE_URL` y `SUPABASE_ANON_KEY` en `js/script.js` y en `admin.html`.
 6. (Opcional) Despliega la Edge Function de correo siguiendo [`docs/CONTACTO_CORREO.md`](docs/CONTACTO_CORREO.md). Sin ella, el formulario sigue guardando los mensajes, pero no envía correos.
@@ -279,6 +282,20 @@ Las páginas comparten menú, logo, tema, acentos y pie de página. Dentro, cada
 - Contraste del tema claro revisado con ratios WCAG (documentados en `theme-light.css`).
 - Zonas táctiles de al menos 44 px en móvil.
 - El grimorio se maneja con teclado (← → y Esc).
+
+---
+
+## Privacidad (RGPD)
+
+El formulario «¿Te llamo?» recoge datos personales (nombre, email y teléfono), así que la web informa por capas, como recomienda la AEPD:
+- **Primera capa:** encima del botón «Enviar solicitud» hay un resumen corto (quién, para qué, base legal, a quién, cuánto tiempo y cómo ejercer los derechos) con enlace a la política completa. El botón lo anuncia con `aria-describedby`.
+- **Segunda capa:** `privacidad.html`, en castellano y valenciano, enlazada en el pie de todas las páginas.
+- **Plazo de conservación real:** `supabase/retencion.sql` programa con `pg_cron` el borrado diario de las solicitudes con más de 6 meses. En el proyecto publicado ya está activa (tarea `borrar-mensajes-antiguos`, cada día a las 03:00 UTC). Para comprobar que se ejecuta:
+  ```sql
+  select status, start_time from cron.job_run_details order by start_time desc limit 5;
+  ```
+- **Lo que no se automatiza:** los correos de aviso que llegan a Gmail se borran a mano con el mismo plazo.
+- **Sin cookies ni analítica:** solo `localStorage` para las preferencias del visitante (tema, acento, idioma…).
 
 ---
 
