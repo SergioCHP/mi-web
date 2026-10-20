@@ -175,7 +175,7 @@ Todo el contenido está en `data/respuestas.json`, editable sin tocar código. L
   - carátulas de los carruseles en 360 px para móvil y 480 px para pantallas densas;
   - portada de anime en 320 px para la tarjeta de escritorio;
   - las láminas del grimorio se cargan al pasar a su página (`loading="lazy"`), igual que las cartas del carrusel que no están delante;
-  - sprites y retratos del minijuego en WebP (los PNG se quedan en `assets/` como referencia para la guía de sprites).
+  - sprites y retratos del minijuego en WebP. Solo se conservan `Heroe.png` y `combat/heroe_idle.png`, que la guía de sprites usa como referencia para generar sprites nuevos.
 - **Avisos que quedan, a propósito:** en los carruseles 3D, Lighthouse mide las cartas giradas (de lado se ven estrechas) y sugiere imágenes más pequeñas. Pero cada carta pasa al frente al girar, así que su imagen tiene que valer para la posición delantera. Bajarla más se vería borrosa.
 - **Tipografías alojadas en la web** (`css/fonts.css` + `assets/fonts/`): antes llegaban de Google Fonts con un `@import` que bloqueaba el pintado (HTML → CSS → CSS de Google → fuentes) y enviaba la IP del visitante a Google. Las de la primera pantalla se piden con `preload` para que el texto no salte al cargar.
 - **Sin saltos de diseño (CLS):**
