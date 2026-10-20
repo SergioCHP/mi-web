@@ -43,7 +43,7 @@
       nav: ["Sobre mí", "Trayectoria", "Intereses", "Proyectos", "Contacto"],
       status: "Disponible para nuevos retos & proyectos",
       heroText:
-        "Estudiante de 1º DAM en el IES Simarro. Enfocado en el desarrollo de software como motor para crear herramientas prácticas, explorar tecnologías modernas y diseñar interfaces intuitivas.",
+        "Estudio 1º de DAM en el IES Simarro. Aprendo programando: cada proyecto es una excusa para probar algo nuevo y hacer que se vea y funcione bien.",
 
       // Frases del typewriter
       typePhrases: [
@@ -100,9 +100,9 @@
       sobreMiTitle: "Sobre mí",
       sobreMiSub: "Perfil personal, académico y motivación principal.",
       aboutPs: [
-        "Soy Sergio Chorques, estudiante del ciclo superior de 1º DAM en el IES Simarro.",
-        "He asumido el reto personal de adentrarme en el mundo de la programación para darle un nuevo rumbo a mis intereses y habilidades analíticas.",
-        "Me parece fascinante cómo se pueden construir universos interactivos y herramientas útiles desde cero a base de código limpio. Continúo explorando arquitectura de datos y desarrollo web para materializar proyectos funcionales."
+        "Soy Sergio Chorques y estudio 1º de DAM en el IES Simarro.",
+        "Antes hice SMR y me saqué algunos certificados de Cisco, pero lo que de verdad me gusta es programar, así que decidí dar el salto.",
+        "Lo que más me engancha es ver cómo algo que empieza en un archivo vacío acaba siendo una herramienta o un pequeño mundo con el que puedes interactuar. Esta web es mi campo de pruebas: aquí voy subiendo lo que aprendo."
       ],
 
       // Sección Trayectoria (Lo que he hecho)
@@ -228,7 +228,7 @@
       nav: ["Sobre mi", "Trajectòria", "Interessos", "Projectes", "Contacte"],
       status: "Disponible per a nous reptes & projectes",
       heroText:
-        "Estudiant de 1r DAM a l'IES Simarro. Enfocat en el desenvolupament de programari com a motor per a crear ferramentes pràctiques, explorar tecnologies modernes i dissenyar interfícies intuïtives.",
+        "Estudie 1r de DAM a l'IES Simarro. Aprenc programant: cada projecte és una excusa per a provar alguna cosa nova i fer que es veja i funcione bé.",
 
       // Frases del typewriter
       typePhrases: [
@@ -285,9 +285,9 @@
       sobreMiTitle: "Sobre mi",
       sobreMiSub: "Perfil personal, acadèmic i motivació principal.",
       aboutPs: [
-        "Sóc Sergio Chorques, estudiant del cicle superior de 1r DAM a l'IES Simarro.",
-        "He assumit el repte personal d'endinsar-me en el món de la programació per a donar un nou rumb als meus interessos i habilitats analítiques.",
-        "Em sembla fascinant com es poden construir universos interactius i ferramentes útils des de zero a base de codi net. Continue explorant arquitectura de dades i desenvolupament web per a materialitzar projectes funcionals."
+        "Sóc Sergio Chorques i estudie 1r de DAM a l'IES Simarro.",
+        "Abans vaig fer SMR i em vaig traure alguns certificats de Cisco, però el que de veritat m'agrada és programar, així que vaig decidir fer el salt.",
+        "El que més m'enganxa és veure com una cosa que comença en un arxiu buit acaba sent una ferramenta o un xicotet món amb què pots interactuar. Esta web és el meu camp de proves: ací vaig pujant el que aprenc."
       ],
 
       // Sección Trajectòria (El que he fet)
