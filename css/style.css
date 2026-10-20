@@ -1566,6 +1566,30 @@ html[data-theme="light"][data-accent="pink"] .theme-pill-track {
   height: 0;
 }
 
+/* Información básica de protección de datos, justo encima de «Enviar» */
+.modal__privacy {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.modal__privacy strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.modal__privacy a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+
 .modal__submit {
   margin-top: 0.4rem;
   padding: 0.85rem 1.2rem;

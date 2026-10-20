@@ -1,21 +1,14 @@
 /* =========================================================
-   caso.js — Idioma de la página «Caso de estudio»
-   - El castellano es el HTML original: se guarda al cargar.
-   - El valenciano está en VA, con la misma clave que data-i18n.
-   - Usa la misma preferencia que el resto de la web
-     (localStorage "sergio-lang") y cambia <html lang>, de modo
-     que theme.js y nav-i18n.js se traducen solos.
+   caso.js — Página «Caso de estudio»
+   - Textos en valenciano (VA), con la misma clave que data-i18n.
+     El cambio de idioma lo hace js/page-i18n.js (compartido).
+   - Aparición suave de las secciones (.reveal).
    ========================================================= */
 (function () {
   "use strict";
 
-  const root = document.documentElement;
-  const langToggle = document.getElementById("langToggle");
-
   const VA = {
     docTitle: "Cas d'estudi: La meua web personal | Sergio Chorques",
-    btnLabel: "ES",
-    btnTitle: "Cambiar a castellano",
 
     kicker: "Cas d'estudi",
     title: "La meua web personal",
@@ -70,6 +63,7 @@
     arqSub: "Web estàtica: cada pàgina carrega només el que necessita i comparteix els components comuns.",
     arqPages: "Pàgines",
     arqCase: "cas d'estudi",
+    arqPriv: "privacitat",
     arqShared: "Components compartits",
     arqExt: "Serveis externs",
     arqNote: "El minijoc està separat en 29 mòduls ES per capes (lògica, dades, render i interfície): la lògica del combat no toca el DOM, així que es pot simular en Node sense navegador.",
@@ -134,7 +128,7 @@
     resOkT: "Resultat",
     resOk:
       "<li>Web publicada a GitHub Pages</li>" +
-      "<li>9 pàgines en castellà i valencià</li>" +
+      "<li>10 pàgines en castellà i valencià</li>" +
       "<li>Funciona en mòbil, tauleta i escriptori</li>" +
       "<li>0 errors d'axe (WCAG 2.1 AA) en les pàgines públiques</li>" +
       "<li>PageSpeed: 90 en mòbil i 100 en ordinador; 100 en accessibilitat, bones pràctiques i SEO</li>" +
@@ -161,53 +155,6 @@
     copyWeb: "Web personal."
   };
 
-  /* ---------- El castellano es el HTML original ---------- */
-  const textNodes = Array.from(document.querySelectorAll("[data-i18n]"));
-  const ariaNodes = Array.from(document.querySelectorAll("[data-i18n-aria]"));
-  const ES = {
-    docTitle: document.title,
-    btnLabel: "VA",
-    btnTitle: "Canviar a valencià"
-  };
-  textNodes.forEach((el) => { ES[el.dataset.i18n] = el.innerHTML; });
-  ariaNodes.forEach((el) => { ES[el.dataset.i18nAria] = el.getAttribute("aria-label"); });
-
-  let current = "es";
-  try {
-    const saved = localStorage.getItem("sergio-lang");
-    if (saved === "es" || saved === "va") current = saved;
-  } catch (e) {}
-
-  function apply(lang) {
-    const t = lang === "va" ? VA : ES;
-    root.setAttribute("lang", lang === "va" ? "ca-ES-valencia" : "es");
-    document.title = t.docTitle;
-
-    textNodes.forEach((el) => {
-      const v = t[el.dataset.i18n];
-      if (v !== undefined) el.innerHTML = v;
-    });
-    ariaNodes.forEach((el) => {
-      const v = t[el.dataset.i18nAria];
-      if (v !== undefined) el.setAttribute("aria-label", v);
-    });
-
-    if (langToggle) {
-      const span = langToggle.querySelector("span");
-      if (span) span.textContent = t.btnLabel;
-      langToggle.title = t.btnTitle;
-      langToggle.setAttribute("aria-label", t.btnTitle);
-    }
-  }
-
-  if (langToggle) {
-    langToggle.addEventListener("click", () => {
-      current = current === "es" ? "va" : "es";
-      try { localStorage.setItem("sergio-lang", current); } catch (e) {}
-      apply(current);
-    });
-  }
-
   /* Aparición suave de las secciones (misma clase .reveal que la portada) */
   const reveals = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {
@@ -224,5 +171,5 @@
     reveals.forEach((el) => el.classList.add("visible"));
   }
 
-  apply(current);
+  if (window.pageI18n) window.pageI18n(VA);
 })();

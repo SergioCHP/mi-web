@@ -1,7 +1,7 @@
 (function () {
   const L = {
-    es: { home: 'Inicio', libros: 'Libros', cine: 'Cine', anime: 'Anime', juegos: 'Videojuegos', replay: 'Jugar de nuevo', skip: 'Saltar al contenido principal' },
-    va: { home: 'Inici',  libros: 'Llibres', cine: 'Cinema', anime: 'Anime', juegos: 'Videojocs',  replay: 'Jugar de nou', skip: 'Anar al contingut principal' }
+    es: { home: 'Inicio', libros: 'Libros', cine: 'Cine', anime: 'Anime', juegos: 'Videojuegos', replay: 'Jugar de nuevo', skip: 'Saltar al contenido principal', privacidad: 'Privacidad' },
+    va: { home: 'Inici',  libros: 'Llibres', cine: 'Cinema', anime: 'Anime', juegos: 'Videojocs',  replay: 'Jugar de nou', skip: 'Anar al contingut principal', privacidad: 'Privacitat' }
   };
   const root = document.documentElement;
 

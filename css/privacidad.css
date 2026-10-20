@@ -1,0 +1,128 @@
+/* =========================================================
+   privacidad.css — Página «Política de privacidad»
+   Reutiliza la estructura del caso de estudio (caso.css:
+   .case, .case-hero, .case-meta, .case-list) y las tarjetas
+   de style.css. Aquí solo va lo propio de un texto legal.
+   Orden de carga: style.css → theme-light.css → pages.css
+   → caso.css → privacidad.css → mobile.css
+   ========================================================= */
+
+.legal {
+  counter-reset: legal;
+}
+
+/* ---------- Enlaces del texto: subrayados para que se vean ---------- */
+.legal-prose a,
+.legal-summary a,
+.legal .case-meta a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere; /* el email no desborda en móvil */
+}
+
+.legal-prose a:hover,
+.legal-summary a:hover,
+.legal .case-meta a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* ---------- Resumen (primera capa) ---------- */
+.legal-summary {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  margin-bottom: 1rem;
+}
+
+.legal-summary h2 {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+}
+
+.legal-summary__list {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1.25rem 2rem;
+  margin: 0;
+}
+
+.legal-summary__list dt {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.legal-summary__list dd {
+  margin: 0.25rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+/* ---------- Apartados numerados ---------- */
+.legal-sec {
+  max-width: 72ch;
+  padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+}
+
+.legal-sec h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  font-size: clamp(1.3rem, 3vw, 1.6rem);
+  line-height: 1.25;
+}
+
+/* Mismo distintivo «01, 02…» que las secciones de la portada */
+.legal-sec h2::before {
+  counter-increment: legal;
+  content: counter(legal, decimal-leading-zero);
+  flex: none;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.legal-prose {
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.legal-prose > * {
+  margin: 0;
+}
+
+.legal-prose > * + * {
+  margin-top: 0.9rem;
+}
+
+/* Las listas de caso.css van en gris: en un texto legal se leen igual que los párrafos */
+.legal-prose .case-list {
+  color: inherit;
+  font-size: inherit;
+}
+
+.legal-prose code {
+  padding: 0.05rem 0.35rem;
+  border-radius: 6px;
+  background: var(--surface-2);
+  font-size: 0.88em;
+}
+
+/* ---------- Pie: enlace de la página actual ---------- */
+.copy__privacy[aria-current="page"] {
+  color: var(--text);
+}

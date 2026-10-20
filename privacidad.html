@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es" data-accent="pink" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07070a" />
+  <title>Política de privacidad | Sergio Chorques</title>
+  <meta name="description" content="Qué datos recoge la web de Sergio Chorques, para qué se usan, cuánto tiempo se guardan y cómo pedir que se borren." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Política de privacidad | Sergio Chorques" />
+  <meta property="og:description" content="Qué datos recojo en mi web, para qué los uso y cómo puedes pedirme que los borre." />
+  <meta property="og:url" content="https://sergiochp.github.io/mi-web/privacidad.html" />
+  <meta property="og:image" content="https://sergiochp.github.io/mi-web/images/og-portada.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Sergio Chorques, estudiante de 1º DAM" />
+  <meta property="og:locale" content="es_ES" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
+
+  <!-- Aplica tema/acento guardados ANTES de pintar (evita el parpadeo) -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add("js");
+      try {
+        var t = localStorage.getItem("sergio-theme");
+        if (t !== "light" && t !== "dark") {
+          t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+        d.setAttribute("data-theme", t);
+        var a = localStorage.getItem("sergio-accent");
+        if (a === "pink" || a === "blue") d.setAttribute("data-accent", a);
+      } catch (e) {}
+    })();
+  </script>
+  <!-- Fuentes de la primera pantalla: se piden ya, sin esperar al CSS (evita saltos al cargar) -->
+  <link rel="preload" href="assets/fonts/chakra-petch-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/chakra-petch-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/theme-light.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+  <link rel="stylesheet" href="css/caso.css" />
+  <link rel="stylesheet" href="css/privacidad.css" />
+  <link rel="stylesheet" href="css/mobile.css" />
+</head>
+<body>
+  <a class="skip-link" href="#contenido" data-nav="skip">Saltar al contenido principal</a>
+
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <header class="navbar-wrapper">
+    <nav class="navbar" aria-label="Navegación secundaria">
+      <a href="index.html" class="nav-logo" aria-label="Volver al inicio"><svg class="logo-sc" viewBox="0 0 48 32" aria-hidden="true" focusable="false"><g class="logo-sc__eco"><path d="M20 5H8L4 9v3l4 4h8l4 4v3l-4 4H4"/><path d="M44 5H31l-4 4v14l4 4h13"/></g><g class="logo-sc__trazo"><path d="M20 5H8L4 9v3l4 4h8l4 4v3l-4 4H4"/><path d="M44 5H31l-4 4v14l4 4h13"/></g></svg></a>
+
+      <div class="nav-links-games">
+        <a href="index.html" data-nav="home">Inicio</a>
+        <a href="libros.html" data-nav="libros">Libros</a>
+        <a href="cine.html" data-nav="cine">Cine</a>
+        <a href="anime.html" data-nav="anime">Anime</a>
+        <a href="juegos.html" data-nav="juegos">Videojuegos</a>
+      </div>
+
+      <div class="controls">
+        <button id="langToggle" type="button" aria-label="Canviar idioma a valencià" title="Canviar a valencià" class="lang-btn">
+          <span>VA</span>
+        </button>
+
+        <button id="themeToggle" type="button" aria-pressed="false" aria-label="Cambiar tema" title="Cambiar tema" class="theme-pill-btn">
+          <span class="theme-pill-track">
+            <span class="theme-pill-thumb">
+              <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+              <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+              </svg>
+            </span>
+          </span>
+        </button>
+
+        <button id="accentToggle" type="button" aria-pressed="false" aria-label="Cambiar tono de acento" title="Cambiar color de acento">
+          <svg class="icon-accent" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="9" cy="12" r="6" fill="var(--pink)"></circle>
+            <circle cx="15" cy="12" r="6" fill="var(--blue)" fill-opacity="0.92"></circle>
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="contenido" class="case legal">
+    <!-- ================= CABECERA ================= -->
+    <header class="case-hero">
+      <p class="case-kicker" data-i18n="kicker">Protección de datos</p>
+      <h1 data-i18n="title">Política de privacidad</h1>
+      <p class="case-lead" data-i18n="lead">
+        Qué datos recojo en esta web, para qué los uso y cómo puedes pedirme que los borre. Sin letra pequeña.
+      </p>
+
+      <dl class="case-meta">
+        <div>
+          <dt data-i18n="metaOwnerT">Responsable</dt>
+          <dd>Sergio Chorques</dd>
+        </div>
+        <div>
+          <dt data-i18n="metaContactT">Contacto</dt>
+          <dd><a href="mailto:serchoper@alu.edu.gva.es">serchoper@alu.edu.gva.es</a></dd>
+        </div>
+        <div>
+          <dt data-i18n="metaDateT">Última actualización</dt>
+          <dd><time datetime="2026-10-20" data-i18n="metaDate">20 de octubre de 2026</time></dd>
+        </div>
+      </dl>
+    </header>
+
+    <!-- ================= RESUMEN (primera capa) ================= -->
+    <section class="legal-summary card spotlight-card card--static" aria-labelledby="resumen-title">
+      <h2 id="resumen-title" data-i18n="sumTitle">En resumen</h2>
+      <dl class="legal-summary__list">
+        <div>
+          <dt data-i18n="sumOwnerT">Responsable</dt>
+          <dd>Sergio Chorques</dd>
+        </div>
+        <div>
+          <dt data-i18n="sumPurposeT">Para qué</dt>
+          <dd data-i18n="sumPurpose">Llamarte o contestarte cuando me lo pides con el formulario «¿Te llamo?».</dd>
+        </div>
+        <div>
+          <dt data-i18n="sumBasisT">Base legal</dt>
+          <dd data-i18n="sumBasis">Tu consentimiento, que das al enviar el formulario.</dd>
+        </div>
+        <div>
+          <dt data-i18n="sumRecipT">Quién más los ve</dt>
+          <dd data-i18n="sumRecip">Nadie. Supabase y Google (Gmail) solo me dan el servicio técnico.</dd>
+        </div>
+        <div>
+          <dt data-i18n="sumKeepT">Cuánto tiempo</dt>
+          <dd data-i18n="sumKeep">Hasta atender tu solicitud y, como máximo, 6 meses.</dd>
+        </div>
+        <div>
+          <dt data-i18n="sumRightsT">Tus derechos</dt>
+          <dd data-i18n="sumRights">Ver, corregir o borrar tus datos, entre otros. Escríbeme a <a href="mailto:serchoper@alu.edu.gva.es">serchoper@alu.edu.gva.es</a>.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- ================= 1 RESPONSABLE ================= -->
+    <section class="legal-sec" aria-labelledby="p1">
+      <h2 id="p1" data-i18n="s1Title">Quién es el responsable</h2>
+      <div class="legal-prose" data-i18n="s1Text">
+        <p>Esta web es un proyecto personal y educativo de <strong>Sergio Chorques</strong>, estudiante de 1º DAM en el IES Simarro. Soy yo quien decide qué se hace con tus datos y quien responde de ellos.</p>
+        <p>Para cualquier cosa sobre tus datos, escríbeme a <a href="mailto:serchoper@alu.edu.gva.es">serchoper@alu.edu.gva.es</a>.</p>
+      </div>
+    </section>
+
+    <!-- ================= 2 DATOS ================= -->
+    <section class="legal-sec" aria-labelledby="p2">
+      <h2 id="p2" data-i18n="s2Title">Qué datos recojo</h2>
+      <div class="legal-prose" data-i18n="s2Text">
+        <p>Solo los que escribes en el formulario «¿Te llamo?» de la portada:</p>
+        <ul class="case-list">
+          <li>Nombre</li>
+          <li>Email</li>
+          <li>Teléfono</li>
+          <li>Franja horaria en la que prefieres que te llame</li>
+          <li>El mensaje, si escribes uno (es opcional)</li>
+        </ul>
+        <p>También se guardan la fecha y la hora del envío. No guardo tu dirección IP junto a la solicitud. Si no rellenas el formulario, no recojo nada sobre ti.</p>
+        <p>Por favor, no pongas en el mensaje datos sensibles, como información de salud: no los necesito.</p>
+      </div>
+    </section>
+
+    <!-- ================= 3 FINALIDAD ================= -->
+    <section class="legal-sec" aria-labelledby="p3">
+      <h2 id="p3" data-i18n="s3Title">Para qué los uso y con qué base legal</h2>
+      <div class="legal-prose" data-i18n="s3Text">
+        <ul class="case-list">
+          <li><strong>Llamarte o contestarte</strong> en la franja que elijas. Base legal: tu <strong>consentimiento</strong> (art. 6.1.a del RGPD), que das al enviar el formulario. Puedes retirarlo cuando quieras; eso no afecta a lo que ya se hubiera hecho antes.</li>
+          <li><strong>Enviarte un correo de confirmación</strong> automático, que no copia tu mensaje. Misma base legal.</li>
+          <li><strong>Frenar el spam</strong>: antes de guardar tu solicitud se comprueba cuántas han llegado desde el mismo email en la última hora (máximo 3). Base legal: mi <strong>interés legítimo</strong> en proteger la web (art. 6.1.f del RGPD).</li>
+        </ul>
+        <p>No envío publicidad, no hago perfiles y no tomo decisiones automáticas sobre ti.</p>
+      </div>
+    </section>
+
+    <!-- ================= 4 CONSERVACIÓN ================= -->
+    <section class="legal-sec" aria-labelledby="p4">
+      <h2 id="p4" data-i18n="s4Title">Cuánto tiempo los guardo</h2>
+      <div class="legal-prose" data-i18n="s4Text">
+        <p>Hasta atender tu solicitud y, como máximo, <strong>6 meses</strong> desde que la envías. Pasado ese plazo, la base de datos la borra sola (lo comprueba cada noche), y yo borro también el correo de aviso que me llega.</p>
+        <p>Si me pides que borre tus datos antes, lo hago en cuanto lea tu correo.</p>
+      </div>
+    </section>
+
+    <!-- ================= 5 ENCARGADOS ================= -->
+    <section class="legal-sec" aria-labelledby="p5">
+      <h2 id="p5" data-i18n="s5Title">Quién más los trata</h2>
+      <div class="legal-prose" data-i18n="s5Text">
+        <p>No cedo tus datos a nadie, salvo que una ley me obligue. Para que el formulario funcione uso estos servicios, que solo los tratan siguiendo mis instrucciones (son «encargados del tratamiento»):</p>
+        <ul class="case-list">
+          <li><strong>Supabase</strong>: la base de datos donde se guarda la solicitud y el servidor que envía los correos.</li>
+          <li><strong>Google (Gmail)</strong>: envía el correo de confirmación y recibe mi aviso.</li>
+        </ul>
+        <p>Son empresas de Estados Unidos, así que tus datos pueden salir del Espacio Económico Europeo. Esas transferencias se hacen con las garantías que exige el RGPD, como el Marco de Privacidad de Datos UE-EE. UU. o las cláusulas contractuales tipo de la Comisión Europea.</p>
+      </div>
+    </section>
+
+    <!-- ================= 6 DERECHOS ================= -->
+    <section class="legal-sec" aria-labelledby="p6">
+      <h2 id="p6" data-i18n="s6Title">Tus derechos</h2>
+      <div class="legal-prose" data-i18n="s6Text">
+        <p>Puedes pedirme en cualquier momento:</p>
+        <ul class="case-list">
+          <li><strong>Acceso</strong>: saber qué datos tengo sobre ti.</li>
+          <li><strong>Rectificación</strong>: corregirlos.</li>
+          <li><strong>Supresión</strong>: borrarlos.</li>
+          <li><strong>Oposición</strong> y <strong>limitación</strong> del tratamiento.</li>
+          <li><strong>Portabilidad</strong>: recibirlos en un formato que puedas reutilizar.</li>
+          <li><strong>Retirar tu consentimiento</strong>.</li>
+        </ul>
+        <p>Escríbeme a <a href="mailto:serchoper@alu.edu.gva.es">serchoper@alu.edu.gva.es</a>, a ser posible desde el mismo email que usaste en el formulario, para que pueda comprobar que eres tú. Te contesto en un plazo máximo de un mes.</p>
+        <p>Si crees que no he respetado tus derechos, puedes presentar una reclamación ante la <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">Agencia Española de Protección de Datos<span class="sr-only"> (se abre en una pestaña nueva)</span></a>.</p>
+      </div>
+    </section>
+
+    <!-- ================= 7 NAVEGACIÓN ================= -->
+    <section class="legal-sec" aria-labelledby="p7">
+      <h2 id="p7" data-i18n="s7Title">Cuando navegas por la web</h2>
+      <div class="legal-prose" data-i18n="s7Text">
+        <p><strong>No uso cookies</strong>, ni analítica, ni publicidad.</p>
+        <p>Para recordar tus preferencias, la web guarda en tu propio navegador (<code>localStorage</code>) unas pocas cosas: el tema claro u oscuro, el color de acento, el idioma, la foto de portada que estás viendo, si el sonido del grimorio está activado y una copia temporal (1 hora) de mi perfil público de GitHub, para no repetir la petición. Farolillo recuerda durante la sesión si ya te ha enseñado su pista. Nada de esto me llega a mí, y puedes borrarlo desde la configuración de tu navegador.</p>
+        <p>Algunas páginas cargan contenido de otros servicios. Como en cualquier conexión a internet, esos servicios reciben tu dirección IP y la tratan según sus propias políticas:</p>
+        <ul class="case-list">
+          <li><strong>GitHub</strong>: aloja la web (GitHub Pages), y su API muestra mi actividad en la portada.</li>
+          <li><strong>Open-Meteo</strong>: el tiempo de Enguera en la portada.</li>
+          <li><strong>RAWG, TMDB y AniList</strong>: los buscadores de videojuegos, cine y anime, con sus portadas.</li>
+          <li><strong>YouTube</strong>, en modo de privacidad mejorada (<code>youtube-nocookie.com</code>): solo cuando abres un anime que tiene tráiler.</li>
+          <li><strong>cdnjs y jsDelivr</strong>: las librerías del grimorio de libros.</li>
+        </ul>
+        <p>Las tipografías están alojadas en esta misma web, así que no se piden a Google Fonts.</p>
+      </div>
+    </section>
+
+    <!-- ================= 8 MENORES ================= -->
+    <section class="legal-sec" aria-labelledby="p8">
+      <h2 id="p8" data-i18n="s8Title">Menores de 14 años</h2>
+      <div class="legal-prose" data-i18n="s8Text">
+        <p>Si tienes menos de 14 años, no uses el formulario: pide a tu madre, padre o tutor que me escriba. Si descubro que he recibido datos de un menor de 14 años sin ese permiso, los borro.</p>
+      </div>
+    </section>
+
+    <!-- ================= 9 CAMBIOS ================= -->
+    <section class="legal-sec" aria-labelledby="p9">
+      <h2 id="p9" data-i18n="s9Title">Cambios en esta política</h2>
+      <div class="legal-prose" data-i18n="s9Text">
+        <p>Si cambio algo (por ejemplo, si añado un servicio nuevo), actualizaré esta página y la fecha de arriba.</p>
+      </div>
+
+      <p class="case-back">
+        <a class="project-link" href="index.html" data-i18n="back">← Volver al inicio</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="section" aria-labelledby="contacto-title">
+    <div class="footer-inner">
+      <div class="section-head">
+        <h2 id="contacto-title" data-i18n="contactTitle">Contacto</h2>
+        <p data-i18n="contactDesc">¿Interesado en hablar sobre desarrollo de software, proyectos o colaborar? Escríbeme.</p>
+      </div>
+
+      <ul class="contact-links">
+        <li><a href="mailto:serchoper@alu.edu.gva.es" data-i18n="contactSend">Enviar Correo</a></li>
+        <li><a href="https://github.com/SergioCHP" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/Sergio-Chorques" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+      </ul>
+
+      <p class="copy">
+        © 2026 Sergio Chorques · <span data-i18n="copyWeb">Web personal.</span> ·
+        <a href="index.html" class="copy__link" data-nav="home">Inicio</a> ·
+        <a href="privacidad.html" class="copy__privacy" data-nav="privacidad" aria-current="page">Privacidad</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/page-i18n.js"></script>
+  <script src="js/privacidad.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/nav-i18n.js"></script>
+  <script src="js/mobile.js"></script>
+</body>
+</html>

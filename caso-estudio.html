@@ -127,7 +127,7 @@
       </div>
 
       <ul class="case-stats" aria-label="El proyecto en cifras" data-i18n-aria="statsAria">
-        <li><strong>9</strong> <span data-i18n="stPages">páginas</span></li>
+        <li><strong>10</strong> <span data-i18n="stPages">páginas</span></li>
         <li><strong>+50</strong> <span data-i18n="stCommits">commits</span></li>
         <li><strong>+20 000</strong> <span data-i18n="stLines">líneas de código</span></li>
         <li><strong>5</strong> <span data-i18n="stApis">APIs externas</span></li>
@@ -206,7 +206,7 @@
         <div class="case-arch__col">
           <h3 data-i18n="arqPages">Páginas</h3>
           <ul>
-            <li>index</li><li>juegos · minijuego</li><li>cine · anime</li><li>libros · matrix</li><li>admin</li><li data-i18n="arqCase">caso de estudio</li>
+            <li>index</li><li>juegos · minijuego</li><li>cine · anime</li><li>libros · matrix</li><li>admin</li><li data-i18n="arqCase">caso de estudio</li><li data-i18n="arqPriv">privacidad</li>
           </ul>
         </div>
         <span class="case-arch__arrow" aria-hidden="true">→</span>
@@ -372,7 +372,7 @@ $ node tools/refresh-rate-test.mjs
           <h3 data-i18n="resOkT">Resultado</h3>
           <ul class="case-checks" data-i18n="resOk">
             <li>Web publicada en GitHub Pages</li>
-            <li>9 páginas en castellano y valenciano</li>
+            <li>10 páginas en castellano y valenciano</li>
             <li>Funciona en móvil, tablet y escritorio</li>
             <li>0 errores de axe (WCAG 2.1 AA) en las páginas públicas</li>
             <li>PageSpeed: 90 en móvil y 100 en ordenador; 100 en accesibilidad, buenas prácticas y SEO</li>
@@ -427,7 +427,8 @@ $ node tools/refresh-rate-test.mjs
 
       <p class="copy">
         © 2026 Sergio Chorques · <span data-i18n="copyWeb">Web personal.</span> ·
-        <a href="index.html" class="copy__link" data-nav="home">Inicio</a>
+        <a href="index.html" class="copy__link" data-nav="home">Inicio</a> ·
+        <a href="privacidad.html" class="copy__privacy" data-nav="privacidad">Privacidad</a>
         <a href="admin.html" class="admin-link" aria-label="Acceso al panel de administración" title="Admin">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -438,6 +439,7 @@ $ node tools/refresh-rate-test.mjs
     </div>
   </footer>
 
+  <script src="js/page-i18n.js"></script>
   <script src="js/caso.js"></script>
   <script src="js/particles.js"></script>
   <script src="js/theme.js"></script>
