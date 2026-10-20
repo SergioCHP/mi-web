@@ -620,8 +620,9 @@
         </ul>
 
         <p class="copy">
-          © <span id="year"></span> Sergio Chorques · Web personal.
-          
+          © <span id="year"></span> Sergio Chorques · Web personal. ·
+          <a href="privacidad.html" class="copy__privacy">Privacidad</a>
+
           <!-- Enlace discreto al panel de Admin -->
           <a href="admin.html" class="admin-link" aria-label="Acceso al panel de administración" title="Admin">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -702,7 +703,13 @@
 
             <input type="hidden" name="_subject" value="Nueva llamada solicitada desde la web">
 
-            <button type="submit" class="modal__submit" id="callSubmit">Enviar solicitud</button>
+            <!-- Información básica de protección de datos (RGPD): visible ANTES de enviar.
+                 La completa está en privacidad.html. Se traduce en script.js (modalPrivacy). -->
+            <p class="modal__privacy" id="callPrivacy">
+              <strong>Tus datos, en corto:</strong> los trato yo, Sergio Chorques, solo para llamarte o contestarte, porque me lo pides al enviar el formulario. No los cedo a nadie y los borro como máximo a los 6 meses. Puedes pedir verlos, corregirlos o borrarlos en <a href="mailto:serchoper@alu.edu.gva.es">serchoper@alu.edu.gva.es</a>. <a href="privacidad.html" target="_blank" rel="noopener">Política de privacidad<span class="sr-only"> (se abre en una pestaña nueva)</span></a>.
+            </p>
+
+            <button type="submit" class="modal__submit" id="callSubmit" aria-describedby="callPrivacy">Enviar solicitud</button>
             <p class="modal__status" id="callStatus" role="status" aria-live="polite"></p>
           </form>
 

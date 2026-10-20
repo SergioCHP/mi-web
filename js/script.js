@@ -204,6 +204,9 @@
       modalMsgOpt: "(opcional)",
       modalMsgPh: "Proyecto, práctica, colaboración…",
       modalSubmit: "Enviar solicitud",
+      modalPrivacy:
+        '<strong>Tus datos, en corto:</strong> los trato yo, Sergio Chorques, solo para llamarte o contestarte, porque me lo pides al enviar el formulario. No los cedo a nadie y los borro como máximo a los 6 meses. Puedes pedir verlos, corregirlos o borrarlos en <a href="mailto:serchoper@alu.edu.gva.es">serchoper@alu.edu.gva.es</a>. <a href="privacidad.html" target="_blank" rel="noopener">Política de privacidad<span class="sr-only"> (se abre en una pestaña nueva)</span></a>.',
+      footerPrivacy: "Privacidad",
       modalSuccessTitle: "¡Solicitud enviada!",
       modalSuccessDesc: "Te llamaré muy pronto.",
 
@@ -386,6 +389,9 @@
       modalMsgOpt: "(opcional)",
       modalMsgPh: "Projecte, pràctica, col·laboració…",
       modalSubmit: "Enviar sol·licitud",
+      modalPrivacy:
+        '<strong>Les teues dades, en breu:</strong> les tracte jo, Sergio Chorques, només per a cridar-te o contestar-te, perquè m\'ho demanes en enviar el formulari. No les cedisc a ningú i les esborre com a màxim als 6 mesos. Pots demanar veure-les, corregir-les o esborrar-les en <a href="mailto:serchoper@alu.edu.gva.es">serchoper@alu.edu.gva.es</a>. <a href="privacidad.html" target="_blank" rel="noopener">Política de privacitat<span class="sr-only"> (s\'obri en una pestanya nova)</span></a>.',
+      footerPrivacy: "Privacitat",
       modalSuccessTitle: "Sol·licitud enviada!",
       modalSuccessDesc: "Et cridaré ben prompte.",
 
@@ -809,6 +815,13 @@
     if (submitBtn && !submitBtn.disabled) {
       submitBtn.textContent = t.modalSubmit;
     }
+
+    // Aviso de protección de datos (texto fijo nuestro, sin datos del usuario)
+    const privacyNote = document.getElementById("callPrivacy");
+    if (privacyNote) privacyNote.innerHTML = t.modalPrivacy;
+
+    const privacyLink = document.querySelector(".copy__privacy");
+    if (privacyLink) privacyLink.textContent = t.footerPrivacy;
 
     const successEl = document.getElementById("callSuccess");
     if (successEl) {
