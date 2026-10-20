@@ -170,6 +170,13 @@ Todo el contenido está en `data/respuestas.json`, editable sin tocar código. L
   - decoraciones de esquina a 360 px.
 
   En total, de unos 9,4 MB a 2 MB. La imagen principal de la portada lleva `fetchpriority="high"` y tamaño declarado.
+- **Cada pantalla baja la imagen que necesita (`srcset` + `sizes`):**
+  - hero de escritorio en 2240 px (la de 3168 px solo en pantallas muy grandes) y recortes 9:16 para móvil;
+  - carátulas de los carruseles en 360 px para móvil y 480 px para pantallas densas;
+  - portada de anime en 320 px para la tarjeta de escritorio;
+  - las láminas del grimorio se cargan al pasar a su página (`loading="lazy"`), igual que las cartas del carrusel que no están delante;
+  - sprites y retratos del minijuego en WebP (los PNG se quedan en `assets/` como referencia para la guía de sprites).
+- **Avisos que quedan, a propósito:** en los carruseles 3D, Lighthouse mide las cartas giradas (de lado se ven estrechas) y sugiere imágenes más pequeñas. Pero cada carta pasa al frente al girar, así que su imagen tiene que valer para la posición delantera. Bajarla más se vería borrosa.
 - **Tipografías alojadas en la web** (`css/fonts.css` + `assets/fonts/`): antes llegaban de Google Fonts con un `@import` que bloqueaba el pintado (HTML → CSS → CSS de Google → fuentes) y enviaba la IP del visitante a Google. Las de la primera pantalla se piden con `preload` para que el texto no salte al cargar.
 - **Sin saltos de diseño (CLS):**
   - el menú móvil se oculta con CSS antes de pintar, sin esperar a JavaScript;

@@ -691,7 +691,7 @@
         const imgIdx = 3 + 2 * i;
         h += paper('left', imgIdx,
           '<div class="plate-wrap"><figure class="plate"><div class="plate-frame"><div class="plate-inner">' +
-          '<img class="plate-img" src="' + esc(b.image) + '" alt="' + esc(b.title) + '" decoding="async" draggable="false">' +
+          '<img class="plate-img" src="' + esc(b.image) + '" alt="' + esc(b.title) + '" loading="lazy" decoding="async" draggable="false">' +
           '<span class="plate-fallback" aria-hidden="true">' + esc(b.title.replace(/^(L'|El |La |Un )/i, '').charAt(0).toUpperCase()) + '</span>' +
           '</div></div></figure><div class="entry-rule" aria-hidden="true"><span>✦</span></div></div>');
         h += paper('right', imgIdx + 1,

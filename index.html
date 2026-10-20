@@ -136,10 +136,12 @@
       <div class="hero-bg-photo" aria-hidden="true">
         <picture>
           <!-- Móvil: recorte vertical centrado (pesa la mitad y se me ve mejor) -->
-          <source id="heroBgSource" media="(max-width: 768px)" srcset="images/hero-1-movil.webp" width="1008" height="1344" />
+          <source id="heroBgSource" media="(max-width: 768px)" srcset="images/hero-1-movil.webp" width="756" height="1344" />
           <img
             id="heroBgImg"
             src="images/hero-1.webp"
+            srcset="images/hero-1-2240.webp 2240w, images/hero-1.webp 3168w"
+            sizes="max(115vw, 236vh)"
             alt=""
             class="hero-bg-img"
             width="3168"

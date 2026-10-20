@@ -10,7 +10,7 @@ export const UNITS = Object.freeze({
   // ───────────────────────────── Héroes ─────────────────────────────
   sergio: {
     nameKey: 'unit.sergio',
-    portrait: 'assets/Heroe.png',
+    portrait: 'assets/Heroe.webp',
     sprite: 'hero',
     pixelScale: 1.6,
     stats: { hp: 250, mp: 45, atk: 50, mag: 40, def: 12, mdef: 10, spd: 13 },
@@ -22,7 +22,7 @@ export const UNITS = Object.freeze({
   // Miembros extra para probar formaciones de 2-3 héroes (?party=3). Reutilizan el sprite tintado.
   ada: {
     nameKey: 'unit.ada',
-    portrait: 'assets/Heroe.png',
+    portrait: 'assets/Heroe.webp',
     portraitFilter: 'hue-rotate(110deg) saturate(1.3)',
     sprite: 'hero',
     tint: '#ff5fb4',
@@ -35,7 +35,7 @@ export const UNITS = Object.freeze({
   },
   linus: {
     nameKey: 'unit.linus',
-    portrait: 'assets/Heroe.png',
+    portrait: 'assets/Heroe.webp',
     portraitFilter: 'hue-rotate(200deg) saturate(1.2)',
     sprite: 'hero',
     tint: '#ffc04d',
@@ -50,7 +50,7 @@ export const UNITS = Object.freeze({
   // ──────────────────────────── Enemigos ────────────────────────────
   bugFatal: {
     nameKey: 'unit.bugFatal',
-    portrait: 'assets/Monstruo.png',
+    portrait: 'assets/Monstruo.webp',
     sprite: 'bug',
     pixelScale: 1.7,
     stats: { hp: 380, mp: 0, atk: 22, mag: 20, def: 12, mdef: 8, spd: 7 },
@@ -59,7 +59,7 @@ export const UNITS = Object.freeze({
   },
   larva: {
     nameKey: 'unit.larva',
-    portrait: 'assets/Monstruo.png',
+    portrait: 'assets/Monstruo.webp',
     sprite: 'bug',
     tint: '#6dff8e',
     pixelScale: 1.15,
