@@ -290,7 +290,7 @@ drone: { clips: { idle: { sheet: 'dron_idle', fps: 8, loop: true },
                   victory: { fallback: 'idle' }, limit: { fallback: 'attack' } } },
 
 // units.js → UNITS
-drone: { nameKey: 'unit.drone', portrait: 'assets/Monstruo.png', sprite: 'drone',
+drone: { nameKey: 'unit.drone', portrait: 'assets/Monstruo.webp', sprite: 'drone',
          pixelScale: 1.4, hover: 26,              // levita 26 unidades con balanceo
          stats: { hp: 220, mp: 0, atk: 20, mag: 26, def: 18, mdef: 6, spd: 10 },
          elements: { weak: ['thunder'], resist: [] }, ai: 'larva' },

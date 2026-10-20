@@ -5,7 +5,6 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 
 🔗 **Web publicada:** https://sergiochp.github.io/mi-web/
 📄 **Caso de estudio y vídeo demo:** https://sergiochp.github.io/mi-web/caso-estudio.html
-🏷️ **Versión actual:** [v1.0.0](https://github.com/SergioCHP/mi-web/releases/tag/v1.0.0) · cambios en [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -67,11 +66,9 @@ mi-web/
 │   │                       farolillo.js (módulo ES del chatbot) y caso.js
 │   └── jrpg/               Minijuego en módulos ES: core, data, battle, render, ui
 ├── data/respuestas.json    «Cerebro» de Farolillo (intenciones y respuestas ES/VA)
-├── images/                 Imágenes en WebP (hero-1…8 y sus recortes -movil, portadas, thumbs/)
+├── images/                 Imágenes en WebP (hero-1…8, portadas, thumbs/ para miniaturas)
 ├── assets/                 Sprites del minijuego, vídeo demo (MP4 + VTT) y fuentes (fonts/)
 ├── tools/                  Scripts de apoyo del minijuego (simulación en Node, sprites)
-├── docs/                   Guías (correo de contacto, sprites del minijuego)
-├── CHANGELOG.md            Historial de versiones
 └── supabase/
     ├── rls.sql             Políticas de seguridad de la base de datos
     └── functions/contacto/ Edge Function del formulario (index.ts) y sus pruebas (index.test.ts)
@@ -181,18 +178,11 @@ Todo el contenido está en `data/respuestas.json`, editable sin tocar código. L
 
 ## Calidad medida (Lighthouse)
 
-**En la web publicada** ([PageSpeed Insights](https://pagespeed.web.dev), portada, 17-10-2026):
-
-| | Rendimiento | Accesibilidad | Buenas prácticas | SEO |
-|---|---|---|---|---|
-| Móvil | 90 | 100 | 100 | 100 |
-| Ordenador | 100 | 100 | 100 | 100 |
-
-**Todas las páginas**, medidas con Lighthouse 12 en local (perfil móvil simulado, rendimiento móvil / escritorio), antes y después de las mejoras de rendimiento:
+Medido con Lighthouse 12 en local (perfil móvil simulado, rendimiento móvil / escritorio), antes y después de las mejoras de rendimiento:
 
 | Página | Rendimiento antes | Rendimiento después | Accesibilidad | Buenas prácticas | SEO |
 |---|---|---|---|---|---|
-| Portada | 63 / 98 | 92 / 99 | 100 | 96* | 100 |
+| Portada | 63 / 98 | 83–87 / 99 | 100 | 96* | 100 |
 | Caso de estudio | 76 / 99 | 97 / 100 | 100 | 100 | 100 |
 | Videojuegos | 54 / 95 | 86 / 99 | 100 | 100 | 100 (antes 91) |
 | Cine | 57 / 92 | 84 / 99 | 100 | 100 | 100 (antes 91) |

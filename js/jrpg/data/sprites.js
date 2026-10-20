@@ -13,10 +13,10 @@
  *   2) Copia el JSON en SHEETS y apunta el clip `hurt` a 'heroe_hurt'.
  */
 export const SHEETS = Object.freeze({
-  heroe_idle: { src: 'assets/combat/heroe_idle.png', frames: 6, frameWidth: 63, frameHeight: 86, anchor: { x: 43, y: 84 } },
-  heroe_ataque: { src: 'assets/combat/heroe_ataque.png', frames: 6, frameWidth: 109, frameHeight: 80, anchor: { x: 59, y: 79 } },
-  monstruo_idle: { src: 'assets/combat/monstruo_idle.png', frames: 6, frameWidth: 97, frameHeight: 95, anchor: { x: 40, y: 91 } },
-  monstruo_ataque: { src: 'assets/combat/monstruo_ataque.png', frames: 5, frameWidth: 149, frameHeight: 103, anchor: { x: 72, y: 101 } },
+  heroe_idle: { src: 'assets/combat/heroe_idle.webp', frames: 6, frameWidth: 63, frameHeight: 86, anchor: { x: 43, y: 84 } },
+  heroe_ataque: { src: 'assets/combat/heroe_ataque.webp', frames: 6, frameWidth: 109, frameHeight: 80, anchor: { x: 59, y: 79 } },
+  monstruo_idle: { src: 'assets/combat/monstruo_idle.webp', frames: 6, frameWidth: 97, frameHeight: 95, anchor: { x: 40, y: 91 } },
+  monstruo_ataque: { src: 'assets/combat/monstruo_ataque.webp', frames: 5, frameWidth: 149, frameHeight: 103, anchor: { x: 72, y: 101 } },
 
   // ── Hojas futuras (ver docs/GUIA_SPRITES.md). Descomenta al generarlas: ──
   // heroe_hurt:    { src: 'assets/combat/heroe_hurt.png',    frames: 3, frameWidth: 0, frameHeight: 0, anchor: { x: 0, y: 0 } },

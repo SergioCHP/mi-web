@@ -10,12 +10,15 @@
   <meta property="og:title" content="Mis Películas Favoritas | Sergio Chorques" />
   <meta property="og:description" content="Carrusel 3D con las películas que más me han marcado y explorador de cine con datos de TMDB. Portfolio de Sergio Chorques, estudiante de 1º DAM." />
   <meta property="og:url" content="https://sergiochp.github.io/mi-web/cine.html" />
+  <meta property="og:image" content="https://sergiochp.github.io/mi-web/images/og-portada.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Sergio Chorques, estudiante de 1º DAM" />
+  <meta property="og:locale" content="es_ES" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <!-- Favicon SVG -->
-  <link
-    rel="icon"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23ff2e97' font-family='Arial'>SC</text></svg>"
-  />
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
 
   <!-- Aplica tema/acento guardados ANTES de pintar: evita el parpadeo oscuro→claro
      y hace que cine/anime respeten también la preferencia del sistema -->
@@ -53,7 +56,7 @@
 
     <header class="navbar-wrapper">
     <nav class="navbar" aria-label="Navegación secundaria">
-      <a href="index.html" class="nav-logo" aria-label="Volver al inicio">SC</a>
+      <a href="index.html" class="nav-logo" aria-label="Volver al inicio"><svg class="logo-sc" viewBox="0 0 48 32" aria-hidden="true" focusable="false"><g class="logo-sc__eco"><path d="M20 5H8L4 9v3l4 4h8l4 4v3l-4 4H4"/><path d="M44 5H31l-4 4v14l4 4h13"/></g><g class="logo-sc__trazo"><path d="M20 5H8L4 9v3l4 4h8l4 4v3l-4 4H4"/><path d="M44 5H31l-4 4v14l4 4h13"/></g></svg></a>
 
       <!-- Enlaces con id o atributos para traducción -->
       <div class="nav-links-games">
@@ -132,7 +135,7 @@
         <div class="carousel-card active" data-index="0">
         <div class="card-inner">
             <div class="card-front">
-            <img src="images/cine1.webp" alt="El señor de los anillos" onerror="this.style.backgroundColor='#1f3d2b'" />
+            <img src="images/cine1.webp" srcset="images/cine1-360.webp 360w, images/cine1.webp 480w" sizes="(max-width: 768px) 200px, 320px" alt="El señor de los anillos" onerror="this.style.backgroundColor='#1f3d2b'" />
             </div>
             <div class="card-back">
             <div class="card-back-content">
@@ -152,7 +155,7 @@
         <div class="carousel-card" data-index="1">
         <div class="card-inner">
             <div class="card-front">
-            <img src="images/cine2.webp" alt="300" onerror="this.style.backgroundColor='#7a2a05'" />
+            <img src="images/cine2.webp" srcset="images/cine2-360.webp 360w, images/cine2.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="300" onerror="this.style.backgroundColor='#7a2a05'" />
             </div>
             <div class="card-back">
             <div class="card-back-content">
@@ -172,7 +175,7 @@
         <div class="carousel-card" data-index="2">
         <div class="card-inner">
             <div class="card-front">
-            <img src="images/cine3.webp" alt="Gladiator" onerror="this.style.backgroundColor='#6b4a2b'" />
+            <img src="images/cine3.webp" srcset="images/cine3-360.webp 360w, images/cine3.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="Gladiator" onerror="this.style.backgroundColor='#6b4a2b'" />
             </div>
             <div class="card-back">
             <div class="card-back-content">
@@ -192,7 +195,7 @@
         <div class="carousel-card" data-index="3">
         <div class="card-inner">
             <div class="card-front">
-            <img src="images/cine4.webp" alt="Terminator 2" onerror="this.style.backgroundColor='#243447'" />
+            <img src="images/cine4.webp" srcset="images/cine4-360.webp 360w, images/cine4.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="Terminator 2" onerror="this.style.backgroundColor='#243447'" />
             </div>
             <div class="card-back">
             <div class="card-back-content">
@@ -212,7 +215,7 @@
         <div class="carousel-card" data-index="4">
         <div class="card-inner">
             <div class="card-front">
-            <img src="images/cine5.webp" alt="Matrix" onerror="this.style.backgroundColor='#0d3d2a'" />
+            <img src="images/cine5.webp" srcset="images/cine5-360.webp 360w, images/cine5.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="Matrix" onerror="this.style.backgroundColor='#0d3d2a'" />
             </div>
             <div class="card-back">
             <div class="card-back-content">
@@ -232,7 +235,7 @@
         <div class="carousel-card" data-index="5">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/cine6.webp" alt="Braveheart" onerror="this.style.backgroundColor='#1c2a38'" />
+              <img src="images/cine6.webp" srcset="images/cine6-360.webp 360w, images/cine6.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="Braveheart" onerror="this.style.backgroundColor='#1c2a38'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">
@@ -252,7 +255,7 @@
         <div class="carousel-card" data-index="6">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/cine7.webp" alt="Jurassic Park" onerror="this.style.backgroundColor='#4a2d0d'" />
+              <img src="images/cine7.webp" srcset="images/cine7-360.webp 360w, images/cine7.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="Jurassic Park" onerror="this.style.backgroundColor='#4a2d0d'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">
@@ -272,7 +275,7 @@
         <div class="carousel-card" data-index="7">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/cine8.webp" alt="Regreso al futuro" onerror="this.style.backgroundColor='#1a2b4c'" />
+              <img src="images/cine8.webp" srcset="images/cine8-360.webp 360w, images/cine8.webp 465w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="Regreso al futuro" onerror="this.style.backgroundColor='#1a2b4c'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">

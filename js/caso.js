@@ -95,6 +95,25 @@
     c6Problem: "<strong>Problema:</strong> l'API de GitHub sense token només permet 60 peticions per hora, i els cercadors llançaven una petició per cada lletra.",
     c6Solution: "<strong>Solució:</strong> memòria cau d'una hora en <code>localStorage</code> per a GitHub i, en els cercadors, espera de 500 ms abans de cercar i memòria cau per cerca.",
 
+    miniTitle: "Minicas: el combat JRPG",
+    miniSub: "Un projecte dins del projecte: d'un prototip en un sol fitxer a un joc modular i provat.",
+    miniProbT: "Problema",
+    miniProb: "El primer prototip era un únic <code>minijuego.html</code> de 855 línies, amb la lògica, el dibuix i la interfície barrejats. Per a provar qualsevol canvi calia jugar a mà, i no hi havia manera de saber si el combat estava equilibrat.",
+    miniSolT: "Solució",
+    miniSol:
+      "<li><strong>29 mòduls ES</strong> en 5 capes: <code>core</code>, <code>data</code>, <code>battle</code>, <code>render</code> i <code>ui</code>.</li>" +
+      "<li>La lògica no toca el DOM: una màquina d'estats decideix i un «presentador» anima.</li>" +
+      "<li>Bucle de pas fix: el combat va al mateix ritme en qualsevol pantalla.</li>" +
+      "<li>Personatges, habilitats i estats en fitxers de dades.</li>",
+    miniResT: "Resultat",
+    miniRes:
+      "<li>300 combats simulats per estratègia en Node, sense navegador</li>" +
+      "<li>Qui només ataca guanya el 86 %; qui usa bé les habilitats, el 100 %</li>" +
+      "<li>Durada mitjana: 30–34 s per combat</li>" +
+      "<li>0 bloquejos de la màquina d'estats</li>" +
+      "<li>Mateix resultat a 30, 60, 144 i 240 Hz</li>",
+    miniPlay: "Jugar al minijoc",
+
     demoTitle: "Demo en vídeo",
     demoSub: "Un recorregut de menys de dos minuts per la web, amb subtítols en castellà i valencià.",
     demoFallback: "Descarregar el vídeo",

@@ -159,6 +159,12 @@
           caseLink: "Caso de estudio"
         },
         {
+          desc: "Combate por turnos con barra ATB en Canvas, inspirado en Final Fantasy VII. Reescrito en 29 módulos ES por capas y probado con simulaciones en Node.",
+          link: "Jugar",
+          aria: "Jugar al minijuego JRPG",
+          caseLink: "Caso de estudio"
+        },
+        {
           desc: "Aplicación orientada a organizar colecciones de libros y mangas mediante estructuras de datos ordenadas y persistencia lógica.",
           link: "Próximamente",
           aria: "Código del Gestor de biblioteca: próximamente"
@@ -332,6 +338,12 @@
           desc: "Portal personal amb suport per a temes dinàmics, microinteraccions reactives i accessibilitat integrada.",
           link: "Veure codi",
           aria: "Veure codi del projecte La meua web personal",
+          caseLink: "Cas d'estudi"
+        },
+        {
+          desc: "Combat per torns amb barra ATB en Canvas, inspirat en Final Fantasy VII. Reescrit en 29 mòduls ES per capes i provat amb simulacions en Node.",
+          link: "Jugar",
+          aria: "Jugar al minijoc JRPG",
           caseLink: "Cas d'estudi"
         },
         {
@@ -1706,6 +1718,10 @@ searchChips.forEach((chip) => {
     return MOVIL.matches ? todas.filter((n) => !SOLO_ESCRITORIO.includes(n)) : todas;
   };
   const rutaEscritorio = (n) => `images/hero-${n}.webp`;
+  /* En escritorio la foto cubre la pantalla a lo alto (proporción 2,36:1), así que
+     el ancho útil es ~2,36 × el alto de la ventana: con 2240 px basta para pantallas
+     de hasta ~950 px de alto; la de 3168 px solo se baja en pantallas grandes. */
+  const srcsetEscritorio = (n) => `images/hero-${n}-2240.webp 2240w, ${rutaEscritorio(n)} 3168w`;
   const rutaMovil = (n) => (SOLO_ESCRITORIO.includes(n) ? rutaEscritorio(n) : `images/hero-${n}-movil.webp`);
 
   let actual = 1;
@@ -1713,6 +1729,7 @@ searchChips.forEach((chip) => {
   function pintar(n) {
     actual = n;
     if (heroSource) heroSource.srcset = rutaMovil(n);
+    heroImg.srcset = srcsetEscritorio(n);
     heroImg.src = rutaEscritorio(n);
   }
 

@@ -10,12 +10,15 @@
   <meta property="og:title" content="Mis Videojuegos Favoritos | Sergio Chorques" />
   <meta property="og:description" content="Carrusel 3D con mis videojuegos favoritos y buscador de juegos con datos de RAWG. Parte del portfolio de Sergio Chorques, estudiante de 1º DAM." />
   <meta property="og:url" content="https://sergiochp.github.io/mi-web/juegos.html" />
+  <meta property="og:image" content="https://sergiochp.github.io/mi-web/images/og-portada.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Sergio Chorques, estudiante de 1º DAM" />
+  <meta property="og:locale" content="es_ES" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <!-- Favicon SVG -->
-  <link
-    rel="icon"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23ff2e97' font-family='Arial'>SC</text></svg>"
-  />
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
 
   <!-- Aplica tema/acento guardados ANTES de pintar: evita el parpadeo oscuro→claro
      y hace que cine/anime respeten también la preferencia del sistema -->
@@ -53,7 +56,7 @@
 
     <header class="navbar-wrapper">
     <nav class="navbar" aria-label="Navegación secundaria">
-      <a href="index.html" class="nav-logo" aria-label="Volver al inicio">SC</a>
+      <a href="index.html" class="nav-logo" aria-label="Volver al inicio"><svg class="logo-sc" viewBox="0 0 48 32" aria-hidden="true" focusable="false"><g class="logo-sc__eco"><path d="M20 5H8L4 9v3l4 4h8l4 4v3l-4 4H4"/><path d="M44 5H31l-4 4v14l4 4h13"/></g><g class="logo-sc__trazo"><path d="M20 5H8L4 9v3l4 4h8l4 4v3l-4 4H4"/><path d="M44 5H31l-4 4v14l4 4h13"/></g></svg></a>
       <!-- Enlaces con id o atributos para traducción -->
       <div class="nav-links-games">
         <a href="index.html" id="navHome" data-nav="home">Inicio</a>
@@ -132,7 +135,7 @@
         <div class="carousel-card active" data-index="0">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/juego1.webp" alt="Final Fantasy" onerror="this.style.backgroundColor='#1a1f36'" />
+              <img src="images/juego1.webp" srcset="images/juego1-360.webp 360w, images/juego1.webp 480w" sizes="(max-width: 768px) 200px, 320px" alt="Final Fantasy" onerror="this.style.backgroundColor='#1a1f36'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">
@@ -152,7 +155,7 @@
         <div class="carousel-card" data-index="1">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/juego2.webp" alt="Metal Gear Solid" onerror="this.style.backgroundColor='#2b2b2b'" />
+              <img src="images/juego2.webp" srcset="images/juego2-360.webp 360w, images/juego2.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="Metal Gear Solid" onerror="this.style.backgroundColor='#2b2b2b'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">
@@ -172,7 +175,7 @@
         <div class="carousel-card" data-index="2">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/juego3.webp" alt="God of War" onerror="this.style.backgroundColor='#361a1a'" />
+              <img src="images/juego3.webp" srcset="images/juego3-360.webp 360w, images/juego3.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="God of War" onerror="this.style.backgroundColor='#361a1a'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">
@@ -192,7 +195,7 @@
         <div class="carousel-card" data-index="3">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/juego4.webp" alt="Resident Evil" onerror="this.style.backgroundColor='#111111'" />
+              <img src="images/juego4.webp" srcset="images/juego4-360.webp 360w, images/juego4.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="Resident Evil" onerror="this.style.backgroundColor='#111111'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">
@@ -212,7 +215,7 @@
         <div class="carousel-card" data-index="4">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/juego5.webp" alt="The Last of Us" onerror="this.style.backgroundColor='#1f2b1c'" />
+              <img src="images/juego5.webp" srcset="images/juego5-360.webp 360w, images/juego5.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="The Last of Us" onerror="this.style.backgroundColor='#1f2b1c'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">
@@ -232,7 +235,7 @@
         <div class="carousel-card" data-index="5">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/juego6.webp" alt="The Legend of Zelda" onerror="this.style.backgroundColor='#1a241c'" />
+              <img src="images/juego6.webp" srcset="images/juego6-360.webp 360w, images/juego6.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="The Legend of Zelda" onerror="this.style.backgroundColor='#1a241c'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">
@@ -252,7 +255,7 @@
         <div class="carousel-card" data-index="6">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/juego7.webp" alt="The Witcher" onerror="this.style.backgroundColor='#2a1a1a'" />
+              <img src="images/juego7.webp" srcset="images/juego7-360.webp 360w, images/juego7.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="The Witcher" onerror="this.style.backgroundColor='#2a1a1a'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">
@@ -272,7 +275,7 @@
         <div class="carousel-card" data-index="7">
           <div class="card-inner">
             <div class="card-front">
-              <img src="images/juego8.webp" alt="Red Dead Redemption" onerror="this.style.backgroundColor='#2b1111'" />
+              <img src="images/juego8.webp" srcset="images/juego8-360.webp 360w, images/juego8.webp 480w" sizes="(max-width: 768px) 200px, 320px" loading="lazy" decoding="async" alt="Red Dead Redemption" onerror="this.style.backgroundColor='#2b1111'" />
             </div>
             <div class="card-back">
               <div class="card-back-content">

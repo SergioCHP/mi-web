@@ -21,13 +21,16 @@
       content="Estudiante de DAM, gamer y desarrollador en formación. Proyectos, intereses y marca personal."
     />
     <meta property="og:url" content="https://sergiochp.github.io/mi-web/" />
+    <meta property="og:image" content="https://sergiochp.github.io/mi-web/images/og-portada.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sergio Chorques, estudiante de 1º DAM" />
+    <meta property="og:locale" content="es_ES" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Favicon SVG -->
-    <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23ff2e97' font-family='Arial'>SC</text></svg>"
-    />
+    <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
 
     <!-- CSS -->
     <!-- Aplica tema/acento guardados ANTES de pintar: evita el parpadeo oscuro→claro
@@ -74,7 +77,7 @@
     <!-- Barra de navegación fija con glassmorphism -->
     <header class="navbar-wrapper">
       <nav class="navbar" aria-label="Navegación principal">
-        <a href="#inicio" class="nav-logo" aria-label="Volver al inicio">SC</a>
+        <a href="#inicio" class="nav-logo" aria-label="Volver al inicio"><svg class="logo-sc" viewBox="0 0 48 32" aria-hidden="true" focusable="false"><g class="logo-sc__eco"><path d="M20 5H8L4 9v3l4 4h8l4 4v3l-4 4H4"/><path d="M44 5H31l-4 4v14l4 4h13"/></g><g class="logo-sc__trazo"><path d="M20 5H8L4 9v3l4 4h8l4 4v3l-4 4H4"/><path d="M44 5H31l-4 4v14l4 4h13"/></g></svg></a>
         <div class="nav-links">
           <a href="#sobre-mi">Sobre mí</a>
           <a href="#lo-que-he-hecho">Trayectoria</a>
@@ -139,10 +142,12 @@
       <div class="hero-bg-photo" aria-hidden="true">
         <picture>
           <!-- Móvil: recorte vertical centrado (pesa la mitad y se me ve mejor) -->
-          <source id="heroBgSource" media="(max-width: 768px)" srcset="images/hero-1-movil.webp" width="1008" height="1344" />
+          <source id="heroBgSource" media="(max-width: 768px)" srcset="images/hero-1-movil.webp" width="756" height="1344" />
           <img
             id="heroBgImg"
             src="images/hero-1.webp"
+            srcset="images/hero-1-2240.webp 2240w, images/hero-1.webp 3168w"
+            sizes="max(115vw, 236vh)"
             alt=""
             class="hero-bg-img"
             width="3168"
@@ -492,6 +497,26 @@
             </div>
           </article>
 
+          <article class="project-card tilt spotlight-card card--static" data-category="js">
+            <div class="project-card-inner">
+              <header class="project-card-head">
+                <p class="project-type">Juego / JS</p>
+                <h3 class="project-title">Minijuego JRPG</h3>
+              </header>
+              <p class="project-desc">
+                Combate por turnos con barra ATB en Canvas, inspirado en Final Fantasy VII. Reescrito en 29 módulos ES por capas y probado con simulaciones en Node.
+              </p>
+              <ul class="project-tags">
+                <li>Canvas</li>
+                <li>Módulos ES</li>
+                <li>Node (simulación)</li>
+              </ul>
+              <div class="project-actions">
+                <a class="project-link" href="minijuego.html" aria-label="Jugar al minijuego JRPG">Jugar</a>
+                <a class="project-link project-link--case" href="caso-estudio.html#minijuego">Caso de estudio</a>
+              </div>
+            </div>
+          </article>
           <article class="project-card tilt spotlight-card card--static" data-category="dam js">
             <div class="project-card-inner">
               <header class="project-card-head">

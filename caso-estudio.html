@@ -10,8 +10,14 @@
   <meta property="og:title" content="Caso de estudio: Mi web personal | Sergio Chorques" />
   <meta property="og:description" content="Proceso, decisiones técnicas y aprendizajes de mi portfolio en HTML, CSS y JavaScript vanilla." />
   <meta property="og:url" content="https://sergiochp.github.io/mi-web/caso-estudio.html" />
+  <meta property="og:image" content="https://sergiochp.github.io/mi-web/images/og-portada.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Sergio Chorques, estudiante de 1º DAM" />
+  <meta property="og:locale" content="es_ES" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070a'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='%23ff2e97' font-family='Arial'>SC</text></svg>" />
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
 
   <!-- Aplica tema/acento guardados ANTES de pintar (evita el parpadeo) -->
   <script>
@@ -47,7 +53,7 @@
 
   <header class="navbar-wrapper">
     <nav class="navbar" aria-label="Navegación secundaria">
-      <a href="index.html" class="nav-logo" aria-label="Volver al inicio">SC</a>
+      <a href="index.html" class="nav-logo" aria-label="Volver al inicio"><svg class="logo-sc" viewBox="0 0 48 32" aria-hidden="true" focusable="false"><g class="logo-sc__eco"><path d="M20 5H8L4 9v3l4 4h8l4 4v3l-4 4H4"/><path d="M44 5H31l-4 4v14l4 4h13"/></g><g class="logo-sc__trazo"><path d="M20 5H8L4 9v3l4 4h8l4 4v3l-4 4H4"/><path d="M44 5H31l-4 4v14l4 4h13"/></g></svg></a>
 
       <div class="nav-links-games">
         <a href="index.html" data-nav="home">Inicio</a>
@@ -122,7 +128,7 @@
 
       <ul class="case-stats" aria-label="El proyecto en cifras" data-i18n-aria="statsAria">
         <li><strong>9</strong> <span data-i18n="stPages">páginas</span></li>
-        <li><strong>+40</strong> <span data-i18n="stCommits">commits</span></li>
+        <li><strong>+50</strong> <span data-i18n="stCommits">commits</span></li>
         <li><strong>+20 000</strong> <span data-i18n="stLines">líneas de código</span></li>
         <li><strong>5</strong> <span data-i18n="stApis">APIs externas</span></li>
         <li><strong>2</strong> <span data-i18n="stLangs">idiomas</span></li>
@@ -271,6 +277,53 @@ document.documentElement
           <p data-i18n="c6Problem"><strong>Problema:</strong> la API de GitHub sin token solo permite 60 peticiones por hora, y los buscadores lanzaban una petición por cada letra.</p>
           <p data-i18n="c6Solution"><strong>Solución:</strong> caché de una hora en <code>localStorage</code> para GitHub y, en los buscadores, espera de 500 ms antes de buscar y caché por búsqueda.</p>
         </article>
+      </div>
+    </section>
+
+    <!-- ================= 04b MINICASO: MINIJUEGO ================= -->
+    <section class="section reveal" id="minijuego" aria-labelledby="mini-title">
+      <div class="section-head">
+        <h2 id="mini-title" data-i18n="miniTitle">Minicaso: el combate JRPG</h2>
+        <p data-i18n="miniSub">Un proyecto dentro del proyecto: de un prototipo en un solo archivo a un juego modular y probado.</p>
+      </div>
+
+      <div class="case-grid case-grid--3">
+        <article class="card spotlight-card card--static case-challenge">
+          <h3 data-i18n="miniProbT">Problema</h3>
+          <p data-i18n="miniProb">El primer prototipo era un único <code>minijuego.html</code> de 855 líneas, con la lógica, el dibujo y la interfaz mezclados. Para probar cualquier cambio había que jugar a mano, y no había forma de saber si el combate estaba equilibrado.</p>
+        </article>
+
+        <article class="card spotlight-card card--static case-challenge">
+          <h3 data-i18n="miniSolT">Solución</h3>
+          <ul class="case-list" data-i18n="miniSol">
+            <li><strong>29 módulos ES</strong> en 5 capas: <code>core</code>, <code>data</code>, <code>battle</code>, <code>render</code> y <code>ui</code>.</li>
+            <li>La lógica no toca el DOM: una máquina de estados decide y un «presentador» anima.</li>
+            <li>Bucle de paso fijo: el combate va al mismo ritmo en cualquier pantalla.</li>
+            <li>Personajes, habilidades y estados en archivos de datos.</li>
+          </ul>
+        </article>
+
+        <article class="card spotlight-card card--static case-challenge">
+          <h3 data-i18n="miniResT">Resultado</h3>
+          <ul class="case-checks" data-i18n="miniRes">
+            <li>300 combates simulados por estrategia en Node, sin navegador</li>
+            <li>Quien solo ataca gana el 86 %; quien usa bien las habilidades, el 100 %</li>
+            <li>Duración media: 30–34 s por combate</li>
+            <li>0 bloqueos de la máquina de estados</li>
+            <li>Mismo resultado a 30, 60, 144 y 240 Hz</li>
+          </ul>
+        </article>
+      </div>
+
+      <pre class="case-code"><code>$ node tools/simulate.mjs
+masher | 1v2 | victorias 86.3% | duración media 34.1s | bloqueos 0
+smart  | 1v2 | victorias 100.0% | duración media 30.1s | bloqueos 0
+
+$ node tools/refresh-rate-test.mjs
+✓ Mismo resultado a cualquier frecuencia de refresco</code></pre>
+
+      <div class="case-actions">
+        <a class="project-link case-btn--primary" href="minijuego.html" data-i18n="miniPlay">Jugar al minijuego</a>
       </div>
     </section>
 
