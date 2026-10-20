@@ -14,6 +14,45 @@ Las versiones anteriores a la 1.0.0 se han reconstruido a partir del historial d
 
 _Nada todavía._
 
+## [1.1.0] — 2026-10-20
+
+Mejoras a partir de la revisión con la rúbrica. Hechas en la rama `mejoras-rubrica` y fusionadas con un Pull Request.
+
+### Añadido
+- `docs/PROMPTS.md`: las órdenes clave a la IA, con qué salió de cada una, qué decidí yo y en qué commit quedó.
+- **Logo SC propio en SVG** (`images/logo.svg`): favicon de todas las páginas y logo del menú. Al pasar el ratón o llegar con el teclado, el eco parpadea como un neón.
+- Sección **«Decisiones de diseño»** en el README: paleta, tipografía, logo, relieve, microinteracciones, ambientación por página y móvil.
+- **Minicaso del minijuego** en el caso de estudio (`caso-estudio.html#minijuego`):
+  - problema → solución → resultado;
+  - cifras de la simulación en Node: 300 combates por estrategia, 86 % y 100 % de victorias, 0 bloqueos y el mismo resultado a 30, 60, 144 y 240 Hz.
+- Tarjeta «Minijuego JRPG» en Proyectos, con enlaces para jugar y al minicaso.
+- **Imagen para compartir** (`images/og-portada.jpg`, 1200 × 630) y etiquetas Open Graph en las 8 páginas públicas, también en `matrix_pills.html` y `minijuego.html`.
+- Versiones de imagen por tamaño de pantalla: `hero-N-2240.webp`, `juegoN-360.webp`, `cineN-360.webp` y `animeN-320.webp`.
+
+### Cambiado
+- Proyectos en rejilla de 2 × 2 en ordenador.
+- **Hero:** en móvil, recortes 9:16 más ligeros; en ordenador, `srcset` que solo baja la foto de 3168 px en pantallas grandes.
+- Imágenes recomprimidas:
+  - miniaturas de anime a 104 px;
+  - portadas del grimorio a 420 px;
+  - póster del vídeo a 768 px.
+- Sprites y retratos del minijuego en WebP.
+- El CSS del panel `admin.html` pasa a `css/admin.css`: ninguna página tiene ya bloques `<style>`.
+- Cifra de commits del caso de estudio: de «+40» a «+50».
+
+### Eliminado
+- Imágenes sin uso:
+  - `images/perfil.webp` y `images/cine42.webp`;
+  - `assets/Monstruo.png`;
+  - tres hojas PNG del combate, ya en WebP.
+
+### Rendimiento
+- Carga diferida (`loading="lazy"`) en las láminas del grimorio y en las cartas del carrusel que no están delante.
+- Lighthouse en local, rendimiento en móvil:
+  - videojuegos y cine: de 79 a 85;
+  - portada: de 75 a 80.
+- Sin avisos de imágenes en el grimorio ni en el minijuego. Los avisos que quedan en los carruseles 3D están explicados en el README.
+
 ## [1.0.0] — 2026-10-17
 
 Primera versión estable: la web completa, segura, accesible, documentada y optimizada.
@@ -104,5 +143,6 @@ Primera versión estable: la web completa, segura, accesible, documentada y opti
 - Selector de color de acento y modo claro/oscuro.
 - Primer prototipo del minijuego JRPG.
 
-[Sin publicar]: https://github.com/SergioCHP/mi-web/compare/v1.0.0...HEAD
+[Sin publicar]: https://github.com/SergioCHP/mi-web/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/SergioCHP/mi-web/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/SergioCHP/mi-web/releases/tag/v1.0.0

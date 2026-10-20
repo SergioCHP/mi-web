@@ -142,4 +142,38 @@ La IA propuso varias opciones. Pregunté «¿no hay otra forma?» y elegí la **
 
 > Vamos con el paso 1.
 
-**Resultado:** una revisión punto por punto y un plan para subir Proceso, Diseño y Medios. Estoy trabajando en la rama `mejoras-rubrica`, que se fusionará con un Pull Request y dará la versión 1.1.0.
+**Resultado:** una revisión punto por punto con la rúbrica y un plan de 9 pasos para subir Proceso, Diseño, Medios y Contenido.
+
+## 20 oct · Mejoras de la rúbrica (versión 1.1.0)
+
+Todo se hizo en la rama `mejoras-rubrica`, con un commit por paso, y se fusionó en `main` con un Pull Request.
+
+**Órdenes (textual), una por paso:**
+> Vamos al paso 3.
+
+> Seguimos con el paso 4.
+
+> Paso 5.
+
+> ¿Tengo que eliminar alguna imagen que no se use?
+
+> Paso 6.
+
+> Paso 7.
+
+> Paso 8.
+
+**Qué salió de cada paso:**
+- **Paso 2:** este archivo.
+- **Paso 3:** el logo SC en SVG, como favicon y en el menú.
+- **Paso 4:** la sección «Decisiones de diseño» del README.
+- **Paso 5:** imágenes con `srcset`, carga diferida y sprites en WebP. Además, borré 6 imágenes que no se usaban.
+- **Paso 6:** etiquetas OG e imagen para compartir en todas las páginas.
+- **Paso 7:** el minicaso del minijuego, con cifras de `tools/simulate.mjs`.
+- **Paso 8:** el CHANGELOG, el Pull Request y la versión 1.1.0.
+
+**Qué decidí yo:**
+- Trabajar en una rama y fusionar con Pull Request, en vez de subir directo a `main`.
+- Documentar como issue un fallo real que ya había arreglado (el formulario descolocado).
+- Revisar cada paso en Live Server antes de hacer el commit.
+- Qué imágenes borrar después de comprobar que no se usaban.

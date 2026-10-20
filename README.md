@@ -5,7 +5,6 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 
 🔗 **Web publicada:** https://sergiochp.github.io/mi-web/
 📄 **Caso de estudio y vídeo demo:** https://sergiochp.github.io/mi-web/caso-estudio.html
-🏷️ **Versión actual:** [v1.0.0](https://github.com/SergioCHP/mi-web/releases/tag/v1.0.0) · cambios en [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -67,13 +66,9 @@ mi-web/
 │   │                       farolillo.js (módulo ES del chatbot) y caso.js
 │   └── jrpg/               Minijuego en módulos ES: core, data, battle, render, ui
 ├── data/respuestas.json    «Cerebro» de Farolillo (intenciones y respuestas ES/VA)
-├── images/                 Imágenes en WebP (hero-1…8 y sus recortes -movil, portadas, thumbs/)
-│                           y logo.svg (logo SC propio)
+├── images/                 Imágenes en WebP (hero-1…8, portadas, thumbs/ para miniaturas)
 ├── assets/                 Sprites del minijuego, vídeo demo (MP4 + VTT) y fuentes (fonts/)
 ├── tools/                  Scripts de apoyo del minijuego (simulación en Node, sprites)
-├── docs/                   Guías (correo de contacto, sprites del minijuego) y PROMPTS.md
-│                           (órdenes clave a la IA)
-├── CHANGELOG.md            Historial de versiones
 └── supabase/
     ├── rls.sql             Políticas de seguridad de la base de datos
     └── functions/contacto/ Edge Function del formulario (index.ts) y sus pruebas (index.test.ts)
@@ -170,13 +165,6 @@ Todo el contenido está en `data/respuestas.json`, editable sin tocar código. L
   - decoraciones de esquina a 360 px.
 
   En total, de unos 9,4 MB a 2 MB. La imagen principal de la portada lleva `fetchpriority="high"` y tamaño declarado.
-- **Cada pantalla baja la imagen que necesita (`srcset` + `sizes`):**
-  - hero de escritorio en 2240 px (la de 3168 px solo en pantallas muy grandes) y recortes 9:16 para móvil;
-  - carátulas de los carruseles en 360 px para móvil y 480 px para pantallas densas;
-  - portada de anime en 320 px para la tarjeta de escritorio;
-  - las láminas del grimorio se cargan al pasar a su página (`loading="lazy"`), igual que las cartas del carrusel que no están delante;
-  - sprites y retratos del minijuego en WebP. Solo se conservan `Heroe.png` y `combat/heroe_idle.png`, que la guía de sprites usa como referencia para generar sprites nuevos.
-- **Avisos que quedan, a propósito:** en los carruseles 3D, Lighthouse mide las cartas giradas (de lado se ven estrechas) y sugiere imágenes más pequeñas. Pero cada carta pasa al frente al girar, así que su imagen tiene que valer para la posición delantera. Bajarla más se vería borrosa.
 - **Tipografías alojadas en la web** (`css/fonts.css` + `assets/fonts/`): antes llegaban de Google Fonts con un `@import` que bloqueaba el pintado (HTML → CSS → CSS de Google → fuentes) y enviaba la IP del visitante a Google. Las de la primera pantalla se piden con `preload` para que el texto no salte al cargar.
 - **Sin saltos de diseño (CLS):**
   - el menú móvil se oculta con CSS antes de pintar, sin esperar a JavaScript;
@@ -188,79 +176,13 @@ Todo el contenido está en `data/respuestas.json`, editable sin tocar código. L
 
 ---
 
-## Decisiones de diseño
-
-La idea de partida: que la web se parezca a mí. Me gustan los videojuegos, el cine, el anime y los libros, así que la marca es **oscura, con neón y con un punto de videojuego**. Cada página temática tiene su propia ambientación, pero sin perder esa base.
-
-### 1. Paleta: fondo oscuro y dos neones
-- **Fondo casi negro** (`#07080b`) y superficies un poco más claras (`#0e1017`, `#141720`): el neón destaca sin cansar la vista.
-- **Dos acentos:** rosa `#ff2e97` y azul `#38bdf8`. El visitante elige cuál manda con un botón, y el otro queda como secundario (`--accent` y `--accent-alt`).
-- **Modo oscuro por defecto**, porque es donde el neón tiene sentido.
-- **Modo claro cálido:** fondo crema (`#ece6dc`), no blanco puro, para que no deslumbre y combine con el tono «papel» de la sección de libros.
-- **Contraste:** el neón no se lee sobre crema (rosa 2,8:1, azul 1,7:1). En modo claro uso versiones «tinta» del mismo tono, rosa `#c2185b` y azul `#0b6aa2`, que superan 4,5:1 (WCAG AA).
-- Todo son **variables CSS**: cambiar de tema o de acento es cambiar un atributo en `<html>`.
-
-### 2. Tipografía con un papel para cada fuente
-| Fuente | Dónde | Por qué |
-|---|---|---|
-| **Chakra Petch** | Títulos, menú y botones | Sus esquinas cortadas recuerdan a la interfaz de un videojuego. |
-| **Inter** | Texto | Muy legible en tamaños pequeños y en pantallas de móvil. |
-| **Poppins 900** | Solo mi nombre en la portada | Un único golpe de impacto; usarla en más sitios le quitaría fuerza. |
-| **Cinzel + Playfair Display** | Grimorio de libros | Inscripción antigua para los títulos y libro clásico para el texto. |
-| **Courier Prime** | Elección de Matrix | Letra de terminal, como la película. |
-
-Todas están alojadas en la propia web: no dependen de Google Fonts y no hacen saltar el texto al cargar.
-
-### 3. Logo SC
-El logo es un monograma propio en SVG (`images/logo.svg`):
-- Las letras son trazos rectos con **las esquinas cortadas, igual que Chakra Petch**: el logo y los títulos hablan el mismo idioma.
-- Debajo lleva un **eco desplazado en el acento secundario**, como un neón doble.
-- El mismo dibujo sirve de favicon y de logo del menú. En el menú usa `currentColor`, así que cambia solo con el tema y el acento.
-
-### 4. Relieve en lugar de bordes
-- Las tarjetas usan **sombras neumórficas** (`--neu-flat`, `--neu-inset`): se separan del fondo por relieve, sin líneas que recarguen la página.
-- Los radios (`--radius` 20 px, `--radius-sm` 10 px) y el ancho máximo (`--maxw` 1100 px) son variables comunes, así que todas las páginas tienen el mismo ritmo.
-
-### 5. Microinteracciones con intención
-Cada animación tiene una función, no está solo de adorno:
-- **Inclinación y foco de luz** en las tarjetas al mover el ratón: invitan a explorar.
-- **Aparición suave** de cada sección al llegar a ella con el scroll.
-- **Objetos que asoman** en las tarjetas de «Me gusta» (el mando, el ticket de cine, el libro y la postal de «Desconexión»): enseñan cada afición sin añadir texto.
-- **El logo parpadea** como un neón al pasar el ratón o llegar con el teclado.
-- **Cursor de mano en neón** sobre lo que se puede pulsar. En pantallas táctiles se quita.
-- **Farolillo** cambia de brillo según el tema.
-
-Todas se desactivan con `prefers-reduced-motion` y se pausan si la pestaña está oculta.
-
-### 6. Misma marca, distinta ambientación
-Las páginas comparten menú, logo, tema, acentos y pie de página. Dentro, cada una tiene su escenario:
-- **Videojuegos y cine:** carruseles 3D, como elegir un juego o una película en una estantería.
-- **Anime:** una vitrina giratoria con tráiler.
-- **Libros:** un grimorio dorado que pasa páginas, con partículas de polvo.
-- **Matrix:** lluvia digital verde y la elección de pastilla.
-- **Minijuego:** combate por turnos inspirado en los JRPG clásicos.
-
-### 7. Pensada también para el móvil
-- **Menú desplegable propio** y zonas táctiles de 44 px como mínimo.
-- **Recortes verticales del hero** (`hero-N-movil.webp`) para que siempre se me vea en pantalla. Las dos fotos en las que salgo muy a un lado no se usan en móvil.
-- **Animaciones de ratón desactivadas en pantallas táctiles**, porque ahí no aportan.
-
----
-
 ## Calidad medida (Lighthouse)
 
-**En la web publicada** ([PageSpeed Insights](https://pagespeed.web.dev), portada, 17-10-2026):
-
-| | Rendimiento | Accesibilidad | Buenas prácticas | SEO |
-|---|---|---|---|---|
-| Móvil | 90 | 100 | 100 | 100 |
-| Ordenador | 100 | 100 | 100 | 100 |
-
-**Todas las páginas**, medidas con Lighthouse 12 en local (perfil móvil simulado, rendimiento móvil / escritorio), antes y después de las mejoras de rendimiento:
+Medido con Lighthouse 12 en local (perfil móvil simulado, rendimiento móvil / escritorio), antes y después de las mejoras de rendimiento:
 
 | Página | Rendimiento antes | Rendimiento después | Accesibilidad | Buenas prácticas | SEO |
 |---|---|---|---|---|---|
-| Portada | 63 / 98 | 92 / 99 | 100 | 96* | 100 |
+| Portada | 63 / 98 | 83–87 / 99 | 100 | 96* | 100 |
 | Caso de estudio | 76 / 99 | 97 / 100 | 100 | 100 | 100 |
 | Videojuegos | 54 / 95 | 86 / 99 | 100 | 100 | 100 (antes 91) |
 | Cine | 57 / 92 | 84 / 99 | 100 | 100 | 100 (antes 91) |
