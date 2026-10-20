@@ -43,8 +43,9 @@ body::after {
 }
 
 /* Rejillas con mínimo fijo → con min() nunca superan el ancho disponible */
+/* Proyectos: mínimo 420 px → 2 × 2 en escritorio y 1 columna en móvil */
 .projects-grid {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
 }
 
 .gh-repos {

@@ -159,6 +159,12 @@
           caseLink: "Caso de estudio"
         },
         {
+          desc: "Combate por turnos con barra ATB en Canvas, inspirado en Final Fantasy VII. Reescrito en 29 módulos ES por capas y probado con simulaciones en Node.",
+          link: "Jugar",
+          aria: "Jugar al minijuego JRPG",
+          caseLink: "Caso de estudio"
+        },
+        {
           desc: "Aplicación orientada a organizar colecciones de libros y mangas mediante estructuras de datos ordenadas y persistencia lógica.",
           link: "Próximamente",
           aria: "Código del Gestor de biblioteca: próximamente"
@@ -332,6 +338,12 @@
           desc: "Portal personal amb suport per a temes dinàmics, microinteraccions reactives i accessibilitat integrada.",
           link: "Veure codi",
           aria: "Veure codi del projecte La meua web personal",
+          caseLink: "Cas d'estudi"
+        },
+        {
+          desc: "Combat per torns amb barra ATB en Canvas, inspirat en Final Fantasy VII. Reescrit en 29 mòduls ES per capes i provat amb simulacions en Node.",
+          link: "Jugar",
+          aria: "Jugar al minijoc JRPG",
           caseLink: "Cas d'estudi"
         },
         {
