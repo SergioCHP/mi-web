@@ -50,6 +50,7 @@ async function loadSheets() {
 
 /** Imágenes de los escenarios pintados (solo se descarga el del escenario activo). */
 const STAGE_IMAGES = {
+  mako: { makoFar: 'assets/combat/mako_far.webp', makoMid: 'assets/combat/mako_mid.webp', makoFloor: 'assets/combat/mako_floor.webp' },
   dungeon: { dungeon: 'assets/combat/fondo_mazmorra.webp' },
   // highway: { highwayFar: 'assets/combat/autopista_far.webp', highwayMid: 'assets/combat/autopista_mid.webp', highwayFloor: 'assets/combat/autopista_floor.webp' },
 };

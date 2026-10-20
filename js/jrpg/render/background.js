@@ -440,17 +440,24 @@ class ReactorStage {
  * Escenario pintado (una o varias capas de imagen) con vida añadida en canvas:
  * fuentes de luz que titilan y motas en suspensión.
  *
- * Cada capa: { image, depth, floorLine, darken }
+ * Cada capa: { image, depth, floorLine, darken, fit, height, focusY, overscan }
  *   · depth: 0.1 lejos … 1 plano de los personajes (parallax).
  *   · floorLine: proporción vertical de la imagen donde empieza el suelo. Se alinea con el
  *     horizonte del motor y el borde inferior con la base del área segura → los pies apoyan bien.
+ *   · height: alto fijo en unidades de mundo (en vez de deducirlo de floorLine); la línea de
+ *     suelo sigue apoyada en el horizonte. Útil para capas medias "posadas" en el horizonte.
+ *   · fit: 'cover' → la capa cubre toda la vista (con margen `overscan` para parallax y
+ *     sacudidas), centrada; `focusY` es la fracción de la imagen que cae en el centro de la vista.
+ *     Para la capa lejana: se ve entera en escritorio y en móvil vertical.
+ *   · coverWidth: amplía la capa si la vista es más ancha que ella (útil para el suelo).
  * Las capas medias/frontales deben tener transparencia (PNG/WebP con alfa).
  */
 class ImageStage {
-  constructor(layers, { lights = [], lightColor = '255,170,80', motes = ['#ffcf8a', '#ffe9c4'] } = {}) {
-    this.layers = layers.map((l) => ({ floorLine: 0.71, depth: 0.85, darken: 0, ...l }));
+  constructor(layers, { lights = [], lightColor = '255,170,80', lightRadius = 120, motes = ['#ffcf8a', '#ffe9c4'] } = {}) {
+    this.layers = layers.map((l) => ({ floorLine: 0.71, depth: 0.85, darken: 0, focusY: 0.5, overscan: 1.18, ...l }));
     this.lights = lights;
     this.lightColor = lightColor;
+    this.lightRadius = lightRadius;
     this.time = 0;
     this.motes = new Motes(45, motes, new Rng(5));
   }
@@ -458,8 +465,18 @@ class ImageStage {
   resize(view) {
     this.view = view;
     for (const l of this.layers) {
-      const h = (view.homeY + view.halfH + 20 - HORIZON_Y) / (1 - l.floorLine);
-      const w = h * (l.image.width / l.image.height);
+      const aspect = l.image.width / l.image.height;
+      if (l.fit === 'cover') {
+        const h = Math.max(view.halfH * 2 * l.overscan, (view.halfW * 2 * l.overscan) / aspect);
+        const w = h * aspect;
+        l.rect = { x: view.homeX - w / 2, y: view.homeY - h * l.focusY, w, h };
+        continue;
+      }
+      let h = l.height ?? (view.homeY + view.halfH + 20 - HORIZON_Y) / (1 - l.floorLine);
+      // coverWidth: en vistas muy anchas (HUD alto, 3 vs 3, monitores 21:9) la capa se amplía
+      // hasta cubrir el ancho; la línea de suelo sigue en el horizonte y el exceso queda abajo.
+      if (l.coverWidth) h = Math.max(h, (view.halfW * 2 * l.overscan) / aspect);
+      const w = h * aspect;
       l.rect = { x: -w / 2, y: HORIZON_Y - h * l.floorLine, w, h };
     }
   }
@@ -493,11 +510,12 @@ class ImageStage {
       const x = base.rect.x + u * base.rect.w;
       const y = base.rect.y + v * base.rect.h;
       const k = 0.75 + 0.25 * smoothNoise(this.time * 6, u * 10);
-      const g = ctx.createRadialGradient(x, y, 0, x, y, 120);
+      const radius = this.lightRadius;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, radius);
       g.addColorStop(0, `rgba(${this.lightColor},${0.35 * k})`);
       g.addColorStop(1, `rgba(${this.lightColor},0)`);
       ctx.fillStyle = g;
-      ctx.fillRect(x - 120, y - 120, 240, 240);
+      ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
     }
     ctx.globalCompositeOperation = 'source-over';
     r.layer(0.9);
@@ -512,6 +530,15 @@ class ImageStage {
  * ImageStage con sus capas; las imágenes se cargan en main.js (función loadStageImages).
  */
 export function createStage(name, images = {}) {
+  // Reactor Mako pintado (docs/GUIA_SPRITES.md §4.7 A). Capas preparadas con tools/stage_layer.py.
+  // Si falta alguna imagen se usa el reactor procedural, que no necesita descargas.
+  if (name === 'mako' && images.makoFar && images.makoMid && images.makoFloor) {
+    return new ImageStage([
+      { image: images.makoFar, depth: 0.12, fit: 'cover', focusY: 0.5, darken: 0.12 },
+      { image: images.makoMid, depth: 0.45, floorLine: 0.84, height: 240 },
+      { image: images.makoFloor, depth: 1, floorLine: 0.49, darken: 0.08, coverWidth: true },
+    ], { lights: [[0.5, 0.42]], lightColor: '61,255,178', lightRadius: 170, motes: ['#3dffb2', '#8dffd9', '#3fd4ff'] });
+  }
   if (name === 'dungeon' && images.dungeon) {
     return new ImageStage([{ image: images.dungeon, depth: 0.85, floorLine: 0.71, darken: 0.42 }], {
       lights: [[0.213, 0.4], [0.808, 0.4]],

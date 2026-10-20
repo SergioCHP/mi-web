@@ -2,7 +2,9 @@
  * config.js — Parámetros globales del combate. Todo lo "tuneable" vive aquí.
  *
  * Parámetros de URL (útiles para depurar o enseñar):
- *   ?stage=dungeon     usa la mazmorra (fondo_combate.jpg) en vez del reactor procedural
+ *   ?stage=reactor     reactor dibujado por código (sin imágenes; es también el respaldo)
+ *   ?stage=dungeon     mazmorra pintada (assets/combat/fondo_mazmorra.webp)
+ *   (por defecto)      Reactor Mako pintado en 3 capas (assets/combat/mako_*.webp)
  *   ?atb=active        el ATB sigue corriendo con el menú abierto (por defecto: "wait")
  *   ?seed=1234         combate reproducible (PRNG determinista)
  *   ?party=3&foes=3    formaciones 3 vs 3 para probar grupos
@@ -11,8 +13,9 @@
 const params = new URLSearchParams(globalThis.location?.search ?? '');
 const reducedMotion = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 
-const PARTY_POOL = ['sergio', 'ada', 'linus'];
-const FOE_POOL = ['bugFatal', 'larva', 'larva'];
+/** Grupos por defecto (también los usa tools/simulate.mjs). */
+export const PARTY_POOL = ['sergio', 'ada', 'linus'];
+export const FOE_POOL = ['bugFatal', 'soldado', 'larva'];
 const clampCount = (value, fallback) => Math.min(3, Math.max(1, Number.parseInt(value, 10) || fallback));
 
 export const CONFIG = Object.freeze({
@@ -46,8 +49,8 @@ export const CONFIG = Object.freeze({
     enemies: FOE_POOL.slice(0, clampCount(params.get('foes'), 2)),
   },
 
-  /** 'reactor' (procedural) o el nombre de un escenario pintado (render/background.js). */
-  stage: params.get('stage') ?? 'reactor',
+  /** 'mako' (pintado, por defecto), 'reactor' (procedural) o 'dungeon'. Ver render/background.js. */
+  stage: params.get('stage') ?? 'mako',
   seed: params.has('seed') ? Number(params.get('seed')) >>> 0 : undefined,
   debug: params.get('debug') === '1',
 

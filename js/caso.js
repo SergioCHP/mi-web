@@ -102,8 +102,8 @@
     miniResT: "Resultat",
     miniRes:
       "<li>300 combats simulats per estratègia en Node, sense navegador</li>" +
-      "<li>Qui només ataca guanya el 86 %; qui usa bé les habilitats, el 100 %</li>" +
-      "<li>Durada mitjana: 30–34 s per combat</li>" +
+      "<li>Qui només ataca guanya el 85 %; qui usa bé les habilitats, el 100 %</li>" +
+      "<li>Durada mitjana: 31–35 s per combat</li>" +
       "<li>0 bloquejos de la màquina d'estats</li>" +
       "<li>Mateix resultat a 30, 60, 144 i 240 Hz</li>",
     miniPlay: "Jugar al minijoc",

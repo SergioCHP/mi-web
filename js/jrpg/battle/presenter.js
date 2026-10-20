@@ -12,6 +12,8 @@ export class Presenter {
   *intro() {}
   *approach(_actor, _target) {}
   *retreat(_actor) {}
+  /** Encuadre previo a un ataque a distancia (sin desplazamiento). */
+  *aim(_actor, _target) {}
   /** @returns {{duration:number, hitTime:number}} */
   playAnim(_actor, _clip) {
     return { duration: 0, hitTime: 0 };

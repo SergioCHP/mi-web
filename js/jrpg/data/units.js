@@ -67,6 +67,16 @@ export const UNITS = Object.freeze({
     elements: { weak: ['fire'], resist: ['thunder'] },
     ai: 'larva',
   },
+  // Soldado de Élite: blindaje táctico (débil a Electro); dispara a distancia y remata con la
+  // espada corta. Equilibrado con tools/simulate.mjs: quien solo pulsa Atacar gana ~8 de cada 10.
+  soldado: {
+    nameKey: 'unit.soldado',
+    sprite: 'soldier',
+    pixelScale: 1.6,
+    stats: { hp: 180, mp: 0, atk: 15, mag: 10, def: 10, mdef: 6, spd: 9 },
+    elements: { weak: ['thunder'], resist: [] },
+    ai: 'soldado',
+  },
 });
 
 const lowestHp = (units) => units.reduce((a, b) => (b.hp / b.maxHp < a.hp / a.maxHp ? b : a));
@@ -92,5 +102,15 @@ export const AI = Object.freeze({
       return { skill: 'toxicBite', targets: [rng.pick(healthy)] };
     }
     return { skill: 'enemyAttack', targets: [rng.pick(heroes)] };
+  },
+
+  /** Táctico: remata al héroe más débil con el Asalto táctico; si no, ataque normal. */
+  soldado(self, battle, rng) {
+    const heroes = battle.alive('heroes');
+    const weakest = lowestHp(heroes);
+    if (weakest.hp / weakest.maxHp < 0.6 && rng.chance(0.5)) {
+      return { skill: 'tacticalStrike', targets: [weakest] };
+    }
+    return { skill: rng.chance(0.3) ? 'tacticalStrike' : 'soldierAttack', targets: [rng.pick(heroes)] };
   },
 });

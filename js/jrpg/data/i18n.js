@@ -44,6 +44,7 @@ const STRINGS = {
     'skill.refactor': 'REFACTOR TOTAL',
     'skill.claw': 'Zarpazo',
     'skill.toxicBite': 'Mordisco tóxico',
+    'skill.tacticalStrike': 'Asalto táctico',
     'skill.enemyBarrier': 'Coraza',
 
     'status.poison': 'Veneno',
@@ -58,6 +59,7 @@ const STRINGS = {
     'unit.linus': 'Linus',
     'unit.bugFatal': 'Bug Fatal',
     'unit.larva': 'Larva Glitch',
+    'unit.soldado': 'Soldado de Élite',
 
     'msg.start': '¡Combate iniciado!',
     'msg.yourTurn': 'Turno de {name}',
@@ -111,6 +113,7 @@ const STRINGS = {
     'skill.refactor': 'REFACTOR TOTAL',
     'skill.claw': 'Urpada',
     'skill.toxicBite': 'Mossegada tòxica',
+    'skill.tacticalStrike': 'Assalt tàctic',
     'skill.enemyBarrier': 'Cuirassa',
 
     'status.poison': 'Verí',
@@ -125,6 +128,7 @@ const STRINGS = {
     'unit.linus': 'Linus',
     'unit.bugFatal': 'Bug Fatal',
     'unit.larva': 'Larva Glitch',
+    'unit.soldado': "Soldat d'Elit",
 
     'msg.start': 'Combat iniciat!',
     'msg.yourTurn': 'Torn de {name}',

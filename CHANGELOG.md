@@ -12,7 +12,25 @@ Las versiones anteriores a la 1.0.0 se han reconstruido a partir del historial d
 
 ## [Sin publicar]
 
-_Nada todavía._
+Minijuego: animaciones nuevas, Soldado de Élite y escenario pintado.
+
+### Añadido
+- **Animaciones nuevas del héroe** generadas con IA: daño, magia, Límite y victoria (`assets/combat/heroe_*.webp`).
+- **Soldado de Élite**, enemigo nuevo: ráfaga de fusil a distancia y «Asalto táctico» con la espada. Entra en el combate por defecto (Bug Fatal + Soldado).
+- **Reactor Mako pintado en 3 capas** con parallax, escenario por defecto. `?stage=reactor` vuelve al reactor dibujado por código.
+- Pose de guardia mientras el héroe está en Defensa y pose propia al caer K.O.
+- `tools/stage_layer.py`: prepara capas de fondo (croma, niebla, centro despejado y WebP).
+- `tools/sprite_repack.py --strip-lines`: borra las rejillas, marcos y líneas de suelo que dibuja la IA.
+
+### Cambiado
+- El animador reproduce tramos de una hoja y mantiene poses: el Límite va por fases (carga, embestida, impacto, aterrizaje) sin volver al idle entre golpes.
+- `tools/simulate.mjs` usa los mismos enemigos que el juego; antes simulaba Bug Fatal + Larva.
+- Equilibrio del Soldado ajustado con la simulación: quien solo ataca gana el 85 % y quien usa las habilidades, el 100 %. Cifras del caso de estudio actualizadas.
+
+### Corregido
+- Tras lanzar una magia, el héroe se quedaba en la postura de magia. Ahora vuelve al idle en el impacto, y al terminar cada acción se sueltan todas las poses.
+- La cámara se quedaba con zoom después de un hechizo.
+- Al caer el último héroe, un enemigo podía intentar atacar y lanzaba un error en la consola.
 
 ## [1.2.0] — 2026-10-20
 

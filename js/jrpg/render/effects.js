@@ -348,6 +348,40 @@ export class ShieldBubble extends Effect {
 }
 
 /** Gestor de efectos con dos capas (detrás / delante de los sprites). */
+/** Trazadora de bala: un destello corto que viaja de la boca del arma al objetivo. */
+export class Tracer extends Effect {
+  constructor({ x0, y0, x1, y1, color = '#ffd27a', life = 0.12, width = 2.4, delay = 0 }) {
+    super(life + delay);
+    Object.assign(this, { x0, y0, x1, y1, color, width, delay, travel: life });
+  }
+
+  draw(ctx) {
+    const elapsed = this.maxLife - this.life - this.delay;
+    if (elapsed < 0) return;
+    const k = clamp(elapsed / this.travel, 0, 1);
+    const head = Ease.outQuad(clamp(k / 0.55, 0, 1));
+    const tail = clamp((k - 0.2) / 0.8, 0, 1);
+    if (head - tail < 0.004) return;
+    const px = (u) => this.x0 + (this.x1 - this.x0) * u;
+    const py = (u) => this.y0 + (this.y1 - this.y0) * u;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.lineCap = 'round';
+    for (const [w, alpha, col] of [
+      [this.width * 2.6, 0.28, this.color],
+      [this.width, 0.95, '#fff6d8'],
+    ]) {
+      ctx.strokeStyle = rgba(col, alpha * (1 - k * 0.5));
+      ctx.lineWidth = w;
+      ctx.beginPath();
+      ctx.moveTo(px(tail), py(tail));
+      ctx.lineTo(px(head), py(head));
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+}
+
 export class EffectLayer {
   constructor() {
     this.items = [];

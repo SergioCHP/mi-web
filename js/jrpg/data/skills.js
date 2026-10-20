@@ -18,8 +18,8 @@
  * target: 'enemy' | 'ally' | 'self' | 'foes-random'
  */
 
-/** Ataque cuerpo a cuerpo genérico (héroe y enemigos). */
-function melee({ fx = 'slash', hit = {}, status = null } = {}) {
+/** Ataque cuerpo a cuerpo genérico (héroe y enemigos). `clip`: animación del golpe. */
+function melee({ fx = 'slash', clip = 'attack', hit = {}, status = null } = {}) {
   return function* run(ctx) {
     const { actor, pres } = ctx;
     let target = ctx.valid(ctx.target);
@@ -28,13 +28,31 @@ function melee({ fx = 'slash', hit = {}, status = null } = {}) {
     target = ctx.valid(target);
     if (!target) return yield* pres.retreat(actor);
 
-    const anim = pres.playAnim(actor, 'attack');
+    const anim = pres.playAnim(actor, clip);
     yield anim.hitTime;
     pres.fx(fx, target, { from: actor });
     const result = ctx.hit(target, hit);
     if (result && status) ctx.addStatus(target, status.id, status.chance);
     yield Math.max(0.18, anim.duration - anim.hitTime);
     yield* pres.retreat(actor);
+  };
+}
+
+/** Ataque a distancia (disparo): sin desplazamiento; el impacto llega con el frame de disparo. */
+function ranged({ fx = 'rifle', clip = 'attack', hit = {} } = {}) {
+  return function* run(ctx) {
+    const { actor, pres } = ctx;
+    let target = ctx.valid(ctx.target);
+    if (!target) return;
+    yield* pres.aim(actor, target);
+    const anim = pres.playAnim(actor, clip);
+    yield anim.hitTime;
+    target = ctx.valid(target);
+    if (!target) return;
+    pres.fx(fx, target, { from: actor });
+    ctx.hit(target, hit);
+    yield Math.max(0.35, anim.duration - anim.hitTime);
+    pres.playAnim(actor, 'idle'); // suelta la pose de disparo sostenida
   };
 }
 
@@ -199,6 +217,29 @@ export const SKILLS = Object.freeze({
     power: 1,
     crit: 0.05,
     run: melee({ fx: 'bite', status: { id: 'poison', chance: 0.75 } }),
+  },
+  /**
+   * Soldado de Élite. Su hoja de ataque tiene dos fases y cada habilidad usa una:
+   * ráfaga de fusil a distancia (frames 0-2) y tajo con la espada corta (frames 3-5).
+   */
+  soldierAttack: {
+    id: 'soldierAttack',
+    nameKey: 'skill.attack',
+    type: 'physical',
+    target: 'enemy',
+    power: 0.95,
+    crit: 0.08,
+    announce: false,
+    run: ranged({ fx: 'rifle', clip: 'shoot' }),
+  },
+  tacticalStrike: {
+    id: 'tacticalStrike',
+    nameKey: 'skill.tacticalStrike',
+    type: 'physical',
+    target: 'enemy',
+    power: 1.45,
+    crit: 0.15,
+    run: melee({ fx: 'slashHeavy', clip: 'slash' }),
   },
   enemyBarrier: {
     id: 'enemyBarrier',

@@ -33,6 +33,10 @@ Opciones clave:
   --match-height PX   alternativa a --scale: reescala para que el cuerpo del frame 0 mida PX.
   --align feet|cell   feet = registro por piernas (por defecto); cell = respeta la celda original.
   --min-area N        descarta manchas de menos de N píxeles (ruido). Por defecto 12.
+  --strip-lines       borra líneas finas y oscuras que la IA dibuja sin pedirlas: separadores
+                      de rejilla, marcos y la línea de suelo bajo los pies.
+
+Hojas en JPG: funcionan, pero el JPG ensucia el croma. Sube --tol a 70-90.
 """
 from __future__ import annotations
 
@@ -92,6 +96,83 @@ def chroma_key(img: np.ndarray, key: tuple[int, int, int], tol: float) -> np.nda
     return out
 
 
+def _longest_runs(mask: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Por cada fila: longitud, inicio y fin del tramo continuo más largo de True."""
+    n, w = mask.shape
+    length = np.zeros(n, int)
+    start = np.zeros(n, int)
+    for i in range(n):
+        row = mask[i]
+        if not row.any():
+            continue
+        padded = np.concatenate(([0], row.astype(np.int8), [0]))
+        edges = np.flatnonzero(np.diff(padded))
+        starts, ends = edges[::2], edges[1::2]
+        k = int((ends - starts).argmax())
+        length[i], start[i] = ends[k] - starts[k], starts[k]
+    return length, start, start + length
+
+
+def strip_lines(img: np.ndarray, cols: int, rows: int, min_len: float = 0.5,
+                max_thick: float = 0.015, dark: float = 95) -> tuple[np.ndarray, int]:
+    """Borra líneas rectas oscuras y finas que las IAs dibujan aunque no se pidan:
+    separadores de rejilla, marcos y la "línea de suelo" bajo los pies.
+
+    Una línea es un grupo de filas (o columnas) consecutivas, dentro de una celda, cuyo tramo
+    oscuro continuo ocupa más de `min_len` del ancho de la celda y que es fina (grosor máximo
+    `max_thick` del alto de la celda). Los cuerpos son gruesos y las espadas claras: no se tocan.
+    """
+    out = img.copy()
+    rgb = out[..., :3].astype(np.float32)
+    luma = rgb[..., 0] * 0.299 + rgb[..., 1] * 0.587 + rgb[..., 2] * 0.114
+    opaque = out[..., 3] > 0
+    darkish = opaque & (luma < dark)
+    soft = opaque & (luma < dark + 45)          # antialias del borde de la línea
+    h, w = darkish.shape
+    removed = 0
+    for r in range(rows):
+        for c in range(cols):
+            y0, y1 = round(r * h / rows), round((r + 1) * h / rows)
+            x0, x1 = round(c * w / cols), round((c + 1) * w / cols)
+            for axis in (0, 1):                  # 0 = líneas horizontales, 1 = verticales
+                sub = darkish[y0:y1, x0:x1] if axis == 0 else darkish[y0:y1, x0:x1].T
+                span = sub.shape[1]
+                thick_max = max(3, int(max_thick * sub.shape[0]) + 2)
+                length, seg0, seg1 = _longest_runs(sub)
+                long = length >= min_len * span
+                i = 0
+                while i < len(long):
+                    if not long[i]:
+                        i += 1
+                        continue
+                    j = i
+                    while j + 1 < len(long) and long[j + 1]:
+                        j += 1
+                    # Contraste: a ambos lados de una línea real el tramo oscuro es mucho más
+                    # corto (fondo o pies). En el "pico" de un cuerpo los vecinos miden casi lo mismo.
+                    near = np.concatenate([length[max(0, i - 8):max(0, i - 2)],
+                                           length[min(len(long), j + 3):min(len(long), j + 9)]])
+                    neighbour = int(near.max()) if near.size else 0
+                    # Posición: los separadores van pegados al borde de la celda y la línea de
+                    # suelo en su cuarto inferior; nunca a media altura del personaje.
+                    pos = (i + j) / 2 / len(long)
+                    where_ok = pos < 0.06 or pos > 0.94 or (axis == 0 and pos > 0.75)
+                    is_line = (where_ok and j - i + 1 <= thick_max
+                               and length[i:j + 1].max() >= 1.8 * neighbour)
+                    if is_line:
+                        a, b = int(seg0[i:j + 1].min()), int(seg1[i:j + 1].max())
+                        lo, hi = max(0, i - 2), min(len(long), j + 3)
+                        if axis == 0:
+                            ys, xs = slice(y0 + lo, y0 + hi), slice(x0 + a, x0 + b)
+                        else:
+                            ys, xs = slice(y0 + a, y0 + b), slice(x0 + lo, x0 + hi)
+                        kill = soft[ys, xs]
+                        removed += int(kill.sum())
+                        out[ys, xs, 3][kill] = 0
+                    i = j + 1
+    return out, removed
+
+
 def feet_anchor_x(mask: np.ndarray) -> float:
     """Mediana X de los píxeles opacos en el 12 % inferior del cuerpo (los pies)."""
     ys, xs = np.nonzero(mask)
@@ -113,17 +194,21 @@ def repack(args: argparse.Namespace) -> dict:
     src = Image.open(args.input).convert("RGBA")
     img = np.array(src)
 
+    # Croma y limpieza de líneas sobre la rejilla ORIGINAL (las líneas siguen las celdas)
+    if args.key:
+        key = corner_color(img[..., :3]) if args.key == "auto" else parse_hex(args.key)
+        img = chroma_key(img, key, args.tol)
+        print(f"· croma eliminado: #{key[0]:02x}{key[1]:02x}{key[2]:02x} (tol {args.tol})")
+    if args.strip_lines:
+        img, removed = strip_lines(img, args.frames // args.rows, args.rows)
+        print(f"· líneas de rejilla/suelo eliminadas: {removed} px")
+
     # Rejilla → una sola fila (las IAs generan mejor en 2×2 o 4×2 que en tiras de 8:1)
     if args.rows > 1:
         if args.frames % args.rows:
             sys.exit("✗ --frames debe ser múltiplo de --rows")
         strip_h = img.shape[0] // args.rows
         img = np.concatenate([img[r * strip_h:(r + 1) * strip_h] for r in range(args.rows)], axis=1)
-
-    if args.key:
-        key = corner_color(img[..., :3]) if args.key == "auto" else parse_hex(args.key)
-        img = chroma_key(img, key, args.tol)
-        print(f"· croma eliminado: #{key[0]:02x}{key[1]:02x}{key[2]:02x} (tol {args.tol})")
 
     # 1) Limpieza de alfa residual
     img[img[..., 3] < args.alpha_threshold] = 0
@@ -239,6 +324,8 @@ def main() -> None:
     p.add_argument("--min-area", type=int, default=12)
     p.add_argument("--pad", type=int, default=2)
     p.add_argument("--align", choices=("feet", "cell"), default="feet")
+    p.add_argument("--strip-lines", action="store_true",
+                   help="borra separadores de rejilla, marcos y líneas de suelo dibujadas por la IA")
     g = p.add_mutually_exclusive_group()
     g.add_argument("--scale", type=float, default=1.0)
     g.add_argument("--match-height", type=float)

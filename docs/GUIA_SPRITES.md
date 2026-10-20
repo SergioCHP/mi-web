@@ -57,10 +57,12 @@ straight steel longsword
 |---|---|---|---|---|---|---|---|---|
 | `heroe_hurt` | 3 | 3×1 | 768×256 | `#FF00FF` | 12 | no | — | `feet` |
 | `heroe_victory` | 6 | 3×2 | 768×512 | `#FF00FF` | 8 | sí | — | `feet` |
-| `heroe_cast` | 4 | 2×2 | 512×512 | `#FF00FF` | 8 | sí | — | `feet` |
+| `heroe_cast` | 4 | 2×2 | 512×512 | `#FF00FF` | 8 | no (se sostiene el último) | — | `feet` |
 | `heroe_limit` | 8 | 4×2 | 1024×512 | `#FF00FF` | 18 | no | 4 | `cell` (hay frames en el aire) |
 | `soldado_idle` | 6 | 3×2 | 768×512 | `#FF00FF` | 7 | sí | — | `feet` |
-| `soldado_ataque` | 6 | 3×2 | 768×512 | `#FF00FF` | 12 | no | 4 | `feet` |
+| `soldado_ataque` | 6 | 3×2 | 768×512 | `#FF00FF` | 9-11 | no | 2 (disparo) y 4 (tajo) | `feet` |
+| `heroe_idle` (nueva, opcional) | 6 | 3×2 | 768×512 | `#FF00FF` | 7 | sí | — | `feet` |
+| `heroe_ataque` (nueva, opcional) | 6 | 3×2 | 768×512 | `#FF00FF` | 14 | no | 4 | `feet` |
 | `dron_idle` | 6 | 3×2 | 768×512 | `#00FF00` | 8 | sí | — | `cell` (levita) |
 | `dron_ataque` | 6 | 3×2 | 768×512 | `#00FF00` | 10 | no | 3 | `cell` |
 
@@ -122,6 +124,27 @@ cleave, the decisive hit; frame 6 landing impact on one knee, sword driven into 
 frame 7 rising upward slash; frame 8 recovery stance, sword resting on the shoulder,
 dramatic cape motion, only a thin white slash trail on the blade, grounded frames share
 the same ground line
+```
+
+### 4.4 b Héroe — `Idle` y `Ataque` (para igualar el estilo)
+
+Las hojas `heroe_idle` y `heroe_ataque` son anteriores y se ven más borrosas que las nuevas: al
+pasar del idle a la magia o al daño se nota el cambio. Regenerarlas con la misma referencia
+(adjunta `heroe_hurt.webp` o `heroe_victory.webp`) unifica al personaje.
+
+Idle (6 frames en bucle):
+```
+sprite sheet, 6 frames in a 3x2 grid, equal square cells, seamless idle loop: battle-ready stance,
+longsword held low in the right hand pointing forward-down, slight knee bend, subtle breathing,
+cape and hair swaying gently, frame 6 flows back into frame 1, feet on the same ground line
+```
+
+Ataque (6 frames, impacto en el 5.º = `hitFrame: 4`):
+```
+sprite sheet, 6 frames in a 3x2 grid, equal square cells, sword attack animation: frame 1 guard
+stance; frame 2 wind-up, sword raised over the shoulder; frame 3 step forward; frame 4 the swing
+begins; frame 5 horizontal slash fully extended, the hit; frame 6 follow-through and recovery,
+feet on the same ground line, no slash effects
 ```
 
 ### 4.5 Enemigo — `Soldado de Élite`
@@ -252,15 +275,63 @@ uniforme + JSON con `frameWidth`, `frameHeight` y `anchor`.
 > **`--match-height`** mide el frame 0. Si el frame 0 no está de pie (p. ej. *hurt*), usa
 > `--scale` y compara a ojo con `heroe_idle.png` hasta que la cabeza tenga el mismo tamaño.
 
-Fondos (reducir a WebP; las capas con croma necesitan alfa):
+**Hojas reales (JPG con rejilla dibujada).** Las IAs suelen entregar JPG y pintan separadores,
+marcos y una "línea de suelo" bajo los pies aunque no se pidan. Añade `--strip-lines` y sube
+`--tol` a 80. Estos son los comandos con los que se integraron las hojas actuales:
 
 ```bash
-python -c "from PIL import Image; Image.open('ia/reactor_far.png').convert('RGB').resize((1600,720), Image.LANCZOS).save('assets/combat/reactor_far.webp', quality=82)"
+python tools/sprite_repack.py assets/combat/heroe_hurt.jpg --frames 3 --key ff00ff --tol 80 \
+  --strip-lines --min-area 200 --scale 0.0705 -o tmp/heroe_hurt.png --json tmp/heroe_hurt.json
+python tools/sprite_repack.py assets/combat/heroe_cast.jpg --frames 4 --rows 2 --key ff00ff --tol 80 \
+  --strip-lines --min-area 200 --scale 0.084 -o tmp/heroe_cast.png --json tmp/heroe_cast.json
+python tools/sprite_repack.py assets/combat/heroe_limit.jpg --frames 8 --rows 2 --key ff00ff --tol 80 \
+  --strip-lines --min-area 200 --align cell --scale 0.132 -o tmp/heroe_limit.png --json tmp/heroe_limit.json
+python tools/sprite_repack.py assets/combat/heroe_victory.jpg --frames 6 --rows 2 --key ff00ff --tol 80 \
+  --strip-lines --min-area 200 --scale 0.104 -o tmp/heroe_victory.png --json tmp/heroe_victory.json
+# soldado_idle: solo la 2.ª fila (en la 1.ª la IA dibujó al soldado un 4 % más pequeño → "latía")
+python tools/sprite_repack.py tmp/soldado_idle_fila2.png --frames 4 --key ff00ff --tol 80 \
+  --strip-lines --min-area 200 --scale 0.112 -o tmp/soldado_idle.png --json tmp/soldado_idle.json
+python tools/sprite_repack.py assets/combat/soldado_ataque.jpg --frames 6 --rows 2 --key ff00ff --tol 80 \
+  --strip-lines --min-area 200 --scale 0.112 -o tmp/soldado_ataque.png --json tmp/soldado_ataque.json
 ```
+
+Después, a WebP sin pérdidas (el pixel art se ensucia con pérdidas):
+`python -c "from PIL import Image; Image.open('tmp/heroe_hurt.png').save('assets/combat/heroe_hurt.webp', lossless=True)"`
+
+**Fondos con `tools/stage_layer.py`** (croma, niebla, centro despejado y WebP):
+
+```bash
+python tools/stage_layer.py "assets/combat/Fondo A Reactor Mako.jpg" -o assets/combat/mako_far.webp --width 1920
+python tools/stage_layer.py "assets/combat/Fondo A Reactor Mako, capa media.jpg" --key ff00ff \
+  --fog 0f3634:0.38 --clear-center 0.12:0.26 -o assets/combat/mako_mid.webp --width 1600
+python tools/stage_layer.py "assets/combat/Fondo A Reactor Mako, suelo.jpg" --key ff00ff \
+  -o assets/combat/mako_floor.webp --width 1920
+```
+
+- `--fog` mezcla la capa media con el color de la niebla del reactor: queda "detrás" y no
+  compite con los personajes.
+- `--clear-center` vacía el centro de la capa media para que no tape el núcleo de la lejana.
 
 ---
 
 ## 6. Integración en el motor
+
+**Estado actual:** integradas `heroe_hurt`, `heroe_cast`, `heroe_limit`, `heroe_victory`,
+`soldado_idle`, `soldado_ataque` y el Reactor Mako en 3 capas (escenario por defecto;
+`?stage=reactor` vuelve al procedural). Pendientes: `dron_idle`, `dron_ataque` y la autopista.
+
+**Cómo usa el motor cada hoja (tramos y poses sostenidas, ver `data/sprites.js`):**
+
+| Hoja | Uso |
+|---|---|
+| `heroe_cast` | Frames 0→3 al canalizar; el 3 (máxima concentración) se **sostiene** hasta el impacto y vuelve al idle. |
+| `heroe_limit` | Frame 0 durante la carga; 1→4 en cada golpe (se sostiene el 4 entre golpes); el último golpe sigue 1→7 y mantiene la guardia en la salida. |
+| `heroe_hurt` | Entera al recibir daño; el frame 1 sostenido al caer K.O.; el frame 2 (guardia) mientras dura **Defensa**. |
+| `heroe_victory` | En bucle al ganar. |
+| `soldado_ataque` | Frames 0→2 para la **ráfaga** a distancia (se sostiene el disparo) y 3→5 para el **tajo** cuerpo a cuerpo. Recoloreada (capa azul → gris, cuero → azul marino) para acercarla al idle; lo ideal es regenerarla adjuntando `soldado_idle` como referencia. |
+
+Regla de oro: cada pose sostenida la suelta quien la pidió, y el Director además devuelve al idle
+a todos al terminar cada acción. Así ninguna postura se queda "enganchada".
 
 **1. Registrar la hoja** en `js/jrpg/data/sprites.js` copiando el JSON:
 

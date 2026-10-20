@@ -10,7 +10,7 @@
  */
 import { Presenter } from '../battle/presenter.js';
 import { CombatantView } from './combatant-view.js';
-import { Slash, ClawMarks, Bolt, Projectile, MagicCircle, LightColumn, ShieldBubble } from './effects.js';
+import { Slash, ClawMarks, Bolt, Projectile, MagicCircle, LightColumn, ShieldBubble, Tracer } from './effects.js';
 import { Shape } from './particles.js';
 import { Ease, clamp, damp } from '../core/utils.js';
 import { STATUSES } from '../data/statuses.js';
@@ -83,6 +83,7 @@ export class Director extends Presenter {
     on('target:change', (e) => this.#setTargeted(e.target));
     on('target:end', () => this.#setTargeted(null));
     on('limit:ready', ({ unit }) => this.#burstAt(this.view(unit).chest(), COLORS.limit, 26));
+    on('action:end', () => this.#settle());
   }
 
   detach() {
@@ -106,6 +107,11 @@ export class Director extends Presenter {
   /** Paso fijo (tiempo de juego): sprites sincronizados con las corrutinas. */
   update(dt) {
     for (const v of this.views.values()) {
+      // Pose de reposo: en Defensa, guardia (si la hoja existe); si no, idle.
+      if (v.unit.alive) {
+        if (v.unit.defending && v.anim.requested === 'idle' && v.anim.isNative('defend')) v.play('defend');
+        else if (!v.unit.defending && v.anim.requested === 'defend') v.play('idle');
+      }
       v.update(dt);
       // Aura rosa palpitante mientras el Límite está listo (si no hay otra aura activa).
       if (!v.auraLocked) {
@@ -176,6 +182,13 @@ export class Director extends Presenter {
     this.#dust(v.x, v.y, 0);
   }
 
+  *aim(actor, target) {
+    const v = this.view(actor);
+    const tv = this.view(target);
+    this.camera.focus((v.x + tv.x) / 2, Math.min(v.y, tv.y) - 50, 1.06, 3.5);
+    yield 0.14;
+  }
+
   playAnim(actor, clip, opts) {
     return this.view(actor).play(clip, opts);
   }
@@ -183,6 +196,8 @@ export class Director extends Presenter {
   *cast(actor, element) {
     const v = this.view(actor);
     const color = COLORS[element] ?? COLORS.barrier;
+    // Hoja de canalización: 4 frames hasta la pose de máxima concentración, que se SOSTIENE
+    // (clip con hold) mientras viaja el hechizo. spell() la suelta en el impacto.
     v.play('cast');
     v.auraLocked = true;
     v.auraColor = color;
@@ -261,6 +276,7 @@ export class Director extends Presenter {
       default:
         yield 0.2;
     }
+    this.#release(v);
   }
 
   fx(name, target, opts = {}) {
@@ -274,6 +290,32 @@ export class Director extends Presenter {
         this.effects.add(new Slash({ x: c.x, y: c.y, radius: tv.bodyWidth * 0.75, angle: fromLeft ? -2.2 : -0.9, sweep: 2.2, flip: !fromLeft, color: COLORS.slash }));
         this.particles.burst({ x: c.x, y: c.y, count: 18, speed: [120, 300], angle: fromLeft ? 0 : Math.PI, spread: 1.6, life: [0.12, 0.3], colors: ['#ffffff', COLORS.slash], shape: Shape.SPARK, size: 3, drag: 5 });
         break;
+      case 'slashHeavy':
+        this.effects.add(new Slash({ x: c.x, y: c.y, radius: tv.bodyWidth * 0.95, angle: fromLeft ? -2.4 : -0.7, sweep: 2.5, width: 22, flip: !fromLeft, color: '#9fe8ff', life: 0.32 }));
+        this.effects.add(new Slash({ x: c.x, y: c.y + 6, radius: tv.bodyWidth * 0.7, angle: fromLeft ? -2.0 : -1.1, sweep: 2.2, width: 10, flip: !fromLeft, color: '#ff4d6d', life: 0.26 }));
+        this.particles.burst({ x: c.x, y: c.y, count: 26, speed: [140, 340], angle: fromLeft ? 0 : Math.PI, spread: 1.5, life: [0.12, 0.32], colors: ['#ffffff', '#9fe8ff', '#ff4d6d'], shape: Shape.SPARK, size: 3.2, drag: 5 });
+        this.camera.addTrauma(0.2);
+        break;
+      case 'rifle': {
+        // Ráfaga de 3 balas desde la boca del arma (dato `muzzle` del clip) hasta el objetivo.
+        const shooter = opts.from ? this.view(opts.from) : null;
+        const m = shooter ? shooter.muzzle() : { x: c.x + (fromLeft ? -150 : 150), y: c.y };
+        const dir = fromLeft ? 0 : Math.PI;
+        const particles = this.particles;
+        particles.burst({ x: m.x, y: m.y, count: 12, speed: [40, 160], angle: dir, spread: 0.9, life: [0.05, 0.15], colors: ['#ffe08a', '#ff9a3c', '#ffffff'], shape: Shape.SPARK, size: 3, drag: 6 });
+        for (let i = 0; i < 3; i++) {
+          const delay = i * 0.07;
+          const hx = c.x + rand(-6, 6);
+          const hy = c.y + rand(-12, 10);
+          this.effects.add(new Tracer({ x0: m.x, y0: m.y + rand(-1.5, 1.5), x1: hx, y1: hy, delay }));
+          this.scheduler.start(function* () {
+            yield delay + 0.05;
+            particles.burst({ x: hx, y: hy, count: 7, speed: [60, 180], angle: dir, spread: 1.4, life: [0.08, 0.22], colors: ['#ffd27a', '#ffffff'], shape: Shape.SPARK, size: 2.5, drag: 6 });
+          });
+        }
+        this.post.flash('#ffb347', 0.1, 0.12);
+        break;
+      }
       case 'claw':
       case 'clawHeavy': {
         const heavy = name === 'clawHeavy';
@@ -316,6 +358,8 @@ export class Director extends Presenter {
     v.auraColor = COLORS.limit;
     this.scheduler.tween(v, { aura: 1 }, 0.3);
     this.post.banner(t(skill.nameKey), { style: 'limit', duration: 1.5 });
+    // Frame 0 de la hoja del Límite: agachado, cargando (pose sostenida durante el aura).
+    if (v.anim.isNative('limit')) v.play('limit', { from: 0, to: 0, hold: true });
     for (let i = 0; i < 16; i++) {
       for (let k = 0; k < 3; k++) {
         this.particles.spawn({ x: v.x + rand(-26, 26), y: v.y - rand(0, 10), vx: rand(-10, 10), vy: -rand(80, 170), life: rand(0.4, 0.7), size: rand(3, 6), sizeEnd: 0.5, color: k ? COLORS.limit : '#ffffff', shape: Shape.GLOW });
@@ -329,20 +373,25 @@ export class Director extends Presenter {
     yield 0.2;
   }
 
-  *limitStrike(actor, target, index) {
+  *limitStrike(actor, target, index, total = 1) {
     const v = this.view(actor);
     const tv = this.view(target);
+    const final = index >= total - 1;
     const side = index % 2 === 0 ? -1 : 1;
     const spot = { x: tv.x + side * (tv.bodyWidth * 0.55 + 16), y: tv.y + ((index % 3) - 1) * 6 + 1 };
     v.flip = side > 0; // ataca desde la derecha → mira a la izquierda
-    this.camera.focus(tv.x, tv.y - 45, 1.28, 9);
-    const tw = this.scheduler.tween(v, { x: spot.x, y: spot.y }, 0.09, Ease.outQuad, {
+    this.camera.focus(tv.x, tv.y - 45, final ? 1.36 : 1.28, 9);
+    // La hoja se reproduce por tramos y se sostiene entre golpes (sin volver al idle):
+    // embestida (1) → giro y tajo (2-3) → impacto (4). El último golpe continúa con el
+    // aterrizaje y la guardia (5-7), que se mantiene durante la salida.
+    const anim = v.play('limit', { from: 1, to: final ? 7 : 4, hold: true, speed: final ? 1 : 1.4 });
+    const dash = 0.09;
+    const tw = this.scheduler.tween(v, { x: spot.x, y: spot.y }, dash, Ease.outQuad, {
       onUpdate: (_, k) => (v.lift = Math.sin(Math.PI * k) * 34),
     });
     yield tw;
     v.lift = 0;
-    const anim = v.play('limit', { speed: 2.2 });
-    yield anim.hitTime;
+    yield Math.max(0.02, anim.hitTime - dash);
   }
 
   *limitOutro(actor) {
@@ -359,6 +408,7 @@ export class Director extends Presenter {
     v.ghosting = false;
     v.auraLocked = false;
     v.squash = 0.7;
+    v.play('idle');
     yield 0.2;
   }
 
@@ -377,7 +427,8 @@ export class Director extends Presenter {
   *knockOut(unit) {
     const v = this.view(unit);
     if (unit.isHero) {
-      v.play('idle');
+      if (v.anim.isNative('hurt')) v.play('hurt', { from: 1, to: 1, hold: true });
+      else v.play('idle');
       this.scheduler.tween(v, { collapsed: 1 }, 0.4, Ease.outCubic);
       v.flashColor = '#ff3366';
       v.flash = 1;
@@ -481,6 +532,35 @@ export class Director extends Presenter {
   }
 
   // ───────────────────────────── Ayudantes ─────────────────────────────
+
+  /** Suelta la pose de canalización (o cualquier pose sostenida) y vuelve al idle. */
+  #release(v) {
+    if (v && v.unit.alive && v.anim.requested !== 'idle' && v.anim.requested !== 'victory') v.play('idle');
+  }
+
+  /**
+   * Red de seguridad al terminar CADA acción: ninguna pose, aura, desplazamiento o zoom de
+   * una coreografía sobrevive a su acción. Cubre los atajos (p. ej. el objetivo cayó antes de
+   * que llegara el hechizo y la habilidad terminó sin pasar por spell()) y los errores.
+   */
+  #settle() {
+    const ongoing = this.battle.alive('heroes').length > 0 && this.battle.alive('enemies').length > 0;
+    for (const v of this.views.values()) {
+      if (!v.unit.alive) continue;
+      if (v.anim.posed && v.anim.requested !== 'victory') v.play('idle');
+      v.ghosting = false;
+      v.auraLocked = false;
+      v.flip = !v.unit.isHero;
+      if (Math.hypot(v.x - v.home.x, v.y - v.home.y) > 1) {
+        v.lift = 0;
+        this.scheduler.tween(v, { x: v.home.x, y: v.home.y }, 0.3, Ease.inOutQuad);
+      }
+    }
+    if (!ongoing) return; // victoria/derrota tienen su propio encuadre
+    this.camera.reset(3);
+    const fx = this.post.state;
+    if (fx.darken > 0.01 || fx.letterbox > 0.01) this.scheduler.tween(fx, { darken: 0, letterbox: 0 }, 0.3);
+  }
 
   *#hops(v, count) {
     for (let i = 0; i < count; i++) {

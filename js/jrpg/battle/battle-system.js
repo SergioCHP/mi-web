@@ -353,6 +353,8 @@ export class BattleSystem {
       this.inputQueue.push(unit);
       return;
     }
+    // Sin héroes en pie no hay a quién atacar: la comprobación de fin de combate decide.
+    if (!this.alive('heroes').length) return;
     const decide = this.ai[unit.template.ai];
     const decision = decide
       ? decide(unit, this, this.rng)

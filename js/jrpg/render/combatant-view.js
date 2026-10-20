@@ -82,6 +82,20 @@ export class CombatantView {
     return { x: this.x + this.recoil, y: this.y - this.elevation - this.bodyHeight * 0.55 };
   }
 
+  /**
+   * Boca del arma para disparos: dato `muzzle` del clip actual (px de la hoja respecto a los
+   * pies, mirando a la derecha). Sin dato, un punto delante del pecho.
+   */
+  muzzle() {
+    const dir = this.flip ? -1 : 1;
+    const m = this.anim.clip?.muzzle;
+    if (!m) {
+      const c = this.chest();
+      return { x: c.x + dir * this.bodyWidth * 0.7, y: c.y };
+    }
+    return { x: this.x + this.recoil + dir * m.x * this.scale, y: this.y - this.elevation - m.y * this.scale };
+  }
+
   head() {
     return { x: this.x, y: this.y - this.elevation - this.bodyHeight };
   }

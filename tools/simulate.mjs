@@ -7,13 +7,14 @@
  *
  *   node tools/simulate.mjs            → 300 combates por estrategia
  *   node tools/simulate.mjs 1000 3 3   → 1000 combates, 3 héroes vs 3 enemigos
+ *   node tools/simulate.mjs 300 1 2 bugFatal,larva → enemigos concretos (por defecto, los del juego)
  */
 import { BattleSystem } from '../js/jrpg/battle/battle-system.js';
 import { Presenter } from '../js/jrpg/battle/presenter.js';
 import { EventBus } from '../js/jrpg/core/events.js';
 import { Scheduler } from '../js/jrpg/core/scheduler.js';
 import { Rng } from '../js/jrpg/core/utils.js';
-import { CONFIG } from '../js/jrpg/config.js';
+import { CONFIG, PARTY_POOL, FOE_POOL } from '../js/jrpg/config.js';
 import { UNITS, AI } from '../js/jrpg/data/units.js';
 import { SKILLS } from '../js/jrpg/data/skills.js';
 
@@ -22,6 +23,7 @@ class TimedPresenter extends Presenter {
   *intro() { yield 1.4; }
   *approach() { yield 0.3; }
   *retreat() { yield 0.32; }
+  *aim() { yield 0.14; }
   playAnim(actor) { return actor.isHero ? { duration: 0.43, hitTime: 0.29 } : { duration: 0.5, hitTime: 0.3 }; }
   *cast() { yield 0.7; }
   *spell() { yield 0.35; }
@@ -112,8 +114,10 @@ function run(strategy, seed, heroes, foes) {
 }
 
 const n = Number(process.argv[2] ?? 300);
-const heroes = ['sergio', 'ada', 'linus'].slice(0, Number(process.argv[3] ?? 1));
-const foes = ['bugFatal', 'larva', 'larva'].slice(0, Number(process.argv[4] ?? 2));
+const heroes = PARTY_POOL.slice(0, Number(process.argv[3] ?? 1));
+// Mismos enemigos que el juego (config.js); un 5.º argumento permite elegirlos: bugFatal,larva
+const foes = (process.argv[5]?.split(',') ?? FOE_POOL).slice(0, Number(process.argv[4] ?? 2));
+console.log(`Héroes: ${heroes.join(', ')} · Enemigos: ${foes.join(', ')}`);
 
 for (const strategy of Object.keys(STRATEGIES)) {
   const runs = Array.from({ length: n }, (_, i) => run(strategy, 1000 + i, heroes, foes));

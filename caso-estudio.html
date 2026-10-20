@@ -307,8 +307,8 @@ document.documentElement
           <h3 data-i18n="miniResT">Resultado</h3>
           <ul class="case-checks" data-i18n="miniRes">
             <li>300 combates simulados por estrategia en Node, sin navegador</li>
-            <li>Quien solo ataca gana el 86 %; quien usa bien las habilidades, el 100 %</li>
-            <li>Duración media: 30–34 s por combate</li>
+            <li>Quien solo ataca gana el 85 %; quien usa bien las habilidades, el 100 %</li>
+            <li>Duración media: 31–35 s por combate</li>
             <li>0 bloqueos de la máquina de estados</li>
             <li>Mismo resultado a 30, 60, 144 y 240 Hz</li>
           </ul>
@@ -316,8 +316,9 @@ document.documentElement
       </div>
 
       <pre class="case-code"><code>$ node tools/simulate.mjs
-masher | 1v2 | victorias 86.3% | duración media 34.1s | bloqueos 0
-smart  | 1v2 | victorias 100.0% | duración media 30.1s | bloqueos 0
+Héroes: sergio · Enemigos: bugFatal, soldado
+masher | 1v2 | victorias 84.7% | duración media 35.2s | bloqueos 0
+smart  | 1v2 | victorias 100.0% | duración media 30.9s | bloqueos 0
 
 $ node tools/refresh-rate-test.mjs
 ✓ Mismo resultado a cualquier frecuencia de refresco</code></pre>

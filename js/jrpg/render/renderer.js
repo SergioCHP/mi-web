@@ -221,6 +221,12 @@ export class Renderer {
     const unit = view.unit;
     const width = small ? 54 : 70;
     const barY = y - 6;
+    const name = view.label ?? unit.key;
+    // La placa no se sale del canvas: con nombres largos ("Soldado de Élite") y el enemigo en
+    // el borde (móvil vertical), el nombre se cortaba. Se desplaza lo justo hacia dentro.
+    ctx.font = `700 ${small ? 10 : 12}px ${this.font}`;
+    const half = Math.max(width / 2, ctx.measureText(name).width / 2) + 6;
+    if (this.cssWidth > half * 2) x = Math.min(this.cssWidth - half, Math.max(half, x));
     ctx.globalAlpha = alpha;
 
     // Iconos de debilidad (se revelan al probar cada elemento, estilo Octopath Traveler)
@@ -259,7 +265,6 @@ export class Renderer {
     ctx.lineWidth = 3;
     ctx.lineJoin = 'round';
     ctx.strokeStyle = 'rgba(0,0,0,0.85)';
-    const name = view.label ?? unit.key;
     ctx.strokeText(name, x, barY - 5);
     ctx.fillStyle = '#ffd6e4';
     ctx.fillText(name, x, barY - 5);
