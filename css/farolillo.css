@@ -776,6 +776,417 @@
 }
 
 /* ==========================================================
+   Trucos frikis (efecto de una respuesta: sable, varita, anillo…)
+   Las piezas van dentro de .farol-flotar y se mueven con el farolillo.
+   ========================================================== */
+
+.farol-flotar { position: relative; }
+
+.farol-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.farol-pieza {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+.farol-pieza i { position: absolute; display: block; }
+
+/* --- Espada láser --- */
+.farol-pieza--sable {
+  left: 84%;
+  top: 62%;
+  width: 0;
+  height: 0;
+  transform: rotate(28deg);
+  animation: farol-sable-tajo 3s var(--farol-ease) both;
+}
+
+.farol-sable__mango {
+  left: -4px;
+  top: -4px;
+  width: 8px;
+  height: 28px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(180deg, #d4d4d8 0 4px, #3f3f46 4px 6px);
+  box-shadow: 0 0 0 1px #18181b;
+}
+
+.farol-sable__hoja {
+  left: -3px;
+  bottom: 4px;
+  width: 6px;
+  height: 130px;
+  border-radius: 3px 3px 2px 2px;
+  background: #fff;
+  box-shadow: 0 0 4px 2px var(--fx-color), 0 0 14px 5px var(--fx-color), 0 0 30px 8px color-mix(in srgb, var(--fx-color) 50%, transparent);
+  transform-origin: 50% 100%;
+  animation: farol-sable-hoja 3s ease both, farol-zumbido 0.09s linear infinite alternate;
+}
+
+@keyframes farol-sable-tajo {
+  0%, 30% { transform: rotate(28deg); }
+  42% { transform: rotate(105deg); }
+  56% { transform: rotate(-12deg); }
+  70%, 100% { transform: rotate(28deg); }
+}
+
+@keyframes farol-sable-hoja {
+  0% { transform: scaleY(0); }
+  8%, 88% { transform: scaleY(1); }
+  100% { transform: scaleY(0); }
+}
+
+@keyframes farol-zumbido {
+  from { opacity: 0.88; }
+  to { opacity: 1; }
+}
+
+/* --- Varita --- */
+.farol-pieza--varita {
+  left: 86%;
+  top: 70%;
+  width: 0;
+  height: 0;
+  animation: farol-varita 2.6s var(--farol-ease) both;
+}
+
+.farol-varita__palo {
+  left: -2px;
+  bottom: 0;
+  width: 5px;
+  height: 52px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #7c4a1e, #b77b45 50%, #5b3413);
+}
+
+.farol-varita__punta {
+  left: -3px;
+  bottom: 50px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px 3px #fff, 0 0 18px 6px #c7d2fe;
+}
+
+@keyframes farol-varita {
+  0% { transform: rotate(-80deg) scale(0.4); opacity: 0; }
+  15% { transform: rotate(-50deg) scale(1); opacity: 1; }
+  35% { transform: rotate(35deg); }
+  50% { transform: rotate(-25deg); }
+  62%, 85% { transform: rotate(10deg); opacity: 1; }
+  100% { transform: rotate(10deg); opacity: 0; }
+}
+
+.farol--lumos .farol-svg {
+  filter: brightness(1.55) drop-shadow(0 0 22px #fff) drop-shadow(0 0 40px #c7d2fe) !important;
+  transition: filter 0.25s ease;
+}
+
+/* --- Anillo --- */
+.farol-pieza--anillo {
+  left: 50%;
+  top: 12%;
+  width: 40%;
+  translate: -50% 0;
+  filter: drop-shadow(0 0 6px #facc15);
+  animation: farol-anillo 3.8s var(--farol-ease) both;
+}
+
+.farol-pieza--anillo svg { display: block; width: 100%; }
+
+@keyframes farol-anillo {
+  0% { transform: translateY(-140px) rotate(-20deg); opacity: 0; }
+  20% { transform: translateY(0) rotate(0); opacity: 1; }
+  27%, 76% { transform: translateY(0); opacity: 0; }
+  86% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-120px) rotate(25deg); opacity: 0; }
+}
+
+.farol--invisible .farol-svg {
+  opacity: 0.1;
+  filter: blur(1.5px) !important;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+/* --- Carga de energía (antes del rayo) --- */
+.farol-pieza--carga {
+  left: 92%;
+  top: 48%;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 22%, var(--fx-color) 48%, color-mix(in srgb, var(--fx-color) 35%, transparent) 66%, transparent 70%);
+  box-shadow: 0 0 24px 8px color-mix(in srgb, var(--fx-color) 60%, transparent);
+  animation: farol-carga 1.3s ease-in both;
+}
+
+@keyframes farol-carga {
+  0% { transform: scale(0); }
+  70% { transform: scale(1); }
+  75%, 85% { transform: scale(1.25); }
+  100% { transform: scale(0.3); opacity: 0; }
+}
+
+/* --- Piezas fijas en pantalla (rayos, bolas, ondas) --- */
+.farol-fijo {
+  position: fixed;
+  z-index: 998;
+  display: block;
+  pointer-events: none;
+}
+
+.farol-fijo--rayo {
+  height: 38px;
+  margin-top: -19px;
+  border-radius: 19px 0 0 19px;
+  background: linear-gradient(180deg, transparent, var(--fx-color) 22%, #fff 42%, #fff 58%, var(--fx-color) 78%, transparent);
+  box-shadow: 0 0 30px 10px color-mix(in srgb, var(--fx-color) 55%, transparent);
+  transform-origin: 0 50%;
+  animation: farol-rayo 1.7s ease-out both, farol-zumbido 0.07s linear infinite alternate;
+}
+
+@keyframes farol-rayo {
+  0% { transform: scaleX(0) scaleY(0.6); }
+  12% { transform: scaleX(1) scaleY(1.15); }
+  70% { transform: scaleX(1) scaleY(1); opacity: 1; }
+  100% { transform: scaleX(1) scaleY(0); opacity: 0; }
+}
+
+.farol-fijo--bola {
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 25%, var(--fx-color) 55%, transparent 72%);
+  box-shadow: -16px 0 18px 4px color-mix(in srgb, var(--fx-color) 45%, transparent), -40px 0 26px 2px color-mix(in srgb, var(--fx-color) 25%, transparent);
+  animation: farol-disparo 1.4s cubic-bezier(0.4, 0, 0.9, 0.6) both;
+}
+
+.farol-fijo--corte {
+  width: 44px;
+  height: 88px;
+  margin: -44px 0 0 -10px;
+  animation: farol-disparo 1.4s cubic-bezier(0.4, 0, 0.9, 0.6) both;
+}
+
+.farol-fijo--corte svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+.farol-fijo--corte path {
+  fill: #111;
+  stroke: #ef4444;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 8px #ef4444);
+}
+
+@keyframes farol-disparo {
+  0% { transform: translateX(0) scale(0.3); opacity: 0; }
+  10% { transform: translateX(0) scale(1); opacity: 1; }
+  100% { transform: translateX(var(--fx-recorrido, 100vw)) scale(1.1); opacity: 1; }
+}
+
+.farol-fijo--onda {
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 14px var(--farol-b, #38bdf8), inset 0 0 10px var(--farol-b, #38bdf8);
+  animation: farol-onda 1.2s ease-out both;
+}
+
+@keyframes farol-onda {
+  from { transform: scale(0.2); opacity: 1; }
+  to { transform: scale(7); opacity: 0; }
+}
+
+/* --- Esfera de energía giratoria --- */
+.farol-pieza--esfera {
+  left: 96%;
+  top: 56%;
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 18%, #7dd3fc 44%, rgba(56, 189, 248, 0.25) 66%, transparent 70%);
+  box-shadow: 0 0 22px 6px rgba(125, 211, 252, 0.6);
+  animation: farol-esfera 2.4s var(--farol-ease) both;
+}
+
+.farol-pieza--esfera i {
+  inset: 8%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.85) 0 6deg, transparent 6deg 40deg);
+  -webkit-mask: radial-gradient(circle, transparent 30%, #000 32%, #000 64%, transparent 66%);
+  mask: radial-gradient(circle, transparent 30%, #000 32%, #000 64%, transparent 66%);
+  animation: farol-giro 0.35s linear infinite;
+}
+
+@keyframes farol-esfera {
+  0% { transform: scale(0); }
+  25% { transform: scale(1); }
+  80% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes farol-giro { to { transform: rotate(360deg); } }
+
+/* --- Aura dorada --- */
+.farol-pieza--aura {
+  inset: -22% -26% -6%;
+  z-index: -1;
+  color: var(--fx-color);
+  animation: farol-aura-entrar 3s ease both;
+}
+
+.farol-pieza--aura svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: currentColor;
+  opacity: 0.55;
+  filter: blur(2px) drop-shadow(0 0 12px currentColor);
+  transform-origin: 50% 100%;
+  animation: farol-aura-llama 0.22s ease-in-out infinite alternate;
+}
+
+@keyframes farol-aura-entrar {
+  0% { transform: scale(0.4); opacity: 0; }
+  10%, 85% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.1); opacity: 0; }
+}
+
+@keyframes farol-aura-llama {
+  from { transform: scaleY(0.95) scaleX(1.02); }
+  to { transform: scaleY(1.08) scaleX(0.97); }
+}
+
+.farol--temblor .farol-cuerpo { animation: farol-temblor 0.08s linear infinite; }
+
+@keyframes farol-temblor {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(1.5px, -1px); }
+  50% { transform: translate(-1px, 1.5px); }
+  75% { transform: translate(-1.5px, -0.5px); }
+  100% { transform: translate(1px, 1px); }
+}
+
+/* --- Lluvia de código: el farolillo se tiñe de verde --- */
+.farol--matrix .farol-svg {
+  filter: hue-rotate(110deg) saturate(1.4) drop-shadow(0 0 14px #22c55e) !important;
+  transition: filter 0.4s ease;
+}
+
+/* --- Gafas de sol pixeladas --- */
+.farol-pieza--gafas {
+  left: 50%;
+  top: 44%;
+  width: 62%;
+  translate: -50% -50%;
+  animation: farol-gafas 3.6s steps(1, end) both;
+}
+
+.farol-pieza--gafas svg { display: block; width: 100%; image-rendering: pixelated; }
+
+@keyframes farol-gafas {
+  0% { transform: translateY(-120px); opacity: 1; }
+  5% { transform: translateY(-100px); }
+  10% { transform: translateY(-80px); }
+  15% { transform: translateY(-60px); }
+  20% { transform: translateY(-40px); }
+  25% { transform: translateY(-20px); }
+  30%, 90% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+
+/* --- Caja de cartón y exclamación --- */
+.farol-pieza--caja {
+  left: 50%;
+  bottom: -2%;
+  width: 118%;
+  translate: -50% 0;
+  animation: farol-caja 3.4s cubic-bezier(0.3, 1.3, 0.5, 1) both;
+}
+
+.farol-pieza--caja svg { display: block; width: 100%; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3)); }
+
+@keyframes farol-caja {
+  0% { transform: translateY(-180px); opacity: 0; }
+  14% { transform: translateY(0); opacity: 1; }
+  82% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-160px); opacity: 0; }
+}
+
+.farol-pieza--exclamacion {
+  left: 50%;
+  top: -18%;
+  translate: -50% 0;
+  font: 900 34px/1 var(--farol-fuente);
+  color: #ef4444;
+  text-shadow: 0 2px 0 #7f1d1d, 0 0 10px rgba(239, 68, 68, 0.6);
+  animation: farol-exclamacion 3.4s ease both;
+}
+
+@keyframes farol-exclamacion {
+  0%, 38% { transform: scale(0); opacity: 0; }
+  44% { transform: scale(1.5); opacity: 1; }
+  50%, 76% { transform: scale(1); opacity: 1; }
+  82%, 100% { transform: scale(0); opacity: 0; }
+}
+
+/* --- Bastón --- */
+.farol-pieza--baston {
+  left: 96%;
+  top: -12%;
+  width: 7px;
+  height: 120%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #6b4423, #a87a4f 50%, #4a2e15);
+  animation: farol-baston 2.4s var(--farol-ease) both;
+}
+
+.farol-pieza--baston i {
+  left: 50%;
+  top: -10px;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 4px #fff, 0 0 22px 8px #c7d2fe;
+}
+
+@keyframes farol-baston {
+  0% { transform: translateY(-40px); opacity: 0; }
+  20% { transform: translateY(-30px); opacity: 1; }
+  34% { transform: translateY(-46px); }
+  40% { transform: translateY(6px); }
+  46%, 85% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+
+/* --- Estirarse como si fuera de goma --- */
+.farol--estirar .farol-svg {
+  transform-origin: 50% 100%;
+  animation: farol-estirar 1.2s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+@keyframes farol-estirar {
+  0% { transform: scale(1, 1); }
+  30% { transform: scale(0.7, 1.85); }
+  55% { transform: scale(1.4, 0.65); }
+  75% { transform: scale(0.92, 1.1); }
+  100% { transform: scale(1, 1); }
+}
+
+/* ==========================================================
    Escondido: solo queda una pestañita en el borde para volver
    ========================================================== */
 

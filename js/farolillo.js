@@ -22,7 +22,9 @@
  * --text, --font-display…), así que cambia solo con el tema y el acento.
  * Idioma: lee el atributo lang de <html> (es / va) y cambia en directo.
  *
- * API devuelta: { abrir, cerrar, ocultar, mostrar, decir(texto), celebrar(), destruir }
+ * API devuelta: { abrir, cerrar, ocultar, mostrar, decir(texto), celebrar(), truco(nombre), destruir }
+ * Trucos (efecto de una respuesta): sable, sable-rojo, varita, anillo, kamehameha, final-flash, bola, corte,
+ * rasengan, aura, kaioken, matrix, gafas, caja, baston, onda, estirar · «truco» = uno al azar.
  * Esconder: botón del ojo en la cabecera del chat (o escribir «escóndete»). Queda una pestañita
  * en el borde para volver; la preferencia se guarda en localStorage (farolillo-oculto).
  */
@@ -972,7 +974,7 @@ export function initFarolillo(opciones = {}) {
     });
   };
 
-  const estallido = (cantidad = 30, origen = centro()) => {
+  const estallido = (cantidad = 30, origen = centro(), paleta = null) => {
     for (let i = 0; i < cantidad; i++) {
       const angulo = azar(0, Math.PI * 2);
       const velocidad = azar(70, 270);
@@ -986,7 +988,7 @@ export function initFarolillo(opciones = {}) {
         vida: 0,
         max: azar(0.6, 1.25),
         tam: azar(1.2, 2.8),
-        color: tirada < 0.45 ? colores.a : tirada < 0.85 ? colores.b : '#ffffff',
+        color: paleta ? paleta[Math.floor(tirada * paleta.length)] : tirada < 0.45 ? colores.a : tirada < 0.85 ? colores.b : '#ffffff',
       });
     }
   };
@@ -1033,7 +1035,9 @@ export function initFarolillo(opciones = {}) {
         continue;
       }
       const k = 1 - p.vida / p.max;
-      if (p.tipo === 'chispa') {
+      if (p.tipo === 'codigo') {
+        // cae recta, sin balanceo
+      } else if (p.tipo === 'chispa') {
         p.vy += 240 * dt;
         p.vx *= 1 - 1.6 * dt;
         p.vy *= 1 - 0.6 * dt;
@@ -1044,6 +1048,12 @@ export function initFarolillo(opciones = {}) {
       p.y += p.vy * dt;
 
       ctx.fillStyle = p.color;
+      if (p.tipo === 'codigo') {
+        ctx.globalAlpha = Math.min(1, k * 1.4);
+        ctx.font = `700 ${p.tam}px ${FUENTE_Z}`;
+        ctx.fillText(p.letra, p.x, p.y);
+        continue;
+      }
       if (p.tipo === 'z') {
         ctx.globalAlpha = k * 0.9;
         ctx.font = `700 ${p.tam}px ${FUENTE_Z}`;
@@ -1304,9 +1314,220 @@ export function initFarolillo(opciones = {}) {
     return burbuja;
   };
 
-  /* Efectos que puede pedir una respuesta: fuegos | salto | giro | feliz */
-  const aplicarEfecto = (efecto) => {
-    if (!efecto) return;
+
+  /* ==========================================================
+     Trucos frikis: objetos que aparecen pegados al farolillo (se mueven con él)
+     y rayos que cruzan la pantalla. Todo CSS/SVG propio; ver farolillo.css («Trucos»).
+     ========================================================== */
+  const capaFx = document.createElement('span');
+  capaFx.className = 'farol-fx';
+  capaFx.setAttribute('aria-hidden', 'true');
+  $('.farol-flotar').append(capaFx);
+  let piezasFx = [];
+
+  const limpiarTruco = () => {
+    piezasFx.forEach((el) => el.remove());
+    piezasFx = [];
+    raiz.classList.remove('farol--lumos', 'farol--invisible', 'farol--matrix', 'farol--estirar', 'farol--temblor');
+  };
+  /* Pieza pegada al farolillo */
+  const pieza = (clase, html = '', ms = 3000) => {
+    const el = document.createElement('span');
+    el.className = `farol-pieza ${clase}`;
+    el.innerHTML = html;
+    capaFx.append(el);
+    piezasFx.push(el);
+    temporizador(() => el.remove(), ms);
+    return el;
+  };
+  /* Pieza fija en pantalla (rayos, ondas) colocada en coordenadas de la ventana */
+  const piezaFija = (clase, { x, y }, ms = 2000, html = '') => {
+    const el = document.createElement('span');
+    el.className = `farol-fijo ${clase}`;
+    el.setAttribute('aria-hidden', 'true');
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+    el.innerHTML = html;
+    contenedor.append(el);
+    piezasFx.push(el);
+    temporizador(() => el.remove(), ms);
+    return el;
+  };
+  const claseTemporal = (clase, desde, hasta) => {
+    temporizador(() => raiz.classList.add(clase), desde);
+    temporizador(() => raiz.classList.remove(clase), hasta);
+  };
+  const centroDe = (el) => {
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  };
+  const ladoDerecho = () => ({ x: rectBoton.right + fis.x - rectBoton.width * 0.08, y: centro().y });
+
+  const COLORES_SABLE = ['#38bdf8', '#4ade80', '#a855f7', '#f43f5e'];
+  const TRUCOS = {
+    /* Espada láser: se enciende, da dos mandobles y se apaga */
+    sable: (color = elegir(COLORES_SABLE)) => {
+      const el = pieza('farol-pieza--sable', '<i class="farol-sable__mango"></i><i class="farol-sable__hoja"></i>', 3000);
+      el.style.setProperty('--fx-color', color);
+      temporizador(() => estallido(10, ladoDerecho(), [color, '#ffffff']), 1500);
+    },
+    'sable-rojo': () => TRUCOS.sable('#f43f5e'),
+
+    /* Varita: floritura, chispas plateadas en la punta y destello de luz */
+    varita: () => {
+      const el = pieza('farol-pieza--varita', '<i class="farol-varita__palo"></i><i class="farol-varita__punta"></i>', 2600);
+      const punta = el.querySelector('.farol-varita__punta');
+      [500, 750, 1000, 1250].forEach((ms) =>
+        temporizador(() => estallido(12, centroDe(punta), ['#ffffff', '#e0e7ff', '#fde68a']), ms));
+      claseTemporal('farol--lumos', 1100, 2300);
+    },
+
+    /* Anillo: baja, se lo pone y se vuelve invisible un momento */
+    anillo: () => {
+      pieza('farol-pieza--anillo', `<svg viewBox="0 0 40 20"><defs><linearGradient id="farol-g-oro" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fff7cc"/><stop offset=".45" stop-color="#facc15"/><stop offset="1" stop-color="#a16207"/></linearGradient></defs>
+        <ellipse cx="20" cy="10" rx="16" ry="6" fill="none" stroke="url(#farol-g-oro)" stroke-width="4"/></svg>`, 3800);
+      temporizador(() => estallido(14, puntoLlama(), ['#fde68a', '#facc15', '#ffffff']), 800);
+      claseTemporal('farol--invisible', 950, 3000);
+    },
+
+    /* Onda de energía: carga una bola y suelta un rayo que cruza la pantalla */
+    kamehameha: (color = '#7dd3fc') => {
+      const bola = pieza('farol-pieza--carga', '', 1300);
+      bola.style.setProperty('--fx-color', color);
+      fis.vAng -= 40;
+      temporizador(() => {
+        const o = ladoDerecho();
+        const rayo = piezaFija('farol-fijo--rayo', { x: o.x, y: o.y }, 1700);
+        rayo.style.setProperty('--fx-color', color);
+        rayo.style.width = `${Math.max(200, innerWidth - o.x + 40)}px`;
+        fis.vx -= 240;
+        fis.vAng -= 120;
+        estallido(24, o, [color, '#ffffff']);
+      }, 1000);
+    },
+    'final-flash': () => TRUCOS.kamehameha('#fde047'),
+
+    /* Bola de fuego que sale disparada */
+    bola: (color = '#60a5fa') => {
+      const o = ladoDerecho();
+      const bola = piezaFija('farol-fijo--bola', o, 1500);
+      bola.style.setProperty('--fx-color', color);
+      bola.style.setProperty('--fx-recorrido', `${innerWidth - o.x + 80}px`);
+      fis.vx -= 160;
+      estallido(14, o, [color, '#ffffff']);
+    },
+
+    /* Corte en forma de media luna */
+    corte: () => {
+      const o = ladoDerecho();
+      const corte = piezaFija('farol-fijo--corte', o, 1500,
+        '<svg viewBox="0 0 60 120"><path d="M8 4 C60 30 60 90 8 116 C34 88 34 32 8 4 Z"/></svg>');
+      corte.style.setProperty('--fx-recorrido', `${innerWidth - o.x + 80}px`);
+      fis.vAng += 160;
+      estallido(16, o, ['#111111', '#ef4444', '#ffffff']);
+    },
+
+    /* Esfera de energía que gira en la mano */
+    rasengan: () => {
+      pieza('farol-pieza--esfera', '<i></i>', 2400);
+      temporizador(() => estallido(30, ladoDerecho(), ['#7dd3fc', '#ffffff', '#38bdf8']), 2000);
+    },
+
+    /* Aura dorada con chispas que suben */
+    aura: (color = '#facc15') => {
+      const el = pieza('farol-pieza--aura', `<svg viewBox="0 0 140 200"><path d="M70 0 C80 30 96 26 98 8 C112 34 120 46 112 70 C130 62 136 80 132 100
+        C142 110 140 140 126 150 C136 170 120 196 98 192 C92 204 48 204 42 192 C20 196 4 170 14 150 C0 140 -2 110 8 100
+        C4 80 10 62 28 70 C20 46 28 34 42 8 C44 26 60 30 70 0 Z"/></svg>`, 3000);
+      el.style.setProperty('--fx-color', color);
+      for (let i = 0; i < 14; i++) {
+        temporizador(() => {
+          const c = centro();
+          agregar({ tipo: 'ascua', x: c.x + azar(-40, 40), y: c.y + azar(-10, 50), vx: azar(-10, 10), vy: azar(-160, -90),
+            vida: 0, max: azar(0.6, 1.1), tam: azar(1.4, 2.8), color: Math.random() < 0.7 ? color : '#ffffff', fase: azar(0, 6.28) });
+        }, i * 160);
+      }
+      claseTemporal('farol--temblor', 0, 2600);
+    },
+    kaioken: () => TRUCOS.aura('#ef4444'),
+
+    /* Lluvia de código verde por toda la pantalla */
+    matrix: () => {
+      const letras = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿ01ﾊﾐﾋｰ';
+      const columnas = Math.min(70, Math.floor(innerWidth / 18));
+      for (let i = 0; i < columnas; i++) {
+        const x = (i + 0.5) * (innerWidth / columnas);
+        const retraso = azar(0, 900);
+        for (let j = 0; j < 4; j++) {
+          temporizador(() => agregar({ tipo: 'codigo', x, y: -20 - j * 18, vx: 0, vy: azar(280, 420), vida: 0, max: azar(2, 2.8),
+            tam: 15, color: j === 0 ? '#d9ffe0' : '#22c55e', letra: letras[Math.floor(Math.random() * letras.length)] }), retraso + j * 70);
+        }
+      }
+      claseTemporal('farol--matrix', 0, 2800);
+    },
+
+    /* Gafas de sol pixeladas que bajan hasta los ojos */
+    gafas: () => {
+      pieza('farol-pieza--gafas', `<svg viewBox="0 0 24 6" shape-rendering="crispEdges"><path fill="#111"
+        d="M0 0h24v1H0zM1 1h9v3H9v1H2V4H1zM14 1h9v3h-1v1h-7V4h-1zM10 1h4v1h-4z"/>
+        <path fill="#fff" d="M2 1h2v1H2zM4 2h1v1H4zM15 1h2v1h-2zM17 2h1v1h-1z"/></svg>`, 3600);
+    },
+
+    /* Caja de cartón: se esconde y aparece la exclamación */
+    caja: () => {
+      pieza('farol-pieza--caja', `<svg viewBox="0 0 100 90"><path fill="#b7894f" d="M6 18h88v70H6z"/><path fill="#9c7040" d="M6 18h88v10H6z"/>
+        <path fill="#d8b07a" d="M6 18 0 4h44l6 14zM94 18l6-14H56l-6 14z"/><path fill="#e9d6b0" d="M44 28h12v60H44z" opacity=".7"/>
+        <path d="M18 60h20M18 68h14" stroke="#7a5530" stroke-width="3"/></svg>`, 3400);
+      pieza('farol-pieza--exclamacion', '!', 3400);
+    },
+
+    /* Bastón que golpea el suelo y suelta una onda */
+    baston: () => {
+      pieza('farol-pieza--baston', '<i></i>', 2400);
+      temporizador(() => {
+        const c = centro();
+        piezaFija('farol-fijo--onda', { x: c.x, y: rectBoton.bottom + fis.y - 6 }, 1200);
+        estallido(20, { x: c.x, y: rectBoton.bottom - 6 }, ['#ffffff', '#e0e7ff', colores.b]);
+        claseTemporal('farol--temblor', 0, 500);
+      }, 900);
+    },
+
+    /* Onda expansiva (patada espartana) */
+    onda: () => {
+      fis.vx += 260;
+      temporizador(() => {
+        piezaFija('farol-fijo--onda', ladoDerecho(), 1200);
+        estallido(18, ladoDerecho());
+      }, 150);
+    },
+
+    /* Estirarse como si fuera de goma */
+    estirar: () => {
+      claseTemporal('farol--estirar', 0, 1300);
+      temporizador(() => estallido(12), 1150);
+    },
+  };
+  const NOMBRES_TRUCOS = Object.keys(TRUCOS);
+
+  const hacerTruco = (nombre) => {
+    if (reducido || oculto || !TRUCOS[nombre]) return false;
+    limpiarTruco();
+    medir();
+    TRUCOS[nombre]();
+    return true;
+  };
+
+  /* Efectos que puede pedir una respuesta: fuegos | salto | giro | feliz, un truco (sable, varita…)
+     o una lista de ellos (elige uno al azar) */
+  const aplicarEfecto = (efectoPedido) => {
+    if (!efectoPedido) return;
+    let efecto = Array.isArray(efectoPedido) ? elegir(efectoPedido) : efectoPedido;
+    if (efecto === 'truco') efecto = elegir(NOMBRES_TRUCOS);
+    if (TRUCOS[efecto]) {
+      ponerCara('feliz', 1200);
+      if (!hacerTruco(efecto)) estallido(12); // con movimiento reducido: solo unas chispas
+      return;
+    }
     if (efecto === 'fuegos') fuegos();
     if (efecto === 'salto') {
       reaccionar('farol--salto');
@@ -1439,6 +1660,7 @@ export function initFarolillo(opciones = {}) {
     const teniaFoco = raiz.contains(document.activeElement);
     cerrar(false);
     ocultarPista();
+    limpiarTruco();
     oculto = true;
     guardarOculto(true);
     raiz.classList.add('farolillo--oculto');
@@ -1648,6 +1870,7 @@ export function initFarolillo(opciones = {}) {
       return escribir(texto);
     },
     celebrar: fuegos,
+    truco: hacerTruco,
     destruir() {
       destruido = true;
       timers.forEach(clearTimeout);
@@ -1664,6 +1887,7 @@ export function initFarolillo(opciones = {}) {
       document.removeEventListener('pointerdown', alPulsarFuera);
       document.removeEventListener('visibilitychange', alCambiarVisibilidad);
       lienzo?.remove();
+      limpiarTruco();
       raiz.remove();
     },
   };
