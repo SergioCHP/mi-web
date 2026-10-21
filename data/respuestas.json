@@ -304,19 +304,43 @@
         "maquina",
         "eres top",
         "m agrades",
-        "ets el millor"
+        "ets el millor",
+        "te amo",
+        "te adoro",
+        "un beso",
+        "besos",
+        "un abrazo",
+        "abrazo",
+        "te quiero mucho",
+        "te quiero farolillo",
+        "eres adorable",
+        "que mono eres",
+        "love",
+        "i love you",
+        "t estime",
+        "t estime molt",
+        "una besada",
+        "una abracada",
+        "me encantas",
+        "enamorado",
+        "eres precioso",
+        "corazon"
       ],
       "es": [
         "¡Me sonrojo! Aunque ya era rosa, así que no se nota 🙈",
         "Gracias. Me diseñaron con cariño y bastante CSS.",
-        "Mi llama acaba de subir dos grados. Sigue así."
+        "Mi llama acaba de subir dos grados. Sigue así.",
+        "¡Ay! 💘 Me has dejado los ojos como corazones. Literalmente.",
+        "Mi llama acaba de ponerse rosa de la vergüenza 🥰 Yo también te quiero, visitante."
       ],
       "va": [
         "Em pose roig! Encara que ja era rosa, així que no es nota 🙈",
         "Gràcies. Em van dissenyar amb estima i prou CSS.",
-        "La meua flama acaba de pujar dos graus. Continua així."
+        "La meua flama acaba de pujar dos graus. Continua així.",
+        "Ai! 💘 M’has deixat els ulls com cors. Literalment.",
+        "La meua flama s’acaba de posar rosa de vergonya 🥰 Jo també t’estime, visitant."
       ],
-      "efecto": "feliz"
+      "efecto": "amor"
     },
     {
       "id": "risa",
@@ -7574,12 +7598,12 @@
         "trucs"
       ],
       "es": [
-        "¡Mira esto! Tengo más: pídeme la espada láser, la varita, el anillo, un kamehameha, el súper saiyan, Matrix, las gafas, la caja de cartón…",
-        "Truco sorpresa 🎩 Prueba también: «espada láser», «haz magia», «ponte el anillo», «kamehameha», «súper saiyan», «no hay cuchara», «gafas de sol» o «modo sigilo»."
+        "¡Mira esto! Tengo más: pídeme la espada láser, la varita, el anillo, un kamehameha, el súper saiyan, Matrix, las gafas, la caja de cartón, un kamikaze… o dime «te quiero» 💘",
+        "Truco sorpresa 🎩 Prueba también: «espada láser», «haz magia», «ponte el anillo», «kamehameha», «súper saiyan», «no hay cuchara», «gafas de sol», «modo sigilo», «kamikaze» o «te quiero»."
       ],
       "va": [
-        "Mira açò! En tinc més: demana’m l’espasa làser, la vareta, l’anell, un kamehameha, el súper saiyan, Matrix, les ulleres, la caixa de cartó…",
-        "Truc sorpresa 🎩 Prova també: «espasa làser», «fes màgia», «posa’t l’anell», «kamehameha», «súper saiyan», «no hi ha cullera», «ulleres de sol» o «mode sigil»."
+        "Mira açò! En tinc més: demana’m l’espasa làser, la vareta, l’anell, un kamehameha, el súper saiyan, Matrix, les ulleres, la caixa de cartó, un kamikaze… o digues-me «t’estime» 💘",
+        "Truc sorpresa 🎩 Prova també: «espasa làser», «fes màgia», «posa’t l’anell», «kamehameha», «súper saiyan», «no hi ha cullera», «ulleres de sol», «mode sigil», «kamikaze» o «t’estime»."
       ],
       "efecto": "truco",
       "repetible": true,
@@ -7587,17 +7611,80 @@
       "sugerencias": {
         "es": [
           "Otro truco",
-          "Espada láser",
-          "Kamehameha",
-          "Ponte el anillo"
+          "Kamikaze",
+          "Te quiero",
+          "Espada láser"
         ],
         "va": [
           "Un altre truc",
-          "Espasa làser",
-          "Kamehameha",
-          "Posa’t l’anell"
+          "Kamikaze",
+          "T’estime",
+          "Espasa làser"
         ]
       }
+    },
+    {
+      "id": "truco-kamikaze",
+      "frases": [
+        "kamikaze",
+        "explota",
+        "autodestruccion",
+        "autodestruyete",
+        "explosion",
+        "boom",
+        "bomba",
+        "haz explosion",
+        "revienta",
+        "esplota",
+        "explota t",
+        "autodestruccio",
+        "autodestrueix te",
+        "peta",
+        "haz boom",
+        "kaboom",
+        "muere",
+        "muerete"
+      ],
+      "es": [
+        "Secuencia de autodestrucción en 3… 2… 1… 💥",
+        "¿Seguro? Vale… ¡BANZAAAAI! 💥",
+        "Iniciando protocolo kamikaze. Que alguien llame a mi aseguradora de papel… 💥"
+      ],
+      "va": [
+        "Seqüència d’autodestrucció en 3… 2… 1… 💥",
+        "Segur? Vale… BANZAAAAI! 💥",
+        "Iniciant protocol kamikaze. Que algú cride a la meua asseguradora de paper… 💥"
+      ],
+      "efecto": "kamikaze",
+      "peso": 1.3
+    },
+    {
+      "id": "fantasma",
+      "frases": [
+        "fantasma",
+        "eres un fantasma",
+        "estas muerto",
+        "has muerto",
+        "resucita",
+        "resucitado",
+        "como has vuelto",
+        "sigues vivo",
+        "fantasma farolillo",
+        "buuu",
+        "buu",
+        "fantasmet",
+        "estas viu"
+      ],
+      "es": [
+        "Uuuuuh 👻 Los faroles no morimos: solo cambiamos de llama.",
+        "¿Muerto yo? Un farol nunca se apaga del todo. Vuelvo siempre, como los bugs 👻"
+      ],
+      "va": [
+        "Uuuuuh 👻 Els fanals no morim: només canviem de flama.",
+        "Mort jo? Un fanal mai s’apaga del tot. Torne sempre, com els bugs 👻"
+      ],
+      "efecto": "kamikaze",
+      "peso": 1.2
     }
   ],
   "quiz": {

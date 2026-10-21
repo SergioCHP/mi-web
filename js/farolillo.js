@@ -24,7 +24,7 @@
  *
  * API devuelta: { abrir, cerrar, ocultar, mostrar, decir(texto), celebrar(), truco(nombre), destruir }
  * Trucos (efecto de una respuesta): sable, sable-rojo, varita, anillo, kamehameha, final-flash, bola, corte,
- * rasengan, aura, kaioken, matrix, gafas, caja, baston, onda, estirar · «truco» = uno al azar.
+ * rasengan, aura, kaioken, matrix, gafas, caja, baston, onda, estirar, amor, kamikaze · «truco» = uno al azar.
  * Esconder: botón del ojo en la cabecera del chat (o escribir «escóndete»). Queda una pestañita
  * en el borde para volver; la preferencia se guarda en localStorage (farolillo-oculto).
  */
@@ -54,6 +54,7 @@ const TEXTOS = {
     mostrar: 'Mostrar a Farolillo',
     vuelta: '¡He vuelto! 🏮',
     arrastre: ['¡Eh, suéltame!', '¡Wiiiii!', 'Que me despeinas la llama…', '¡Cuidado, que soy de papel!'],
+    aterrizaje: ['Todo me da vueltas… 😵‍💫', '¡Otra vez! … No, mejor no.', 'Mis costillas de papel… 🤕', '¿Eso era un vuelo o un examen sorpresa?'],
     secciones: {
       'sobre-mi': 'Aquí Sergio cuenta quién es y por qué programa.',
       'lo-que-he-hecho': 'De SMR a DAM, con certificaciones Cisco incluidas.',
@@ -123,6 +124,7 @@ const TEXTOS = {
     mostrar: 'Mostrar Farolillo',
     vuelta: 'He tornat! 🏮',
     arrastre: ['Eh, solta’m!', 'Iuuuuu!', 'Que em despentines la flama…', 'Compte, que soc de paper!'],
+    aterrizaje: ['Tot em dona voltes… 😵‍💫', 'Una altra vegada! … No, millor no.', 'Les meues costelles de paper… 🤕', 'Allò era un vol o un examen sorpresa?'],
     secciones: {
       'sobre-mi': 'Ací Sergio conta qui és i per què programa.',
       'lo-que-he-hecho': 'De SMR a DAM, amb certificacions Cisco incloses.',
@@ -263,6 +265,10 @@ const SVG = `
           <circle cx="85" cy="93.6" r="1.1" fill="#fff" opacity=".7"/>
         </g>
       </g></g>
+      <g class="farol-cara-amor">
+        <path d="M53 98 C42 90 45 80 53 85 C61 80 64 90 53 98 Z"/>
+        <path d="M87 98 C76 90 79 80 87 85 C95 80 98 90 87 98 Z"/>
+      </g>
       <g class="farol-cara-feliz farol-trazo"><path d="M45 93 Q53 83 61 93"/><path d="M79 93 Q87 83 95 93"/></g>
       <g class="farol-cara-dormido farol-trazo"><path d="M45 90 Q53 96 61 90"/><path d="M79 90 Q87 96 95 90"/></g>
       <g class="farol-cara-mareado farol-trazo">
@@ -1054,6 +1060,16 @@ export function initFarolillo(opciones = {}) {
         ctx.fillText(p.letra, p.x, p.y);
         continue;
       }
+      if (p.tipo === 'corazon') {
+        const t = p.tam * (0.6 + 0.4 * k);
+        ctx.globalAlpha = Math.min(1, k * 1.3);
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y + t * 0.9);
+        ctx.bezierCurveTo(p.x - t * 1.4, p.y - t * 0.1, p.x - t * 0.8, p.y - t * 1.3, p.x, p.y - t * 0.5);
+        ctx.bezierCurveTo(p.x + t * 0.8, p.y - t * 1.3, p.x + t * 1.4, p.y - t * 0.1, p.x, p.y + t * 0.9);
+        ctx.fill();
+        continue;
+      }
       if (p.tipo === 'z') {
         ctx.globalAlpha = k * 0.9;
         ctx.font = `700 ${p.tam}px ${FUENTE_Z}`;
@@ -1089,6 +1105,88 @@ export function initFarolillo(opciones = {}) {
     if (raiz.dataset.cara === 'dormido') despertar();
   };
 
+  /* ---------- Lanzamiento: si lo sueltas con fuerza, sale volando y rebota por la pantalla ----------
+     Fase «aire»: gravedad y rebotes en los bordes de la ventana.
+     Fase «vuelta»: cuando se cansa, vuelve flotando a su esquina y llega mareado. */
+  const VELOCIDAD_LANZAR = 1300;   // px/s mínimos al soltar para que salga volando
+  const GRAVEDAD = 1500;
+  const REBOTE = 0.72;
+  let vuelo = null;
+
+  const lanzar = (vx, vy) => {
+    medir();
+    const v = Math.hypot(vx, vy);
+    const k = Math.min(1, 2600 / v); // velocidad máxima
+    vuelo = { fase: 'aire', tiempo: 0, quieto: 0 };
+    fis.vx = vx * k;
+    fis.vy = vy * k;
+    fis.vAng += limitar(vx * 0.5, -900, 900) || 400;
+    raiz.classList.add('farol--volando');
+    ocultarPista();
+    ponerCara('sorpresa');
+    estallido(26);
+  };
+
+  const pasoVuelo = (dt) => {
+    vuelo.tiempo += dt;
+    if (vuelo.fase === 'aire') {
+      fis.vy += GRAVEDAD * dt;
+      fis.vx *= 1 - 0.25 * dt;
+      fis.x += fis.vx * dt;
+      fis.y += fis.vy * dt;
+      // Límites de la ventana (rectBoton es la posición de reposo)
+      const r = rectBoton;
+      const margen = 4;
+      const minX = -r.left + margen;
+      const maxX = innerWidth - r.right - margen;
+      const minY = -r.top + margen;
+      const maxY = innerHeight - r.bottom - margen;
+      const golpe = (velocidad, punto) => {
+        if (Math.abs(velocidad) > 450) {
+          estallido(Math.min(30, Math.abs(velocidad) / 40), punto);
+          fis.vAng += azar(-1, 1) * Math.abs(velocidad) * 0.4;
+        }
+      };
+      if (fis.x < minX) { fis.x = minX; golpe(fis.vx, { x: 6, y: centro().y }); fis.vx = -fis.vx * REBOTE; }
+      if (fis.x > maxX) { fis.x = maxX; golpe(fis.vx, { x: innerWidth - 6, y: centro().y }); fis.vx = -fis.vx * REBOTE; }
+      if (fis.y < minY) { fis.y = minY; golpe(fis.vy, { x: centro().x, y: 6 }); fis.vy = -fis.vy * REBOTE; }
+      if (fis.y > maxY) {
+        fis.y = maxY;
+        golpe(fis.vy, { x: centro().x, y: innerHeight - 6 });
+        fis.vy = -fis.vy * REBOTE;
+        fis.vx *= 0.9; // rozamiento con el «suelo»
+      }
+      // ¿Se ha cansado? (casi quieto en el suelo un momento) o lleva demasiado tiempo volando
+      const enSuelo = fis.y >= maxY - 1 && Math.abs(fis.vy) < 140;
+      vuelo.quieto = enSuelo && Math.abs(fis.vx) < 160 ? vuelo.quieto + dt : 0;
+      if (vuelo.quieto > 0.25 || vuelo.tiempo > 3.5) {
+        vuelo.fase = 'vuelta';
+        fis.vx = 0;
+        fis.vy = 0;
+      }
+    } else {
+      // Vuelve flotando a casa, con un poco de vaivén
+      const f = Math.min(1, dt * 3.2);
+      fis.x += -fis.x * f;
+      fis.y += -fis.y * f + Math.sin(vuelo.tiempo * 9) * 0.8;
+      if (Math.hypot(fis.x, fis.y) < 3) aterrizar();
+    }
+  };
+
+  const aterrizar = () => {
+    vuelo = null;
+    fis.x = 0;
+    fis.y = 0;
+    fis.vx = 0;
+    fis.vy = 0;
+    raiz.classList.remove('farol--volando');
+    ponerCara('mareado', 2600);
+    reaccionar('farol--mareo');
+    fis.vAng += 360;
+    estallido(20);
+    temporizador(() => mostrarPista(elegir(tx().aterrizaje), 2600), 200);
+  };
+
   /* ---------- Bucle principal (física + chispas) ---------- */
   let raf = 0;
   let ultimo = 0;
@@ -1098,7 +1196,8 @@ export function initFarolillo(opciones = {}) {
   const tasaAscuas = () => {
     const { cara, estado } = raiz.dataset;
     if (cara === 'dormido' || cara === 'mareado') return 0;
-    if (arrastre?.activo) return 34;
+    if (raiz.classList.contains('farol--explotado') || raiz.classList.contains('farol--fantasma')) return 0;
+    if (arrastre?.activo || vuelo) return 34;
     if (estado === 'pensando') return 12;
     if (hover) return 16;
     if (abierto) return 5;
@@ -1111,16 +1210,23 @@ export function initFarolillo(opciones = {}) {
     ultimo = t;
     if (!dt) return;
 
-    // Muelle que devuelve el farolillo a su sitio
-    if (!arrastre?.activo) {
+    if (vuelo) {
+      pasoVuelo(dt);
+    } else if (!arrastre?.activo) {
+      // Muelle que devuelve el farolillo a su sitio
       fis.vx += (-170 * fis.x - 11 * fis.vx) * dt;
       fis.vy += (-170 * fis.y - 11 * fis.vy) * dt;
       fis.x += fis.vx * dt;
       fis.y += fis.vy * dt;
     }
-    // Péndulo: se inclina hacia el cursor o hacia donde lo arrastras
-    const objetivo = arrastre?.activo ? limitar(fis.x * 0.3, -28, 28) : fis.inclinacion;
-    fis.vAng += (-55 * (fis.ang - objetivo) - 6.5 * fis.vAng) * dt;
+    if (vuelo?.fase === 'aire') {
+      // En el aire gira libremente (solo un poco de rozamiento)
+      fis.vAng *= 1 - 0.6 * dt;
+    } else {
+      // Péndulo: se inclina hacia el cursor o hacia donde lo arrastras
+      const objetivo = arrastre?.activo ? limitar(fis.x * 0.3, -28, 28) : fis.inclinacion;
+      fis.vAng += (-55 * (fis.ang - objetivo) - 6.5 * fis.vAng) * dt;
+    }
     fis.ang += fis.vAng * dt;
     fisicaEl.style.transform =
       `translate3d(${fis.x.toFixed(2)}px, ${fis.y.toFixed(2)}px, 0) rotate(${fis.ang.toFixed(2)}deg)`;
@@ -1134,7 +1240,7 @@ export function initFarolillo(opciones = {}) {
       zeta();
       ultimaZ = t;
     }
-    if (!abierto && !arrastre && raiz.dataset.cara === 'normal' &&
+    if (!abierto && !arrastre && !vuelo && raiz.dataset.cara === 'normal' &&
         performance.now() - ultimaActividad > tiempoSueno) {
       dormir();
     }
@@ -1335,7 +1441,8 @@ export function initFarolillo(opciones = {}) {
   const limpiarTruco = () => {
     piezasFx.forEach((el) => el.remove());
     piezasFx = [];
-    raiz.classList.remove('farol--lumos', 'farol--invisible', 'farol--matrix', 'farol--estirar', 'farol--temblor');
+    raiz.classList.remove('farol--lumos', 'farol--invisible', 'farol--matrix', 'farol--estirar', 'farol--temblor',
+      'farol--hinchar', 'farol--explotado', 'farol--fantasma');
   };
   /* Pieza pegada al farolillo */
   const pieza = (clase, html = '', ms = 3000) => {
@@ -1508,6 +1615,46 @@ export function initFarolillo(opciones = {}) {
       }, 150);
     },
 
+    /* Enamorado: ojos de corazón y corazones que suben */
+    amor: () => {
+      temporizador(() => ponerCara('enamorado', 3200), 20);
+      fis.vy -= 180;
+      const paleta = ['#ff3b6b', '#ff7aa2', '#ffb3c8', colores.a];
+      for (let i = 0; i < 22; i++) {
+        temporizador(() => {
+          const c = centro();
+          agregar({ tipo: 'corazon', x: c.x + azar(-36, 36), y: c.y + azar(-20, 30), vx: azar(-20, 20), vy: azar(-120, -60),
+            vida: 0, max: azar(1.4, 2.4), tam: azar(5, 10), color: elegir(paleta), fase: azar(0, 6.28) });
+        }, i * 110);
+      }
+    },
+
+    /* Kamikaze: se hincha, explota y vuelve como fantasma */
+    kamikaze: () => {
+      ponerCara('sorpresa', 1200);
+      claseTemporal('farol--hinchar', 0, 1150);
+      temporizador(() => {
+        const c = centro();
+        raiz.classList.add('farol--explotado');
+        ponerCara('mareado', 1300);
+        estallido(70, c, ['#f97316', '#facc15', '#ef4444', '#ffffff']);
+        estallido(40, c, ['#52525b', '#a1a1aa', '#71717a']);
+        piezaFija('farol-fijo--onda farol-fijo--explosion', c, 1200);
+        fis.vy -= 320;
+        fis.vAng += azar(-300, 300);
+      }, 1150);
+      temporizador(() => {
+        raiz.classList.remove('farol--explotado');
+        raiz.classList.add('farol--fantasma');
+        ponerCara('sorpresa', 3400);
+      }, 2500);
+      temporizador(() => {
+        raiz.classList.remove('farol--fantasma');
+        ponerCara('feliz', 1200);
+        estallido(16);
+      }, 5900);
+    },
+
     /* Estirarse como si fuera de goma */
     estirar: () => {
       claseTemporal('farol--estirar', 0, 1300);
@@ -1669,6 +1816,11 @@ export function initFarolillo(opciones = {}) {
     cerrar(false);
     ocultarPista();
     limpiarTruco();
+    if (vuelo) {
+      vuelo = null;
+      Object.assign(fis, { x: 0, y: 0, vx: 0, vy: 0 });
+      raiz.classList.remove('farol--volando');
+    }
     oculto = true;
     guardarOculto(true);
     raiz.classList.add('farolillo--oculto');
@@ -1701,6 +1853,7 @@ export function initFarolillo(opciones = {}) {
   };
 
   const alHacerClick = () => {
+    if (vuelo) return;
     if (suprimirClick) {
       suprimirClick = false;
       return;
@@ -1726,7 +1879,7 @@ export function initFarolillo(opciones = {}) {
   const goma = (d, max = 110) => Math.sign(d) * max * (1 - Math.exp((-Math.abs(d) * 0.65) / max));
 
   const alPulsar = (e) => {
-    if (reducido || e.button !== 0) return;
+    if (reducido || e.button !== 0 || vuelo) return;
     suprimirClick = false;
     arrastre = {
       id: e.pointerId, x0: e.clientX, y0: e.clientY, activo: false,
@@ -1768,9 +1921,18 @@ export function initFarolillo(opciones = {}) {
     raiz.classList.remove('farol--arrastrando');
     suprimirClick = true;
     temporizador(() => { suprimirClick = false; }, 80);
-    fis.vx = limitar(soltado.velX * 0.35, -900, 900);
-    fis.vy = limitar(soltado.velY * 0.35, -900, 900);
-    fis.vAng += limitar(soltado.velX * 0.12, -500, 500);
+    // Si lo soltó tras pararse, la última velocidad medida ya no vale
+    const reciente = performance.now() - soltado.ut < 90;
+    const velX = reciente ? soltado.velX : 0;
+    const velY = reciente ? soltado.velY : 0;
+    if (Math.hypot(velX, velY) >= VELOCIDAD_LANZAR) {
+      lanzar(velX, velY);
+      return;
+    }
+    // Arrastre normal: vuelve a su sitio con efecto goma (como siempre)
+    fis.vx = limitar(velX * 0.35, -900, 900);
+    fis.vy = limitar(velY * 0.35, -900, 900);
+    fis.vAng += limitar(velX * 0.12, -500, 500);
     ponerCara('feliz', 900);
     estallido(18);
   };

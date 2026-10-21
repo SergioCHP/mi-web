@@ -280,7 +280,27 @@
 
 .farolillo[data-cara="feliz"] .farol-ojos,
 .farolillo[data-cara="dormido"] .farol-ojos,
-.farolillo[data-cara="mareado"] .farol-ojos { opacity: 0; }
+.farolillo[data-cara="mareado"] .farol-ojos,
+.farolillo[data-cara="enamorado"] .farol-ojos { opacity: 0; }
+
+/* Enamorado: ojos de corazón que laten */
+.farol-cara-amor {
+  opacity: 0;
+  fill: #ff3b6b;
+  transition: opacity 0.15s;
+}
+
+.farol-cara-amor path { transform-box: fill-box; transform-origin: 50% 50%; }
+
+.farolillo[data-cara="enamorado"] .farol-cara-amor { opacity: 1; }
+.farolillo[data-cara="enamorado"] .farol-cara-amor path { animation: farol-latido 0.6s ease-in-out infinite; }
+.farolillo[data-cara="enamorado"] .farol-mejilla { opacity: 1; }
+
+@keyframes farol-latido {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  60% { transform: scale(0.95); }
+}
 
 .farolillo[data-cara="feliz"] .farol-cara-feliz,
 .farolillo[data-cara="dormido"] .farol-cara-dormido,
@@ -1181,6 +1201,49 @@
   40% { transform: translateY(6px); }
   46%, 85% { transform: translateY(0); opacity: 1; }
   100% { transform: translateY(0); opacity: 0; }
+}
+
+/* --- Kamikaze: se hincha, explota y vuelve como fantasma --- */
+.farol--hinchar .farol-svg {
+  animation: farol-hinchar 1.15s ease-in both;
+}
+
+@keyframes farol-hinchar {
+  0% { transform: scale(1); filter: none; }
+  20% { transform: scale(1.08) translateX(-2px); }
+  40% { transform: scale(1.14) translateX(2px); }
+  60% { transform: scale(1.22) translateX(-3px); filter: hue-rotate(-30deg) saturate(1.6); }
+  80% { transform: scale(1.32) translateX(3px); filter: hue-rotate(-40deg) saturate(2) brightness(1.2); }
+  100% { transform: scale(1.45); filter: hue-rotate(-45deg) saturate(2.2) brightness(1.6); }
+}
+
+.farol--explotado .farol-svg {
+  opacity: 0;
+  transform: scale(1.8);
+  transition: opacity 0.12s ease-out, transform 0.12s ease-out;
+}
+
+.farol-fijo--explosion {
+  border-color: #facc15;
+  box-shadow: 0 0 24px #f97316, inset 0 0 18px #ef4444;
+}
+
+.farol--fantasma .farol-svg {
+  opacity: 0.6;
+  filter: grayscale(1) brightness(1.9) drop-shadow(0 0 12px rgba(255, 255, 255, 0.9)) !important;
+  animation: farol-fantasma 1.6s ease-in-out infinite, farol-fantasma-entrar 0.6s ease-out;
+}
+
+.farol--fantasma .farol-llama-g { opacity: 0; }
+.farol--fantasma .farol-cola { opacity: 0.9; }
+
+@keyframes farol-fantasma {
+  0%, 100% { transform: translate(0, -6px) rotate(-4deg); }
+  50% { transform: translate(4px, -14px) rotate(4deg); }
+}
+
+@keyframes farol-fantasma-entrar {
+  from { opacity: 0; }
 }
 
 /* --- Estirarse como si fuera de goma --- */
