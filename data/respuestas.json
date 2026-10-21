@@ -7704,13 +7704,11 @@
       "id": "jugar-menu",
       "frases": [
         "jugamos",
-        "juega conmigo",
         "vamos a jugar",
         "quiero jugar contigo",
         "a que jugamos",
         "minijuegos",
         "juegos del chat",
-        "jugar contigo",
         "echamos una partida",
         "una partida",
         "otro juego",
@@ -7734,6 +7732,7 @@
       "efecto": "salto",
       "sugerencias": {
         "es": [
+          "Pilla-pilla",
           "Piedra, papel o tijera",
           "Adivina el número",
           "¿Quién lo dijo?",
@@ -7741,6 +7740,7 @@
           "Quiz de Sergio"
         ],
         "va": [
+          "Pilla-pilla",
           "Pedra, paper o tisora",
           "Endevina el número",
           "Qui ho va dir?",
@@ -7819,6 +7819,38 @@
       "accion": "quiz",
       "banco": "quienLoDijo",
       "peso": 1.3
+    },
+    {
+      "id": "pilla-pilla",
+      "frases": [
+        "juega conmigo",
+        "pilla pilla",
+        "pillapilla",
+        "atrapame",
+        "pillame",
+        "persigueme",
+        "a que no me pillas",
+        "cogeme",
+        "jugar a pillar",
+        "juga amb mi",
+        "enxampa m",
+        "pilla m",
+        "a que no m enxampes",
+        "tag",
+        "el pilla pilla",
+        "revancha pilla pilla"
+      ],
+      "es": [
+        "¡A que no me pillas! Tienes 15 segundos… ¡YA! 🏃💨",
+        "¡Pilla-pilla! Hazme clic si puedes. 15 segundos… ¡corre! 🏃"
+      ],
+      "va": [
+        "A que no m’enxampes! Tens 15 segons… JA! 🏃💨",
+        "Pilla-pilla! Fes-me clic si pots. 15 segons… corre! 🏃"
+      ],
+      "orden": "pilla",
+      "peso": 1.3,
+      "efecto": "salto"
     }
   ],
   "quiz": {

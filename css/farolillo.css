@@ -1246,6 +1246,51 @@
   from { opacity: 0; }
 }
 
+/* --- Pilla-pilla: cuenta atrás y burlas que siguen al farolillo --- */
+.farol-pieza--crono {
+  left: 50%;
+  top: -26%;
+  translate: -50% 0;
+  min-width: 2.1em;
+  padding: 0.15em 0.45em;
+  font: 700 0.95rem/1.2 var(--farol-fuente);
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, var(--farol-a), var(--farol-b));
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 0 12px var(--farol-glow);
+  /* el número no gira con el farolillo al correr */
+  animation: farol-crono 1s ease-in-out infinite;
+}
+
+@keyframes farol-crono {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.farol-pieza--burla {
+  left: 78%;
+  top: -8%;
+  max-width: 9.5rem;
+  padding: 0.3rem 0.6rem;
+  font: 600 0.78rem/1.25 var(--farol-fuente);
+  white-space: nowrap;
+  color: var(--farol-texto);
+  background: var(--farol-fondo-2);
+  border: 1px solid var(--farol-a);
+  border-radius: 12px 12px 12px 3px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+  animation: farol-burla 1.3s var(--farol-ease) both;
+}
+
+@keyframes farol-burla {
+  0% { transform: translateY(6px) scale(0.6); opacity: 0; }
+  15%, 80% { transform: none; opacity: 1; }
+  100% { transform: translateY(-6px); opacity: 0; }
+}
+
+.farol--pilla .farol-boton { cursor: crosshair; }
+
 /* --- Estirarse como si fuera de goma --- */
 .farol--estirar .farol-svg {
   transform-origin: 50% 100%;

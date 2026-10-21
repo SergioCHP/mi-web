@@ -51,6 +51,10 @@ const TEXTOS = {
     dia: 'Buenos días. Modo ahorro de llama ☀️',
     acentoRosa: 'Rosa neón. Me sienta genial 💗',
     acentoAzul: 'Azul eléctrico. Qué estilo ⚡',
+    pillaBurlas: ['¡Por aquí!', '¡Casi! 😝', 'Nananana', '¡Más rápido!', 'Soy un farol, no un caracol', '¿Eso es todo?', '¡Uy, por poco!'],
+    pillaAtrapado: ['¡Me pillaste! 🎉 Eres más rápido que el Flash.', '¡Atrapado! Vale, vale, me rindo 🏳️', '¡Noooo! Me has pillado. Exijo la revancha.'],
+    pillaEscapa: ['¡15 segundos y no me has pillado! 😎', '¡Se acabó el tiempo! El farol más rápido del oeste.', '¡Gané! Escribe «juega conmigo» para la revancha.'],
+    pillaReducido: 'Con «reducir movimiento» activado no puedo correr… ¡pero cuenta como que me has pillado! 🏳️',
     retroOn: '▶ CÓDIGO ACEPTADO\n¡Modo 8 bits activado! 👾 Ahora soy un sprite de consola retro. Vuelve a meter el código para recuperar mis 16 millones de colores.',
     retroOff: '▶ CÓDIGO ACEPTADO\nModo 8 bits desactivado. ¡Vuelvo a la alta definición! ✨',
     ocultar: 'Esconder a Farolillo',
@@ -123,6 +127,10 @@ const TEXTOS = {
     dia: 'Bon dia. Mode estalvi de flama ☀️',
     acentoRosa: 'Rosa neó. Em queda genial 💗',
     acentoAzul: 'Blau elèctric. Quin estil ⚡',
+    pillaBurlas: ['Per ací!', 'Quasi! 😝', 'Nananana', 'Més ràpid!', 'Soc un fanal, no un caragol', 'Això és tot?', 'Ui, per poc!'],
+    pillaAtrapado: ['M’has pillat! 🎉 Eres més ràpid que el Flash.', 'Atrapat! Vale, vale, em rendisc 🏳️', 'Noooo! M’has pillat. Exigisc la revenja.'],
+    pillaEscapa: ['15 segons i no m’has pillat! 😎', 'S’ha acabat el temps! El fanal més ràpid de l’oest.', 'He guanyat! Escriu «juga amb mi» per a la revenja.'],
+    pillaReducido: 'Amb «reduir moviment» activat no puc córrer… però compta com que m’has pillat! 🏳️',
     retroOn: '▶ CODI ACCEPTAT\nMode 8 bits activat! 👾 Ara soc un sprite de consola retro. Torna a posar el codi per a recuperar els meus 16 milions de colors.',
     retroOff: '▶ CODI ACCEPTAT\nMode 8 bits desactivat. Torne a l’alta definició! ✨',
     ocultar: 'Amagar Farolillo',
@@ -302,6 +310,8 @@ export function esCodigoKonami(texto) {
     .replace(/[↑⬆]/g, 'u').replace(/[↓⬇]/g, 'd').replace(/[←⬅]/g, 'l').replace(/[→➡]/g, 'r')
     .replace(/\uFE0F/g, '').toLowerCase();
   if (flechas === SECUENCIA_KONAMI) return true;
+  // ^^vv<><>ba
+  if (/^\^\^vv<><>ba$/.test(flechas)) return true;
   const palabras = String(texto).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z ]+/g, ' ').split(' ').filter(Boolean);
   return palabras.map((p) => PALABRAS_KONAMI[p] || '?').join('') === SECUENCIA_KONAMI;
@@ -1381,17 +1391,148 @@ export function initFarolillo(opciones = {}) {
   };
 
   const aterrizar = () => {
+    const alLlegar = vuelo?.alLlegar;
     vuelo = null;
     fis.x = 0;
     fis.y = 0;
     fis.vx = 0;
     fis.vy = 0;
     raiz.classList.remove('farol--volando');
+    if (alLlegar) { alLlegar(); return; }
     ponerCara('mareado', 2600);
     reaccionar('farol--mareo');
     fis.vAng += 360;
     estallido(20);
     temporizador(() => mostrarPista(elegir(tx().aterrizaje), 2600), 200);
+  };
+
+  /* ---------- Pilla-pilla: durante 15 s huye del cursor; si le haces clic, lo has pillado ---------- */
+  const DURACION_PILLA = 15;
+  const RADIO_PILLA = 230;      // a esta distancia del cursor empieza a huir
+  const VMAX_PILLA = 950;       // px/s: rápido, pero se le puede pillar
+  let pilla = null;
+
+  const bocadillo = (texto, ms = 1300) => {
+    const el = pieza('farol-pieza--burla', '', ms);
+    el.textContent = texto;
+  };
+  const empezarPilla = () => {
+    if (pilla || vuelo || oculto) return;
+    if (reducido) { mostrarPista(tx().pillaReducido, 3500); return; }
+    cerrar(false);
+    ocultarPista();
+    limpiarTruco();
+    medir();
+    pilla = { inicio: performance.now(), tiempo: 0, rumbo: azar(0, Math.PI * 2), siguienteBurla: 1.5, siguienteSalto: 0.6, segundos: DURACION_PILLA };
+    raiz.classList.add('farol--pilla');
+    pilla.crono = pieza('farol-pieza--crono', String(DURACION_PILLA), (DURACION_PILLA + 2) * 1000);
+    ponerCara('feliz');
+    fis.vy -= 300;
+    estallido(24);
+  };
+  const terminarPilla = (atrapado) => {
+    if (!pilla) return;
+    pilla.crono?.remove();
+    pilla = null;
+    raiz.classList.remove('farol--pilla');
+    if (atrapado) {
+      fuegos();
+      estallido(50);
+      ponerCara('mareado', 1600);
+      reaccionar('farol--mareo');
+      fis.vAng += 500;
+    } else {
+      ponerCara('feliz', 2000);
+      bocadillo('😎', 1200);
+    }
+    // Vuelve a casa flotando y entonces lo cuenta
+    vuelo = { fase: 'vuelta', tiempo: 0, quieto: 0, alLlegar: () => {
+      ponerCara(atrapado ? 'mareado' : 'feliz', 2200);
+      estallido(16);
+      temporizador(() => mostrarPista(elegir(atrapado ? tx().pillaAtrapado : tx().pillaEscapa), 3200), 150);
+    } };
+    raiz.classList.add('farol--volando');
+  };
+  const pasoPilla = (dt) => {
+    pilla.tiempo = (performance.now() - pilla.inicio) / 1000; // reloj real, aunque vaya a pocos fps
+    const quedan = Math.max(0, Math.ceil(DURACION_PILLA - pilla.tiempo));
+    if (quedan !== pilla.segundos) {
+      pilla.segundos = quedan;
+      if (pilla.crono) pilla.crono.textContent = String(quedan);
+    }
+    if (pilla.tiempo >= DURACION_PILLA) { terminarPilla(false); return; }
+
+    const r = rectBoton;
+    const margen = 10;
+    const minX = -r.left + margen;
+    const maxX = innerWidth - r.right - margen;
+    const minY = -r.top + margen + 95; // deja libre la barra de navegación (y la cuenta atrás no la pisa)
+    const maxY = innerHeight - r.bottom - margen;
+    const c = centro();
+    let ax = 0;
+    let ay = 0;
+
+    // Huir del cursor: cuanto más cerca, más fuerte
+    let cerca = false;
+    if (puntero) {
+      const dx = c.x - puntero.x;
+      const dy = c.y - puntero.y;
+      const d = Math.hypot(dx, dy) || 1;
+      if (d < RADIO_PILLA) {
+        cerca = d < 120;
+        const f = (RADIO_PILLA - d) / RADIO_PILLA;
+        ax += (dx / d) * 6200 * f;
+        ay += (dy / d) * 6200 * f;
+        // Arrinconado: se escabulle en perpendicular
+        const pegado = fis.x - minX < 50 || maxX - fis.x < 50 || fis.y - minY < 50 || maxY - fis.y < 50;
+        if (pegado && cerca) {
+          const lado = Math.sign((dx * 0.37 + dy * 0.91) || 1);
+          ax += (-dy / d) * 5200 * lado;
+          ay += (dx / d) * 5200 * lado;
+        }
+      }
+    }
+    // Paseo aleatorio para que nunca se quede quieto
+    pilla.rumbo += azar(-2.5, 2.5) * dt;
+    ax += Math.cos(pilla.rumbo) * 520;
+    ay += Math.sin(pilla.rumbo) * 520;
+    // En pantallas táctiles (sin cursor que perseguir) da acelerones de vez en cuando
+    pilla.siguienteSalto -= dt;
+    if (!punteroFino && pilla.siguienteSalto <= 0) {
+      pilla.siguienteSalto = azar(0.5, 0.9);
+      const a = azar(0, Math.PI * 2);
+      fis.vx += Math.cos(a) * 650;
+      fis.vy += Math.sin(a) * 650;
+    }
+    // Las paredes le empujan hacia dentro
+    const zona = 90;
+    if (fis.x - minX < zona) ax += (zona - (fis.x - minX)) * 45;
+    if (maxX - fis.x < zona) ax -= (zona - (maxX - fis.x)) * 45;
+    if (fis.y - minY < zona) ay += (zona - (fis.y - minY)) * 45;
+    if (maxY - fis.y < zona) ay -= (zona - (maxY - fis.y)) * 45;
+
+    fis.vx = (fis.vx + ax * dt) * (1 - 2.4 * dt);
+    fis.vy = (fis.vy + ay * dt) * (1 - 2.4 * dt);
+    const v = Math.hypot(fis.vx, fis.vy);
+    if (v > VMAX_PILLA) { fis.vx *= VMAX_PILLA / v; fis.vy *= VMAX_PILLA / v; }
+    fis.x += fis.vx * dt;
+    fis.y += fis.vy * dt;
+    if (fis.x < minX) { fis.x = minX; fis.vx = Math.abs(fis.vx) * 0.5; }
+    if (fis.x > maxX) { fis.x = maxX; fis.vx = -Math.abs(fis.vx) * 0.5; }
+    if (fis.y < minY) { fis.y = minY; fis.vy = Math.abs(fis.vy) * 0.5; }
+    if (fis.y > maxY) { fis.y = maxY; fis.vy = -Math.abs(fis.vy) * 0.5; }
+
+    // Burlas de vez en cuando (más si estás cerca)
+    pilla.siguienteBurla -= dt * (cerca ? 2.5 : 1);
+    if (pilla.siguienteBurla <= 0) {
+      pilla.siguienteBurla = azar(1.8, 3);
+      bocadillo(elegir(tx().pillaBurlas));
+    }
+  };
+  const atraparPilla = () => {
+    if (!pilla) return false;
+    terminarPilla(true);
+    return true;
   };
 
   /* ---------- Bucle principal (física + chispas) ---------- */
@@ -1404,7 +1545,7 @@ export function initFarolillo(opciones = {}) {
     const { cara, estado } = raiz.dataset;
     if (cara === 'dormido' || cara === 'mareado') return 0;
     if (raiz.classList.contains('farol--explotado') || raiz.classList.contains('farol--fantasma')) return 0;
-    if (arrastre?.activo || vuelo) return 34;
+    if (arrastre?.activo || vuelo || pilla) return 34;
     if (estado === 'pensando') return 12;
     if (hover) return 16;
     if (abierto) return 5;
@@ -1417,7 +1558,9 @@ export function initFarolillo(opciones = {}) {
     ultimo = t;
     if (!dt) return;
 
-    if (vuelo) {
+    if (pilla) {
+      pasoPilla(dt);
+    } else if (vuelo) {
       pasoVuelo(dt);
     } else if (!arrastre?.activo) {
       // Muelle que devuelve el farolillo a su sitio
@@ -1431,7 +1574,7 @@ export function initFarolillo(opciones = {}) {
       fis.vAng *= 1 - 0.6 * dt;
     } else {
       // Péndulo: se inclina hacia el cursor o hacia donde lo arrastras
-      const objetivo = arrastre?.activo ? limitar(fis.x * 0.3, -28, 28) : fis.inclinacion;
+      const objetivo = arrastre?.activo ? limitar(fis.x * 0.3, -28, 28) : pilla ? limitar(fis.vx * 0.03, -25, 25) : fis.inclinacion;
       fis.vAng += (-55 * (fis.ang - objetivo) - 6.5 * fis.vAng) * dt;
     }
     fis.ang += fis.vAng * dt;
@@ -1447,7 +1590,7 @@ export function initFarolillo(opciones = {}) {
       zeta();
       ultimaZ = t;
     }
-    if (!abierto && !arrastre && !vuelo && raiz.dataset.cara === 'normal' &&
+    if (!abierto && !arrastre && !vuelo && !pilla && raiz.dataset.cara === 'normal' &&
         performance.now() - ultimaActividad > tiempoSueno) {
       dormir();
     }
@@ -1942,6 +2085,7 @@ export function initFarolillo(opciones = {}) {
     ponerCara('feliz', 900);
     aplicarEfecto(efecto);
     if (orden === 'ocultar') temporizador(() => ocultar(), 1800); // «escóndete»: da tiempo a leer la respuesta
+    if (orden === 'pilla') temporizador(() => empezarPilla(), 1300); // «juega conmigo»
     pedirOjos();
     bajar(burbuja); // los botones nuevos pueden cambiar el alto disponible
     chips.scrollTop = 0;
@@ -1960,6 +2104,9 @@ export function initFarolillo(opciones = {}) {
   let teclasKonami = '';
   const TECLA_KONAMI = { ArrowUp: 'u', ArrowDown: 'd', ArrowLeft: 'l', ArrowRight: 'r', b: 'b', B: 'b', a: 'a', A: 'a' };
   const alTeclearEntrada = (e) => {
+    // Fuera de la caja de Farolillo no cuenta si se está escribiendo en otro formulario de la web
+    const enOtroCampo = e.target !== entrada && e.target?.closest?.('input, textarea, select, [contenteditable="true"]');
+    if (enOtroCampo || e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
     const t = TECLA_KONAMI[e.key];
     teclasKonami = t ? (teclasKonami + t).slice(-SECUENCIA_KONAMI.length) : '';
     if (teclasKonami === SECUENCIA_KONAMI) {
@@ -1967,12 +2114,18 @@ export function initFarolillo(opciones = {}) {
       teclasKonami = '';
       entrada.value = entrada.value.replace(/b$/i, '');
       if (!entrada.value.trim()) entrada.value = '';
+      if (e.target !== entrada) abrir();
       enviar('↑↑↓↓←→←→BA');
     }
   };
 
+  /* Si llega algo mientras escribe (p. ej. el código Konami durante el saludo), espera su turno */
+  let pendiente = null;
   const enviar = async (texto) => {
-    if (ocupado) return;
+    if (ocupado) {
+      pendiente = texto;
+      return;
+    }
     ocupado = true;
     actividad();
     crearBurbuja('usuario').textContent = texto;
@@ -1996,8 +2149,16 @@ export function initFarolillo(opciones = {}) {
     }
     puntos.remove();
     await escribir(respuesta);
-    ocupado = false;
+    liberar();
   };
+  function liberar() {
+    ocupado = false;
+    if (pendiente !== null) {
+      const siguiente = pendiente;
+      pendiente = null;
+      temporizador(() => enviar(siguiente), 250);
+    }
+  }
 
   /* ---------- Abrir / cerrar ---------- */
   const abrir = () => {
@@ -2016,7 +2177,7 @@ export function initFarolillo(opciones = {}) {
       ocupado = true;
       temporizador(async () => {
         await escribir(tx().saludo);
-        ocupado = false;
+        liberar();
       }, 380);
     }
     if (punteroFino) temporizador(() => entrada.focus({ preventScroll: true }), 320);
@@ -2049,6 +2210,7 @@ export function initFarolillo(opciones = {}) {
     cerrar(false);
     ocultarPista();
     limpiarTruco();
+    if (pilla) { pilla.crono?.remove(); pilla = null; raiz.classList.remove('farol--pilla'); }
     if (vuelo) {
       vuelo = null;
       Object.assign(fis, { x: 0, y: 0, vx: 0, vy: 0 });
@@ -2112,6 +2274,7 @@ export function initFarolillo(opciones = {}) {
   const goma = (d, max = 110) => Math.sign(d) * max * (1 - Math.exp((-Math.abs(d) * 0.65) / max));
 
   const alPulsar = (e) => {
+    if (pilla && atraparPilla()) { suprimirClick = true; temporizador(() => { suprimirClick = false; }, 300); return; }
     if (reducido || e.button !== 0 || vuelo) return;
     suprimirClick = false;
     arrastre = {
@@ -2206,12 +2369,12 @@ export function initFarolillo(opciones = {}) {
   formulario.addEventListener('submit', (e) => {
     e.preventDefault();
     const texto = entrada.value.trim();
-    if (!texto || ocupado) return;
+    if (!texto) return;
     entrada.value = '';
-    enviar(texto);
+    enviar(texto); // si está ocupado, espera su turno
   });
 
-  entrada.addEventListener('keydown', alTeclearEntrada);
+  window.addEventListener('keydown', alTeclearEntrada);
   entrada.addEventListener('input', () => {
     actividad();
     if (ocupado) return;
@@ -2224,6 +2387,7 @@ export function initFarolillo(opciones = {}) {
   });
 
   const alPulsarFuera = (e) => {
+    if (pilla) puntero = { x: e.clientX, y: e.clientY };
     if (abierto && !raiz.contains(e.target)) cerrar(false);
   };
   const alTeclear = () => actividad();
@@ -2274,6 +2438,7 @@ export function initFarolillo(opciones = {}) {
       return escribir(texto);
     },
     celebrar: fuegos,
+    pillaPilla: empezarPilla,
     truco: hacerTruco,
     destruir() {
       destruido = true;
