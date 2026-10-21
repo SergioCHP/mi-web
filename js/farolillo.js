@@ -14,13 +14,17 @@
  *                Solo si quieres sustituir el buscador por otro sistema (backend, IA…).
  *   detectar     () => 'claro' | 'oscuro'. Por defecto lee data-theme.
  *   comentarios  true: comenta las secciones (#sobre-mi, #proyectos…) al hacer scroll.
+ *   pagina       por defecto el nombre del archivo (juegos, libros…). Cambia saludo, pista y sugerencias,
+ *                y da contexto al buscador («recomiéndame uno» en juegos.html recomienda un juego).
  *   tiempoSueno  ms de inactividad hasta que se duerme (por defecto 30000).
  *
  * Colores: usa las variables de tu web (--accent, --accent-alt, --surface,
  * --text, --font-display…), así que cambia solo con el tema y el acento.
  * Idioma: lee el atributo lang de <html> (es / va) y cambia en directo.
  *
- * API devuelta: { abrir, cerrar, decir(texto), celebrar(), destruir }
+ * API devuelta: { abrir, cerrar, ocultar, mostrar, decir(texto), celebrar(), destruir }
+ * Esconder: botón del ojo en la cabecera del chat (o escribir «escóndete»). Queda una pestañita
+ * en el borde para volver; la preferencia se guarda en localStorage (farolillo-oculto).
  */
 
 const TEXTOS = {
@@ -44,6 +48,9 @@ const TEXTOS = {
     dia: 'Buenos días. Modo ahorro de llama ☀️',
     acentoRosa: 'Rosa neón. Me sienta genial 💗',
     acentoAzul: 'Azul eléctrico. Qué estilo ⚡',
+    ocultar: 'Esconder a Farolillo',
+    mostrar: 'Mostrar a Farolillo',
+    vuelta: '¡He vuelto! 🏮',
     arrastre: ['¡Eh, suéltame!', '¡Wiiiii!', 'Que me despeinas la llama…', '¡Cuidado, que soy de papel!'],
     secciones: {
       'sobre-mi': 'Aquí Sergio cuenta quién es y por qué programa.',
@@ -51,6 +58,43 @@ const TEXTOS = {
       'me-gusta': 'Juegos, cine, anime y libros. Pregúntame por cualquiera.',
       proyectos: 'Sus proyectos. Usa los filtros o pregúntame.',
       contacto: '¿Quieres hablar con Sergio? Tienes su contacto aquí.',
+      buscador: '¿Buscas un juego? Escríbelo aquí y te saco la ficha completa.',
+      buscadorCine: 'Busca cualquier peli aquí, aunque no esté en su top.',
+      buscadorAnime: '¿Otro anime? Búscalo aquí y te traigo su ficha.',
+      minijuego: 'Aquí cuenta cómo hizo el minijuego. Pregúntame lo que quieras.',
+    },
+    /* Lo que cambia según la página (saludo, pista al llegar y sugerencias) */
+    paginas: {
+      juegos: {
+        saludo: '¡Has superado el reto! Bienvenido a la sala de juegos 🎮 Pregúntame por cualquiera de su top o por su colección.',
+        pistaInicial: '¡Lo conseguiste! Pregúntame por sus juegos 🎮',
+        chips: ['Recomiéndame un juego', '¿A qué juega ahora?', 'Su colección', 'Primera consola', 'Quiz de Sergio'],
+      },
+      libros: {
+        saludo: '¡Bienvenido al grimorio! 📖 Pasa las páginas o pregúntame por sus libros.',
+        pistaInicial: 'Psst… pregúntame por cualquier libro 📖',
+        chips: ['Recomiéndame un libro', '¿Cómo funciona el grimorio?', 'Cómics', '¿Qué no le gusta leer?'],
+      },
+      cine: {
+        saludo: '¡Bienvenido a la sala de cine! 🎬 Palomitas aparte, pregúntame por sus pelis.',
+        pistaInicial: 'Psst… ¿te recomiendo una peli? 🎬',
+        chips: ['Recomiéndame una peli', 'Matrix', 'Series', '¿Por qué un farolillo?'],
+      },
+      anime: {
+        saludo: '¡Bienvenido al rincón anime! ⛩️ Pregúntame por sus series o pide una recomendación.',
+        pistaInicial: 'Psst… ¿te recomiendo un anime? ⛩️',
+        chips: ['Recomiéndame un anime', 'Dragon Ball', 'One Piece', 'Kamehameha'],
+      },
+      'caso-estudio': {
+        saludo: 'Estás en el caso de estudio del minijuego. Si algo no te queda claro, pregúntame 🛠️',
+        pistaInicial: '¿Dudas sobre el minijuego? Pregúntame 🛠️',
+        chips: ['¿Cómo funciona el minijuego?', 'Jugar', '¿Qué es la POO?', 'Proyectos'],
+      },
+      privacidad: {
+        saludo: 'Estás en la política de privacidad. Te lo resumo: yo no guardo nada de lo que me escribes 🔒',
+        pistaInicial: '¿Dudas con tus datos? Te lo explico fácil 🔒',
+        chips: ['¿Qué haces con mis datos?', 'Cookies', 'Contacto'],
+      },
     },
   },
   va: {
@@ -73,6 +117,9 @@ const TEXTOS = {
     dia: 'Bon dia. Mode estalvi de flama ☀️',
     acentoRosa: 'Rosa neó. Em queda genial 💗',
     acentoAzul: 'Blau elèctric. Quin estil ⚡',
+    ocultar: 'Amagar Farolillo',
+    mostrar: 'Mostrar Farolillo',
+    vuelta: 'He tornat! 🏮',
     arrastre: ['Eh, solta’m!', 'Iuuuuu!', 'Que em despentines la flama…', 'Compte, que soc de paper!'],
     secciones: {
       'sobre-mi': 'Ací Sergio conta qui és i per què programa.',
@@ -80,6 +127,42 @@ const TEXTOS = {
       'me-gusta': 'Jocs, cinema, anime i llibres. Pregunta’m per qualsevol.',
       proyectos: 'Els seus projectes. Usa els filtres o pregunta’m.',
       contacto: 'Vols parlar amb Sergio? Tens el seu contacte ací.',
+      buscador: 'Busques un joc? Escriu-lo ací i et trac la fitxa completa.',
+      buscadorCine: 'Busca qualsevol pel·li ací, encara que no estiga al seu top.',
+      buscadorAnime: 'Un altre anime? Busca’l ací i et porte la fitxa.',
+      minijuego: 'Ací conta com va fer el minijoc. Pregunta’m el que vulgues.',
+    },
+    paginas: {
+      juegos: {
+        saludo: 'Has superat el repte! Benvingut a la sala de jocs 🎮 Pregunta’m per qualsevol del seu top o per la seua col·lecció.',
+        pistaInicial: 'Ho has aconseguit! Pregunta’m pels seus jocs 🎮',
+        chips: ['Recomana’m un joc', 'A què juga ara?', 'La seua col·lecció', 'Primera consola', 'Quiz de Sergio'],
+      },
+      libros: {
+        saludo: 'Benvingut al grimori! 📖 Passa les pàgines o pregunta’m pels seus llibres.',
+        pistaInicial: 'Psst… pregunta’m per qualsevol llibre 📖',
+        chips: ['Recomana’m un llibre', 'Com funciona el grimori?', 'Còmics', 'Què no li agrada llegir?'],
+      },
+      cine: {
+        saludo: 'Benvingut a la sala de cinema! 🎬 Crispetes a banda, pregunta’m per les seues pel·lis.',
+        pistaInicial: 'Psst… et recomane una pel·li? 🎬',
+        chips: ['Recomana’m una pel·li', 'Matrix', 'Sèries', 'Per què un fanalet?'],
+      },
+      anime: {
+        saludo: 'Benvingut al racó anime! ⛩️ Pregunta’m per les seues sèries o demana una recomanació.',
+        pistaInicial: 'Psst… et recomane un anime? ⛩️',
+        chips: ['Recomana’m un anime', 'Dragon Ball', 'One Piece', 'Kamehameha'],
+      },
+      'caso-estudio': {
+        saludo: 'Estàs en el cas d’estudi del minijoc. Si alguna cosa no et queda clara, pregunta’m 🛠️',
+        pistaInicial: 'Dubtes sobre el minijoc? Pregunta’m 🛠️',
+        chips: ['Com funciona el minijoc?', 'Jugar', 'Què és la POO?', 'Projectes'],
+      },
+      privacidad: {
+        saludo: 'Estàs en la política de privacitat. T’ho resumisc: jo no guarde res del que m’escrius 🔒',
+        pistaInicial: 'Dubtes amb les teues dades? T’ho explique fàcil 🔒',
+        chips: ['Què fas amb les meues dades?', 'Cookies', 'Contacte'],
+      },
     },
   },
 };
@@ -100,6 +183,10 @@ const RESPALDO = {
   ],
 };
 
+/* Ojo tachado: esconder a Farolillo */
+const ICONO_OCULTAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12s3.5-6 9-6c1.6 0 3 .5 4.2 1.2M21 12s-3.5 6-9 6c-1.6 0-3-.5-4.2-1.2"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><line x1="4" y1="4" x2="20" y2="20"/></svg>';
+/* Farolillo en miniatura para la pestaña de «volver» */
+const ICONO_MINI = '<svg viewBox="0 0 24 32" aria-hidden="true"><path class="farol-mini__llama" d="M12 1c-2 2.5-3 4-1.6 6.2C9 7 8.6 5.6 8.8 4.4 7 6.6 7.6 9 9.4 10h5.2c2-1.4 2-4.6-2.6-9z"/><rect class="farol-mini__tapa" x="7" y="9.5" width="10" height="2.6" rx="1.2"/><ellipse class="farol-mini__papel" cx="12" cy="20" rx="9" ry="8.6"/><rect class="farol-mini__tapa" x="7.6" y="27.6" width="8.8" height="2.4" rx="1.1"/></svg>';
 const ICONO_CERRAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 const ICONO_ENVIAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
 
@@ -210,6 +297,13 @@ export function idiomaActual() {
    - Recuerda el último tema para «otro» / «recomiéndame uno».
    ========================================================================== */
 
+/* Abreviaturas típicas de chat → palabra completa (k ase → que hace) */
+const ABREVIATURAS = {
+  q: 'que', k: 'que', ke: 'que', qe: 'que', xq: 'porque', pq: 'porque', porq: 'porque',
+  komo: 'como', ase: 'haces', aser: 'hacer', kien: 'quien', qien: 'quien', tb: 'tambien', tmb: 'tambien', x: 'por',
+  d: 'de', dnd: 'donde', pa: 'para', toy: 'estoy', tas: 'estas', ta: 'esta', grax: 'gracias', thx: 'gracias',
+};
+
 export const normalizarTexto = (texto) =>
   String(texto)
     .toLowerCase()
@@ -217,7 +311,10 @@ export const normalizarTexto = (texto) =>
     .replace(/[̀-ͯ]/g, '')
     .replace(/·/g, '')
     .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
+    .trim()
+    .split(' ')
+    .map((palabra) => ABREVIATURAS[palabra] || palabra)
+    .join(' ');
 
 /* Distancia de Levenshtein con corte temprano (no calcula más de lo necesario) */
 function distancia(a, b, max) {
@@ -267,6 +364,7 @@ function puntuarFrase(frase, palabras, textoLimpio) {
   // En frases de 3+ palabras se perdona una que no se reconozca (red ded redemption)
   let perdonables = total >= 3 ? 1 : 0;
   let suma = 0;
+  let letrasPerdonadas = 0;
   for (const clave of frase.palabras) {
     let mejor = 0;
     let indice = -1;
@@ -276,12 +374,14 @@ function puntuarFrase(frase, palabras, textoLimpio) {
       if (p > mejor) { mejor = p; indice = i; }
     });
     if (mejor < UMBRAL) {
-      if (perdonables-- > 0) continue;
+      if (perdonables-- > 0) { letrasPerdonadas += clave.length; continue; }
       return null;
     }
     suma += mejor;
     usados.add(indice);
   }
+  // Solo se perdona una palabra «pequeña»: si falta la clave (dime la HORA, qué es HTML) no cuenta
+  if (letrasPerdonadas > 0.3 * frase.texto.replace(/ /g, '').length) return null;
   const extra = usados.size - 1;
   const falta = total - usados.size;
   const seguida = extra > 0 && ` ${textoLimpio} `.includes(` ${frase.texto} `) ? 0.4 : 0;
@@ -332,7 +432,7 @@ export function crearCerebro(datos) {
       .filter((frase) => frase.palabras.length),
   }));
 
-  const memoria = { ultima: null, tema: null, dichas: new Set(), variantes: new Map() };
+  const memoria = { ultima: null, tema: null, pagina: null, dichas: new Set(), variantes: new Map() };
 
   const lista = (obj, idioma) => (obj?.[idioma]?.length ? obj[idioma] : obj?.es) || [];
 
@@ -362,13 +462,20 @@ export function crearCerebro(datos) {
     memoria.dichas.add(intencion.id);
     const cuerpo = rellenar(variante(intencion, idioma), idioma);
     const r = { texto: prefijo ? `${prefijo} ${cuerpo}` : cuerpo, efecto: intencion.efecto };
-    if (intencion.enlace?.href) {
+    if (intencion.enlace?.href && !esLaMismaPagina(intencion.enlace.href)) {
       r.enlace = { href: intencion.enlace.href, texto: intencion.enlace[idioma] || intencion.enlace.es || intencion.enlace.href };
     }
     const sugerencias = lista(intencion.sugerencias, idioma);
     if (sugerencias.length) r.sugerencias = sugerencias;
+    if (intencion.orden) r.orden = intencion.orden; // p. ej. «ocultar» (escóndete)
     return r;
   };
+
+  /* No enlaza a la página en la que ya está el visitante (sí a sus anclas: index.html#contacto) */
+  function esLaMismaPagina(href) {
+    if (!memoria.pagina || href.includes('#') || /^https?:/i.test(href)) return false;
+    return (href.replace(/\.html?$/i, '') || 'index') === memoria.pagina;
+  }
 
   const elegirAlAzar = (opciones) => opciones[Math.floor(Math.random() * opciones.length)];
   const itemsDeTema = (tema) => intenciones.filter((i) => i.item && i.tema === tema);
@@ -398,9 +505,22 @@ export function crearCerebro(datos) {
   };
 
   const accionAleatorio = (intencion, idioma) => {
-    const { item, hay } = itemNuevo(intencion.tema);
-    const elegido = item || (hay ? elegirAlAzar(itemsDeTema(intencion.tema)) : null);
+    // Sin tema propio («recomiéndame algo») usa el de la conversación o la página; si no hay, uno al azar
+    const tema = intencion.tema || memoria.tema || elegirAlAzar(['juegos', 'cine', 'anime', 'libros']);
+    const { item, hay } = itemNuevo(tema);
+    const elegido = item || (hay ? elegirAlAzar(itemsDeTema(tema)) : null);
     return elegido ? construir(elegido, idioma, variante(intencion, idioma)) : construir(intencion, idioma);
+  };
+
+  /* «¿Qué hay aquí?»: describe la página actual (datos.paginas) */
+  const accionPagina = (intencion, idioma) => {
+    const pagina = datos.paginas?.[memoria.pagina];
+    if (!pagina) return construir(intencion, idioma);
+    memoria.ultima = intencion;
+    const r = { texto: rellenar(elegirAlAzar(lista(pagina, idioma)), idioma) };
+    const sugerencias = lista(pagina.sugerencias, idioma);
+    if (sugerencias.length) r.sugerencias = sugerencias;
+    return r;
   };
 
   const accionSorpresa = (intencion, idioma) => {
@@ -408,10 +528,120 @@ export function crearCerebro(datos) {
     return construir(elegirAlAzar(candidatas), idioma, variante(intencion, idioma));
   };
 
+
+  /* ---------- Quiz «¿Cuánto sabes de Sergio?» ----------
+     Mientras hay un quiz en marcha, lo que escribe el usuario se compara con las opciones
+     de la pregunta actual (con tolerancia a faltas, o por número/letra: 1, 2, 3 / a, b, c). */
+  const quiz = datos.quiz;
+  const textoQuiz = (clave, idioma, extra = {}) =>
+    rellenar(elegirAlAzar(lista(quiz?.textos?.[clave], idioma)) || '', idioma, extra);
+  const barajar = (arr) => {
+    const copia = [...arr];
+    for (let i = copia.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copia[i], copia[j]] = [copia[j], copia[i]];
+    }
+    return copia;
+  };
+  const datosPregunta = (p, idioma) => p[idioma] || p.es;
+  const opcionesVisibles = (idioma) => {
+    const q = memoria.quiz;
+    const p = datosPregunta(q.preguntas[q.i], idioma);
+    return q.orden[q.i].map((j) => p.opciones[j]);
+  };
+  const salirQuiz = (idioma) => lista(quiz.textos?.botonSalir, idioma)[0] || 'Salir';
+  const enunciado = (idioma) => {
+    const q = memoria.quiz;
+    const p = datosPregunta(q.preguntas[q.i], idioma);
+    return textoQuiz('pregunta', idioma, { n: q.i + 1, total: q.preguntas.length, pregunta: p.pregunta });
+  };
+  const respuestaQuiz = (texto, idioma, efecto) => ({
+    texto,
+    efecto,
+    sugerencias: [...opcionesVisibles(idioma), salirQuiz(idioma)],
+  });
+
+  const empezarQuiz = (intencion, idioma) => {
+    const banco = quiz?.preguntas || [];
+    if (!banco.length) return construir(intencion, idioma);
+    const preguntas = barajar(banco).slice(0, Math.min(quiz.numero || 5, banco.length));
+    memoria.quiz = {
+      preguntas,
+      orden: preguntas.map((p) => barajar(datosPregunta(p, 'es').opciones.map((_, j) => j))),
+      i: 0,
+      aciertos: 0,
+    };
+    memoria.ultima = intencion;
+    return respuestaQuiz(`${variante(intencion, idioma)}\n\n${enunciado(idioma)}`, idioma);
+  };
+
+  const terminarQuiz = (idioma, prefijo = '', abandono = false) => {
+    const { aciertos, preguntas, i } = memoria.quiz;
+    const total = abandono ? i : preguntas.length; // si sale antes, solo cuentan las respondidas
+    memoria.quiz = null;
+    if (!total) return { texto: prefijo, sugerencias: lista(quiz.textos?.botonesFinal, idioma) };
+    const nivel = aciertos === total ? 'perfecto' : aciertos >= Math.ceil(total / 2) ? 'alto' : 'bajo';
+    const cierre = textoQuiz(nivel, idioma, { aciertos, total });
+    return {
+      texto: prefijo ? `${prefijo}\n\n${cierre}` : cierre,
+      efecto: nivel === 'perfecto' ? 'fuegos' : nivel === 'alto' ? 'feliz' : 'salto',
+      sugerencias: lista(quiz.textos?.botonesFinal, idioma),
+    };
+  };
+
+  /* ¿Qué opción ha elegido? Devuelve su posición en pantalla o -1 */
+  const opcionElegida = (palabras, limpio, idioma) => {
+    const visibles = opcionesVisibles(idioma);
+    const letras = ['a', 'b', 'c', 'd', 'e'];
+    if (palabras.length === 1) {
+      const n = Number(palabras[0]);
+      if (n >= 1 && n <= visibles.length) return n - 1;
+      const l = letras.indexOf(palabras[0]);
+      if (l >= 0 && l < visibles.length) return l;
+    }
+    let mejor = -1;
+    let maximo = 0;
+    visibles.forEach((opcion, i) => {
+      const texto = normalizarTexto(opcion);
+      const frase = { texto, palabras: texto.split(' ').filter(Boolean) };
+      const r = frase.palabras.length && puntuarFrase(frase, palabras, limpio);
+      if (r && r.puntos > maximo) { maximo = r.puntos; mejor = i; }
+    });
+    return maximo >= UMBRAL ? mejor : -1;
+  };
+
+  const responderQuiz = (palabras, limpio, idioma) => {
+    const q = memoria.quiz;
+    const salir = lista(quiz.textos?.palabrasSalir, idioma).concat(lista(quiz.textos?.palabrasSalir, 'es'));
+    if (salir.some((s) => normalizarTexto(s) === limpio)) return terminarQuiz(idioma, textoQuiz('abandono', idioma), true);
+
+    const elegida = opcionElegida(palabras, limpio, idioma);
+    if (elegida < 0) return respuestaQuiz(`${textoQuiz('recordatorio', idioma)}\n\n${enunciado(idioma)}`, idioma);
+
+    const p = datosPregunta(q.preguntas[q.i], idioma);
+    const acierto = q.orden[q.i][elegida] === p.correcta;
+    if (acierto) q.aciertos++;
+    const veredicto = acierto
+      ? textoQuiz('acierto', idioma)
+      : textoQuiz('fallo', idioma, { correcta: p.opciones[p.correcta] });
+    const feedback = p.explicacion ? `${veredicto} ${p.explicacion}` : veredicto;
+
+    q.i++;
+    if (q.i >= q.preguntas.length) return terminarQuiz(idioma, feedback);
+    return respuestaQuiz(`${feedback}\n\n${enunciado(idioma)}`, idioma, acierto ? 'feliz' : undefined);
+  };
+
   return {
-    responder(texto, idioma = 'es') {
+    responder(texto, idioma = 'es', contexto = {}) {
+      // La página da contexto: en juegos.html, «otro» o «recomiéndame algo» van de juegos
+      if (contexto.pagina !== undefined && contexto.pagina !== memoria.pagina) {
+        memoria.pagina = contexto.pagina;
+        const temaPagina = datos.paginas?.[contexto.pagina]?.tema;
+        if (temaPagina) memoria.tema = temaPagina;
+      }
       const limpio = normalizarTexto(texto);
       const palabras = limpio.split(' ').filter(Boolean);
+      if (memoria.quiz && palabras.length) return responderQuiz(palabras, limpio, idioma);
       let mejor = null;
       let maximo = 0;
       if (palabras.length) {
@@ -427,6 +657,8 @@ export function crearCerebro(datos) {
       if (mejor.accion === 'mas') return accionMas(mejor, idioma);
       if (mejor.accion === 'aleatorio') return accionAleatorio(mejor, idioma);
       if (mejor.accion === 'sorpresa') return accionSorpresa(mejor, idioma);
+      if (mejor.accion === 'quiz') return empezarQuiz(mejor, idioma);
+      if (mejor.accion === 'pagina') return accionPagina(mejor, idioma);
       return construir(mejor, idioma);
     },
   };
@@ -445,6 +677,14 @@ export function cargarCerebro(url = 'data/respuestas.json') {
       .then(crearCerebro));
   }
   return cerebros.get(url);
+}
+
+/** Página actual: data-farol-pagina en <body> o el nombre del archivo (juegos.html → 'juegos'). */
+export function detectarPagina() {
+  const forzada = document.body?.dataset.farolPagina;
+  if (forzada) return forzada;
+  const archivo = location.pathname.split('/').pop().replace(/\.html?$/i, '');
+  return archivo || 'index';
 }
 
 /** Lee el tema de la web: data-theme, clases habituales o, si no hay, el del sistema. */
@@ -485,6 +725,7 @@ export function initFarolillo(opciones = {}) {
     detectar = detectarTema,
     comentarios = true,
     tiempoSueno = 30000,
+    pagina = detectarPagina(),
   } = opciones;
 
   const izquierda = posicion !== 'derecha';
@@ -493,13 +734,13 @@ export function initFarolillo(opciones = {}) {
   const html = document.documentElement;
   const tx = () => {
     const idioma = idiomaActual();
-    return { ...TEXTOS[idioma], ...(textos[idioma] || {}) };
+    return { ...TEXTOS[idioma], ...(TEXTOS[idioma].paginas?.[pagina] || {}), ...(textos[idioma] || {}) };
   };
 
   /* Por defecto responde con el buscador de respuestas.json; "piensa" un momento para que se note */
-  const responderConArchivo = async (texto, { idioma }) => {
+  const responderConArchivo = async (texto, { idioma, pagina: donde }) => {
     const [cerebro] = await Promise.all([cargarCerebro(respuestas), esperar(azar(380, 760))]);
-    return cerebro.responder(texto, idioma);
+    return cerebro.responder(texto, idioma, { pagina: donde });
   };
   const obtenerRespuesta = responder || responderConArchivo;
 
@@ -516,6 +757,7 @@ export function initFarolillo(opciones = {}) {
           <p class="farol-panel__estado"></p>
           <p class="farol-panel__nombre" id="farol-panel-nombre"></p>
         </div>
+        <button type="button" class="farol-panel__ocultar">${ICONO_OCULTAR}</button>
         <button type="button" class="farol-panel__cerrar">${ICONO_CERRAR}</button>
       </div>
       <div class="farol-panel__mensajes" aria-live="polite"></div>
@@ -528,7 +770,8 @@ export function initFarolillo(opciones = {}) {
     <p class="farol-pista" aria-live="polite"></p>
     <button type="button" class="farol-boton" aria-expanded="false" aria-controls="farol-panel">
       <span class="farol-fisica"><span class="farol-flotar">${SVG}</span></span>
-    </button>`;
+    </button>
+    <button type="button" class="farol-mini">${ICONO_MINI}</button>`;
   contenedor.append(raiz);
 
   const $ = (selector) => raiz.querySelector(selector);
@@ -542,12 +785,18 @@ export function initFarolillo(opciones = {}) {
   const entrada = $('.farol-panel__entrada');
   const botonEnviar = $('.farol-panel__enviar');
   const botonCerrar = $('.farol-panel__cerrar');
+  const botonOcultar = $('.farol-panel__ocultar');
+  const botonMini = $('.farol-mini');
 
   let abierto = false;
   let ocupado = false;
   let saludado = false;
   let hover = false;
   let destruido = false;
+  /* Escondido: preferencia de cada visitante, se recuerda entre páginas y visitas */
+  const CLAVE_OCULTO = 'farolillo-oculto';
+  let oculto = false;
+  try { oculto = localStorage.getItem(CLAVE_OCULTO) === '1'; } catch { /* sin storage */ }
   let ultimaActividad = performance.now();
 
   const timers = new Set();
@@ -591,6 +840,10 @@ export function initFarolillo(opciones = {}) {
     $('.farol-panel__nombre').textContent = t.nombre;
     botonCerrar.setAttribute('aria-label', t.cerrar);
     botonCerrar.title = t.cerrar;
+    botonOcultar.setAttribute('aria-label', t.ocultar);
+    botonOcultar.title = t.ocultar;
+    botonMini.setAttribute('aria-label', t.mostrar);
+    botonMini.title = t.mostrar;
     entrada.placeholder = t.placeholder;
     entrada.setAttribute('aria-label', t.placeholder);
     botonEnviar.setAttribute('aria-label', t.enviar);
@@ -623,7 +876,7 @@ export function initFarolillo(opciones = {}) {
     pistaHover = false;
   };
   const mostrarPista = (texto, ms = 4000, { hablar = true } = {}) => {
-    if (abierto || destruido) return;
+    if (abierto || destruido || oculto) return;
     clearTimeout(timerPista);
     pista.textContent = texto;
     pista.classList.add('farol-pista--visible');
@@ -879,7 +1132,7 @@ export function initFarolillo(opciones = {}) {
   };
 
   const arrancar = () => {
-    if (reducido || raf || destruido) return;
+    if (reducido || raf || destruido || oculto) return;
     ultimo = 0;
     raf = requestAnimationFrame(fotograma);
   };
@@ -919,6 +1172,7 @@ export function initFarolillo(opciones = {}) {
     if (!rafOjos) rafOjos = requestAnimationFrame(moverOjos);
   };
   const alMoverPuntero = (e) => {
+    if (oculto) return;
     puntero = { x: e.clientX, y: e.clientY };
     actividad();
     pedirOjos();
@@ -1072,7 +1326,7 @@ export function initFarolillo(opciones = {}) {
 
   /* Escribe la respuesta letra a letra mientras mueve la boca */
   const escribir = async (respuesta) => {
-    const { texto = '', enlace, efecto, sugerencias } = typeof respuesta === 'string' ? { texto: respuesta } : respuesta;
+    const { texto = '', enlace, efecto, sugerencias, orden } = typeof respuesta === 'string' ? { texto: respuesta } : respuesta;
     const burbuja = crearBurbuja('bot');
     const nodo = document.createTextNode('');
     burbuja.append(nodo);
@@ -1105,6 +1359,7 @@ export function initFarolillo(opciones = {}) {
     raiz.dataset.estado = 'reposo';
     ponerCara('feliz', 900);
     aplicarEfecto(efecto);
+    if (orden === 'ocultar') temporizador(() => ocultar(), 1800); // «escóndete»: da tiempo a leer la respuesta
     pedirOjos();
     bajar();
   };
@@ -1125,7 +1380,7 @@ export function initFarolillo(opciones = {}) {
 
     let respuesta;
     try {
-      respuesta = await obtenerRespuesta(texto, { idioma: idiomaActual() });
+      respuesta = await obtenerRespuesta(texto, { idioma: idiomaActual(), pagina });
     } catch (error) {
       console.error('[Farolillo]', error);
       respuesta = tx().error;
@@ -1138,6 +1393,7 @@ export function initFarolillo(opciones = {}) {
   /* ---------- Abrir / cerrar ---------- */
   const abrir = () => {
     if (abierto) return;
+    if (oculto) mostrar();
     abierto = true;
     raiz.classList.add('farol--abierto');
     boton.setAttribute('aria-expanded', 'true');
@@ -1171,6 +1427,39 @@ export function initFarolillo(opciones = {}) {
   /* ---------- Clic, mareo y arrastre ---------- */
   const clics = [];
   let suprimirClick = false;
+
+  /* ---------- Esconder / volver ----------
+     Escondido, Farolillo queda como una pestañita en el borde: sin animaciones,
+     sin comentarios y sin chispas. La preferencia se guarda en este navegador. */
+  const guardarOculto = (valor) => {
+    try { localStorage.setItem(CLAVE_OCULTO, valor ? '1' : '0'); } catch { /* sin storage */ }
+  };
+  const ocultar = () => {
+    if (oculto || destruido) return;
+    const teniaFoco = raiz.contains(document.activeElement);
+    cerrar(false);
+    ocultarPista();
+    oculto = true;
+    guardarOculto(true);
+    raiz.classList.add('farolillo--oculto');
+    parar();
+    particulas.length = 0;
+    if (lienzo) { ctx.clearRect(0, 0, lienzo.width, lienzo.height); lienzo.hidden = true; }
+    if (teniaFoco) botonMini.focus({ preventScroll: true });
+  };
+  const mostrar = () => {
+    if (!oculto || destruido) return;
+    oculto = false;
+    guardarOculto(false);
+    raiz.classList.remove('farolillo--oculto');
+    if (lienzo) lienzo.hidden = false;
+    arrancar();
+    fis.vy -= 260;
+    estallido(18);
+    ponerCara('feliz', 1400);
+    temporizador(() => mostrarPista(tx().vuelta, 2600), 300);
+    boton.focus({ preventScroll: true });
+  };
 
   const marear = () => {
     cerrar(false);
@@ -1281,6 +1570,8 @@ export function initFarolillo(opciones = {}) {
   boton.addEventListener('pointerenter', alEntrar);
   boton.addEventListener('pointerleave', alSalir);
   botonCerrar.addEventListener('click', () => cerrar());
+  botonOcultar.addEventListener('click', ocultar);
+  botonMini.addEventListener('click', mostrar);
 
   chips.addEventListener('click', (e) => {
     const chip = e.target.closest('.farol-chip');
@@ -1330,19 +1621,27 @@ export function initFarolillo(opciones = {}) {
   if (!responder) temporizador(() => cargarCerebro(respuestas), 1500);
 
   let pistaVista = false;
-  try { pistaVista = sessionStorage.getItem('farolillo-pista') === '1'; } catch { /* sin storage */ }
-  if (!pistaVista) {
+  const clavePista = `farolillo-pista-${pagina}`;
+  try { pistaVista = sessionStorage.getItem(clavePista) === '1'; } catch { /* sin storage */ }
+  if (oculto) {
+    // Viene escondido de otra página: empieza como pestañita, sin pista ni animación
+    raiz.classList.add('farolillo--oculto');
+    parar();
+    if (lienzo) lienzo.hidden = true;
+  } else if (!pistaVista) {
     temporizador(() => {
       if (abierto || raiz.dataset.cara !== 'normal') return;
       fis.vy -= 200;
       mostrarPista(tx().pistaInicial, 5000);
-      try { sessionStorage.setItem('farolillo-pista', '1'); } catch { /* sin storage */ }
+      try { sessionStorage.setItem(clavePista, '1'); } catch { /* sin storage */ }
     }, 4500);
   }
 
   /* ---------- API pública ---------- */
   return {
     abrir,
+    ocultar,
+    mostrar,
     cerrar,
     decir(texto) {
       abrir();

@@ -4,9 +4,11 @@
     "Si hay varias respuestas, el farolillo elige una al azar sin repetir la última.",
     "Opcional: enlace {href, es, va}, sugerencias {es: [...], va: [...]}, efecto (fuegos | salto | giro | feliz), peso (prioridad, 1 por defecto).",
     "tema + item: true agrupa favoritos para «recomiéndame uno» y «otro». repetible: true permite pedir «otro» chiste o curiosidad.",
-    "Plantillas: {saludo}, {hora}, {dia}, {anio}."
+    "Plantillas: {saludo}, {hora}, {dia}, {anio}.",
+    "quiz: banco de preguntas (correcta = posición de la opción buena, desde 0). Se piden {numero} al azar con la intención de acción \"quiz\".",
+    "paginas: por cada página (nombre del archivo sin .html) su descripción para «¿qué hay aquí?» y, opcional, el tema que se usa por defecto para «otro» y «recomiéndame algo»."
   ],
-  "version": 1,
+  "version": 2,
   "porDefecto": {
     "es": [
       "Mmm, esa no me la sé. Prueba con juegos, cine, anime, libros o proyectos.",
@@ -66,6 +68,7 @@
       "Pelis",
       "Anime",
       "Libros",
+      "Quiz de Sergio",
       "Sorpréndeme"
     ],
     "va": [
@@ -74,6 +77,7 @@
       "Pel·lis",
       "Anime",
       "Llibres",
+      "Quiz de Sergio",
       "Sorprén-me"
     ]
   },
@@ -143,7 +147,11 @@
         "com va",
         "que tal va",
         "todo bien",
-        "como vas"
+        "como vas",
+        "que haces",
+        "que estas haciendo",
+        "que fas",
+        "que hace farolillo"
       ],
       "es": [
         "¡Ardiendo de ganas de ayudarte! 🔥 ¿Y tú?",
@@ -171,7 +179,16 @@
         "me voy",
         "hasta pronto",
         "me piro",
-        "agur"
+        "agur",
+        "hasta manana",
+        "hasta otra",
+        "buenas noches farolillo",
+        "fins dema",
+        "fins prompte",
+        "men vaig",
+        "sayonara",
+        "ciao",
+        "bye bye"
       ],
       "es": [
         "¡Hasta luego! Dejo la llama encendida por si vuelves 🏮",
@@ -221,13 +238,24 @@
         "estupido",
         "burro",
         "pesado",
-        "callate",
         "calla",
         "pringado",
         "lento",
         "malo",
         "lleig",
-        "imbecil"
+        "imbecil",
+        "eres malo",
+        "no sirves",
+        "no sirves para nada",
+        "eres aburrido",
+        "eres un pesado",
+        "gilipollas",
+        "subnormal",
+        "tonto del bote",
+        "bobo",
+        "pallasso",
+        "inutil total",
+        "basura"
       ],
       "es": [
         "Ay. Me has dejado la llama en modo ahorro 😔",
@@ -269,7 +297,14 @@
         "m agradas",
         "eres el mejor",
         "que bonito",
-        "majo"
+        "majo",
+        "me caes bien",
+        "que guay",
+        "eres un crack",
+        "maquina",
+        "eres top",
+        "m agrades",
+        "ets el millor"
       ],
       "es": [
         "¡Me sonrojo! Aunque ya era rosa, así que no se nota 🙈",
@@ -399,19 +434,27 @@
         "que te puedo preguntar",
         "de que hablas",
         "que te pregunto",
-        "como funcionas",
-        "instrucciones"
+        "instrucciones",
+        "que puedo preguntarte",
+        "de que puedo hablar contigo",
+        "como funciona el chat",
+        "que pregunto",
+        "no se que preguntar",
+        "que puc preguntar"
       ],
       "es": [
         "Puedo contarte:\n• Quién es Sergio, qué estudia y sus proyectos\n• Sus juegos, pelis, anime y libros favoritos (y recomendarte uno)\n• Cómo está hecha la web\n• Chistes, curiosidades y algún secreto 🤫",
-        "Pregúntame por Sergio, sus favoritos, sus proyectos o la web. Y si te aburres, pídeme un chiste o una curiosidad."
+        "Pregúntame por Sergio, sus favoritos, sus proyectos o la web. Y si te aburres, pídeme un chiste o una curiosidad.",
+        "Y si te ves con fuerzas, escribe «quiz»: te hago 5 preguntas sobre Sergio."
       ],
       "va": [
         "Puc contar-te:\n• Qui és Sergio, què estudia i els seus projectes\n• Els seus jocs, pel·lis, anime i llibres preferits (i recomanar-te’n un)\n• Com està feta la web\n• Acudits, curiositats i algun secret 🤫",
-        "Pregunta’m per Sergio, els seus preferits, els seus projectes o la web. I si t’avorrixes, demana’m un acudit o una curiositat."
+        "Pregunta’m per Sergio, els seus preferits, els seus projectes o la web. I si t’avorrixes, demana’m un acudit o una curiositat.",
+        "I si et veus amb forces, escriu «quiz»: et faig 5 preguntes sobre Sergio."
       ],
       "sugerencias": {
         "es": [
+          "Quiz de Sergio",
           "¿Quién es Sergio?",
           "Proyectos",
           "Recomiéndame un juego",
@@ -419,6 +462,7 @@
           "Secretos"
         ],
         "va": [
+          "Quiz de Sergio",
           "Qui és Sergio?",
           "Projectes",
           "Recomana’m un joc",
@@ -449,12 +493,14 @@
       ],
       "sugerencias": {
         "es": [
+          "Quiz de Sergio",
           "El reto",
           "Un chiste",
           "Curiosidad",
           "Fuegos"
         ],
         "va": [
+          "Quiz de Sergio",
           "El repte",
           "Un acudit",
           "Curiositat",
@@ -474,7 +520,13 @@
         "trist",
         "anima m",
         "estic trist",
-        "agobiado"
+        "agobiado",
+        "estoy cansado",
+        "estoy agobiado",
+        "estres",
+        "agobio",
+        "estic cansat",
+        "necesito animo"
       ],
       "es": [
         "Vaya, lo siento. Te dejo un poco de luz por aquí 🏮 Y si necesitas hablar de verdad, una persona de confianza siempre ayuda más que un farol.",
@@ -497,7 +549,11 @@
         "com et dius",
         "presentate",
         "farolillo",
-        "quien es farolillo"
+        "quien es farolillo",
+        "y tu quien eres",
+        "como te llamas tu",
+        "faro",
+        "farol"
       ],
       "es": [
         "Soy Farolillo, el espíritu de farol que ilumina esta web. De noche brillo con fuerza; de día ahorro llama.",
@@ -524,7 +580,17 @@
         "chatbot",
         "eres una maquina",
         "ia",
-        "gpt"
+        "gpt",
+        "eres mejor que chatgpt",
+        "siri",
+        "alexa",
+        "eres como chatgpt",
+        "gemini",
+        "copilot",
+        "usas ia",
+        "tienes ia",
+        "eres listo",
+        "eres inteligente"
       ],
       "es": [
         "No soy una IA: soy un espíritu con un buscador de respuestas muy apañado. Todo lo que digo lo escribieron a mano.",
@@ -619,7 +685,9 @@
         "que color te gusta",
         "tu color",
         "color preferit",
-        "quin color"
+        "quin color",
+        "cual es tu color favorito",
+        "color favorito de sergio"
       ],
       "es": [
         "El rosa neón. Aunque si pulsas el botón de acento me pongo azul y también me sienta bien.",
@@ -638,7 +706,14 @@
         "que opinas",
         "tu juego favorito",
         "que te gusta a ti",
-        "el teu preferit"
+        "el teu preferit",
+        "tu peli favorita",
+        "tu anime favorito",
+        "tu libro favorito",
+        "que te gusta",
+        "te gusta",
+        "tu pelicula favorita",
+        "que prefieres"
       ],
       "es": [
         "¿El mío? Zelda, por solidaridad: allí también se ilumina todo con antorchas.",
@@ -684,11 +759,17 @@
       ],
       "es": [
         "Pistas 🤫: arrástrame, hazme cinco clics seguidos, déjame quieto un rato o escribe «fuegos».",
-        "Hay más: prueba a escribir «kamehameha», «bankai», «konami» o «hola mundo»."
+        "Hay más: prueba a escribir «kamehameha», «bankai», «konami» o «hola mundo».",
+        "Otro secreto: si dejas de moverte un buen rato, me quedo dormido. Haz algo y me despiertas.",
+        "Prueba a cambiar el tema o el color de acento con el chat abierto: me doy cuenta de todo 👀",
+        "¿Te molesto? Pulsa el ojo de la cabecera o escribe «escóndete»: me quedo en una pestañita hasta que me llames."
       ],
       "va": [
         "Pistes 🤫: arrossega’m, fes-me cinc clics seguits, deixa’m quiet una estona o escriu «focs».",
-        "N’hi ha més: prova a escriure «kamehameha», «bankai», «konami» o «hola món»."
+        "N’hi ha més: prova a escriure «kamehameha», «bankai», «konami» o «hola món».",
+        "Un altre secret: si deixes de moure’t una bona estona, em quede adormit. Fes alguna cosa i em desperte.",
+        "Prova a canviar el tema o el color d’accent amb el xat obert: me n’adone de tot 👀",
+        "Et moleste? Prem l’ull de la capçalera o escriu «amaga’t»: em quede en una pestanyeta fins que em cridés."
       ],
       "repetible": true
     },
@@ -721,10 +802,10 @@
         "foc",
         "focs",
         "fiesta",
-        "festa",
         "celebrar",
         "party",
-        "celebracion"
+        "celebracion",
+        "de festa"
       ],
       "es": [
         "¡Fuegos artificiales! 🎆",
@@ -852,15 +933,26 @@
         "sobre sergio",
         "de quien es la web",
         "quien eres sergio",
-        "el dueño"
+        "el dueño",
+        "quien ha hecho esta web",
+        "quien ha hecho la web",
+        "quien hizo esta web",
+        "quien ha creado esto",
+        "quien te ha hecho",
+        "quien es tu creador",
+        "qui ha fet la web",
+        "qui t ha creat",
+        "quien te programo"
       ],
       "es": [
         "Sergio Chorques: estudiante de 1º de DAM en el IES Simarro, gamer de PS5, lector y desarrollador en formación. Y mi creador, claro 🏮",
-        "Es quien ha hecho esta web (y a mí). Estudia DAM, le encanta construir cosas interactivas desde cero y tiene muy buen gusto para las sagas épicas."
+        "Es quien ha hecho esta web (y a mí). Estudia DAM, le encanta construir cosas interactivas desde cero y tiene muy buen gusto para las sagas épicas.",
+        "Sergio Chorques, de Enguera. Estudia 1º de DAM, juega en PS5, escucha Héroes del Silencio y tiene un chihuahua llamado Blue. Y me hizo a mí 🏮"
       ],
       "va": [
         "Sergio Chorques: estudiant de 1r de DAM a l’IES Simarro, gamer de PS5, lector i desenvolupador en formació. I el meu creador, clar 🏮",
-        "És qui ha fet esta web (i a mi). Estudia DAM, li encanta construir coses interactives des de zero i té molt bon gust per a les sagues èpiques."
+        "És qui ha fet esta web (i a mi). Estudia DAM, li encanta construir coses interactives des de zero i té molt bon gust per a les sagues èpiques.",
+        "Sergio Chorques, d’Enguera. Estudia 1r de DAM, juga en PS5, escolta Héroes del Silencio i té un chihuahua que es diu Blue. I em va fer a mi 🏮"
       ],
       "peso": 0.85,
       "enlace": {
@@ -998,7 +1090,18 @@
         "que sabe hacer",
         "habilidades",
         "skills",
-        "habilitats"
+        "habilitats",
+        "python",
+        "sabe python",
+        "php",
+        "c++",
+        "cpp",
+        "c sharp",
+        "kotlin",
+        "sql",
+        "typescript",
+        "que lenguaje usa",
+        "lenguaje favorito"
       ],
       "es": [
         "Su arsenal: Java, JavaScript, HTML5, CSS3 y Git. Y aprendiendo más cada semana.",
@@ -1054,7 +1157,19 @@
         "linkedin",
         "como le escribo",
         "redes sociales",
-        "xarxes socials"
+        "xarxes socials",
+        "instagram",
+        "twitter",
+        "tiktok",
+        "facebook",
+        "tiene redes",
+        "como le contacto",
+        "como hablo con el",
+        "quiero hablar con sergio",
+        "su correo",
+        "su email",
+        "escribirle",
+        "whatsapp"
       ],
       "es": [
         "Puedes escribirle desde la sección de contacto o pedirle que te llame con el botón «¿Te llamo?».",
@@ -1106,7 +1221,10 @@
         "codigo fuente",
         "git hub",
         "repositoris",
-        "su codigo"
+        "su codigo",
+        "ver el codigo",
+        "codigo abierto",
+        "open source"
       ],
       "es": [
         "Su GitHub es SergioCHP. En la sección de proyectos verás sus repos más recientes, en directo.",
@@ -1167,7 +1285,9 @@
         "aficions",
         "que li agrada",
         "intereses",
-        "interessos"
+        "interessos",
+        "que hace en su tiempo libre",
+        "que le gusta hacer"
       ],
       "es": [
         "Videojuegos (juego en todas las consolas, pero la PS5 es mi favorita), cine, anime y lectura (fantasía, ciencia ficción, cómics de Marvel y DC y algo de manga). Pregúntame por cualquiera.",
@@ -1181,16 +1301,21 @@
         "es": [
           "Juegos",
           "Pelis",
+          "Series",
           "Anime",
-          "Libros"
+          "Libros",
+          "Música"
         ],
         "va": [
           "Jocs",
           "Pel·lis",
+          "Sèries",
           "Anime",
-          "Llibres"
+          "Llibres",
+          "Música"
         ]
-      }
+      },
+      "peso": 0.9
     },
     {
       "id": "viajes",
@@ -1218,18 +1343,20 @@
     {
       "id": "privado",
       "frases": [
-        "novia",
-        "novio",
-        "pareja",
-        "donde vive sergio",
         "cuantos anos tiene sergio",
         "edad de sergio",
         "direccion",
         "telefono de sergio",
-        "parella",
-        "on viu",
         "sueldo",
-        "dinero"
+        "dinero",
+        "que edad tiene sergio",
+        "su casa",
+        "su direccion",
+        "cuanto gana",
+        "donde trabaja",
+        "nombre completo",
+        "dni",
+        "quants anys te"
       ],
       "es": [
         "Eso es cosa de Sergio 😉 Si quieres saberlo, pregúntaselo tú por contacto.",
@@ -1253,15 +1380,18 @@
         "projecte",
         "porfolio",
         "que ha programado",
-        "portafolio"
+        "portafolio",
+        "sus proyectos",
+        "que ha hecho sergio",
+        "todos los proyectos"
       ],
       "es": [
-        "Tres destacados:\n• Esta web personal (HTML, CSS y JS vanilla)\n• Un gestor de biblioteca en Java\n• Una web temática de El Señor de los Anillos en WordPress",
-        "Su web, un gestor de biblioteca en Java y una web de El Señor de los Anillos hecha con WordPress. En la sección de proyectos puedes filtrarlos."
+        "Cuatro destacados:\n• Esta web personal (HTML, CSS y JS vanilla)\n• Un minijuego JRPG por turnos en Canvas\n• Un gestor de biblioteca en Java\n• Una web temática de El Señor de los Anillos en WordPress",
+        "Su web, un minijuego JRPG al estilo Final Fantasy VII, un gestor de biblioteca en Java y una web de El Señor de los Anillos hecha con WordPress. En la sección de proyectos puedes filtrarlos."
       ],
       "va": [
-        "Tres destacats:\n• Esta web personal (HTML, CSS i JS vanilla)\n• Un gestor de biblioteca en Java\n• Una web temàtica d’El Senyor dels Anells en WordPress",
-        "La seua web, un gestor de biblioteca en Java i una web d’El Senyor dels Anells feta amb WordPress. En la secció de projectes pots filtrar-los."
+        "Quatre destacats:\n• Esta web personal (HTML, CSS i JS vanilla)\n• Un minijoc JRPG per torns en Canvas\n• Un gestor de biblioteca en Java\n• Una web temàtica d’El Senyor dels Anells en WordPress",
+        "La seua web, un minijoc JRPG a l’estil Final Fantasy VII, un gestor de biblioteca en Java i una web d’El Senyor dels Anells feta amb WordPress. En la secció de projectes pots filtrar-los."
       ],
       "enlace": {
         "href": "index.html#proyectos",
@@ -1270,18 +1400,19 @@
       },
       "sugerencias": {
         "es": [
-          "Esta web",
+          "Minijuego JRPG",
           "Gestor de biblioteca",
           "Web de WordPress",
-          "GitHub"
+          "Esta web"
         ],
         "va": [
-          "Esta web",
+          "Minijoc JRPG",
           "Gestor de biblioteca",
           "Web de WordPress",
-          "GitHub"
+          "Esta web"
         ]
-      }
+      },
+      "tema": "proyectos"
     },
     {
       "id": "proyecto-web",
@@ -1318,7 +1449,10 @@
         "aplicacion java",
         "app java",
         "proyecto java",
-        "aplicacio java"
+        "aplicacio java",
+        "gestor biblioteca",
+        "cuando sale el gestor",
+        "proximamente"
       ],
       "es": [
         "Una práctica de DAM en Java para organizar colecciones de libros y mangas con estructuras de datos ordenadas y POO.",
@@ -1340,7 +1474,12 @@
         "web senor anillos",
         "web tierra media",
         "web lotr",
-        "cms"
+        "cms",
+        "web de wordpress",
+        "la web de wordpress",
+        "web wordpress",
+        "proyecto wordpress",
+        "web de wordpress del senor de los anillos"
       ],
       "es": [
         "Una web temática de El Señor de los Anillos hecha en WordPress el año pasado, centrada en diseño, personalización y gestión de contenidos.",
@@ -1443,7 +1582,12 @@
         "anilist",
         "cercador",
         "cercar",
-        "explorador"
+        "explorador",
+        "buscador de juegos",
+        "buscador de pelis",
+        "buscador de peliculas",
+        "buscador de anime",
+        "como busco un juego"
       ],
       "es": [
         "Las páginas de juegos, cine y anime tienen buscadores con datos reales de RAWG, TMDB y AniList. Busca tu favorito y te sale la ficha completa.",
@@ -1534,7 +1678,13 @@
         "frio",
         "fred",
         "el temps",
-        "meteo"
+        "meteo",
+        "hace frio",
+        "hace calor",
+        "va a llover",
+        "fa fred",
+        "fa calor",
+        "el tiempo"
       ],
       "es": [
         "Arriba a la derecha hay un widget del tiempo en directo con datos de Open-Meteo. Aquí dentro, eso sí, siempre hace calorcito 🔥",
@@ -1620,7 +1770,14 @@
         "que juegos",
         "jocs preferits",
         "mejor juego",
-        "millor joc"
+        "millor joc",
+        "que juegos le gustan",
+        "que juegos le gusta",
+        "a que juegos juega",
+        "quins jocs li agraden",
+        "juegos que le gustan",
+        "top juegos",
+        "lista de juegos"
       ],
       "es": [
         "Su top 8: Final Fantasy, Metal Gear Solid, God of War, Resident Evil, The Last of Us, Zelda, The Witcher y Red Dead Redemption. Todo sagas con historia gorda.",
@@ -1662,7 +1819,14 @@
         "sugiere juego",
         "a que juego",
         "juego recomiendas",
-        "un juego"
+        "un juego",
+        "que juego me recomiendas",
+        "recomiendas algun juego",
+        "un juego para mi",
+        "dime un juego",
+        "que juego juego hoy",
+        "recomana m un joc",
+        "recomanam un joc"
       ],
       "es": [
         "Te recomiendo este:",
@@ -1926,7 +2090,9 @@
         "rivia",
         "brujo",
         "ciri",
-        "yennefer"
+        "yennefer",
+        "the witcher juego",
+        "juego de the witcher"
       ],
       "es": [
         "The Witcher: fantasía oscura y madura donde los monstruos a menudo son humanos. Decisiones con peso real y moral en escala de grises.",
@@ -2016,7 +2182,33 @@
         "silent hill",
         "valorant",
         "roblox",
-        "sonic"
+        "god of war ragnarok",
+        "hogwarts legacy",
+        "baldurs gate",
+        "skyrim",
+        "dark souls",
+        "bloodborne",
+        "sekiro",
+        "spiderman juego",
+        "horizon",
+        "uncharted",
+        "death stranding",
+        "kingdom hearts",
+        "persona 5",
+        "dragon quest",
+        "animal crossing",
+        "smash bros",
+        "overwatch",
+        "apex",
+        "counter strike",
+        "tetris",
+        "pacman",
+        "among us",
+        "stardew valley",
+        "clash royale",
+        "brawl stars",
+        "the sims",
+        "assassins creed"
       ],
       "es": [
         "Ese no está en su top 8, pero en la página de juegos hay un buscador: escríbelo y te saca la ficha completa.",
@@ -2054,7 +2246,14 @@
         "totes les seues pellis",
         "mejor pelicula",
         "mejor peli",
-        "millor pellicula"
+        "millor pellicula",
+        "que peliculas le gustan",
+        "que pelicula le gusta",
+        "que pelis le gustan",
+        "que pelis ve",
+        "quines pellicules li agraden",
+        "pelis que le gustan",
+        "top pelis"
       ],
       "es": [
         "Su top de cine: El Señor de los Anillos, 300, Gladiator, Terminator 2, Matrix, Braveheart, Jurassic Park y Regreso al futuro. Épica, ciencia ficción y mucho sentimiento.",
@@ -2097,7 +2296,15 @@
         "recomana pellicula",
         "recomana pelli",
         "una peli",
-        "peli recomiendas"
+        "peli recomiendas",
+        "que peli me recomiendas",
+        "que pelicula me recomiendas",
+        "dime una peli",
+        "una peli para hoy",
+        "recomana m una pelicula",
+        "peli para esta noche",
+        "recomana m una pelli",
+        "recomana m una pellicula"
       ],
       "es": [
         "Esta noche, palomitas y:",
@@ -2120,7 +2327,13 @@
         "peter jackson",
         "rohirrim",
         "howard shore",
-        "trilogia"
+        "trilogia",
+        "senor de los anillos peli",
+        "senor de los anillos pelicula",
+        "pelicula del senor de los anillos",
+        "pelis del senor de los anillos",
+        "peli del senor de los anillos",
+        "pellicula del senyor dels anells"
       ],
       "es": [
         "El Señor de los Anillos (las pelis) es para Sergio «la cúspide absoluta del séptimo arte»: barro, acero, la carga de los Rohirrim y la música de Howard Shore.",
@@ -2441,17 +2654,29 @@
         "interstellar",
         "pulp fiction",
         "oppenheimer",
-        "blade runner",
         "titanic",
         "avengers",
-        "marvel",
-        "batman",
         "el padrino",
         "inception",
         "origen",
         "dune pelicula",
         "harry potter pelicula",
-        "star trek"
+        "star trek",
+        "alien",
+        "predator",
+        "rocky",
+        "indiana jones",
+        "el hobbit",
+        "piratas del caribe",
+        "shrek",
+        "toy story",
+        "el rey leon",
+        "batman pelicula",
+        "avatar",
+        "mad max",
+        "john wick",
+        "fast and furious",
+        "barbie"
       ],
       "es": [
         "Esa no está en su top 8, pero en la página de cine tienes un explorador con datos de TMDB. Búscala ahí.",
@@ -2482,7 +2707,12 @@
         "tots els seus animes",
         "otaku",
         "mejor anime",
-        "millor anime"
+        "millor anime",
+        "que anime le gusta",
+        "que animes le gustan",
+        "que anime ve",
+        "quins animes li agraden",
+        "top anime"
       ],
       "es": [
         "Su top anime: Dragon Ball Z, Bleach, One Piece, Saint Seiya, Naruto, Attack on Titan, Kimetsu no Yaiba y Jujutsu Kaisen. Shonen hasta la médula.",
@@ -2521,7 +2751,11 @@
         "que anime veo",
         "recomana anime",
         "un anime",
-        "anime recomiendas"
+        "anime recomiendas",
+        "que anime me recomiendas",
+        "dime un anime",
+        "que anime empiezo",
+        "recomana m un anime"
       ],
       "es": [
         "Maratón recomendada:",
@@ -2887,7 +3121,17 @@
         "totoro",
         "pokemon anime",
         "doraemon",
-        "shin chan"
+        "shin chan",
+        "one punch man",
+        "tokyo ghoul",
+        "blue lock",
+        "oliver y benji",
+        "sailor moon",
+        "el viaje de chihiro",
+        "mi vecino totoro",
+        "cowboy bebop",
+        "code geass",
+        "dandadan"
       ],
       "es": [
         "Ese no está en su top, pero el explorador de anime de la web tira de AniList: búscalo y hasta te sale el tráiler.",
@@ -2922,15 +3166,31 @@
         "todos sus libros",
         "tots els seus llibres",
         "mejor libro",
-        "millor llibre"
+        "millor llibre",
+        "que libros le gustan",
+        "que libro le gusta",
+        "que llig",
+        "quins llibres li agraden",
+        "que esta leyendo",
+        "top libros",
+        "mas libros",
+        "otros libros",
+        "autor favorito",
+        "escritor favorito",
+        "que autores le gustan",
+        "saga favorita",
+        "sagas de libros",
+        "quins autors li agraden"
       ],
       "es": [
         "En su grimorio hay cinco joyas: El Señor de los Anillos, Dune, El Nombre del Viento, Harry Potter y la Piedra Filosofal y El Ojo del Mundo. Todas con cinco estrellas.",
-        "Fantasía y ciencia ficción a lo grande. Sus libros viven en un grimorio 3D que se abre y pasa páginas con sonido."
+        "Fantasía y ciencia ficción a lo grande. Sus libros viven en un grimorio 3D que se abre y pasa páginas con sonido.",
+        "En el grimorio hay cinco, pero lee muchos más: los libros de Brandon Sanderson (Nacidos de la Bruma, El Archivo de las Tormentas…), Canción de hielo y fuego y la saga de Geralt de Rivia. Pregúntame por cualquiera."
       ],
       "va": [
         "En el seu grimori hi ha cinc joies: El Senyor dels Anells, Dune, El Nom del Vent, Harry Potter i la Pedra Filosofal i L’Ull del Món. Totes amb cinc estreles.",
-        "Fantasia i ciència-ficció a lo gran. Els seus llibres viuen en un grimori 3D que s’obri i passa pàgines amb so."
+        "Fantasia i ciència-ficció a lo gran. Els seus llibres viuen en un grimori 3D que s’obri i passa pàgines amb so.",
+        "En el grimori n’hi ha cinc, però en llig molts més: els llibres de Brandon Sanderson (Nascuts de la Boira, L’Arxiu de les Tempestes…), Cançó de gel i foc i la saga de Geralt de Rívia. Pregunta’m per qualsevol."
       ],
       "tema": "libros",
       "enlace": {
@@ -2962,7 +3222,10 @@
         "recomana llibre",
         "un libro",
         "libro recomiendas",
-        "que leo"
+        "que leo",
+        "que libro me recomiendas",
+        "dime un libro",
+        "recomana m un llibre"
       ],
       "es": [
         "Para tu mesilla:",
@@ -2985,7 +3248,10 @@
         "libro 3d",
         "como funciona el libro",
         "pasar paginas",
-        "el grimorio"
+        "el grimorio",
+        "como funciona el grimorio",
+        "como paso las paginas",
+        "com funciona el grimori"
       ],
       "es": [
         "Los libros viven en un grimorio de cuero con pan de oro: se abre en 3D, pasa páginas con sonido y tiene índice. Usa ← → o arrastra una esquina.",
@@ -3045,7 +3311,11 @@
         "libro senor de los anillos",
         "senor anillos libro",
         "tolkien",
-        "llibre senyor dels anells"
+        "llibre senyor dels anells",
+        "libro del senor de los anillos",
+        "senor de los anillos libro",
+        "libros de tolkien",
+        "llibre del senyor dels anells"
       ],
       "es": [
         "El libro de Tolkien: Frodo hereda el Anillo Único y emprende el viaje al Monte del Destino mientras reinos enteros luchan por sobrevivir. Cinco estrellas.",
@@ -3304,15 +3574,29 @@
         "musica favorita",
         "musica preferida",
         "canco",
-        "bso"
+        "bso",
+        "heroes del silencio",
+        "bunbury",
+        "enrique bunbury",
+        "rock",
+        "rock en espanol",
+        "grupo favorito",
+        "cantante favorito",
+        "que escucha",
+        "que musica le gusta",
+        "entre dos tierras",
+        "grup preferit",
+        "que escolta"
       ],
       "es": [
-        "Yo escucho el crepitar de mi llama. En sus favoritos, Sergio destaca bandas sonoras como la de Howard Shore en El Señor de los Anillos o las orquestales de Final Fantasy.",
-        "Si buscas música, mira las bandas sonoras de sus favoritos: Final Fantasy, Bleach o la Tierra Media de Howard Shore."
+        "Lo suyo es el rock, sobre todo en español. Su grupo favorito: Héroes del Silencio. Y Bunbury en solitario, claro.",
+        "Rock en español a todo volumen: Héroes del Silencio y Bunbury encabezan su lista. Yo solo aporto el crepitar de la llama.",
+        "Si le ves programando con cascos, apuesta por Héroes del Silencio. Y en sus favoritos también tienen sitio las bandas sonoras de Final Fantasy o El Señor de los Anillos."
       ],
       "va": [
-        "Jo escolte el crepitar de la meua flama. En els seus preferits, Sergio destaca bandes sonores com la de Howard Shore en El Senyor dels Anells o les orquestrals de Final Fantasy.",
-        "Si busques música, mira les bandes sonores dels seus preferits: Final Fantasy, Bleach o la Terra Mitjana de Howard Shore."
+        "El seu és el rock, sobretot en espanyol. El seu grup preferit: Héroes del Silencio. I Bunbury en solitari, clar.",
+        "Rock en espanyol a tot volum: Héroes del Silencio i Bunbury encapçalen la seua llista. Jo només aporte el crepitar de la flama.",
+        "Si el veus programant amb cascos, aposta per Héroes del Silencio. I en els seus preferits també tenen lloc les bandes sonores de Final Fantasy o El Senyor dels Anells."
       ]
     },
     {
@@ -3328,7 +3612,11 @@
         "un chiste",
         "otro chiste",
         "gracioso",
-        "acudits"
+        "acudits",
+        "xiste",
+        "xistes",
+        "chistes malos",
+        "chiste malo"
       ],
       "es": [
         "¿Por qué los programadores confunden Halloween con Navidad? Porque OCT 31 = DEC 25 🎃🎄",
@@ -3341,7 +3629,21 @@
         "¿Por qué el farol no juega al escondite? Porque siempre lo pillan: se le ve la llama de lejos.",
         "Un programador va al súper. Su pareja le dice: «Trae un litro de leche y, si hay huevos, trae seis». Volvió con seis litros de leche.",
         "¿Cuál es el animal favorito de un programador? El bug… aunque siempre intenta deshacerse de él.",
-        "Goku no necesita Git: si algo sale mal, reúne las bolas de dragón y hace rollback."
+        "Goku no necesita Git: si algo sale mal, reúne las bolas de dragón y hace rollback.",
+        "¿Por qué el programador dejó su trabajo? Porque no le daban arrays (a raíz).",
+        "Un farol le dice a otro: «¿Salimos esta noche?». Y el otro: «Vale, pero yo pongo la luz».",
+        "—Toc, toc. —¿Quién es? —…(30 segundos después)… —Java.",
+        "¿Cuántos programadores hacen falta para cambiar una bombilla? Ninguno: es un problema de hardware.",
+        "Mi contraseña es «incorrecta». Así, cuando me equivoco, el ordenador me la recuerda.",
+        "Dicen que soy un farol. Mentira: siempre voy en serio. Bueno, casi siempre.",
+        "¿Por qué Kratos nunca usa ascensor? Porque prefiere subir por la escalera del Olimpo… a golpes.",
+        "Snake se escondió tan bien en la caja que el instituto lo dio de baja por faltas.",
+        "¿Qué hace un chocobo en el ordenador? Picotea el teclado.",
+        "Un HTML entra en un bar. El camarero: «¿Qué te pongo?». Y él: «Una etiqueta, que voy sin cerrar».",
+        "¿Sabes por qué los programadores prefieren el modo oscuro? Porque la luz atrae a los bugs. Por eso yo voy con cuidado.",
+        "Llevo toda la vida en esta esquina y nadie me ha preguntado si quiero cambiarme a la derecha. Allí vive el botón de subir. Hay tensión.",
+        "¿Qué le dijo el semáforo al farol? «No me mires, que me estoy cambiando».",
+        "Mi relación con los commits: «arreglado», «ahora sí», «ahora sí de verdad», «último cambio», «último cambio 2»."
       ],
       "va": [
         "Per què els programadors confonen Halloween amb Nadal? Perquè OCT 31 = DEC 25 🎃🎄",
@@ -3354,7 +3656,21 @@
         "Per què el farol no juga a fet i amagar? Perquè sempre el troben: se li veu la flama de lluny.",
         "Un programador va al súper. La seua parella li diu: «Porta un litre de llet i, si hi ha ous, porta’n sis». Va tornar amb sis litres de llet.",
         "Quin és l’animal preferit d’un programador? El bug… encara que sempre intenta desfer-se’n.",
-        "Goku no necessita Git: si alguna cosa ix malament, reunix les boles de drac i fa rollback."
+        "Goku no necessita Git: si alguna cosa ix malament, reunix les boles de drac i fa rollback.",
+        "Per què el programador va deixar la faena? Perquè no li donaven arrays (a rel).",
+        "Un fanal li diu a un altre: «Eixim esta nit?». I l’altre: «Vale, però jo pose la llum».",
+        "—Toc, toc. —Qui és? —…(30 segons després)… —Java.",
+        "Quants programadors calen per a canviar una bombeta? Cap: és un problema de maquinari.",
+        "La meua contrasenya és «incorrecta». Així, quan m’equivoque, l’ordinador me la recorda.",
+        "Diuen que soc un fanal de fira. Mentida: sempre vaig de veres. Bé, quasi sempre.",
+        "Per què Kratos mai usa l’ascensor? Perquè prefereix pujar per l’escala de l’Olimp… a colps.",
+        "Snake es va amagar tan bé dins la caixa que l’institut el va donar de baixa per faltes.",
+        "Què fa un chocobo a l’ordinador? Picoteja el teclat.",
+        "Un HTML entra en un bar. El cambrer: «Què et pose?». I ell: «Una etiqueta, que vaig sense tancar».",
+        "Saps per què els programadors prefereixen el mode fosc? Perquè la llum atrau els bugs. Per això jo vaig amb compte.",
+        "Porte tota la vida en este racó i ningú m’ha preguntat si vull canviar-me a la dreta. Allí viu el botó de pujar. Hi ha tensió.",
+        "Què li va dir el semàfor al fanal? «No em mires, que m’estic canviant».",
+        "La meua relació amb els commits: «arreglat», «ara sí», «ara sí de veres», «últim canvi», «últim canvi 2»."
       ],
       "repetible": true,
       "efecto": "salto",
@@ -3396,7 +3712,21 @@
         "Tolkien era filólogo y creó idiomas élficos como el quenya y el sindarin.",
         "En Dune, la especia melange acaba tiñendo de azul los ojos de quien la consume a menudo.",
         "El primer Metal Gear salió en 1987 para MSX2 y ya apostaba por esconderse en lugar de pelear.",
-        "Jurassic Park mezcló animatrónicos enormes con dinosaurios por ordenador, algo pionero en 1993."
+        "Jurassic Park mezcló animatrónicos enormes con dinosaurios por ordenador, algo pionero en 1993.",
+        "El primer videojuego de la historia suele considerarse Tennis for Two, de 1958, en un osciloscopio.",
+        "La PS5 puede cargar partidas tan rápido gracias a su SSD que algunas pantallas de carga se quedaron sin tiempo para los consejos.",
+        "Java se iba a llamar Oak, por un roble que había junto a la oficina de su creador, James Gosling.",
+        "Python no se llama así por la serpiente, sino por los Monty Python.",
+        "El código Konami (↑↑↓↓←→←→BA) nació porque a su programador le costaba pasarse Gradius.",
+        "El primer ordenador electrónico de propósito general, ENIAC (1945), pesaba unas 27 toneladas.",
+        "Akira Toriyama diseñó también los personajes de Dragon Quest y Chrono Trigger.",
+        "Los Wachowski se inspiraron en el anime Ghost in the Shell para crear Matrix.",
+        "Tolkien tardó unos doce años en escribir El Señor de los Anillos.",
+        "En The Last of Us, el hongo Cordyceps existe de verdad, aunque solo afecta a insectos.",
+        "Hideo Kojima quería ser director de cine antes de dedicarse a los videojuegos. Se nota.",
+        "El primer sitio web de la historia, de Tim Berners-Lee (1991), sigue online en info.cern.ch.",
+        "Los farolillos de papel se usan en Asia desde hace casi dos mil años. Tengo antepasados con mucha historia.",
+        "Un Gigabyte son 1024 Megabytes… o 1000, según a quién le preguntes. Los informáticos y los fabricantes de discos no se ponen de acuerdo."
       ],
       "va": [
         "El primer «bug» informàtic documentat va ser una arna de veritat, atrapada en l’ordinador Harvard Mark II en 1947.",
@@ -3409,7 +3739,21 @@
         "Tolkien era filòleg i va crear idiomes èlfics com el quenya i el sindarin.",
         "En Dune, l’espècia melange acaba tenyint de blau els ulls de qui la consumix sovint.",
         "El primer Metal Gear va eixir en 1987 per a MSX2 i ja apostava per amagar-se en compte de lluitar.",
-        "Jurassic Park va mesclar animatrònics enormes amb dinosaures per ordinador, una cosa pionera en 1993."
+        "Jurassic Park va mesclar animatrònics enormes amb dinosaures per ordinador, una cosa pionera en 1993.",
+        "El primer videojoc de la història sol considerar-se Tennis for Two, de 1958, en un oscil·loscopi.",
+        "La PS5 pot carregar partides tan ràpid gràcies al seu SSD que algunes pantalles de càrrega es van quedar sense temps per als consells.",
+        "Java s’havia de dir Oak, per un roure que hi havia al costat de l’oficina del seu creador, James Gosling.",
+        "Python no es diu així per la serp, sinó pels Monty Python.",
+        "El codi Konami (↑↑↓↓←→←→BA) va nàixer perquè al seu programador li costava passar-se Gradius.",
+        "El primer ordinador electrònic de propòsit general, ENIAC (1945), pesava unes 27 tones.",
+        "Akira Toriyama també va dissenyar els personatges de Dragon Quest i Chrono Trigger.",
+        "Les Wachowski es van inspirar en l’anime Ghost in the Shell per a crear Matrix.",
+        "Tolkien va tardar uns dotze anys a escriure El Senyor dels Anells.",
+        "A The Last of Us, el fong Cordyceps existeix de veres, encara que només afecta insectes.",
+        "Hideo Kojima volia ser director de cine abans de dedicar-se als videojocs. Es nota.",
+        "El primer lloc web de la història, de Tim Berners-Lee (1991), continua en línia a info.cern.ch.",
+        "Els fanalets de paper s’usen a l’Àsia des de fa quasi dos mil anys. Tinc avantpassats amb molta història.",
+        "Un Gigabyte són 1024 Megabytes… o 1000, segons a qui li ho preguntes. Els informàtics i els fabricants de discos no es posen d’acord."
       ],
       "repetible": true,
       "sugerencias": {
@@ -3443,14 +3787,24 @@
         "Haz proyectos pequeños que te apetezcan de verdad. Esta web empezó así.",
         "Lee los errores enteros. La mitad de las veces la respuesta está en la segunda línea.",
         "Usa Git desde el primer día. Tu yo del futuro te lo agradecerá.",
-        "Si te atascas, explícale el problema a un pato de goma… o a un farol. Funciona."
+        "Si te atascas, explícale el problema a un pato de goma… o a un farol. Funciona.",
+        "Antes de copiar código de internet, entiéndelo. Si no, el bug también lo copias.",
+        "Pon nombres claros a las variables. «x2final_bueno» no es un nombre, es un grito de auxilio.",
+        "Descansa. Muchos bugs se arreglan solos… después de dormir y volver a mirarlos.",
+        "Termina proyectos aunque sean pequeños. Un proyecto acabado enseña más que diez a medias.",
+        "Aprende a buscar: la documentación oficial es tu mejor amiga, aunque a veces cueste leerla."
       ],
       "va": [
         "Programa un poc cada dia. Trenta minuts constants guanyen a una panxada de huit hores.",
         "Fes projectes xicotets que de veritat et vinguen de gust. Esta web va començar així.",
         "Llig els errors sencers. La meitat de les vegades la resposta està en la segona línia.",
         "Usa Git des del primer dia. El teu jo del futur t’ho agrairà.",
-        "Si et bloqueges, explica el problema a un ànec de goma… o a un farol. Funciona."
+        "Si et bloqueges, explica el problema a un ànec de goma… o a un farol. Funciona.",
+        "Abans de copiar codi d’internet, entén-lo. Si no, el bug també el copies.",
+        "Posa noms clars a les variables. «x2final_bo» no és un nom, és un crit d’auxili.",
+        "Descansa. Molts bugs s’arreglen sols… després de dormir i tornar a mirar-los.",
+        "Acaba projectes encara que siguen menuts. Un projecte acabat ensenya més que deu a mitges.",
+        "Aprén a buscar: la documentació oficial és la teua millor amiga, encara que de vegades coste llegir-la."
       ],
       "repetible": true,
       "sugerencias": {
@@ -3504,12 +3858,14 @@
         "root",
         "hackear",
         "hack",
-        "hacker",
         "password",
         "contrasena",
         "contrasenya",
         "admin",
-        "administrador"
+        "administrador",
+        "soy hacker",
+        "modo hacker",
+        "eres hacker"
       ],
       "es": [
         "Permiso denegado. Este farol no se deja hackear 🔒",
@@ -3693,6 +4049,4286 @@
       ],
       "efecto": "giro",
       "peso": 1.3
+    },
+    {
+      "id": "proyecto-minijuego",
+      "frases": [
+        "minijuego jrpg",
+        "jrpg",
+        "combate por turnos",
+        "atb",
+        "barra atb",
+        "juego por turnos",
+        "como esta hecho el minijuego",
+        "como funciona el minijuego",
+        "canvas",
+        "modulos es",
+        "el minijuego",
+        "proyecto minijuego",
+        "minijoc jrpg",
+        "combat per torns",
+        "el heroe",
+        "el monstruo",
+        "como gano el reto",
+        "no puedo ganar",
+        "es dificil el reto",
+        "truco minijuego",
+        "jugar",
+        "quiero jugar",
+        "jugar al minijuego",
+        "com funciona el minijoc"
+      ],
+      "es": [
+        "El minijuego es un combate JRPG por turnos con barra ATB, inspirado en Final Fantasy VII. Está hecho en Canvas y reescrito en 29 módulos ES por capas, con simulaciones en Node para equilibrarlo.",
+        "Truco de farol: espera a que se llene tu barra ATB, no malgastes turnos y vigila la vida. Y si caes, «Jugar de nuevo». Nadie lo gana a la primera… bueno, casi nadie.",
+        "Es su proyecto más friki: un combate al estilo Final Fantasy VII, programado en Canvas sin motores de juego. Tiene hasta caso de estudio."
+      ],
+      "va": [
+        "El minijoc és un combat JRPG per torns amb barra ATB, inspirat en Final Fantasy VII. Està fet en Canvas i reescrit en 29 mòduls ES per capes, amb simulacions en Node per a equilibrar-lo.",
+        "Truc de fanal: espera que s’òmpliga la teua barra ATB, no malgastes torns i vigila la vida. I si caus, «Jugar de nou». Ningú el guanya a la primera… bé, quasi ningú.",
+        "És el seu projecte més friki: un combat a l’estil Final Fantasy VII, programat en Canvas sense motors de joc. Té fins i tot cas d’estudi."
+      ],
+      "tema": "proyectos",
+      "item": true,
+      "peso": 1.05,
+      "enlace": {
+        "href": "minijuego.html",
+        "es": "Jugar",
+        "va": "Jugar"
+      },
+      "sugerencias": {
+        "es": [
+          "Caso de estudio",
+          "Otro proyecto",
+          "Juegos"
+        ],
+        "va": [
+          "Cas d’estudi",
+          "Un altre projecte",
+          "Jocs"
+        ]
+      }
+    },
+    {
+      "id": "proyectos-recomienda",
+      "frases": [
+        "otro proyecto",
+        "mas proyectos",
+        "un proyecto",
+        "enseñame un proyecto",
+        "ensename un proyecto",
+        "un altre projecte",
+        "proyecto al azar"
+      ],
+      "es": [
+        "Mira este:",
+        "Te enseño este:"
+      ],
+      "va": [
+        "Mira este:",
+        "T’ensenye este:"
+      ],
+      "accion": "aleatorio",
+      "tema": "proyectos"
+    },
+    {
+      "id": "caso-estudio",
+      "frases": [
+        "caso de estudio",
+        "casos de estudio",
+        "case study",
+        "cas d estudi",
+        "como lo hizo",
+        "proceso",
+        "como lo ha hecho",
+        "documentacion del proyecto",
+        "explicacion del proyecto"
+      ],
+      "es": [
+        "En el caso de estudio Sergio cuenta cómo hizo el minijuego: el problema, las decisiones, la arquitectura por capas y lo que aprendió por el camino.",
+        "Si te interesa el «cómo» y no solo el «qué», el caso de estudio es lo tuyo: diseño, código y errores incluidos."
+      ],
+      "va": [
+        "En el cas d’estudi Sergio conta com va fer el minijoc: el problema, les decisions, l’arquitectura per capes i el que va aprendre pel camí.",
+        "Si t’interessa el «com» i no només el «què», el cas d’estudi és el teu: disseny, codi i errors inclosos."
+      ],
+      "enlace": {
+        "href": "caso-estudio.html",
+        "es": "Ver caso de estudio",
+        "va": "Veure cas d’estudi"
+      }
+    },
+    {
+      "id": "privacidad",
+      "frases": [
+        "privacidad",
+        "politica de privacidad",
+        "rgpd",
+        "lopd",
+        "proteccion de datos",
+        "mis datos",
+        "que haces con mis datos",
+        "borrar mis datos",
+        "guardas mis datos",
+        "cookies",
+        "galletas",
+        "me espias",
+        "me estas espiando",
+        "privacitat",
+        "les meues dades",
+        "es seguro",
+        "es seguro el formulario",
+        "rastreo",
+        "tracking",
+        "que fas amb les meues dades"
+      ],
+      "es": [
+        "Tranquilo: yo no guardo nada de lo que me escribes, se olvida al cerrar la página. Si usas el formulario de contacto, Sergio trata tus datos solo para contestarte y los borra como máximo a los 6 meses. Todo está en la política de privacidad.",
+        "Nada de espiar: soy un farol, no una cámara. Lo que me cuentas se queda en tu navegador. Y los datos del formulario se borran solos a los 6 meses."
+      ],
+      "va": [
+        "Tranquil: jo no guarde res del que m’escrius, s’oblida en tancar la pàgina. Si uses el formulari de contacte, Sergio tracta les teues dades només per a contestar-te i les esborra com a màxim als 6 mesos. Tot està en la política de privacitat.",
+        "Res d’espiar: soc un fanal, no una càmera. El que em contes es queda al teu navegador. I les dades del formulari s’esborren soles als 6 mesos."
+      ],
+      "peso": 1.05,
+      "enlace": {
+        "href": "privacidad.html",
+        "es": "Política de privacidad",
+        "va": "Política de privacitat"
+      }
+    },
+    {
+      "id": "accesibilidad",
+      "frases": [
+        "accesibilidad",
+        "es accesible",
+        "web accesible",
+        "accesible",
+        "a11y",
+        "lector de pantalla",
+        "navegar con teclado",
+        "teclado",
+        "daltonico",
+        "ciego",
+        "accessibilitat",
+        "reducir animaciones",
+        "movimiento reducido",
+        "contraste"
+      ],
+      "es": [
+        "La web está pensada para todos: HTML semántico, navegación con teclado, textos alternativos y, si tienes activado «reducir movimiento», hasta yo me calmo.",
+        "Accesibilidad integrada: se puede usar con teclado y lector de pantalla, y respeta tus preferencias de movimiento y de tema."
+      ],
+      "va": [
+        "La web està pensada per a tots: HTML semàntic, navegació amb teclat, textos alternatius i, si tens activat «reduir moviment», fins i tot jo em calme.",
+        "Accessibilitat integrada: es pot usar amb teclat i lector de pantalla, i respecta les teues preferències de moviment i de tema."
+      ]
+    },
+    {
+      "id": "responsive",
+      "frases": [
+        "movil",
+        "en el movil",
+        "responsive",
+        "tablet",
+        "se ve en el movil",
+        "pantalla pequena",
+        "version movil",
+        "mobil",
+        "app",
+        "hay app",
+        "descargar la web",
+        "instalar"
+      ],
+      "es": [
+        "Sí, la web se adapta a móvil, tablet y escritorio. En el móvil yo me hago un poco más pequeño, pero brillo igual.",
+        "No hay app que descargar: la web es responsive y funciona en cualquier pantalla. Pruébala en el móvil, que también salgo."
+      ],
+      "va": [
+        "Sí, la web s’adapta a mòbil, tauleta i escriptori. Al mòbil em faig un poc més menut, però brille igual.",
+        "No hi ha app per a descarregar: la web és responsive i funciona en qualsevol pantalla. Prova-la al mòbil, que també isc."
+      ]
+    },
+    {
+      "id": "rendimiento",
+      "frases": [
+        "rendimiento",
+        "velocidad",
+        "va lento",
+        "carga rapido",
+        "lighthouse",
+        "optimizacion",
+        "optimizada",
+        "pesa mucho",
+        "imagenes webp",
+        "imagenes",
+        "rendiment",
+        "va lenta"
+      ],
+      "es": [
+        "Está optimizada: imágenes en WebP con varios tamaños, fuentes propias, carga diferida y cero frameworks pesados. Yo mismo me paro cuando no me miras para no gastar batería.",
+        "Si algo va lento, seguramente sea una API externa (los buscadores o GitHub). El resto está hecho para cargar rápido."
+      ],
+      "va": [
+        "Està optimitzada: imatges en WebP amb diverses mides, fonts pròpies, càrrega diferida i zero frameworks pesats. Jo mateix em pare quan no em mires per a no gastar bateria.",
+        "Si alguna cosa va lenta, segurament siga una API externa (els cercadors o GitHub). La resta està feta per a carregar ràpid."
+      ]
+    },
+    {
+      "id": "alojamiento",
+      "frases": [
+        "donde esta alojada",
+        "hosting",
+        "servidor web",
+        "github pages",
+        "dominio",
+        "url de la web",
+        "donde esta subida",
+        "como la publico",
+        "despliegue",
+        "deploy",
+        "allotjament",
+        "on esta allotjada",
+        "on esta penjada"
+      ],
+      "es": [
+        "Vive en GitHub Pages, en sergiochp.github.io/mi-web. Cada cambio pasa por Git antes de publicarse.",
+        "Alojada en GitHub Pages. Gratis, rápida y con control de versiones: lo que le gusta a un estudiante de DAM."
+      ],
+      "va": [
+        "Viu en GitHub Pages, en sergiochp.github.io/mi-web. Cada canvi passa per Git abans de publicar-se.",
+        "Allotjada en GitHub Pages. Gratis, ràpida i amb control de versions: el que li agrada a un estudiant de DAM."
+      ]
+    },
+    {
+      "id": "tiempo-desarrollo",
+      "frases": [
+        "cuanto tardo",
+        "cuanto ha tardado",
+        "cuanto tiempo le llevo",
+        "cuanto tiempo lleva la web",
+        "cuanto has tardado",
+        "cuant ha tardat",
+        "cuantas horas",
+        "cuanto tiempo lleva programando"
+      ],
+      "es": [
+        "Muchas tardes, algún fin de semana y bastantes «solo un cambio más» a las tantas. Y sigue creciendo.",
+        "La web no está terminada: es su campo de pruebas, así que cada vez que aprende algo, aparece aquí."
+      ],
+      "va": [
+        "Moltes vesprades, algun cap de setmana i prou «només un canvi més» a les tantes. I continua creixent.",
+        "La web no està acabada: és el seu camp de proves, així que cada vegada que aprén alguna cosa, apareix ací."
+      ]
+    },
+    {
+      "id": "github-actividad",
+      "frases": [
+        "actividad reciente",
+        "actividad en github",
+        "ultimos repositorios",
+        "commits",
+        "repos en vivo",
+        "activitat recent"
+      ],
+      "es": [
+        "La sección de actividad reciente tira de la API de GitHub en directo: ves sus últimos repositorios según los va tocando.",
+        "Lo de «Actividad reciente» no está escrito a mano: lo trae la API de GitHub cada vez que entras."
+      ],
+      "va": [
+        "La secció d’activitat recent tira de l’API de GitHub en directe: veus els seus últims repositoris segons els va tocant.",
+        "Allò d’«Activitat recent» no està escrit a mà: ho porta l’API de GitHub cada vegada que entres."
+      ],
+      "enlace": {
+        "href": "https://github.com/SergioCHP",
+        "es": "Abrir GitHub",
+        "va": "Obrir GitHub"
+      }
+    },
+    {
+      "id": "nota-profe",
+      "frases": [
+        "profesor",
+        "profe",
+        "nota",
+        "que nota",
+        "rubrica",
+        "evaluacion",
+        "que nota merece",
+        "aprobado",
+        "suspenso",
+        "examen",
+        "professor",
+        "quina nota",
+        "soy su profesor",
+        "soy el profe",
+        "soc el professor"
+      ],
+      "es": [
+        "Si eres su profe: un 10 ilumina mucho más que un 9. Lo digo por experiencia, que soy una fuente de luz 🏮",
+        "Yo no pongo notas, pero si las pusiera… mira el minijuego, el libro 3D, los dos idiomas y a mí. Ahí lo dejo."
+      ],
+      "va": [
+        "Si eres el seu professor: un 10 il·lumina molt més que un 9. Ho dic per experiència, que soc una font de llum 🏮",
+        "Jo no pose notes, però si en posara… mira el minijoc, el llibre 3D, els dos idiomes i a mi. Ahí ho deixe."
+      ],
+      "efecto": "feliz",
+      "peso": 1.05
+    },
+    {
+      "id": "aprendiendo",
+      "frases": [
+        "que esta aprendiendo",
+        "que aprende",
+        "aprende python",
+        "aprende ia",
+        "python e ia",
+        "machine learning",
+        "inteligencia artificial sergio",
+        "sabe ia",
+        "programa ia",
+        "que aprendre",
+        "que esta aprenent",
+        "proximos pasos",
+        "que quiere aprender"
+      ],
+      "es": [
+        "Ahora mismo está aprendiendo Python, Java, JavaScript e IA. Java para clase, JavaScript para esta web y Python e IA porque el futuro no espera.",
+        "Su lista de aprendizaje: Python, Java, JavaScript e inteligencia artificial. Y cada cosa que aprende acaba probándola aquí."
+      ],
+      "va": [
+        "Ara mateix està aprenent Python, Java, JavaScript i IA. Java per a classe, JavaScript per a esta web i Python i IA perquè el futur no espera.",
+        "La seua llista d’aprenentatge: Python, Java, JavaScript i intel·ligència artificial. I cada cosa que aprén acaba provant-la ací."
+      ],
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Lenguajes",
+          "Proyectos",
+          "Un consejo"
+        ],
+        "va": [
+          "Llenguatges",
+          "Projectes",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "ciberseguridad",
+      "frases": [
+        "seguridad informatica",
+        "hacking etico",
+        "pentesting",
+        "virus",
+        "contrasena segura",
+        "consejo de seguridad",
+        "antivirus",
+        "phishing"
+      ],
+      "es": [
+        "Sergio tiene el certificado de Fundamentos de Ciberseguridad de Cisco. Consejo de farol: contraseñas largas, distintas en cada sitio y verificación en dos pasos.",
+        "De SMR y Cisco le viene el interés por la seguridad. Y un aviso: si un correo te pide la contraseña con prisas, es phishing. Siempre."
+      ],
+      "va": [
+        "Sergio té el certificat de Fonaments de Ciberseguretat de Cisco. Consell de fanal: contrasenyes llargues, diferents en cada lloc i verificació en dos passos.",
+        "D’SMR i Cisco li ve l’interés per la seguretat. I un avís: si un correu et demana la contrasenya amb presses, és phishing. Sempre."
+      ],
+      "peso": 1.05
+    },
+    {
+      "id": "consolas",
+      "frases": [
+        "ps5",
+        "playstation",
+        "play",
+        "play 5",
+        "xbox",
+        "nintendo",
+        "switch",
+        "consola",
+        "consolas",
+        "pc o consola",
+        "pc gaming",
+        "consola favorita",
+        "que consola tiene",
+        "en que juega",
+        "game boy",
+        "ps4",
+        "steam"
+      ],
+      "es": [
+        "Juega en todas: Nintendo, Xbox… pero su favorita es la PS5. Ahí caen las grandes historias.",
+        "PS5 en el corazón, aunque no le hace ascos a ninguna consola. Si hay buena historia y gráficos bonitos, él juega."
+      ],
+      "va": [
+        "Juga en totes: Nintendo, Xbox… però la seua preferida és la PS5. Allí cauen les grans històries.",
+        "PS5 al cor, encara que no li fa fàstic cap consola. Si hi ha bona història i gràfics bonics, ell juga."
+      ],
+      "sugerencias": {
+        "es": [
+          "Juegos",
+          "Recomiéndame un juego"
+        ],
+        "va": [
+          "Jocs",
+          "Recomana’m un joc"
+        ]
+      }
+    },
+    {
+      "id": "que-busca-juego",
+      "frases": [
+        "que busca en un juego",
+        "que le gusta de un juego",
+        "que tipo de juegos",
+        "genero favorito",
+        "rpg",
+        "shooter",
+        "mundo abierto",
+        "graficos",
+        "historia del juego",
+        "quin tipus de jocs"
+      ],
+      "es": [
+        "Lo que más le engancha es una buena historia. Y si además tiene unos gráficos bonitos, mejor. Por eso su top está lleno de sagas épicas.",
+        "Historia primero, gráficos después y, si puede ser, una banda sonora que se te quede. RPG, acción y aventura son su terreno."
+      ],
+      "va": [
+        "El que més l’enganxa és una bona història. I si a més té uns gràfics bonics, millor. Per això el seu top està ple de sagues èpiques.",
+        "Història primer, gràfics després i, si pot ser, una banda sonora que se’t quede. RPG, acció i aventura són el seu terreny."
+      ]
+    },
+    {
+      "id": "comics",
+      "frases": [
+        "marvel",
+        "dc",
+        "superheroes",
+        "superheroe",
+        "spiderman",
+        "batman",
+        "superman",
+        "iron man",
+        "vengadores",
+        "x men",
+        "wolverine",
+        "lobezno",
+        "comics de superheroes",
+        "superherois",
+        "superheroe favorito",
+        "heroe favorito",
+        "superman o batman",
+        "batman o superman",
+        "personaje de marvel",
+        "personaje de dc",
+        "superheroi preferit"
+      ],
+      "es": [
+        "Lee cómics de superhéroes de Marvel y DC. Tiene muchos favoritos, pero destacan Superman, Batman y, quizá, Lobezno.",
+        "Marvel y DC: los dos bandos tienen sitio en su estantería. Su podio: Superman, Batman y Lobezno. Lo que no le va es el cómic independiente.",
+        "¿Superman o Batman? Sergio no elige: los dos. Y de Marvel se queda con Lobezno. Yo, como farol, apoyo a la Antorcha Humana."
+      ],
+      "va": [
+        "Llig còmics de superherois de Marvel i DC. En té molts de preferits, però destaquen Superman, Batman i, potser, Lobezno.",
+        "Marvel i DC: els dos bàndols tenen lloc al seu prestatge. El seu podi: Superman, Batman i Lobezno. El que no li va és el còmic independent.",
+        "Superman o Batman? Sergio no tria: els dos. I de Marvel es queda amb Lobezno. Jo, com a fanal, done suport a la Torxa Humana."
+      ],
+      "peso": 1.05
+    },
+    {
+      "id": "no-le-gusta",
+      "frases": [
+        "que no le gusta",
+        "que odia",
+        "que no lee",
+        "lo que menos le gusta",
+        "que no soporta",
+        "que no li agrada",
+        "odia",
+        "literatura tecnica",
+        "comic independiente",
+        "libros tecnicos",
+        "que no le gusta leer",
+        "que no li agrada llegir"
+      ],
+      "es": [
+        "En lectura, lo tiene claro: nada de literatura técnica ni cómic independiente. Para lo técnico ya están los apuntes de clase.",
+        "Lo que no le va: los libros técnicos (los lee porque toca) y el cómic independiente. Y los bugs, claro."
+      ],
+      "va": [
+        "En lectura, ho té clar: res de literatura tècnica ni còmic independent. Per a allò tècnic ja estan els apunts de classe.",
+        "El que no li va: els llibres tècnics (els llig perquè toca) i el còmic independent. I els bugs, clar."
+      ]
+    },
+    {
+      "id": "que-es-html",
+      "frases": [
+        "que es html",
+        "para que sirve html",
+        "que es el html",
+        "que es html5",
+        "que es lhtml",
+        "html que es"
+      ],
+      "es": [
+        "HTML es el esqueleto de una web: dice qué es cada cosa (un título, un párrafo, un botón). No es programación, es marcado… y sin él no hay web."
+      ],
+      "va": [
+        "HTML és l’esquelet d’una web: diu què és cada cosa (un títol, un paràgraf, un botó). No és programació, és marcatge… i sense ell no hi ha web."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "que-es-css",
+      "frases": [
+        "que es css",
+        "para que sirve css",
+        "que es el css",
+        "css que es"
+      ],
+      "es": [
+        "CSS es la ropa de la web: colores, tamaños, posiciones y animaciones. El modo oscuro, los colores de acento y mis brillos son CSS."
+      ],
+      "va": [
+        "CSS és la roba de la web: colors, mides, posicions i animacions. El mode fosc, els colors d’accent i les meues lluentors són CSS."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "que-es-js",
+      "frases": [
+        "que es javascript",
+        "que es js",
+        "para que sirve javascript",
+        "javascript que es",
+        "diferencia entre java y javascript",
+        "java y javascript son lo mismo",
+        "java es javascript"
+      ],
+      "es": [
+        "JavaScript es lo que da vida a la web: botones que responden, buscadores, el libro 3D… y yo. Ojo: Java y JavaScript se parecen tanto como un coche y una alfombra."
+      ],
+      "va": [
+        "JavaScript és el que dona vida a la web: botons que responen, cercadors, el llibre 3D… i jo. Compte: Java i JavaScript s’assemblen tant com un cotxe i una catifa."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "que-es-java",
+      "frases": [
+        "que es java",
+        "para que sirve java",
+        "java que es",
+        "que se hace con java"
+      ],
+      "es": [
+        "Java es un lenguaje orientado a objetos que se usa en apps de Android, servidores y mil cosas más. En DAM es el pan de cada día. Su gestor de biblioteca está en Java."
+      ],
+      "va": [
+        "Java és un llenguatge orientat a objectes que s’usa en apps d’Android, servidors i mil coses més. En DAM és el pa de cada dia. El seu gestor de biblioteca està en Java."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "que-es-python",
+      "frases": [
+        "que es python",
+        "para que sirve python",
+        "python que es"
+      ],
+      "es": [
+        "Python es un lenguaje famoso por lo fácil de leer. Se usa mucho en IA, datos y automatización. Sergio lo está aprendiendo."
+      ],
+      "va": [
+        "Python és un llenguatge famós per com és de fàcil de llegir. S’usa molt en IA, dades i automatització. Sergio l’està aprenent."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "que-es-api",
+      "frases": [
+        "que es una api",
+        "que es api",
+        "para que sirve una api",
+        "que son las apis",
+        "que es una api rest"
+      ],
+      "es": [
+        "Una API es como un camarero: tú pides algo (un juego, una peli) y te trae los datos de la cocina de otro servicio. Los buscadores de esta web funcionan así."
+      ],
+      "va": [
+        "Una API és com un cambrer: tu demanes alguna cosa (un joc, una pel·li) i et porta les dades de la cuina d’un altre servei. Els cercadors d’esta web funcionen així."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "que-es-git",
+      "frases": [
+        "que es git",
+        "para que sirve git",
+        "que es github",
+        "git y github",
+        "que es un commit",
+        "que es un repositorio"
+      ],
+      "es": [
+        "Git guarda la historia de tu código: cada cambio es un commit y puedes volver atrás cuando lo rompes (que pasará). GitHub es donde se sube para compartirlo."
+      ],
+      "va": [
+        "Git guarda la història del teu codi: cada canvi és un commit i pots tornar arrere quan el trenques (que passarà). GitHub és on es puja per a compartir-lo."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "que-es-bug",
+      "frases": [
+        "que es un bug",
+        "que es bug",
+        "que es un error de codigo",
+        "que es depurar",
+        "que es debug",
+        "que es debuggear"
+      ],
+      "es": [
+        "Un bug es un error en el programa. Depurar es cazarlo. Yo ayudo: la luz atrae a los bichos."
+      ],
+      "va": [
+        "Un bug és un error en el programa. Depurar és caçar-lo. Jo ajude: la llum atrau els bitxos."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "que-es-poo",
+      "frases": [
+        "que es poo",
+        "programacion orientada a objetos",
+        "que es un objeto",
+        "que es una clase",
+        "que es la herencia"
+      ],
+      "es": [
+        "La POO organiza el código en clases y objetos. Una clase es el molde (Farolillo) y el objeto, cada farol concreto. Yo soy una instancia única, que conste."
+      ],
+      "va": [
+        "La POO organitza el codi en classes i objectes. Una classe és el motle (Farolillo) i l’objecte, cada fanal concret. Jo soc una instància única, que conste."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "que-es-frontend",
+      "frases": [
+        "que es frontend",
+        "que es backend",
+        "frontend o backend",
+        "que es full stack",
+        "diferencia frontend backend"
+      ],
+      "es": [
+        "Frontend es lo que ves (esta web, yo). Backend es lo que pasa detrás (bases de datos, servidores, como Supabase). Full stack, las dos cosas a la vez."
+      ],
+      "va": [
+        "Frontend és el que veus (esta web, jo). Backend és el que passa darrere (bases de dades, servidors, com Supabase). Full stack, les dues coses alhora."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "que-es-ia",
+      "frases": [
+        "que es la ia",
+        "que es la inteligencia artificial",
+        "como funciona la ia",
+        "que es un llm",
+        "que es chatgpt"
+      ],
+      "es": [
+        "La IA son programas que aprenden patrones de muchísimos datos para predecir o generar cosas. Yo no lo soy: mis respuestas están escritas a mano. Más artesanal, imposible."
+      ],
+      "va": [
+        "La IA són programes que aprenen patrons de moltíssimes dades per a predir o generar coses. Jo no ho soc: les meues respostes estan escrites a mà. Més artesanal, impossible."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "que-es-sql",
+      "frases": [
+        "que es sql",
+        "que es una base de datos",
+        "para que sirve sql",
+        "que es supabase"
+      ],
+      "es": [
+        "SQL es el idioma para hablar con bases de datos: guardar, buscar y ordenar información. Supabase, el backend de esta web, usa PostgreSQL por debajo."
+      ],
+      "va": [
+        "SQL és l’idioma per a parlar amb bases de dades: guardar, buscar i ordenar informació. Supabase, el backend d’esta web, usa PostgreSQL per davall."
+      ],
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro concepto",
+          "Lenguajes",
+          "Un consejo"
+        ],
+        "va": [
+          "Un altre concepte",
+          "Llenguatges",
+          "Un consell"
+        ]
+      }
+    },
+    {
+      "id": "otro-concepto",
+      "frases": [
+        "otro concepto",
+        "un altre concepte",
+        "mas conceptos",
+        "explicame algo de programacion",
+        "enseñame algo",
+        "ensename algo",
+        "conceptos de programacion",
+        "explica m alguna cosa"
+      ],
+      "es": [
+        "Pregúntame «¿qué es HTML?», «¿qué es una API?», «¿qué es Git?», «¿qué es la POO?», «¿qué es un bug?» o «¿frontend o backend?»."
+      ],
+      "va": [
+        "Pregunta’m «què és HTML?», «què és una API?», «què és Git?», «què és la POO?», «què és un bug?» o «frontend o backend?»."
+      ],
+      "sugerencias": {
+        "es": [
+          "¿Qué es una API?",
+          "¿Qué es Git?",
+          "¿Qué es la POO?"
+        ],
+        "va": [
+          "Què és una API?",
+          "Què és Git?",
+          "Què és la POO?"
+        ]
+      }
+    },
+    {
+      "id": "farolillo-como",
+      "frases": [
+        "como estas hecho",
+        "de que estas hecho",
+        "como funcionas",
+        "tu codigo",
+        "como te programaron",
+        "como te hizo",
+        "como piensas",
+        "com funciones",
+        "de que estas fet",
+        "como respondes",
+        "como sabes las respuestas",
+        "como me entiendes"
+      ],
+      "es": [
+        "Por fuera: SVG, CSS y un canvas para las chispas. Por dentro: un buscador que compara tus palabras con cientos de frases, perdona faltas y elige la respuesta que más se parece.",
+        "Leo lo que escribes, le quito tildes y mayúsculas, lo comparo con todo lo que sé (con tolerancia a faltas) y respondo con lo que más encaja. Sin IA, todo JavaScript."
+      ],
+      "va": [
+        "Per fora: SVG, CSS i un canvas per a les espurnes. Per dins: un cercador que compara les teues paraules amb centenars de frases, perdona faltes i tria la resposta que més s’assembla.",
+        "Llig el que escrius, li lleve accents i majúscules, ho compare amb tot el que sé (amb tolerància a faltes) i responc amb el que més encaixa. Sense IA, tot JavaScript."
+      ]
+    },
+    {
+      "id": "farolillo-por-que",
+      "frases": [
+        "por que un farolillo",
+        "por que farolillo",
+        "porque farolillo",
+        "que significa farolillo",
+        "por que eres un farol",
+        "por que te llamas asi",
+        "per que un fanal",
+        "per que farolillo",
+        "por que una mascota",
+        "enredados",
+        "rapunzel",
+        "tangled",
+        "de donde sale farolillo",
+        "como naciste",
+        "por que existes",
+        "quien te invento",
+        "tu origen",
+        "por que un fanalet",
+        "per que un fanalet"
+      ],
+      "es": [
+        "Por Enredados: es una de las pelis favoritas de su hija, y la escena de los farolillos en el cielo es preciosa. Así que Sergio pensó: «esta web necesita uno». Y aquí estoy 🏮",
+        "Culpa de Enredados. A su hija le encanta esa peli y su escena de los farolillos, así que yo nací de ahí. Soy el farolillo que se quedó a vivir en una web.",
+        "Porque en Enredados hay una noche llena de farolillos que es de lo más bonito del cine de animación, y es una de las pelis favoritas de su hija. Mejor origen, imposible."
+      ],
+      "va": [
+        "Per Enredados: és una de les pel·lis preferides de la seua filla, i l’escena dels fanalets al cel és preciosa. Així que Sergio va pensar: «esta web en necessita un». I ací estic 🏮",
+        "Culpa d’Enredados. A la seua filla li encanta eixa pel·li i la seua escena dels fanalets, així que jo vaig nàixer d’ahí. Soc el fanalet que es va quedar a viure en una web.",
+        "Perquè a Enredados hi ha una nit plena de fanalets que és del més bonic del cine d’animació, i és una de les pel·lis preferides de la seua filla. Millor origen, impossible."
+      ],
+      "efecto": "feliz"
+    },
+    {
+      "id": "farolillo-amigos",
+      "frases": [
+        "tienes amigos",
+        "tienes familia",
+        "estas solo",
+        "tienes novia",
+        "tienes pareja",
+        "tienes hermanos",
+        "tens amics",
+        "tens familia",
+        "tens parella",
+        "te sientes solo"
+      ],
+      "es": [
+        "Mis amigos son los visitantes como tú. Y el botón de volver arriba, aunque vive en la otra esquina y apenas hablamos.",
+        "¿Pareja? Estoy casado con mi llama. Familia tengo: miles de farolillos de papel repartidos por el mundo."
+      ],
+      "va": [
+        "Els meus amics són els visitants com tu. I el botó de tornar amunt, encara que viu a l’altre racó i quasi no parlem.",
+        "Parella? Estic casat amb la meua flama. Família en tinc: milers de fanalets de paper repartits pel món."
+      ],
+      "peso": 1.25
+    },
+    {
+      "id": "farolillo-genero",
+      "frases": [
+        "eres chico o chica",
+        "eres chico",
+        "eres chica",
+        "eres nino o nina",
+        "genero",
+        "eres hombre o mujer",
+        "ets xic o xica"
+      ],
+      "es": [
+        "Soy un farol. Ni chico ni chica: llama. Me puedes llamar Farolillo y ya está.",
+        "Mi género es «fuente de luz». Muy poco común, lo sé."
+      ],
+      "va": [
+        "Soc un fanal. Ni xic ni xica: flama. Em pots dir Farolillo i ja està.",
+        "El meu gènere és «font de llum». Molt poc comú, ho sé."
+      ]
+    },
+    {
+      "id": "farolillo-miedo",
+      "frases": [
+        "agua",
+        "te mojas",
+        "extintor",
+        "soplar",
+        "te soplo",
+        "apagarte",
+        "te apago",
+        "viento",
+        "aigua",
+        "t apague",
+        "tienes miedo",
+        "a que le tienes miedo",
+        "bufar",
+        "lluvia"
+      ],
+      "es": [
+        "¡Ni se te ocurra! El agua y el viento son mis archienemigos. Bueno, eso y el modo de ahorro de batería.",
+        "Mi mayor miedo: un estornudo cerca. Mi segundo mayor miedo: que alguien escriba CSS con !important en todas partes."
+      ],
+      "va": [
+        "Ni se t’acudisca! L’aigua i el vent són els meus enemics. Bé, això i el mode d’estalvi de bateria.",
+        "La meua por més gran: un esternut a prop. La segona: que algú escriga CSS amb !important per tot arreu."
+      ],
+      "efecto": "salto",
+      "peso": 1.05
+    },
+    {
+      "id": "callate",
+      "frases": [
+        "callate",
+        "calla ya",
+        "dejame en paz",
+        "no me hables",
+        "silencio",
+        "calla t",
+        "deixa m en pau",
+        "para ya",
+        "cierra el chat",
+        "quiero cerrar"
+      ],
+      "es": [
+        "Vale, vale, me callo 🤐 Si quieres, pulsa el ojo de arriba y me escondo del todo; volveré cuando toques la pestañita del borde.",
+        "Entendido. Modo farol discreto activado. Cierra con la X, o escribe «escóndete» si prefieres no verme."
+      ],
+      "va": [
+        "Vale, vale, calle 🤐 Si vols, prem l’ull de dalt i m’amague del tot; tornaré quan toques la pestanyeta de la vora.",
+        "Entés. Mode fanal discret activat. Tanca amb la X, o escriu «amaga’t» si prefereixes no veure’m."
+      ],
+      "peso": 1.15
+    },
+    {
+      "id": "estas-ahi",
+      "frases": [
+        "estas ahi",
+        "hola hay alguien",
+        "hay alguien",
+        "despierta",
+        "me oyes",
+        "me escuchas",
+        "estas despierto",
+        "hi ets",
+        "hi ha algu",
+        "responde"
+      ],
+      "es": [
+        "¡Aquí estoy! Siempre encendido (bueno, salvo cuando me echo la siesta).",
+        "Presente 🏮 Dispara tu pregunta."
+      ],
+      "va": [
+        "Ací estic! Sempre encés (bé, menys quan faig la migdiada).",
+        "Present 🏮 Dispara la teua pregunta."
+      ]
+    },
+    {
+      "id": "no-entiendo",
+      "frases": [
+        "no entiendo",
+        "no te entiendo",
+        "que dices",
+        "que has dicho",
+        "repite",
+        "repitelo",
+        "no lo pillo",
+        "eh",
+        "no t entenc",
+        "que dius",
+        "perdona que",
+        "no me entiendes"
+      ],
+      "es": [
+        "Perdona si me he liado. Prueba con preguntas cortas, como «juegos», «quién es Sergio» o «un chiste».",
+        "A veces mi llama parpadea. Toca una de las opciones de abajo y vamos sobre seguro."
+      ],
+      "va": [
+        "Perdona si m’he embolicat. Prova amb preguntes curtes, com «jocs», «qui és Sergio» o «un acudit».",
+        "De vegades la meua flama parpelleja. Toca una de les opcions de baix i anem sobre segur."
+      ],
+      "peso": 0.85,
+      "sugerencias": {
+        "es": [
+          "¿Quién es Sergio?",
+          "Juegos",
+          "Pelis",
+          "Anime",
+          "Libros",
+          "Sorpréndeme"
+        ],
+        "va": [
+          "Qui és Sergio?",
+          "Jocs",
+          "Pel·lis",
+          "Anime",
+          "Llibres",
+          "Sorprén-me"
+        ]
+      }
+    },
+    {
+      "id": "perdon",
+      "frases": [
+        "perdon",
+        "lo siento",
+        "disculpa",
+        "perdona",
+        "sorry",
+        "ho sent",
+        "perdoname",
+        "me he equivocado"
+      ],
+      "es": [
+        "Perdonado. Los faroles no guardamos rencor, solo calor.",
+        "Tranquilo, no pasa nada. ¿Seguimos?"
+      ],
+      "va": [
+        "Perdonat. Els fanals no guardem rancor, només calor.",
+        "Tranquil, no passa res. Seguim?"
+      ],
+      "efecto": "feliz"
+    },
+    {
+      "id": "tacos",
+      "frases": [
+        "joder",
+        "mierda",
+        "hostia",
+        "puta",
+        "cabron",
+        "cojones",
+        "collons",
+        "merda",
+        "ostia",
+        "me cago",
+        "fuck",
+        "shit",
+        "que asco"
+      ],
+      "es": [
+        "¡Esa boca! Que aquí hay niños, profesores y faroles sensibles.",
+        "Uy, esa palabra me ha bajado la llama un grado. ¿Probamos con un chiste?"
+      ],
+      "va": [
+        "Eixa boca! Que ací hi ha xiquets, professors i fanals sensibles.",
+        "Ui, eixa paraula m’ha baixat la flama un grau. Provem amb un acudit?"
+      ],
+      "sugerencias": {
+        "es": [
+          "Un chiste"
+        ],
+        "va": [
+          "Un acudit"
+        ]
+      }
+    },
+    {
+      "id": "en-serio",
+      "frases": [
+        "en serio",
+        "de verdad",
+        "mentira",
+        "no te creo",
+        "seguro",
+        "de veras",
+        "de veres",
+        "en serio",
+        "no me lo creo",
+        "ja ja"
+      ],
+      "es": [
+        "Palabra de farol. Y los faroles no mentimos: se nos notaría en la llama.",
+        "Totalmente en serio. Bueno, todo lo serio que puede ser un farol con cara."
+      ],
+      "va": [
+        "Paraula de fanal. I els fanals no mentim: se’ns notaria en la flama.",
+        "Totalment de veres. Bé, tot el seriós que pot ser un fanal amb cara."
+      ],
+      "peso": 0.85
+    },
+    {
+      "id": "prueba",
+      "frases": [
+        "test",
+        "probando",
+        "probando probando",
+        "asdf",
+        "asd",
+        "qwerty",
+        "aaa",
+        "xxx",
+        "123",
+        "probant",
+        "testing",
+        "hola hola"
+      ],
+      "es": [
+        "Probando, probando… 🎤 La llama funciona perfectamente.",
+        "Test superado: sigo vivo y brillando. ¿Ahora una pregunta de verdad?"
+      ],
+      "va": [
+        "Provant, provant… 🎤 La flama funciona perfectament.",
+        "Test superat: continue viu i brillant. Ara una pregunta de veres?"
+      ],
+      "peso": 0.9
+    },
+    {
+      "id": "quien-soy-yo",
+      "frases": [
+        "quien soy yo",
+        "sabes quien soy",
+        "me conoces",
+        "como me llamo",
+        "qui soc jo",
+        "em coneixes",
+        "sabes mi nombre"
+      ],
+      "es": [
+        "No lo sé, pero tienes buen gusto: has acabado en la web de Sergio. Yo no guardo nada de ti, así que eres un misterio iluminado.",
+        "Un visitante curioso. Es todo lo que sé, y me gusta así: no guardo datos de nadie."
+      ],
+      "va": [
+        "No ho sé, però tens bon gust: has acabat a la web de Sergio. Jo no guarde res de tu, així que eres un misteri il·luminat.",
+        "Un visitant curiós. És tot el que sé, i m’agrada així: no guarde dades de ningú."
+      ]
+    },
+    {
+      "id": "me-llamo",
+      "frases": [
+        "me llamo",
+        "mi nombre es",
+        "soy",
+        "em dic",
+        "el meu nom es",
+        "yo soy"
+      ],
+      "es": [
+        "¡Encantado! Yo soy Farolillo. No apunto nombres (privacidad ante todo), pero ya somos colegas.",
+        "¡Un placer! Mi memoria es de papel y no guarda nombres, pero me caes bien igual."
+      ],
+      "va": [
+        "Encantat! Jo soc Farolillo. No apunte noms (privacitat abans de tot), però ja som col·legues.",
+        "Un plaer! La meua memòria és de paper i no guarda noms, però em caus bé igual."
+      ],
+      "peso": 0.8,
+      "efecto": "feliz"
+    },
+    {
+      "id": "opinion-sergio",
+      "frases": [
+        "que opinas de sergio",
+        "como es sergio",
+        "sergio es bueno",
+        "es buen programador",
+        "es bueno programando",
+        "sergio mola",
+        "te cae bien sergio",
+        "que tal es sergio",
+        "com es sergio",
+        "que penses de sergio",
+        "es simpatico"
+      ],
+      "es": [
+        "Me dio vida, así que soy parcial: es constante, curioso y le gusta que las cosas funcionen y además se vean bonitas.",
+        "Un tío que empezó con un archivo vacío y acabó con un minijuego, un libro 3D y un farol que habla. Juzga tú."
+      ],
+      "va": [
+        "Em va donar vida, així que soc parcial: és constant, curiós i li agrada que les coses funcionen i a més es vegen boniques.",
+        "Un xicot que va començar amb un arxiu buit i va acabar amb un minijoc, un llibre 3D i un fanal que parla. Jutja tu."
+      ],
+      "peso": 1.05
+    },
+    {
+      "id": "opinion-web",
+      "frases": [
+        "me gusta la web",
+        "que web mas chula",
+        "buena web",
+        "la web mola",
+        "que bonita la web",
+        "me encanta la web",
+        "la web es chula",
+        "quina web mes xula",
+        "m agrada la web",
+        "la web esta muy bien",
+        "buen trabajo"
+      ],
+      "es": [
+        "¡Gracias! Se lo diré a Sergio en cuanto vuelva. Si quieres decírselo tú, en Contacto le harás el día.",
+        "Me alegra la llama oírlo 🏮 Y eso que aún no has visto todos los secretos."
+      ],
+      "va": [
+        "Gràcies! Li ho diré a Sergio quan torne. Si vols dir-li-ho tu, en Contacte li faràs el dia.",
+        "M’alegra la flama sentir-ho 🏮 I això que encara no has vist tots els secrets."
+      ],
+      "efecto": "fuegos",
+      "peso": 1.1,
+      "enlace": {
+        "href": "index.html#contacto",
+        "es": "Ir a Contacto",
+        "va": "Anar a Contacte"
+      }
+    },
+    {
+      "id": "bug-web",
+      "frases": [
+        "no funciona",
+        "hay un bug",
+        "he encontrado un error",
+        "algo falla",
+        "esta roto",
+        "error en la web",
+        "no carga",
+        "no va",
+        "he trobat un error",
+        "no funciona el buscador",
+        "fallo",
+        "falla"
+      ],
+      "es": [
+        "¡Vaya! Si has encontrado un fallo, cuéntaselo a Sergio por Contacto con lo que hiciste y en qué navegador. Los cazadores de bugs son bienvenidos.",
+        "Si algo no carga, prueba a recargar: los buscadores y GitHub dependen de APIs externas. Si sigue, avisa a Sergio por Contacto."
+      ],
+      "va": [
+        "Vaja! Si has trobat un error, conta-li-ho a Sergio per Contacte amb el que vas fer i en quin navegador. Els caçadors de bugs són benvinguts.",
+        "Si alguna cosa no carrega, prova a recarregar: els cercadors i GitHub depenen d’APIs externes. Si continua, avisa Sergio per Contacte."
+      ],
+      "enlace": {
+        "href": "index.html#contacto",
+        "es": "Ir a Contacto",
+        "va": "Anar a Contacte"
+      },
+      "peso": 1.05
+    },
+    {
+      "id": "cara-cruz",
+      "frases": [
+        "cara o cruz",
+        "lanza una moneda",
+        "tira una moneda",
+        "moneda",
+        "cara o creu"
+      ],
+      "es": [
+        "🪙 … ¡Cara!",
+        "🪙 … ¡Cruz!",
+        "🪙 … Ha caído de canto. Repite, que esto no vale."
+      ],
+      "va": [
+        "🪙 … Cara!",
+        "🪙 … Creu!",
+        "🪙 … Ha caigut de cantell. Repeteix, que açò no val."
+      ],
+      "repetible": true,
+      "peso": 1.2
+    },
+    {
+      "id": "dado",
+      "frases": [
+        "tira un dado",
+        "lanza un dado",
+        "dado",
+        "dados",
+        "un numero aleatorio",
+        "numero al azar",
+        "tira el dau",
+        "dau"
+      ],
+      "es": [
+        "🎲 Un 1. Mala suerte.",
+        "🎲 Un 2.",
+        "🎲 ¡Un 3!",
+        "🎲 Un 4.",
+        "🎲 ¡Un 5!",
+        "🎲 ¡¡Un 6!! Crítico."
+      ],
+      "va": [
+        "🎲 Un 1. Mala sort.",
+        "🎲 Un 2.",
+        "🎲 Un 3!",
+        "🎲 Un 4.",
+        "🎲 Un 5!",
+        "🎲 Un 6!! Crític."
+      ],
+      "repetible": true,
+      "peso": 1.2,
+      "sugerencias": {
+        "es": [
+          "Otro",
+          "Cara o cruz"
+        ],
+        "va": [
+          "Un altre",
+          "Cara o creu"
+        ]
+      }
+    },
+    {
+      "id": "piedra-papel-tijera",
+      "frases": [
+        "piedra papel tijera",
+        "piedra papel o tijera",
+        "jugamos a piedra papel tijera",
+        "piedra",
+        "papel",
+        "tijera",
+        "tijeras",
+        "pedra paper tisora",
+        "pedra",
+        "paper",
+        "tisora"
+      ],
+      "es": [
+        "Yo saco… ✊ piedra.",
+        "Yo saco… ✋ papel.",
+        "Yo saco… ✌️ tijera.",
+        "Yo saco… 🔥 fuego. Quema el papel, derrite la tijera y calienta la piedra. Gano yo."
+      ],
+      "va": [
+        "Jo trac… ✊ pedra.",
+        "Jo trac… ✋ paper.",
+        "Jo trac… ✌️ tisora.",
+        "Jo trac… 🔥 foc. Crema el paper, fon la tisora i escalfa la pedra. Guanye jo."
+      ],
+      "repetible": true,
+      "peso": 1.15
+    },
+    {
+      "id": "bola-magica",
+      "frases": [
+        "bola magica",
+        "adivina el futuro",
+        "predice",
+        "tengo una pregunta de si o no",
+        "me ira bien",
+        "aprobare",
+        "bola 8",
+        "aprobare el examen",
+        "me saldra bien",
+        "endevina el futur",
+        "aprovare",
+        "que me depara el futuro"
+      ],
+      "es": [
+        "🔮 Mi llama dice que sí.",
+        "🔮 Mi llama dice que no… pero es una llama, qué sabrá.",
+        "🔮 Pregunta otra vez después de un café.",
+        "🔮 Todo apunta a que sí, si le pones ganas.",
+        "🔮 Lo veo borroso. Será el humo."
+      ],
+      "va": [
+        "🔮 La meua flama diu que sí.",
+        "🔮 La meua flama diu que no… però és una flama, què sabrà.",
+        "🔮 Pregunta-ho una altra vegada després d’un café.",
+        "🔮 Tot apunta que sí, si li poses ganes.",
+        "🔮 Ho veig borrós. Serà el fum."
+      ],
+      "repetible": true,
+      "peso": 1.1
+    },
+    {
+      "id": "adivinanza",
+      "frases": [
+        "adivinanza",
+        "adivinanzas",
+        "acertijo",
+        "endevinalla",
+        "endevinalles",
+        "un acertijo",
+        "adivina"
+      ],
+      "es": [
+        "Tengo llama pero no quemo la casa, tengo cara pero no tengo cuerpo y vivo en una esquina. ¿Quién soy? … ¡Yo! 🏮",
+        "¿Qué tiene teclas pero no abre puertas? … El teclado.",
+        "Cuanto más quitas, más grande se hace. … Un agujero (o tu lista de bugs cuando los arreglas mal).",
+        "Vuela sin alas, llora sin ojos y apaga faroles. … La lluvia. Odio esta adivinanza.",
+        "Lo tienes delante cuando programas y casi nunca le haces caso. … El mensaje de error."
+      ],
+      "va": [
+        "Tinc flama però no creme la casa, tinc cara però no tinc cos i visc en un racó. Qui soc? … Jo! 🏮",
+        "Què té tecles però no obri portes? … El teclat.",
+        "Com més en lleves, més gran es fa. … Un forat (o la teua llista de bugs quan els arregles malament).",
+        "Vola sense ales, plora sense ulls i apaga fanals. … La pluja. Odie esta endevinalla.",
+        "El tens davant quan programes i quasi mai li fas cas. … El missatge d’error."
+      ],
+      "repetible": true,
+      "sugerencias": {
+        "es": [
+          "Otra",
+          "Un chiste"
+        ],
+        "va": [
+          "Una altra",
+          "Un acudit"
+        ]
+      }
+    },
+    {
+      "id": "matematicas",
+      "frases": [
+        "cuanto es",
+        "suma",
+        "multiplica",
+        "calcula",
+        "matematicas",
+        "2 mas 2",
+        "dos mas dos",
+        "cuanto es 2 mas 2",
+        "quant es",
+        "calculadora",
+        "mates"
+      ],
+      "es": [
+        "Soy un farol, no una calculadora. Pero si es 2+2, son 4… salvo en JavaScript, donde «2»+2 son «22».",
+        "Mis mates son de llama: 1 farol + 1 visitante = una buena charla."
+      ],
+      "va": [
+        "Soc un fanal, no una calculadora. Però si és 2+2, són 4… menys en JavaScript, on «2»+2 són «22».",
+        "Les meues mates són de flama: 1 fanal + 1 visitant = una bona xarrada."
+      ],
+      "peso": 1.05
+    },
+    {
+      "id": "historia",
+      "frases": [
+        "cuentame una historia",
+        "una historia",
+        "cuentame un cuento",
+        "tu historia",
+        "de donde vienes",
+        "conta m una historia",
+        "un conte",
+        "historia"
+      ],
+      "es": [
+        "Érase una vez un archivo vacío. Un estudiante escribió <div>, luego CSS, luego JavaScript… y una noche, sin querer, encendió una llama. Esa llama soy yo. Fin (por ahora).",
+        "Cuenta la leyenda que en cada web hay un rincón oscuro. En esta, alguien puso un farol. Desde entonces, nadie se pierde.",
+        "Una vez un visitante me preguntó algo que no sabía. Desde ese día, Sergio me enseña cosas nuevas. Si me pillas, me haces más listo."
+      ],
+      "va": [
+        "Hi havia una vegada un arxiu buit. Un estudiant va escriure <div>, després CSS, després JavaScript… i una nit, sense voler, va encendre una flama. Eixa flama soc jo. Fi (de moment).",
+        "Conta la llegenda que en cada web hi ha un racó fosc. En esta, algú va posar un fanal. Des d’aleshores, ningú es perd.",
+        "Una vegada un visitant em va preguntar una cosa que no sabia. Des d’eixe dia, Sergio m’ensenya coses noves. Si em pilles, em fas més llest."
+      ],
+      "repetible": true
+    },
+    {
+      "id": "fiestas",
+      "frases": [
+        "feliz navidad",
+        "navidad",
+        "halloween",
+        "feliz ano nuevo",
+        "feliz nochevieja",
+        "fallas",
+        "falles",
+        "bon nadal",
+        "bon any",
+        "carnaval",
+        "reyes magos",
+        "san valentin",
+        "pascua"
+      ],
+      "es": [
+        "¡Felices fiestas! En Fallas me pongo nervioso: tanto fuego junto y ninguno me invita 🎆",
+        "¡Igualmente! Yo lo celebro brillando un poco más. ¿Fuegos artificiales?"
+      ],
+      "va": [
+        "Bones festes! En Falles em pose nerviós: tant de foc junt i cap em convida 🎆",
+        "Igualment! Jo ho celebre brillant un poc més. Focs artificials?"
+      ],
+      "efecto": "fuegos",
+      "sugerencias": {
+        "es": [
+          "Fuegos"
+        ],
+        "va": [
+          "Focs"
+        ]
+      }
+    },
+    {
+      "id": "cumple",
+      "frases": [
+        "feliz cumpleanos",
+        "cumpleanos",
+        "cuando es tu cumple",
+        "tu cumple",
+        "es mi cumple",
+        "es mi cumpleanos",
+        "felicitats",
+        "aniversari"
+      ],
+      "es": [
+        "¡Feliz cumple! 🎂 Te regalo unos fuegos artificiales de farol.",
+        "Mi cumple es el día que Sergio me encendió por primera vez. Si es el tuyo: ¡felicidades! 🎉"
+      ],
+      "va": [
+        "Per molts anys! 🎂 Et regale uns focs artificials de fanal.",
+        "El meu aniversari és el dia que Sergio em va encendre per primera vegada. Si és el teu: felicitats! 🎉"
+      ],
+      "efecto": "fuegos",
+      "peso": 1.1
+    },
+    {
+      "id": "frase-motivacion",
+      "frases": [
+        "frase motivadora",
+        "motivame",
+        "motivacion para estudiar",
+        "dame animos",
+        "no quiero estudiar",
+        "quiero rendirme",
+        "motiva m",
+        "frase del dia"
+      ],
+      "es": [
+        "Todo programador experto fue un día alguien que no sabía centrar un div. Sigue.",
+        "Un commit al día y, sin darte cuenta, tienes un proyecto. Como esta web.",
+        "El error que te frustra hoy es el que explicarás mañana como si nada.",
+        "Hasta Frodo pensó en rendirse. Y mira dónde acabó el anillo."
+      ],
+      "va": [
+        "Tot programador expert va ser un dia algú que no sabia centrar un div. Continua.",
+        "Un commit al dia i, sense adonar-te’n, tens un projecte. Com esta web.",
+        "L’error que et frustra hui és el que explicaràs demà com si res.",
+        "Fins i tot Frodo va pensar a rendir-se. I mira on va acabar l’anell."
+      ],
+      "repetible": true,
+      "efecto": "feliz"
+    },
+    {
+      "id": "pokemon-easter",
+      "frases": [
+        "hazte con todos",
+        "pikachu",
+        "atrapalos ya",
+        "pika pika"
+      ],
+      "es": [
+        "¡Pika pika! Yo sería tipo Fuego, obviamente. Y Sergio me atraparía con una Farol Ball."
+      ],
+      "va": [
+        "Pika pika! Jo seria tipus Foc, òbviament. I Sergio m’atraparia amb una Fanal Ball."
+      ],
+      "efecto": "salto",
+      "peso": 1.3
+    },
+    {
+      "id": "hadouken",
+      "frases": [
+        "hadouken",
+        "shoryuken",
+        "street fighter"
+      ],
+      "es": [
+        "¡HADOUKEN! 🔥 Lo siento, me ha salido una bola de fuego de verdad."
+      ],
+      "va": [
+        "HADOUKEN! 🔥 Ho sent, m’ha eixit una bola de foc de veres."
+      ],
+      "efecto": "fuegos",
+      "peso": 1.3
+    },
+    {
+      "id": "you-shall-not-pass",
+      "frases": [
+        "no puedes pasar",
+        "you shall not pass",
+        "no pasaras",
+        "no passaras"
+      ],
+      "es": [
+        "¡NO PUEDES PASAR! … Es broma, pasa, pasa. Gandalf no vigila esta esquina, la vigilo yo."
+      ],
+      "va": [
+        "NO POTS PASSAR! … És broma, passa, passa. Gandalf no vigila este racó, el vigile jo."
+      ],
+      "efecto": "giro",
+      "peso": 1.4
+    },
+    {
+      "id": "mi-tesoro",
+      "frases": [
+        "mi tesoro",
+        "my precious",
+        "el anillo unico",
+        "un anillo para gobernarlos",
+        "el meu tresor"
+      ],
+      "es": [
+        "Mi tesssoro… 💍 No, no te lo voy a dar. Pregúntame mejor por El Señor de los Anillos."
+      ],
+      "va": [
+        "El meu tresssor… 💍 No, no te’l donaré. Pregunta’m millor per El Senyor dels Anells."
+      ],
+      "efecto": "giro",
+      "peso": 1.3,
+      "sugerencias": {
+        "es": [
+          "El Señor de los Anillos"
+        ],
+        "va": [
+          "El Senyor dels Anells"
+        ]
+      }
+    },
+    {
+      "id": "kept-you-waiting",
+      "frases": [
+        "kept you waiting huh",
+        "kept you waiting",
+        "te he hecho esperar",
+        "una caja de carton",
+        "caja de carton"
+      ],
+      "es": [
+        "Kept you waiting, huh? 📦 Yo también me escondería en una caja, pero se quemaría."
+      ],
+      "va": [
+        "Kept you waiting, huh? 📦 Jo també m’amagaria en una caixa, però es cremaria."
+      ],
+      "efecto": "salto",
+      "peso": 1.3
+    },
+    {
+      "id": "winter-coming",
+      "frases": [
+        "se acerca el invierno",
+        "winter is coming",
+        "jon nieve",
+        "s acosta l hivern"
+      ],
+      "es": [
+        "Se acerca el invierno… y un farol en invierno vale oro. Por cierto, Juego de Tronos es una de sus series favoritas."
+      ],
+      "va": [
+        "S’acosta l’hivern… i un fanal a l’hivern val or. Per cert, Joc de Trons és una de les seues sèries preferides."
+      ],
+      "peso": 1.3,
+      "sugerencias": {
+        "es": [
+          "Series",
+          "Un chiste"
+        ],
+        "va": [
+          "Sèries",
+          "Un acudit"
+        ]
+      }
+    },
+    {
+      "id": "yare-yare",
+      "frases": [
+        "yare yare",
+        "yare yare daze",
+        "omae wa mou shindeiru",
+        "nani",
+        "jojo"
+      ],
+      "es": [
+        "Omae wa mou… ¡encendido! 🔥 NANI?! Me encanta cuando la gente habla anime conmigo."
+      ],
+      "va": [
+        "Omae wa mou… encés! 🔥 NANI?! M’encanta quan la gent em parla en anime."
+      ],
+      "efecto": "giro",
+      "peso": 1.3
+    },
+    {
+      "id": "lumos",
+      "frases": [
+        "lumos",
+        "nox",
+        "expelliarmus",
+        "expecto patronum",
+        "avada kedavra",
+        "wingardium leviosa"
+      ],
+      "es": [
+        "¡Lumos! ✨ Fácil, yo ya vengo encendido de serie. Y nada de «Nox», que me apagas."
+      ],
+      "va": [
+        "Lumos! ✨ Fàcil, jo ja vinc encés de sèrie. I res de «Nox», que m’apagues."
+      ],
+      "efecto": "fuegos",
+      "peso": 1.3
+    },
+    {
+      "id": "la-especia",
+      "frases": [
+        "la especia debe fluir",
+        "el que controla la especia",
+        "shai hulud"
+      ],
+      "es": [
+        "La especia debe fluir… y la llama también. Camina sin ritmo, que el gusano no te oiga 🐛"
+      ],
+      "va": [
+        "L’espècia ha de fluir… i la flama també. Camina sense ritme, que el cuc no et senta 🐛"
+      ],
+      "efecto": "salto",
+      "peso": 1.3
+    },
+    {
+      "id": "wake-up-samurai",
+      "frases": [
+        "wake up samurai",
+        "tenemos una ciudad que quemar",
+        "ciudad que quemar"
+      ],
+      "es": [
+        "Wake up, Samurai. We have a city to burn… Bueno, yo prefiero iluminarla."
+      ],
+      "va": [
+        "Wake up, Samurai. We have a city to burn… Bé, jo preferisc il·luminar-la."
+      ],
+      "efecto": "fuegos",
+      "peso": 1.3
+    },
+    {
+      "id": "yo-soy-tu-padre",
+      "frases": [
+        "yo soy tu padre",
+        "luke yo soy tu padre",
+        "i am your father",
+        "jo soc el teu pare"
+      ],
+      "es": [
+        "Nooooooo… 😱 Espera, mi padre es Sergio. Menos dramático, pero también programa."
+      ],
+      "va": [
+        "Noooooo… 😱 Espera, el meu pare és Sergio. Menys dramàtic, però també programa."
+      ],
+      "efecto": "salto",
+      "peso": 1.3
+    },
+    {
+      "id": "pagina-404",
+      "frases": [
+        "404",
+        "error 404",
+        "pagina no encontrada",
+        "not found",
+        "500",
+        "error 500"
+      ],
+      "es": [
+        "Error 404: respuesta no encontrada… ¡Era broma! Aquí todo está encontrado. Hasta yo."
+      ],
+      "va": [
+        "Error 404: resposta no trobada… Era broma! Ací tot està trobat. Fins i tot jo."
+      ],
+      "peso": 1.2
+    },
+    {
+      "id": "ping",
+      "frases": [
+        "ping",
+        "pong"
+      ],
+      "es": [
+        "Pong 🏓 Latencia: 0 ms. Ventajas de vivir dentro de tu navegador."
+      ],
+      "va": [
+        "Pong 🏓 Latència: 0 ms. Avantatges de viure dins del teu navegador."
+      ],
+      "peso": 1.2
+    },
+    {
+      "id": "fuera-politica",
+      "frases": [
+        "politica",
+        "religion",
+        "politicos",
+        "votar",
+        "elecciones",
+        "partido politico",
+        "dios",
+        "guerra",
+        "gobierno",
+        "politica i religio",
+        "que opinas de la politica"
+      ],
+      "es": [
+        "De política y religión no opino: soy un farol neutral, ilumino a todos por igual.",
+        "Ese tema queda fuera de mi esquina. Yo de lo que sé es de juegos, pelis, anime, libros y código."
+      ],
+      "va": [
+        "De política i religió no opine: soc un fanal neutral, il·lumine tots per igual.",
+        "Eixe tema queda fora del meu racó. Jo del que sé és de jocs, pel·lis, anime, llibres i codi."
+      ],
+      "peso": 1.2,
+      "sugerencias": {
+        "es": [
+          "¿Quién es Sergio?",
+          "Juegos",
+          "Pelis",
+          "Anime",
+          "Libros",
+          "Sorpréndeme"
+        ],
+        "va": [
+          "Qui és Sergio?",
+          "Jocs",
+          "Pel·lis",
+          "Anime",
+          "Llibres",
+          "Sorprén-me"
+        ]
+      }
+    },
+    {
+      "id": "fuera-cocina",
+      "frases": [
+        "receta",
+        "recetas",
+        "cocinar",
+        "cocina",
+        "paella",
+        "tortilla",
+        "como se hace una tortilla",
+        "recepta",
+        "cuinar",
+        "como se hace"
+      ],
+      "es": [
+        "Lo único que sé cocinar es a fuego lento… y me cocino yo. Para recetas, mejor un libro de cocina.",
+        "Con mi llama podría tostar un malvavisco, poco más. Pregúntame por pelis o juegos, que ahí sí soy chef."
+      ],
+      "va": [
+        "L’única cosa que sé cuinar és a foc lent… i em cuine jo. Per a receptes, millor un llibre de cuina.",
+        "Amb la meua flama podria torrar un núvol de sucre, poc més. Pregunta’m per pel·lis o jocs, que ahí sí soc xef."
+      ],
+      "peso": 1.05
+    },
+    {
+      "id": "fuera-cultura",
+      "frases": [
+        "capital de",
+        "cual es la capital",
+        "quien descubrio",
+        "quien invento",
+        "en que ano",
+        "cuantos habitantes",
+        "deberes",
+        "hazme los deberes",
+        "resuelve",
+        "traduce",
+        "traduceme",
+        "escribe un texto",
+        "hazme un trabajo",
+        "redaccion",
+        "fes me els deures"
+      ],
+      "es": [
+        "Eso pregúntaselo a un buscador, que yo solo soy un farol de esquina. Lo mío es Sergio y sus cosas.",
+        "No sé de todo: mis respuestas las escribió Sergio a mano y van de él, su web y sus favoritos. Y los deberes, mejor hazlos tú 😉"
+      ],
+      "va": [
+        "Això pregunta-li-ho a un cercador, que jo només soc un fanal de racó. El meu és Sergio i les seues coses.",
+        "No sé de tot: les meues respostes les va escriure Sergio a mà i van d’ell, la seua web i els seus preferits. I els deures, millor fes-los tu 😉"
+      ],
+      "peso": 1.0,
+      "sugerencias": {
+        "es": [
+          "¿Quién es Sergio?",
+          "Juegos",
+          "Pelis",
+          "Anime",
+          "Libros",
+          "Sorpréndeme"
+        ],
+        "va": [
+          "Qui és Sergio?",
+          "Jocs",
+          "Pel·lis",
+          "Anime",
+          "Llibres",
+          "Sorprén-me"
+        ]
+      }
+    },
+    {
+      "id": "origen",
+      "frases": [
+        "de donde es sergio",
+        "de donde es",
+        "donde vive sergio",
+        "enguera",
+        "es valenciano",
+        "de que pueblo es",
+        "su pueblo",
+        "d on es sergio",
+        "on viu sergio",
+        "de quin poble es",
+        "es de valencia",
+        "comunidad valenciana",
+        "donde nacio"
+      ],
+      "es": [
+        "Es de Enguera, en la Comunidad Valenciana. Por eso la web habla castellano y valenciano.",
+        "De Enguera, un pueblo valenciano con mucha montaña. Allí desconecta en la casa de campo cuando no está programando."
+      ],
+      "va": [
+        "És d’Enguera, a la Comunitat Valenciana. Per això la web parla castellà i valencià.",
+        "D’Enguera, un poble valencià amb molta muntanya. Allí desconnecta a la casa de camp quan no està programant."
+      ],
+      "peso": 1.1
+    },
+    {
+      "id": "comida",
+      "frases": [
+        "comida favorita",
+        "que le gusta comer",
+        "plato favorito",
+        "que come sergio",
+        "arroz al horno",
+        "arros al forn",
+        "hamburguesa",
+        "hamburguesas",
+        "pasta",
+        "sushi",
+        "comida japonesa",
+        "japones",
+        "ramen",
+        "menjar preferit",
+        "que li agrada menjar",
+        "pizza"
+      ],
+      "es": [
+        "Tiene muchas, pero destacan el arroz al horno, las hamburguesas, la pasta y la comida japonesa. Un menú de campeón.",
+        "Arroz al horno para ser valenciano de pro, hamburguesas para los días de código largo, pasta siempre y japonés cuando toca darse un homenaje."
+      ],
+      "va": [
+        "En té moltes, però destaquen l’arròs al forn, les hamburgueses, la pasta i el menjar japonés. Un menú de campió.",
+        "Arròs al forn per a ser valencià de pro, hamburgueses per als dies de codi llarg, pasta sempre i japonés quan toca fer-se un homenatge."
+      ],
+      "peso": 1.05
+    },
+    {
+      "id": "series",
+      "frases": [
+        "series",
+        "serie",
+        "serie favorita",
+        "que series ve",
+        "series favoritas",
+        "juego de tronos",
+        "game of thrones",
+        "perdidos",
+        "lost",
+        "from",
+        "big bang theory",
+        "the big bang theory",
+        "sheldon",
+        "dark",
+        "the boys",
+        "netflix",
+        "hbo",
+        "series",
+        "series que ve",
+        "quines series veu",
+        "joc de trons",
+        "serie preferida"
+      ],
+      "es": [
+        "Sus series: Juego de Tronos, Perdidos, From, The Big Bang Theory, Dark y The Boys. Misterio, épica, superhéroes gamberros y algo de risa para equilibrar.",
+        "Si no está con anime, está con Juego de Tronos, Perdidos, From, Dark, The Boys o The Big Bang Theory. Le gustan las que te dejan pensando… y Sheldon.",
+        "Dato: varias de sus series (Perdidos, From, Dark) van de misterios que no te dejan dormir. Yo con la luz encendida no tengo ese problema."
+      ],
+      "va": [
+        "Les seues sèries: Joc de Trons, Perduts, From, The Big Bang Theory, Dark i The Boys. Misteri, èpica, superherois gamberros i un poc de riure per a equilibrar.",
+        "Si no està amb anime, està amb Joc de Trons, Perduts, From, Dark, The Boys o The Big Bang Theory. Li agraden les que et deixen pensant… i Sheldon.",
+        "Dada: diverses de les seues sèries (Perduts, From, Dark) van de misteris que no et deixen dormir. Jo amb la llum encesa no tinc eixe problema."
+      ],
+      "peso": 1.05,
+      "sugerencias": {
+        "es": [
+          "Pelis",
+          "Anime"
+        ],
+        "va": [
+          "Pel·lis",
+          "Anime"
+        ]
+      }
+    },
+    {
+      "id": "futbol",
+      "frases": [
+        "futbol",
+        "real madrid",
+        "madrid",
+        "equipo",
+        "equipo favorito",
+        "de que equipo es",
+        "deporte",
+        "deportes",
+        "hace deporte",
+        "champions",
+        "liga",
+        "vinicius",
+        "mbappe",
+        "bellingham",
+        "hala madrid",
+        "esport",
+        "de quin equip es",
+        "el madrid",
+        "merengue"
+      ],
+      "es": [
+        "Deporte, lo justo: solo ve fútbol. Y es del Real Madrid. ¡Hala Madrid! ⚽",
+        "Fútbol sí, pero desde el sofá. Su equipo: el Real Madrid. Las Champions las celebro brillando más fuerte."
+      ],
+      "va": [
+        "Esport, el just: només veu futbol. I és del Reial Madrid. Hala Madrid! ⚽",
+        "Futbol sí, però des del sofà. El seu equip: el Reial Madrid. Les Champions les celebre brillant més fort."
+      ],
+      "peso": 1.05,
+      "efecto": "salto"
+    },
+    {
+      "id": "futbol-rival",
+      "frases": [
+        "barca",
+        "barcelona",
+        "atletico",
+        "atleti",
+        "valencia cf",
+        "el valencia",
+        "del barca",
+        "visca el barca",
+        "messi",
+        "cule"
+      ],
+      "es": [
+        "Uy… Sergio es del Real Madrid. Mejor hablemos de juegos, que ahí no hay piques 😅",
+        "Te respeto, pero aquí se es del Madrid. Mi llama no se pone de otro color, lo siento."
+      ],
+      "va": [
+        "Ui… Sergio és del Reial Madrid. Millor parlem de jocs, que ahí no hi ha pics 😅",
+        "Et respecte, però ací se és del Madrid. La meua flama no es posa d’un altre color, ho sent."
+      ],
+      "peso": 1.1
+    },
+    {
+      "id": "mascota",
+      "frases": [
+        "mascota",
+        "mascotas",
+        "tiene perro",
+        "tiene mascota",
+        "perro",
+        "chihuahua",
+        "chiuaua",
+        "blue",
+        "animales",
+        "gos",
+        "te gustan los perros",
+        "tiene animales",
+        "gat",
+        "gato",
+        "tens mascota",
+        "perrito"
+      ],
+      "es": [
+        "Tiene un chihuahua que se llama Blue 🐶 Pequeño, valiente y, sospecho, el verdadero jefe de la casa.",
+        "Blue, su chihuahua. Yo seré la mascota de la web, pero Blue es la mascota de verdad. No compito: él tiene más fans."
+      ],
+      "va": [
+        "Té un chihuahua que es diu Blue 🐶 Menut, valent i, sospite, el vertader cap de la casa.",
+        "Blue, el seu chihuahua. Jo seré la mascota de la web, però Blue és la mascota de veres. No competisc: ell té més fans."
+      ],
+      "peso": 1.1,
+      "efecto": "feliz"
+    },
+    {
+      "id": "primera-consola",
+      "frases": [
+        "primera consola",
+        "primer juego",
+        "primer videojuego",
+        "mega drive",
+        "megadrive",
+        "sega",
+        "sonic",
+        "de pequeno a que jugaba",
+        "cuando empezo a jugar",
+        "retro",
+        "consola retro",
+        "primera videoconsola",
+        "primer joc",
+        "primera consola de sergio"
+      ],
+      "es": [
+        "Todo empezó con una Sega Mega Drive y Sonic. Ahí nació el gamer que hoy juega en PS5.",
+        "Su primera consola fue la Mega Drive, y su primer juego, Sonic. Correr a toda velocidad recogiendo anillos: casi como programar con prisas."
+      ],
+      "va": [
+        "Tot va començar amb una Sega Mega Drive i Sonic. Allí va nàixer el gamer que hui juga en PS5.",
+        "La seua primera consola va ser la Mega Drive, i el seu primer joc, Sonic. Córrer a tota velocitat arreplegant anells: quasi com programar amb presses."
+      ],
+      "peso": 1.1
+    },
+    {
+      "id": "futuro",
+      "frases": [
+        "que quiere hacer",
+        "que quiere hacer cuando acabe",
+        "cuando acabe dam",
+        "despues de dam",
+        "a que se quiere dedicar",
+        "de que quiere trabajar",
+        "futuro",
+        "su futuro",
+        "objetivos",
+        "metas",
+        "que quiere ser",
+        "trabajo de sus suenos",
+        "que vol fer",
+        "a que es vol dedicar",
+        "quan acabe dam",
+        "de que vol treballar",
+        "planes de futuro"
+      ],
+      "es": [
+        "Cuando acabe DAM quiere encontrar un buen trabajo de informático, sobre todo orientado a la programación. Esta web es su forma de demostrar que va en serio.",
+        "Su meta: trabajar de programador. Con SMR, los certificados de Cisco y DAM, tiene base de sobra. Si buscas a alguien con ganas, ya sabes dónde está el contacto 😉"
+      ],
+      "va": [
+        "Quan acabe DAM vol trobar una bona faena d’informàtic, sobretot orientada a la programació. Esta web és la seua manera de demostrar que va de veres.",
+        "La seua meta: treballar de programador. Amb SMR, els certificats de Cisco i DAM, té base de sobra. Si busques algú amb ganes, ja saps on està el contacte 😉"
+      ],
+      "peso": 1.1,
+      "enlace": {
+        "href": "index.html#contacto",
+        "es": "Ir a Contacto",
+        "va": "Anar a Contacte"
+      }
+    },
+    {
+      "id": "jugando-ahora",
+      "frases": [
+        "a que juega ahora",
+        "que esta jugando",
+        "que juega ahora",
+        "juego actual",
+        "ultimo juego",
+        "que se ha pasado",
+        "ultimo juego que se ha pasado",
+        "ghost of tsushima",
+        "tsushima",
+        "jin sakai",
+        "ocarina of time",
+        "ocarina",
+        "zelda ocarina of time",
+        "remake de zelda",
+        "que quiere comprar",
+        "proximo juego",
+        "que juego espera",
+        "a que juga ara",
+        "que esta jugant",
+        "ultim joc",
+        "proxim joc",
+        "samurai"
+      ],
+      "es": [
+        "El último que se ha pasado es Ghost of Tsushima: samuráis, viento que te guía y unos paisajes de foto. Y ya tiene fichado el siguiente: el remake de Zelda: Ocarina of Time.",
+        "Acaba de terminar Ghost of Tsushima y está deseando hacerse con el remake de Zelda: Ocarina of Time. Historia y gráficos bonitos, como a él le gusta.",
+        "Ahora mismo, entre juegos: se pasó Ghost of Tsushima y tiene ganas de comprar el remake de Ocarina of Time. Yo ya me veo iluminando templos en Hyrule."
+      ],
+      "va": [
+        "L’últim que s’ha passat és Ghost of Tsushima: samurais, vent que et guia i uns paisatges de foto. I ja té fitxat el següent: el remake de Zelda: Ocarina of Time.",
+        "Acaba de terminar Ghost of Tsushima i té moltes ganes de fer-se amb el remake de Zelda: Ocarina of Time. Història i gràfics bonics, com a ell li agrada.",
+        "Ara mateix, entre jocs: es va passar Ghost of Tsushima i té ganes de comprar el remake d’Ocarina of Time. Jo ja em veig il·luminant temples a Hyrule."
+      ],
+      "peso": 1.1,
+      "enlace": {
+        "href": "juegos.html",
+        "es": "Ir a Juegos",
+        "va": "Anar a Jocs"
+      },
+      "sugerencias": {
+        "es": [
+          "Zelda",
+          "Juegos",
+          "Recomiéndame un juego"
+        ],
+        "va": [
+          "Zelda",
+          "Jocs",
+          "Recomana’m un joc"
+        ]
+      }
+    },
+    {
+      "id": "familia",
+      "frases": [
+        "familia de sergio",
+        "sergio tiene hijos",
+        "tiene hijos",
+        "hijos",
+        "hijo",
+        "hija",
+        "esta casado",
+        "casado",
+        "mujer",
+        "esposa",
+        "tiene novia",
+        "tiene pareja",
+        "novia",
+        "novio",
+        "pareja",
+        "su familia",
+        "es padre",
+        "te fills",
+        "fills",
+        "filla",
+        "esta casat",
+        "parella",
+        "dona",
+        "tiene familia sergio",
+        "es papa"
+      ],
+      "es": [
+        "Está casado y tiene dos hijos. Así que programa entre biberones, deberes y partidas… y aun así le da tiempo a hacer webs.",
+        "Sergio es padre de familia: casado y con dos hijos. De hecho, yo existo gracias a una peli favorita de su hija. Pregúntame «¿por qué un farolillo?».",
+        "Casado y con dos peques en casa (más Blue, el chihuahua). Lo que no me cuenta son los detalles: eso ya es cosa suya 😉"
+      ],
+      "va": [
+        "Està casat i té dos fills. Així que programa entre biberons, deures i partides… i tot i això li dona temps de fer webs.",
+        "Sergio és pare de família: casat i amb dos fills. De fet, jo existisc gràcies a una pel·li preferida de la seua filla. Pregunta’m «per què un fanalet?».",
+        "Casat i amb dos menuts a casa (més Blue, el chihuahua). El que no em conta són els detalls: això ja és cosa seua 😉"
+      ],
+      "peso": 1.15,
+      "sugerencias": {
+        "es": [
+          "¿Por qué un farolillo?",
+          "Mascota"
+        ],
+        "va": [
+          "Per què un fanalet?",
+          "Mascota"
+        ]
+      }
+    },
+    {
+      "id": "coleccion",
+      "frases": [
+        "coleccion",
+        "colecciona",
+        "coleccionista",
+        "cuantos juegos tiene",
+        "juegos fisicos",
+        "formato fisico",
+        "fisico o digital",
+        "cuantos comics tiene",
+        "cuantos mangas tiene",
+        "cuantos comics",
+        "cuantos juegos",
+        "su coleccion",
+        "estanteria",
+        "colleccio",
+        "quants jocs te",
+        "quants comics te",
+        "coleccion de juegos",
+        "coleccion de comics",
+        "coleccion de mangas"
+      ],
+      "es": [
+        "Coleccionista de los serios: unos 600 juegos en físico de todas las plataformas y más de 900 cómics y mangas. Su casa necesita más estanterías que yo luz.",
+        "¿Físico o digital? Físico, sin duda: tiene unos 600 juegos y más de 900 cómics y mangas. Si algún día se va la luz, yo le ilumino la colección.",
+        "Unos 600 juegos físicos y más de 900 cómics o mangas. Calculo que solo ordenarlos alfabéticamente le llevaría una saga entera."
+      ],
+      "va": [
+        "Col·leccionista dels seriosos: uns 600 jocs en físic de totes les plataformes i més de 900 còmics i mangues. Sa casa necessita més prestatges que jo llum.",
+        "Físic o digital? Físic, sense dubte: té uns 600 jocs i més de 900 còmics i mangues. Si algun dia se’n va la llum, jo li il·lumine la col·lecció.",
+        "Uns 600 jocs físics i més de 900 còmics o mangues. Calcule que només ordenar-los alfabèticament li duria una saga sencera."
+      ],
+      "peso": 1.15,
+      "efecto": "salto",
+      "sugerencias": {
+        "es": [
+          "Juegos",
+          "Libros",
+          "Primera consola"
+        ],
+        "va": [
+          "Jocs",
+          "Llibres",
+          "Primera consola"
+        ]
+      }
+    },
+    {
+      "id": "quiz",
+      "frases": [
+        "quiz",
+        "cuanto sabes de sergio",
+        "cuanto sabes sobre sergio",
+        "quiz de sergio",
+        "test sobre sergio",
+        "test de sergio",
+        "trivial",
+        "trivia",
+        "juego de preguntas",
+        "hazme preguntas",
+        "preguntame",
+        "pon me a prueba",
+        "ponme a prueba",
+        "examen de sergio",
+        "otra vez",
+        "una altra vegada",
+        "repetir quiz",
+        "jugar al quiz",
+        "quant saps de sergio",
+        "fes me preguntes",
+        "concurso"
+      ],
+      "es": [
+        "¡Vamos allá! 5 preguntas sobre Sergio. Escribe «salir» cuando quieras.",
+        "¿Crees que conoces a Sergio? Demuéstralo: 5 preguntas, sin trampas."
+      ],
+      "va": [
+        "Som-hi! 5 preguntes sobre Sergio. Escriu «eixir» quan vulgues.",
+        "Creus que coneixes Sergio? Demostra-ho: 5 preguntes, sense trampes."
+      ],
+      "accion": "quiz",
+      "peso": 1.15
+    },
+    {
+      "id": "esta-pagina",
+      "frases": [
+        "que hay aqui",
+        "que es esta pagina",
+        "donde estoy",
+        "que puedo hacer aqui",
+        "de que va esta pagina",
+        "que es esto",
+        "que hago aqui",
+        "para que sirve esta pagina",
+        "esta pagina",
+        "explicame esta pagina",
+        "on estic",
+        "que hi ha aci",
+        "que es esta web",
+        "que es aquesta pagina",
+        "que puc fer aci"
+      ],
+      "es": [
+        "Estás en la web de Sergio. Pregúntame «¿quién es Sergio?» o toca una opción."
+      ],
+      "va": [
+        "Estàs en la web de Sergio. Pregunta’m «qui és Sergio?» o toca una opció."
+      ],
+      "accion": "pagina",
+      "peso": 1.1
+    },
+    {
+      "id": "recomienda-generico",
+      "frases": [
+        "recomiendame algo",
+        "recomiendame uno",
+        "recomiendame una",
+        "que me recomiendas",
+        "alguna recomendacion",
+        "una recomendacion",
+        "recomendacion",
+        "recomana m alguna cosa",
+        "que em recomanes",
+        "dime algo que ver",
+        "algo para ver"
+      ],
+      "es": [
+        "Te recomiendo este:",
+        "Prueba con este:",
+        "Ahí va mi recomendación:"
+      ],
+      "va": [
+        "Et recomane este:",
+        "Prova amb este:",
+        "Allà va la meua recomanació:"
+      ],
+      "accion": "aleatorio"
+    },
+    {
+      "id": "libro-sanderson",
+      "frases": [
+        "brandon sanderson",
+        "sanderson",
+        "nacidos de la bruma",
+        "mistborn",
+        "el imperio final",
+        "el archivo de las tormentas",
+        "archivo de las tormentas",
+        "stormlight",
+        "el camino de los reyes",
+        "palabras radiantes",
+        "kaladin",
+        "cosmere",
+        "elantris",
+        "el aliento de los dioses",
+        "warbreaker",
+        "escuadron",
+        "skyward",
+        "kelsier",
+        "alomancia",
+        "el alomante",
+        "nascuts de la boira",
+        "l arxiu de les tempestes",
+        "libros de sanderson"
+      ],
+      "es": [
+        "Brandon Sanderson es de sus autores favoritos. Le encantan sus sagas: Nacidos de la Bruma (Mistborn), El Archivo de las Tormentas, Elantris, El aliento de los dioses y Escuadrón. Casi todas comparten universo: el Cosmere.",
+        "Sanderson es el rey de los sistemas de magia con reglas: en Nacidos de la Bruma se quema metal para tener poderes y en El Archivo de las Tormentas los caballeros radiantes pronuncian juramentos. Para un programador, magia con lógica es el paraíso.",
+        "Si buscas por dónde empezar con Sanderson: Nacidos de la Bruma: El imperio final. Si ya lo has leído, salta a El camino de los reyes y prepárate para ladrillos de mil páginas que se leen solos."
+      ],
+      "va": [
+        "Brandon Sanderson és un dels seus autors preferits. Li encanten les seues sagues: Nascuts de la Boira (Mistborn), L’Arxiu de les Tempestes, Elantris, L’alé dels déus i Esquadró. Quasi totes comparteixen univers: el Cosmere.",
+        "Sanderson és el rei dels sistemes de màgia amb regles: a Nascuts de la Boira es crema metall per a tindre poders i a L’Arxiu de les Tempestes els cavallers radiants pronuncien juraments. Per a un programador, màgia amb lògica és el paradís.",
+        "Si busques per on començar amb Sanderson: Nascuts de la Boira: L’imperi final. Si ja l’has llegit, bota a El camí dels reis i prepara’t per a totxos de mil pàgines que es lligen sols."
+      ],
+      "tema": "libros",
+      "item": true,
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro libro",
+          "Recomiéndame un libro"
+        ],
+        "va": [
+          "Un altre llibre",
+          "Recomana’m un llibre"
+        ]
+      }
+    },
+    {
+      "id": "libro-cancion-hielo",
+      "frases": [
+        "cancion de hielo y fuego",
+        "cancion de fuego y hielo",
+        "libros de juego de tronos",
+        "juego de tronos libro",
+        "george r r martin",
+        "george martin",
+        "grrm",
+        "vientos de invierno",
+        "danza de dragones",
+        "festin de cuervos",
+        "tormenta de espadas",
+        "choque de reyes",
+        "tyrion",
+        "daenerys",
+        "arya",
+        "casa stark",
+        "leido juego de tronos",
+        "ha leido juego de tronos",
+        "poniente",
+        "canco de gel i foc",
+        "el trono de hierro"
+      ],
+      "es": [
+        "Canción de hielo y fuego, de George R. R. Martin, es otra de sus sagas favoritas: intrigas, traiciones y nadie a salvo. Y sí, también ve la serie, Juego de Tronos.",
+        "Poniente es de esos mundos en los que cualquier personaje puede caer en el siguiente capítulo. Sergio lo disfruta en libro y en serie. Yo sigo esperando Vientos de invierno, como todos."
+      ],
+      "va": [
+        "Cançó de gel i foc, de George R. R. Martin, és una altra de les seues sagues preferides: intrigues, traïcions i ningú a salvo. I sí, també veu la sèrie, Joc de Trons.",
+        "Ponent és d’eixos mons en què qualsevol personatge pot caure en el capítol següent. Sergio el gaudeix en llibre i en sèrie. Jo continue esperant Vents d’hivern, com tots."
+      ],
+      "tema": "libros",
+      "item": true,
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro libro",
+          "Recomiéndame un libro"
+        ],
+        "va": [
+          "Un altre llibre",
+          "Recomana’m un llibre"
+        ]
+      }
+    },
+    {
+      "id": "libro-brujo",
+      "frases": [
+        "saga del brujo",
+        "libros de the witcher",
+        "libros del brujo",
+        "libro witcher",
+        "novelas de the witcher",
+        "sapkowski",
+        "andrzej sapkowski",
+        "el ultimo deseo",
+        "la espada del destino",
+        "la sangre de los elfos",
+        "saga de geralt",
+        "jaskier",
+        "la saga del brujo",
+        "saga del bruixot",
+        "llibres de the witcher"
+      ],
+      "es": [
+        "La saga de Geralt de Rivia, de Andrzej Sapkowski, también está entre sus libros favoritos. Empieza por El último deseo: relatos cortos con monstruos, contratos y mucha ironía.",
+        "Antes de los juegos estaban los libros: la saga del brujo de Sapkowski. Sergio disfruta los dos. Yen, Ciri, Jaskier… y un brujo que gruñe «Hmm» en vez de hablar."
+      ],
+      "va": [
+        "La saga de Geralt de Rívia, d’Andrzej Sapkowski, també està entre els seus llibres preferits. Comença per L’últim desig: relats curts amb monstres, contractes i molta ironia.",
+        "Abans dels jocs estaven els llibres: la saga del bruixot de Sapkowski. Sergio gaudeix de tots dos. Yen, Ciri, Jaskier… i un bruixot que grunyix «Hmm» en lloc de parlar."
+      ],
+      "tema": "libros",
+      "item": true,
+      "peso": 1.1,
+      "sugerencias": {
+        "es": [
+          "Otro libro",
+          "Recomiéndame un libro"
+        ],
+        "va": [
+          "Un altre llibre",
+          "Recomana’m un llibre"
+        ]
+      }
+    },
+    {
+      "id": "frase-mitica",
+      "frases": [
+        "frase mitica",
+        "frases miticas",
+        "una frase",
+        "una frase de peli",
+        "frase de pelicula",
+        "frase de serie",
+        "cita famosa",
+        "cita",
+        "frase celebre",
+        "dime una frase",
+        "frase friki",
+        "frases frikis",
+        "frase de cine",
+        "frase mitica de peli",
+        "otra frase",
+        "frase mitica",
+        "una frase mitica",
+        "una cita"
+      ],
+      "es": [
+        "«Que la Fuerza te acompañe». — Star Wars",
+        "«Volveré». — Terminator",
+        "«Lo que hacemos en la vida tiene su eco en la eternidad». — Gladiator",
+        "«¿Carreteras? A donde vamos no necesitamos carreteras». — Regreso al futuro",
+        "«La vida se abre camino». — Jurassic Park",
+        "«No hay cuchara». — Matrix",
+        "«Incluso la persona más pequeña puede cambiar el curso del futuro». — El Señor de los Anillos",
+        "«¡Esto es Esparta!». — 300",
+        "«Pueden quitarnos la vida, pero jamás nos quitarán… ¡la libertad!». — Braveheart",
+        "«Se acerca el invierno». — Juego de Tronos",
+        "«Valar morghulis». — Juego de Tronos",
+        "«¡Bazinga!». — The Big Bang Theory",
+        "«El principio es el fin, y el fin es el principio». — Dark",
+        "«Kept you waiting, huh?». — Metal Gear Solid",
+        "«Es peligroso ir solo. Toma esto». — The Legend of Zelda",
+        "«Endure and survive». — The Last of Us",
+        "«Yo soy Groot». — Guardianes de la Galaxia",
+        "«Un gran poder conlleva una gran responsabilidad». — Spider-Man",
+        "«¿Por qué tan serio?». — El caballero oscuro",
+        "«Houston, tenemos un problema». — Apolo 13",
+        "«El miedo es el asesino de la mente». — Dune",
+        "«¡Plus Ultra!». — My Hero Academia"
+      ],
+      "va": [
+        "«Que la Força t’acompanye». — Star Wars",
+        "«Tornaré». — Terminator",
+        "«El que fem en la vida té el seu eco en l’eternitat». — Gladiator",
+        "«Carreteres? On anem no necessitem carreteres». — Tornada al futur",
+        "«La vida s’obri camí». — Jurassic Park",
+        "«No hi ha cullera». — Matrix",
+        "«Fins i tot la persona més menuda pot canviar el curs del futur». — El Senyor dels Anells",
+        "«Açò és Esparta!». — 300",
+        "«Poden llevar-nos la vida, però mai ens llevaran… la llibertat!». — Braveheart",
+        "«S’acosta l’hivern». — Joc de Trons",
+        "«Valar morghulis». — Joc de Trons",
+        "«Bazinga!». — The Big Bang Theory",
+        "«El principi és la fi, i la fi és el principi». — Dark",
+        "«Kept you waiting, huh?». — Metal Gear Solid",
+        "«És perillós anar sol. Pren això». — The Legend of Zelda",
+        "«Endure and survive». — The Last of Us",
+        "«Jo soc Groot». — Guardians de la Galàxia",
+        "«Un gran poder comporta una gran responsabilitat». — Spider-Man",
+        "«Per què tan seriós?». — El cavaller fosc",
+        "«Houston, tenim un problema». — Apol·lo 13",
+        "«La por és l’assassina de la ment». — Dune",
+        "«Plus Ultra!». — My Hero Academia"
+      ],
+      "repetible": true,
+      "efecto": "salto",
+      "sugerencias": {
+        "es": [
+          "Otra frase",
+          "Un chiste",
+          "Curiosidad"
+        ],
+        "va": [
+          "Una altra frase",
+          "Un acudit",
+          "Curiositat"
+        ]
+      }
+    },
+    {
+      "id": "houston",
+      "frases": [
+        "houston tenemos un problema",
+        "houston",
+        "tenemos un problema"
+      ],
+      "es": [
+        "Houston, tenemos un problema… No, falsa alarma: era un punto y coma. 🚀"
+      ],
+      "va": [
+        "Houston, tenim un problema… No, falsa alarma: era un punt i coma. 🚀"
+      ],
+      "peso": 1.3,
+      "efecto": "salto"
+    },
+    {
+      "id": "groot",
+      "frases": [
+        "yo soy groot",
+        "i am groot",
+        "groot",
+        "jo soc groot"
+      ],
+      "es": [
+        "Yo soy Groot. 🌱 (Traducción: «me caes bien, vuelve pronto»)."
+      ],
+      "va": [
+        "Jo soc Groot. 🌱 (Traducció: «em caus bé, torna prompte»)."
+      ],
+      "peso": 1.3,
+      "efecto": "feliz"
+    },
+    {
+      "id": "gran-poder",
+      "frases": [
+        "un gran poder conlleva una gran responsabilidad",
+        "gran poder",
+        "gran responsabilidad",
+        "tio ben"
+      ],
+      "es": [
+        "…conlleva una gran responsabilidad. Por eso nunca hago push a main un viernes por la tarde. 🕷️"
+      ],
+      "va": [
+        "…comporta una gran responsabilitat. Per això mai faig push a main un divendres de vesprada. 🕷️"
+      ],
+      "peso": 1.3
+    },
+    {
+      "id": "tan-serio",
+      "frases": [
+        "por que tan serio",
+        "why so serious",
+        "joker",
+        "per que tan serios"
+      ],
+      "es": [
+        "¿Por qué tan serio? 🃏 Sonríe, que estás en la web de un fan de Batman."
+      ],
+      "va": [
+        "Per què tan seriós? 🃏 Somriu, que estàs a la web d’un fan de Batman."
+      ],
+      "peso": 1.3,
+      "efecto": "giro"
+    },
+    {
+      "id": "bazinga",
+      "frases": [
+        "bazinga",
+        "sheldon cooper",
+        "toc toc penny",
+        "soft kitty"
+      ],
+      "es": [
+        "¡Bazinga! 🧪 Sheldon aprobaría esta web. Bueno, le pondría pegas al tipo de letra."
+      ],
+      "va": [
+        "Bazinga! 🧪 Sheldon aprovaria esta web. Bé, li posaria pegues al tipus de lletra."
+      ],
+      "peso": 1.3,
+      "efecto": "salto"
+    },
+    {
+      "id": "valar",
+      "frases": [
+        "valar morghulis",
+        "valar dohaeris",
+        "todos los hombres deben morir"
+      ],
+      "es": [
+        "Valar dohaeris. 🗡️ Todos los hombres deben servir… y los faroles, iluminar."
+      ],
+      "va": [
+        "Valar dohaeris. 🗡️ Tots els homes han de servir… i els fanals, il·luminar."
+      ],
+      "peso": 1.3
+    },
+    {
+      "id": "lannister",
+      "frases": [
+        "un lannister siempre paga sus deudas",
+        "lannister",
+        "un lannister"
+      ],
+      "es": [
+        "Un Lannister siempre paga sus deudas. Un farol, siempre en luz. 🦁"
+      ],
+      "va": [
+        "Un Lannister sempre paga els seus deutes. Un fanal, sempre en llum. 🦁"
+      ],
+      "peso": 1.3
+    },
+    {
+      "id": "hodor",
+      "frases": [
+        "hodor",
+        "sujeta la puerta",
+        "hold the door"
+      ],
+      "es": [
+        "Hodor. 🚪 (Sujeta la puerta, que se escapa el calor)."
+      ],
+      "va": [
+        "Hodor. 🚪 (Subjecta la porta, que s’escapa la calor)."
+      ],
+      "peso": 1.3
+    },
+    {
+      "id": "fuerza-honor",
+      "frases": [
+        "fuerza y honor",
+        "fuerza y honor gladiator",
+        "forca i honor",
+        "me llamo maximo decimo meridio",
+        "maximo decimo meridio"
+      ],
+      "es": [
+        "¡Fuerza y honor! ⚔️ Lo que hacemos en la vida tiene su eco en la eternidad… y en el historial de Git."
+      ],
+      "va": [
+        "Força i honor! ⚔️ El que fem en la vida té el seu eco en l’eternitat… i en l’historial de Git."
+      ],
+      "peso": 1.3,
+      "efecto": "salto"
+    },
+    {
+      "id": "desatad-infierno",
+      "frases": [
+        "a mi senal desatad el infierno",
+        "desatad el infierno",
+        "a la meua senyal"
+      ],
+      "es": [
+        "¡A mi señal, desatad el infierno! 🔥 Cuidado, que yo eso me lo tomo literal."
+      ],
+      "va": [
+        "A la meua senyal, deslligueu l’infern! 🔥 Compte, que jo això m’ho prenc literal."
+      ],
+      "peso": 1.3,
+      "efecto": "fuegos"
+    },
+    {
+      "id": "libertad",
+      "frases": [
+        "libertad",
+        "freedom",
+        "llibertat",
+        "jamas nos quitaran la libertad"
+      ],
+      "es": [
+        "¡LIBEEERTAAAD! 🏴 William Wallace estaría orgulloso de ese grito."
+      ],
+      "va": [
+        "LLIBEEERTAAAT! 🏴 William Wallace estaria orgullós d’eixe crit."
+      ],
+      "peso": 1.15,
+      "efecto": "fuegos"
+    },
+    {
+      "id": "vida-camino",
+      "frases": [
+        "la vida se abre camino",
+        "life finds a way",
+        "la vida s obri cami"
+      ],
+      "es": [
+        "La vida se abre camino… y los bugs también. 🦖"
+      ],
+      "va": [
+        "La vida s’obri camí… i els bugs també. 🦖"
+      ],
+      "peso": 1.3,
+      "efecto": "salto"
+    },
+    {
+      "id": "carreteras",
+      "frases": [
+        "a donde vamos no necesitamos carreteras",
+        "no necesitamos carreteras",
+        "carreteras"
+      ],
+      "es": [
+        "¿Carreteras? A donde vamos no necesitamos… carreteras. 🚗⚡"
+      ],
+      "va": [
+        "Carreteres? On anem no necessitem… carreteres. 🚗⚡"
+      ],
+      "peso": 1.3,
+      "efecto": "giro"
+    },
+    {
+      "id": "peligroso-solo",
+      "frases": [
+        "es peligroso ir solo",
+        "toma esto",
+        "its dangerous to go alone",
+        "es perillos anar sol"
+      ],
+      "es": [
+        "Es peligroso ir solo. Toma esto: 🏮 (sí, soy yo)."
+      ],
+      "va": [
+        "És perillós anar sol. Pren això: 🏮 (sí, soc jo)."
+      ],
+      "peso": 1.3,
+      "efecto": "feliz"
+    },
+    {
+      "id": "tarta-mentira",
+      "frases": [
+        "the cake is a lie",
+        "la tarta es mentira",
+        "el pastel es mentira"
+      ],
+      "es": [
+        "La tarta es mentira. 🎂 Pero mis respuestas son de verdad."
+      ],
+      "va": [
+        "El pastís és mentida. 🎂 Però les meues respostes són de veres."
+      ],
+      "peso": 1.3
+    },
+    {
+      "id": "guerra-cambia",
+      "frases": [
+        "war never changes",
+        "la guerra nunca cambia",
+        "fallout"
+      ],
+      "es": [
+        "La guerra… la guerra nunca cambia. Los bugs, tampoco. ☢️"
+      ],
+      "va": [
+        "La guerra… la guerra mai canvia. Els bugs, tampoc. ☢️"
+      ],
+      "peso": 1.3
+    },
+    {
+      "id": "eres-mago",
+      "frases": [
+        "eres un mago harry",
+        "harry eres un mago",
+        "eres un mago",
+        "ets un mag"
+      ],
+      "es": [
+        "Y tú, un muggle con muy buen gusto. ⚡"
+      ],
+      "va": [
+        "I tu, un muggle amb molt bon gust. ⚡"
+      ],
+      "peso": 1.3,
+      "efecto": "fuegos"
+    },
+    {
+      "id": "snake",
+      "frases": [
+        "snake snake",
+        "snaaake",
+        "snake responde",
+        "snaake"
+      ],
+      "es": [
+        "¡SNAAAAAKE! 📦 …Perdón, me he emocionado."
+      ],
+      "va": [
+        "SNAAAAAKE! 📦 …Perdó, m’he emocionat."
+      ],
+      "peso": 1.3,
+      "efecto": "salto"
+    },
+    {
+      "id": "shinzou",
+      "frases": [
+        "shinzou wo sasageyo",
+        "shinzo wo sasageyo",
+        "sasageyo",
+        "entregad vuestros corazones"
+      ],
+      "es": [
+        "¡Shinzō wo sasageyo! 🫡 Entrego mi corazón… y mi llama."
+      ],
+      "va": [
+        "Shinzō wo sasageyo! 🫡 Entregue el meu cor… i la meua flama."
+      ],
+      "peso": 1.3,
+      "efecto": "fuegos"
+    },
+    {
+      "id": "plus-ultra",
+      "frases": [
+        "plus ultra",
+        "all might",
+        "deku"
+      ],
+      "es": [
+        "¡PLUS ULTRA! 💥 Más allá… de la esquina izquierda."
+      ],
+      "va": [
+        "PLUS ULTRA! 💥 Més enllà… del racó esquerre."
+      ],
+      "peso": 1.3,
+      "efecto": "salto"
+    },
+    {
+      "id": "numeros-lost",
+      "frases": [
+        "4 8 15 16 23 42",
+        "4 8 15 16 23",
+        "los numeros de perdidos",
+        "la escotilla",
+        "hay que volver"
+      ],
+      "es": [
+        "4 8 15 16 23 42… No pulses el botón. O sí. 🏝️"
+      ],
+      "va": [
+        "4 8 15 16 23 42… No premes el botó. O sí. 🏝️"
+      ],
+      "peso": 1.3,
+      "efecto": "giro"
+    },
+    {
+      "id": "principio-fin",
+      "frases": [
+        "el principio es el fin",
+        "el fin es el principio",
+        "sic mundus creatus est",
+        "la cueva de winden"
+      ],
+      "es": [
+        "…y el fin es el principio. ⏳ Dark lo explica mejor, pero necesita tres líneas temporales y una pizarra."
+      ],
+      "va": [
+        "…i la fi és el principi. ⏳ Dark ho explica millor, però necessita tres línies temporals i una pissarra."
+      ],
+      "peso": 1.3,
+      "efecto": "giro"
+    },
+    {
+      "id": "lagrimas-lluvia",
+      "frases": [
+        "lagrimas en la lluvia",
+        "he visto cosas que vosotros no creeriais",
+        "yo he visto cosas",
+        "blade runner"
+      ],
+      "es": [
+        "Yo he visto cosas que vosotros no creeríais… como un div centrado a la primera. 🌧️"
+      ],
+      "va": [
+        "Jo he vist coses que vosaltres no creuríeu… com un div centrat a la primera. 🌧️"
+      ],
+      "peso": 1.3
+    },
+    {
+      "id": "miedo-mente",
+      "frases": [
+        "el miedo es el asesino de la mente",
+        "no conocere el miedo",
+        "la letania contra el miedo",
+        "letania contra el miedo"
+      ],
+      "es": [
+        "No conoceré el miedo. El miedo es el asesino de la mente. 🏜️ (Ni el agua me da tanto miedo… bueno, sí)."
+      ],
+      "va": [
+        "No coneixeré la por. La por és l’assassina de la ment. 🏜️ (Ni l’aigua em fa tanta por… bé, sí)."
+      ],
+      "peso": 1.3
+    },
+    {
+      "id": "diabolical",
+      "frases": [
+        "diabolical",
+        "homelander",
+        "butcher",
+        "patriota es malo"
+      ],
+      "es": [
+        "Diabolical. 😈 The Boys enseña que no todos los superhéroes son de fiar. Yo sí, que conste."
+      ],
+      "va": [
+        "Diabolical. 😈 The Boys ensenya que no tots els superherois són de fiar. Jo sí, que conste."
+      ],
+      "peso": 1.2
+    },
+    {
+      "id": "over-9000",
+      "frases": [
+        "it s over 9000",
+        "mas de 9000",
+        "its over 9000",
+        "over 9000"
+      ],
+      "es": [
+        "¡¿MÁS DE 9000?! 📟 Mi rastreador acaba de explotar."
+      ],
+      "va": [
+        "MÉS DE 9000?! 📟 El meu rastrejador acaba d’explotar."
+      ],
+      "peso": 1.3,
+      "efecto": "fuegos"
+    },
+    {
+      "id": "esconderse",
+      "frases": [
+        "escondete",
+        "ocultate",
+        "desaparece",
+        "vete",
+        "apagate",
+        "minimizate",
+        "quitate",
+        "quitate de en medio",
+        "no te quiero ver",
+        "me molestas",
+        "molestas",
+        "estorbas",
+        "me tapas",
+        "esconder farolillo",
+        "ocultar farolillo",
+        "quitar farolillo",
+        "como te escondo",
+        "como te quito",
+        "puedo esconderte",
+        "amagat",
+        "amaga t",
+        "ves te n",
+        "desapareix",
+        "molestes",
+        "como te oculto"
+      ],
+      "es": [
+        "Vale, me escondo 🙈 Si me echas de menos, toca la pestañita 🏮 del borde izquierdo y vuelvo.",
+        "Entendido, desaparezco… *puf* 💨 Me quedo en una pestañita en el borde. Tócala cuando quieras que vuelva."
+      ],
+      "va": [
+        "Vale, m’amague 🙈 Si em trobes a faltar, toca la pestanyeta 🏮 de la vora esquerra i torne.",
+        "Entés, desaparec… *puf* 💨 Em quede en una pestanyeta a la vora. Toca-la quan vulgues que torne."
+      ],
+      "orden": "ocultar",
+      "peso": 1.2
     }
-  ]
+  ],
+  "quiz": {
+    "numero": 5,
+    "textos": {
+      "pregunta": {
+        "es": [
+          "Pregunta {n}/{total}: {pregunta}"
+        ],
+        "va": [
+          "Pregunta {n}/{total}: {pregunta}"
+        ]
+      },
+      "acierto": {
+        "es": [
+          "¡Correcto! ✅",
+          "¡Bien visto! ✅",
+          "¡Exacto! ✅",
+          "¡Eso es! ✅"
+        ],
+        "va": [
+          "Correcte! ✅",
+          "Ben vist! ✅",
+          "Exacte! ✅",
+          "Això és! ✅"
+        ]
+      },
+      "fallo": {
+        "es": [
+          "¡Casi! ❌ Era «{correcta}».",
+          "Uy, no ❌ La buena era «{correcta}».",
+          "Fallaste ❌ Era «{correcta}»."
+        ],
+        "va": [
+          "Quasi! ❌ Era «{correcta}».",
+          "Ui, no ❌ La bona era «{correcta}».",
+          "Has fallat ❌ Era «{correcta}»."
+        ]
+      },
+      "recordatorio": {
+        "es": [
+          "Elige una de las opciones de abajo (o escribe «salir»).",
+          "Esa no es una de las opciones 😅 Toca un botón."
+        ],
+        "va": [
+          "Tria una de les opcions de baix (o escriu «eixir»).",
+          "Eixa no és una de les opcions 😅 Toca un botó."
+        ]
+      },
+      "abandono": {
+        "es": [
+          "Quiz cancelado. Sin rencores."
+        ],
+        "va": [
+          "Quiz cancel·lat. Sense rancors."
+        ]
+      },
+      "perfecto": {
+        "es": [
+          "🏆 {aciertos}/{total}. ¡Pleno! Sabes más de Sergio que yo, y eso que vivo en su web.",
+          "🏆 {aciertos}/{total}. Perfecto. ¿Eres su madre o su profe?"
+        ],
+        "va": [
+          "🏆 {aciertos}/{total}. Ple! Saps més de Sergio que jo, i això que visc a la seua web.",
+          "🏆 {aciertos}/{total}. Perfecte. Eres sa mare o el seu professor?"
+        ]
+      },
+      "alto": {
+        "es": [
+          "⭐ {aciertos}/{total}. ¡Muy bien! Se nota que has curioseado la web.",
+          "⭐ {aciertos}/{total}. Nada mal. Un par de vueltas más por la web y sacas pleno."
+        ],
+        "va": [
+          "⭐ {aciertos}/{total}. Molt bé! Es nota que has tafanejat la web.",
+          "⭐ {aciertos}/{total}. Gens malament. Un parell de voltes més per la web i fas ple."
+        ]
+      },
+      "bajo": {
+        "es": [
+          "🕯️ {aciertos}/{total}. Te falta luz… Date una vuelta por la web y vuelve a intentarlo.",
+          "🕯️ {aciertos}/{total}. Ánimo: pregúntame cosas de Sergio y a la próxima arrasas."
+        ],
+        "va": [
+          "🕯️ {aciertos}/{total}. Et falta llum… Fes una volta per la web i torna-ho a provar.",
+          "🕯️ {aciertos}/{total}. Ànim: pregunta’m coses de Sergio i la pròxima vegada arrases."
+        ]
+      },
+      "botonSalir": {
+        "es": [
+          "Salir"
+        ],
+        "va": [
+          "Eixir"
+        ]
+      },
+      "palabrasSalir": {
+        "es": [
+          "salir",
+          "parar",
+          "terminar",
+          "acabar",
+          "basta",
+          "dejalo",
+          "cancelar",
+          "stop",
+          "fin"
+        ],
+        "va": [
+          "eixir",
+          "parar",
+          "acabar",
+          "prou",
+          "deixa ho",
+          "cancellar"
+        ]
+      },
+      "botonesFinal": {
+        "es": [
+          "Otra vez",
+          "¿Quién es Sergio?",
+          "Juegos"
+        ],
+        "va": [
+          "Una altra vegada",
+          "Qui és Sergio?",
+          "Jocs"
+        ]
+      }
+    },
+    "preguntas": [
+      {
+        "es": {
+          "pregunta": "¿Qué estudia Sergio?",
+          "opciones": [
+            "DAM",
+            "DAW",
+            "ASIR"
+          ],
+          "correcta": 0,
+          "explicacion": "Está en 1º de DAM en el IES Simarro."
+        },
+        "va": {
+          "pregunta": "Què estudia Sergio?",
+          "opciones": [
+            "DAM",
+            "DAW",
+            "ASIR"
+          ],
+          "correcta": 0,
+          "explicacion": "Està en 1r de DAM a l’IES Simarro."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Qué grado medio hizo antes de DAM?",
+          "opciones": [
+            "SMR",
+            "Gestión administrativa",
+            "Electricidad"
+          ],
+          "correcta": 0,
+          "explicacion": "Sistemas Microinformáticos y Redes."
+        },
+        "va": {
+          "pregunta": "Quin grau mitjà va fer abans de DAM?",
+          "opciones": [
+            "SMR",
+            "Gestió administrativa",
+            "Electricitat"
+          ],
+          "correcta": 0,
+          "explicacion": "Sistemes Microinformàtics i Xarxes."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿De quién son sus certificados de redes y ciberseguridad?",
+          "opciones": [
+            "Cisco",
+            "Microsoft",
+            "Google"
+          ],
+          "correcta": 0,
+          "explicacion": "De la Cisco Networking Academy."
+        },
+        "va": {
+          "pregunta": "De qui són els seus certificats de xarxes i ciberseguretat?",
+          "opciones": [
+            "Cisco",
+            "Microsoft",
+            "Google"
+          ],
+          "correcta": 0,
+          "explicacion": "De la Cisco Networking Academy."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cuál es su consola favorita?",
+          "opciones": [
+            "PS5",
+            "Xbox",
+            "Nintendo Switch"
+          ],
+          "correcta": 0,
+          "explicacion": "Juega en todas, pero la PS5 es la reina."
+        },
+        "va": {
+          "pregunta": "Quina és la seua consola preferida?",
+          "opciones": [
+            "PS5",
+            "Xbox",
+            "Nintendo Switch"
+          ],
+          "correcta": 0,
+          "explicacion": "Juga en totes, però la PS5 és la reina."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cuál fue su primera consola?",
+          "opciones": [
+            "Mega Drive",
+            "Game Boy",
+            "PlayStation"
+          ],
+          "correcta": 0,
+          "explicacion": "Una Sega Mega Drive, con Sonic."
+        },
+        "va": {
+          "pregunta": "Quina va ser la seua primera consola?",
+          "opciones": [
+            "Mega Drive",
+            "Game Boy",
+            "PlayStation"
+          ],
+          "correcta": 0,
+          "explicacion": "Una Sega Mega Drive, amb Sonic."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿De dónde es Sergio?",
+          "opciones": [
+            "Enguera",
+            "Xàtiva",
+            "Alicante"
+          ],
+          "correcta": 0,
+          "explicacion": "De Enguera, en la Comunidad Valenciana."
+        },
+        "va": {
+          "pregunta": "D’on és Sergio?",
+          "opciones": [
+            "Enguera",
+            "Xàtiva",
+            "Alacant"
+          ],
+          "correcta": 0,
+          "explicacion": "D’Enguera, a la Comunitat Valenciana."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cómo se llama su chihuahua?",
+          "opciones": [
+            "Blue",
+            "Rocky",
+            "Toby"
+          ],
+          "correcta": 0,
+          "explicacion": "Blue, el verdadero jefe de la casa 🐶"
+        },
+        "va": {
+          "pregunta": "Com es diu el seu chihuahua?",
+          "opciones": [
+            "Blue",
+            "Rocky",
+            "Toby"
+          ],
+          "correcta": 0,
+          "explicacion": "Blue, el vertader cap de la casa 🐶"
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cuál es su grupo favorito?",
+          "opciones": [
+            "Héroes del Silencio",
+            "Estopa",
+            "Mecano"
+          ],
+          "correcta": 0,
+          "explicacion": "Rock en español, y Bunbury en solitario también."
+        },
+        "va": {
+          "pregunta": "Quin és el seu grup preferit?",
+          "opciones": [
+            "Héroes del Silencio",
+            "Estopa",
+            "Mecano"
+          ],
+          "correcta": 0,
+          "explicacion": "Rock en espanyol, i Bunbury en solitari també."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿De qué equipo de fútbol es?",
+          "opciones": [
+            "Real Madrid",
+            "Barça",
+            "Atlético"
+          ],
+          "correcta": 0,
+          "explicacion": "¡Hala Madrid! ⚽"
+        },
+        "va": {
+          "pregunta": "De quin equip de futbol és?",
+          "opciones": [
+            "Reial Madrid",
+            "Barça",
+            "Atlètic"
+          ],
+          "correcta": 0,
+          "explicacion": "Hala Madrid! ⚽"
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cuál es el último juego que se ha pasado?",
+          "opciones": [
+            "Ghost of Tsushima",
+            "Elden Ring",
+            "Cyberpunk 2077"
+          ],
+          "correcta": 0,
+          "explicacion": "Y el siguiente en su lista: el remake de Ocarina of Time."
+        },
+        "va": {
+          "pregunta": "Quin és l’últim joc que s’ha passat?",
+          "opciones": [
+            "Ghost of Tsushima",
+            "Elden Ring",
+            "Cyberpunk 2077"
+          ],
+          "correcta": 0,
+          "explicacion": "I el següent en la seua llista: el remake d’Ocarina of Time."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Qué saga NO está en su top 8 de juegos?",
+          "opciones": [
+            "Call of Duty",
+            "Metal Gear Solid",
+            "The Witcher"
+          ],
+          "correcta": 0,
+          "explicacion": "Lo suyo son las sagas con mucha historia."
+        },
+        "va": {
+          "pregunta": "Quina saga NO està en el seu top 8 de jocs?",
+          "opciones": [
+            "Call of Duty",
+            "Metal Gear Solid",
+            "The Witcher"
+          ],
+          "correcta": 0,
+          "explicacion": "El seu són les sagues amb molta història."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cuál de estas pelis está entre sus favoritas?",
+          "opciones": [
+            "Matrix",
+            "Titanic",
+            "Shrek"
+          ],
+          "correcta": 0,
+          "explicacion": "Matrix, junto a El Señor de los Anillos, Gladiator o Terminator 2."
+        },
+        "va": {
+          "pregunta": "Quina d’estes pel·lis està entre les seues preferides?",
+          "opciones": [
+            "Matrix",
+            "Titanic",
+            "Shrek"
+          ],
+          "correcta": 0,
+          "explicacion": "Matrix, junt amb El Senyor dels Anells, Gladiator o Terminator 2."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Con qué está hecha esta web?",
+          "opciones": [
+            "HTML, CSS y JS",
+            "WordPress",
+            "React"
+          ],
+          "correcta": 0,
+          "explicacion": "A mano y sin frameworks. Yo incluido."
+        },
+        "va": {
+          "pregunta": "Amb què està feta esta web?",
+          "opciones": [
+            "HTML, CSS i JS",
+            "WordPress",
+            "React"
+          ],
+          "correcta": 0,
+          "explicacion": "A mà i sense frameworks. Jo inclòs."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿En qué juego se inspira su minijuego JRPG?",
+          "opciones": [
+            "Final Fantasy VII",
+            "Pokémon",
+            "Tetris"
+          ],
+          "correcta": 0,
+          "explicacion": "Combate por turnos con barra ATB, como en FFVII."
+        },
+        "va": {
+          "pregunta": "En quin joc s’inspira el seu minijoc JRPG?",
+          "opciones": [
+            "Final Fantasy VII",
+            "Pokémon",
+            "Tetris"
+          ],
+          "correcta": 0,
+          "explicacion": "Combat per torns amb barra ATB, com en FFVII."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cuál de estas series ve Sergio?",
+          "opciones": [
+            "Dark",
+            "Pocoyó",
+            "Peppa Pig"
+          ],
+          "correcta": 0,
+          "explicacion": "También Juego de Tronos, Perdidos, From, The Boys y The Big Bang Theory."
+        },
+        "va": {
+          "pregunta": "Quina d’estes sèries veu Sergio?",
+          "opciones": [
+            "Dark",
+            "Pocoyó",
+            "Peppa Pig"
+          ],
+          "correcta": 0,
+          "explicacion": "També Joc de Trons, Perduts, From, The Boys i The Big Bang Theory."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Qué superhéroe está en su podio?",
+          "opciones": [
+            "Batman",
+            "Aquaman",
+            "Hormiga Atómica"
+          ],
+          "correcta": 0,
+          "explicacion": "Batman, Superman y, quizá, Lobezno."
+        },
+        "va": {
+          "pregunta": "Quin superheroi està al seu podi?",
+          "opciones": [
+            "Batman",
+            "Aquaman",
+            "Formiga Atòmica"
+          ],
+          "correcta": 0,
+          "explicacion": "Batman, Superman i, potser, Lobezno."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Qué comida es de sus favoritas?",
+          "opciones": [
+            "Arroz al horno",
+            "Brócoli hervido",
+            "Sopa de sobre"
+          ],
+          "correcta": 0,
+          "explicacion": "También hamburguesas, pasta y comida japonesa."
+        },
+        "va": {
+          "pregunta": "Quin menjar és dels seus preferits?",
+          "opciones": [
+            "Arròs al forn",
+            "Bròquil bullit",
+            "Sopa de sobre"
+          ],
+          "correcta": 0,
+          "explicacion": "També hamburgueses, pasta i menjar japonés."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cuántos juegos físicos tiene, más o menos?",
+          "opciones": [
+            "Unos 600",
+            "Unos 60",
+            "Unos 6"
+          ],
+          "correcta": 0,
+          "explicacion": "Y más de 900 cómics y mangas. Coleccionista de verdad."
+        },
+        "va": {
+          "pregunta": "Quants jocs físics té, més o menys?",
+          "opciones": [
+            "Uns 600",
+            "Uns 60",
+            "Uns 6"
+          ],
+          "correcta": 0,
+          "explicacion": "I més de 900 còmics i mangues. Col·leccionista de veres."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿De qué peli viene la idea de Farolillo?",
+          "opciones": [
+            "Enredados",
+            "Aladdín",
+            "Coco"
+          ],
+          "correcta": 0,
+          "explicacion": "Por la escena de los farolillos, en una de las pelis favoritas de su hija."
+        },
+        "va": {
+          "pregunta": "De quina pel·li ve la idea de Farolillo?",
+          "opciones": [
+            "Enredados",
+            "Aladdín",
+            "Coco"
+          ],
+          "correcta": 0,
+          "explicacion": "Per l’escena dels fanalets, en una de les pel·lis preferides de la seua filla."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿En qué instituto estudia?",
+          "opciones": [
+            "IES Simarro",
+            "IES Valle del Sol",
+            "IES Ramón y Cajal"
+          ],
+          "correcta": 0,
+          "explicacion": "En el IES Simarro, en 1º de DAM."
+        },
+        "va": {
+          "pregunta": "En quin institut estudia?",
+          "opciones": [
+            "IES Simarro",
+            "IES Valle del Sol",
+            "IES Ramón y Cajal"
+          ],
+          "correcta": 0,
+          "explicacion": "A l’IES Simarro, en 1r de DAM."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Dónde fue de viaje en familia este verano?",
+          "opciones": [
+            "El Puerto de Santa María",
+            "Benidorm",
+            "Mallorca"
+          ],
+          "correcta": 0,
+          "explicacion": "A Cádiz, y además pasó días en una casa de campo en Enguera."
+        },
+        "va": {
+          "pregunta": "On va anar de viatge en família este estiu?",
+          "opciones": [
+            "El Puerto de Santa María",
+            "Benidorm",
+            "Mallorca"
+          ],
+          "correcta": 0,
+          "explicacion": "A Cadis, i a més va passar dies en una casa de camp a Enguera."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Con qué hizo su web de El Señor de los Anillos?",
+          "opciones": [
+            "WordPress",
+            "Wix",
+            "React"
+          ],
+          "correcta": 0,
+          "explicacion": "Un proyecto del año pasado centrado en diseño y gestión de contenidos."
+        },
+        "va": {
+          "pregunta": "Amb què va fer la seua web d’El Senyor dels Anells?",
+          "opciones": [
+            "WordPress",
+            "Wix",
+            "React"
+          ],
+          "correcta": 0,
+          "explicacion": "Un projecte de l’any passat centrat en disseny i gestió de continguts."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿En qué lenguaje está su gestor de biblioteca?",
+          "opciones": [
+            "Java",
+            "PHP",
+            "Swift"
+          ],
+          "correcta": 0,
+          "explicacion": "Java, POO y estructuras de datos: DAM puro."
+        },
+        "va": {
+          "pregunta": "En quin llenguatge està el seu gestor de biblioteca?",
+          "opciones": [
+            "Java",
+            "PHP",
+            "Swift"
+          ],
+          "correcta": 0,
+          "explicacion": "Java, POO i estructures de dades: DAM pur."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cuál NO está en su lista de animes favoritos?",
+          "opciones": [
+            "Doraemon",
+            "Bleach",
+            "Naruto"
+          ],
+          "correcta": 0,
+          "explicacion": "Su lista: Dragon Ball Z, Bleach, One Piece, Saint Seiya, Naruto, Ataque a los Titanes, Kimetsu y Jujutsu Kaisen."
+        },
+        "va": {
+          "pregunta": "Quin NO està en la seua llista d’animes preferits?",
+          "opciones": [
+            "Doraemon",
+            "Bleach",
+            "Naruto"
+          ],
+          "correcta": 0,
+          "explicacion": "La seua llista: Dragon Ball Z, Bleach, One Piece, Saint Seiya, Naruto, Atac als Titans, Kimetsu i Jujutsu Kaisen."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cuál de estas pelis está en su top?",
+          "opciones": [
+            "Braveheart",
+            "Frozen",
+            "Mamma Mia!"
+          ],
+          "correcta": 0,
+          "explicacion": "¡Libertaaad! 🏴"
+        },
+        "va": {
+          "pregunta": "Quina d’estes pel·lis està en el seu top?",
+          "opciones": [
+            "Braveheart",
+            "Frozen",
+            "Mamma Mia!"
+          ],
+          "correcta": 0,
+          "explicacion": "Llibertaaat! 🏴"
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Qué autor de fantasía le encanta?",
+          "opciones": [
+            "Brandon Sanderson",
+            "Solo lee manuales técnicos",
+            "No lee nunca"
+          ],
+          "correcta": 0,
+          "explicacion": "Nacidos de la Bruma, El Archivo de las Tormentas… Y los manuales técnicos, justo, no le gustan."
+        },
+        "va": {
+          "pregunta": "Quin autor de fantasia li encanta?",
+          "opciones": [
+            "Brandon Sanderson",
+            "Només llig manuals tècnics",
+            "No llig mai"
+          ],
+          "correcta": 0,
+          "explicacion": "Nascuts de la Boira, L’Arxiu de les Tempestes… I els manuals tècnics, justament, no li agraden."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Qué tipo de lectura NO le gusta?",
+          "opciones": [
+            "Literatura técnica",
+            "Fantasía",
+            "Ciencia ficción"
+          ],
+          "correcta": 0,
+          "explicacion": "Tampoco el cómic independiente. Fantasía y ciencia ficción, todas las que quieras."
+        },
+        "va": {
+          "pregunta": "Quin tipus de lectura NO li agrada?",
+          "opciones": [
+            "Literatura tècnica",
+            "Fantasia",
+            "Ciència-ficció"
+          ],
+          "correcta": 0,
+          "explicacion": "Tampoc el còmic independent. Fantasia i ciència-ficció, totes les que vulgues."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Qué está aprendiendo además de Java y JavaScript?",
+          "opciones": [
+            "Python e IA",
+            "COBOL",
+            "Código morse"
+          ],
+          "correcta": 0,
+          "explicacion": "Python e inteligencia artificial, porque el futuro no espera."
+        },
+        "va": {
+          "pregunta": "Què està aprenent a més de Java i JavaScript?",
+          "opciones": [
+            "Python i IA",
+            "COBOL",
+            "Codi morse"
+          ],
+          "correcta": 0,
+          "explicacion": "Python i intel·ligència artificial, perquè el futur no espera."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Dónde está alojada esta web?",
+          "opciones": [
+            "GitHub Pages",
+            "En un disquete",
+            "En la nube de Mario Bros"
+          ],
+          "correcta": 0,
+          "explicacion": "Gratis, rápida y con control de versiones."
+        },
+        "va": {
+          "pregunta": "On està allotjada esta web?",
+          "opciones": [
+            "GitHub Pages",
+            "En un disquet",
+            "En el núvol de Mario Bros"
+          ],
+          "correcta": 0,
+          "explicacion": "Gratis, ràpida i amb control de versions."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿En qué esquina vive Farolillo?",
+          "opciones": [
+            "Abajo a la izquierda",
+            "Abajo a la derecha",
+            "Arriba del todo"
+          ],
+          "correcta": 0,
+          "explicacion": "A la derecha vive el botón de subir. Hay tensión."
+        },
+        "va": {
+          "pregunta": "En quin racó viu Farolillo?",
+          "opciones": [
+            "Baix a l’esquerra",
+            "Baix a la dreta",
+            "Dalt de tot"
+          ],
+          "correcta": 0,
+          "explicacion": "A la dreta viu el botó de pujar. Hi ha tensió."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cuántos cómics y mangas tiene, más o menos?",
+          "opciones": [
+            "Más de 900",
+            "Unos 50",
+            "Ninguno"
+          ],
+          "correcta": 0,
+          "explicacion": "Y unos 600 juegos en físico. Necesita más estanterías."
+        },
+        "va": {
+          "pregunta": "Quants còmics i mangues té, més o menys?",
+          "opciones": [
+            "Més de 900",
+            "Uns 50",
+            "Cap"
+          ],
+          "correcta": 0,
+          "explicacion": "I uns 600 jocs en físic. Necessita més prestatges."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿A qué cantante escucha también en solitario?",
+          "opciones": [
+            "Bunbury",
+            "David Bisbal",
+            "Bad Bunny"
+          ],
+          "correcta": 0,
+          "explicacion": "El exlíder de Héroes del Silencio, su grupo favorito."
+        },
+        "va": {
+          "pregunta": "A quin cantant escolta també en solitari?",
+          "opciones": [
+            "Bunbury",
+            "David Bisbal",
+            "Bad Bunny"
+          ],
+          "correcta": 0,
+          "explicacion": "L’exlíder de Héroes del Silencio, el seu grup preferit."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿En qué serie favorita suya sale Sheldon Cooper?",
+          "opciones": [
+            "The Big Bang Theory",
+            "Friends",
+            "Los Simpson"
+          ],
+          "correcta": 0,
+          "explicacion": "¡Bazinga!"
+        },
+        "va": {
+          "pregunta": "En quina sèrie preferida seua ix Sheldon Cooper?",
+          "opciones": [
+            "The Big Bang Theory",
+            "Friends",
+            "Els Simpson"
+          ],
+          "correcta": 0,
+          "explicacion": "Bazinga!"
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Qué quiere hacer cuando acabe DAM?",
+          "opciones": [
+            "Trabajar de programador",
+            "Ser astronauta",
+            "Vivir de YouTube"
+          ],
+          "correcta": 0,
+          "explicacion": "Un buen trabajo de informático, orientado a la programación."
+        },
+        "va": {
+          "pregunta": "Què vol fer quan acabe DAM?",
+          "opciones": [
+            "Treballar de programador",
+            "Ser astronauta",
+            "Viure de YouTube"
+          ],
+          "correcta": 0,
+          "explicacion": "Una bona faena d’informàtic, orientada a la programació."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Cuál de estas sagas de libros le gusta?",
+          "opciones": [
+            "Canción de hielo y fuego",
+            "Crepúsculo",
+            "Cincuenta sombras"
+          ],
+          "correcta": 0,
+          "explicacion": "Y la saga de Geralt de Rivia, y todo Sanderson."
+        },
+        "va": {
+          "pregunta": "Quina d’estes sagues de llibres li agrada?",
+          "opciones": [
+            "Cançó de gel i foc",
+            "Crepuscle",
+            "Cinquanta ombres"
+          ],
+          "correcta": 0,
+          "explicacion": "I la saga de Geralt de Rívia, i tot Sanderson."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Qué saga de Brandon Sanderson lee?",
+          "opciones": [
+            "Nacidos de la Bruma",
+            "Los juegos del hambre",
+            "Percy Jackson"
+          ],
+          "correcta": 0,
+          "explicacion": "También El Archivo de las Tormentas, Elantris, El aliento de los dioses y Escuadrón."
+        },
+        "va": {
+          "pregunta": "Quina saga de Brandon Sanderson llig?",
+          "opciones": [
+            "Nascuts de la Boira",
+            "Els jocs de la fam",
+            "Percy Jackson"
+          ],
+          "correcta": 0,
+          "explicacion": "També L’Arxiu de les Tempestes, Elantris, L’alé dels déus i Esquadró."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "¿Qué personaje de su top de juegos dice «BOY»?",
+          "opciones": [
+            "Kratos",
+            "Mario",
+            "Pac-Man"
+          ],
+          "correcta": 0,
+          "explicacion": "God of War, claro."
+        },
+        "va": {
+          "pregunta": "Quin personatge del seu top de jocs diu «BOY»?",
+          "opciones": [
+            "Kratos",
+            "Mario",
+            "Pac-Man"
+          ],
+          "correcta": 0,
+          "explicacion": "God of War, és clar."
+        }
+      }
+    ]
+  },
+  "paginas": {
+    "index": {
+      "es": [
+        "Estás en la portada: quién es Sergio, su trayectoria, sus gustos, sus proyectos y el contacto. Desde aquí se va a todo lo demás."
+      ],
+      "va": [
+        "Estàs en la portada: qui és Sergio, la seua trajectòria, els seus gustos, els seus projectes i el contacte. Des d’ací es va a tota la resta."
+      ],
+      "sugerencias": {
+        "es": [
+          "¿Quién es Sergio?",
+          "Proyectos",
+          "Juegos",
+          "Quiz de Sergio"
+        ],
+        "va": [
+          "Qui és Sergio?",
+          "Projectes",
+          "Jocs",
+          "Quiz de Sergio"
+        ]
+      }
+    },
+    "juegos": {
+      "tema": "juegos",
+      "es": [
+        "Estás en la sala de juegos: su top 8 en un carrusel 3D y un buscador que tira de RAWG para cualquier otro. Te la has ganado superando el reto."
+      ],
+      "va": [
+        "Estàs en la sala de jocs: el seu top 8 en un carrusel 3D i un cercador que tira de RAWG per a qualsevol altre. Te l’has guanyat superant el repte."
+      ],
+      "sugerencias": {
+        "es": [
+          "Recomiéndame un juego",
+          "¿A qué juega ahora?",
+          "Su colección"
+        ],
+        "va": [
+          "Recomana’m un joc",
+          "A què juga ara?",
+          "La seua col·lecció"
+        ]
+      }
+    },
+    "libros": {
+      "tema": "libros",
+      "es": [
+        "Estás en el grimorio: un libro 3D con sus lecturas favoritas. Toca la cubierta para abrirlo y pasa páginas con ← → o arrastrando una esquina."
+      ],
+      "va": [
+        "Estàs en el grimori: un llibre 3D amb les seues lectures preferides. Toca la coberta per a obrir-lo i passa pàgines amb ← → o arrossegant una cantonada."
+      ],
+      "sugerencias": {
+        "es": [
+          "Recomiéndame un libro",
+          "Cómics",
+          "Dune"
+        ],
+        "va": [
+          "Recomana’m un llibre",
+          "Còmics",
+          "Dune"
+        ]
+      }
+    },
+    "cine": {
+      "tema": "cine",
+      "es": [
+        "Estás en la sala de cine: sus 8 pelis favoritas en carrusel y un buscador para cualquier otra."
+      ],
+      "va": [
+        "Estàs en la sala de cinema: les seues 8 pel·lis preferides en carrusel i un cercador per a qualsevol altra."
+      ],
+      "sugerencias": {
+        "es": [
+          "Recomiéndame una peli",
+          "Series",
+          "Matrix"
+        ],
+        "va": [
+          "Recomana’m una pel·li",
+          "Sèries",
+          "Matrix"
+        ]
+      }
+    },
+    "anime": {
+      "tema": "anime",
+      "es": [
+        "Estás en el rincón anime: sus series favoritas, de clásicos como Dragon Ball Z a las más actuales, y un buscador para encontrar cualquier otra."
+      ],
+      "va": [
+        "Estàs en el racó anime: les seues sèries preferides, de clàssics com Dragon Ball Z a les més actuals, i un cercador per a trobar-ne qualsevol altra."
+      ],
+      "sugerencias": {
+        "es": [
+          "Recomiéndame un anime",
+          "Naruto",
+          "Jujutsu Kaisen"
+        ],
+        "va": [
+          "Recomana’m un anime",
+          "Naruto",
+          "Jujutsu Kaisen"
+        ]
+      }
+    },
+    "caso-estudio": {
+      "tema": "proyectos",
+      "es": [
+        "Estás en el caso de estudio del minijuego JRPG: qué problema resolvía, cómo se organizó el código por capas y qué aprendió Sergio."
+      ],
+      "va": [
+        "Estàs en el cas d’estudi del minijoc JRPG: quin problema resolia, com es va organitzar el codi per capes i què va aprendre Sergio."
+      ],
+      "sugerencias": {
+        "es": [
+          "¿Cómo funciona el minijuego?",
+          "¿Qué es la POO?",
+          "Proyectos"
+        ],
+        "va": [
+          "Com funciona el minijoc?",
+          "Què és la POO?",
+          "Projectes"
+        ]
+      }
+    },
+    "privacidad": {
+      "es": [
+        "Estás en la política de privacidad. Resumen: el chat no guarda nada; el formulario de contacto guarda tus datos solo para contestarte y se borran como máximo a los 6 meses."
+      ],
+      "va": [
+        "Estàs en la política de privacitat. Resum: el xat no guarda res; el formulari de contacte guarda les teues dades només per a contestar-te i s’esborren com a màxim als 6 mesos."
+      ],
+      "sugerencias": {
+        "es": [
+          "¿Qué haces con mis datos?",
+          "Contacto"
+        ],
+        "va": [
+          "Què fas amb les meues dades?",
+          "Contacte"
+        ]
+      }
+    }
+  }
 }

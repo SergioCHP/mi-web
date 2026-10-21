@@ -46,6 +46,7 @@
   <link rel="stylesheet" href="css/caso.css" />
   <link rel="stylesheet" href="css/privacidad.css" />
   <link rel="stylesheet" href="css/mobile.css" />
+  <link rel="stylesheet" href="css/farolillo.css" />
 </head>
 <body>
   <a class="skip-link" href="#contenido" data-nav="skip">Saltar al contenido principal</a>
@@ -294,5 +295,15 @@
   <script src="js/theme.js"></script>
   <script src="js/nav-i18n.js"></script>
   <script src="js/mobile.js"></script>
+    <script type="module">
+      import { initFarolillo } from './js/farolillo.js';
+      // Farolillo no es imprescindible para ver la página: se crea cuando el
+      // navegador queda libre tras la carga (mejora el tiempo de bloqueo).
+      const iniciar = () => initFarolillo();
+      const cuandoLibre = () =>
+        "requestIdleCallback" in window ? requestIdleCallback(iniciar, { timeout: 2500 }) : setTimeout(iniciar, 800);
+      if (document.readyState === "complete") cuandoLibre();
+      else window.addEventListener("load", cuandoLibre, { once: true });
+    </script>
 </body>
 </html>

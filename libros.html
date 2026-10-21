@@ -44,6 +44,7 @@
   <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
 
   <link rel="stylesheet" href="css/libros.css" />
+  <link rel="stylesheet" href="css/farolillo.css" />
 
 </head>
 <body>
@@ -998,5 +999,15 @@
   <script src="js/theme.js"></script>
   <script src="js/nav-i18n.js"></script>
   <script src="js/mobile.js"></script>
+    <script type="module">
+      import { initFarolillo } from './js/farolillo.js';
+      // Farolillo no es imprescindible para ver la página: se crea cuando el
+      // navegador queda libre tras la carga (mejora el tiempo de bloqueo).
+      const iniciar = () => initFarolillo();
+      const cuandoLibre = () =>
+        "requestIdleCallback" in window ? requestIdleCallback(iniciar, { timeout: 2500 }) : setTimeout(iniciar, 800);
+      if (document.readyState === "complete") cuandoLibre();
+      else window.addEventListener("load", cuandoLibre, { once: true });
+    </script>
 </body>
 </html>
