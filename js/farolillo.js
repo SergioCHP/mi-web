@@ -866,7 +866,7 @@ export function initFarolillo(opciones = {}) {
         return chip;
       }),
     );
-    chips.scrollLeft = 0;
+    chips.scrollTop = 0;
   };
 
   /* ---------- Pista (bocadillo junto al farolillo) ---------- */
@@ -1303,8 +1303,15 @@ export function initFarolillo(opciones = {}) {
   }
 
   /* ---------- Chat ---------- */
-  const bajar = () => {
-    mensajes.scrollTop = mensajes.scrollHeight;
+  /* Baja hasta el final; si se pasa una burbuja, no deja que su principio se salga por arriba
+     (así una respuesta larga se lee desde el comienzo) */
+  const bajar = (burbuja = null) => {
+    let destino = mensajes.scrollHeight - mensajes.clientHeight;
+    if (burbuja) {
+      const inicio = burbuja.getBoundingClientRect().top - mensajes.getBoundingClientRect().top + mensajes.scrollTop - 10;
+      destino = Math.min(destino, inicio);
+    }
+    mensajes.scrollTop = Math.max(0, destino);
   };
 
   const crearBurbuja = (autor) => {
@@ -1563,7 +1570,7 @@ export function initFarolillo(opciones = {}) {
       for (let i = 0; i < letras.length; i += paso) {
         if (destruido) return;
         nodo.data += letras.slice(i, i + paso).join('');
-        bajar();
+        bajar(burbuja);
         await esperar(16);
       }
     }
@@ -1582,7 +1589,8 @@ export function initFarolillo(opciones = {}) {
     aplicarEfecto(efecto);
     if (orden === 'ocultar') temporizador(() => ocultar(), 1800); // «escóndete»: da tiempo a leer la respuesta
     pedirOjos();
-    bajar();
+    bajar(burbuja); // los botones nuevos pueden cambiar el alto disponible
+    chips.scrollTop = 0;
   };
 
   const enviar = async (texto) => {
