@@ -30,8 +30,14 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 - Menú móvil accesible.
 - Respeto a `prefers-reduced-motion`.
 
+**Farolillo, la mascota-chatbot** (portada, juegos, cine, anime, libros, caso de estudio y privacidad):
+- Chat con un motor de respuestas propio, sin IA ni servidor: 256 intenciones en castellano y valenciano, entiende faltas de ortografía y sabe en qué página está.
+- Quiz sobre mí, «¿Quién lo dijo?», piedra, papel o tijera, adivina el número, ahorcado y pilla-pilla.
+- 19 trucos animados que se activan con frases de películas, series, anime y juegos, y un modo secreto de 8 bits con el código Konami.
+- Física y reacciones: se arrastra, se lanza y rebota por la pantalla, se duerme, comenta las secciones y reacciona al tema, al idioma, al formulario y a copiar texto.
+- Todo explicado en [`docs/FAROLILLO.md`](docs/FAROLILLO.md).
+
 **Extras en la portada:**
-- **Farolillo**, una mascota-chatbot con física, partículas y un motor de respuestas propio. Entiende faltas de ortografía y sinónimos.
 - Formulario **«¿Te llamo?»** que guarda las solicitudes en Supabase, me avisa por correo y envía una **respuesta automática** al visitante en su idioma (Edge Function `contacto`).
 - Widget del tiempo de Enguera (API de **Open-Meteo**).
 
@@ -73,8 +79,8 @@ mi-web/
 │                           y logo.svg (logo SC propio)
 ├── assets/                 Sprites del minijuego, vídeo demo (MP4 + VTT) y fuentes (fonts/)
 ├── tools/                  Scripts de apoyo del minijuego (simulación en Node, sprites)
-├── docs/                   Guías (correo de contacto, sprites del minijuego) y PROMPTS.md
-│                           (órdenes clave a la IA)
+├── docs/                   Guías (Farolillo, correo de contacto, sprites del minijuego)
+│                           y PROMPTS.md (órdenes clave a la IA)
 ├── CHANGELOG.md            Historial de versiones
 └── supabase/
     ├── rls.sql             Políticas de seguridad de la base de datos
@@ -158,8 +164,11 @@ En lugar de conectar un modelo de lenguaje (coste, latencia y una clave que no s
 - Normaliza el texto: quita tildes, mayúsculas y signos.
 - Tolera faltas con la **distancia de Levenshtein** y detecta letras intercambiadas.
 - Puntúa las «intenciones» de `respuestas.json` y recuerda el último tema («otro», «recomiéndame uno»).
+- Sabe en qué página está: en `juegos.html`, «recomiéndame algo» recomienda un juego.
 
-Todo el contenido está en `data/respuestas.json`, editable sin tocar código. La función `responder` se puede sustituir por un backend en el futuro, porque `initFarolillo()` la acepta como opción.
+Todo el contenido está en `data/respuestas.json` (256 intenciones, quiz y minijuegos), editable sin tocar código. La función `responder` se puede sustituir por un backend en el futuro, porque `initFarolillo()` la acepta como opción.
+
+La guía completa, con cómo funciona cada parte y cómo añadir respuestas, está en [`docs/FAROLILLO.md`](docs/FAROLILLO.md).
 
 ### 4. Temas e idiomas sin parpadeo
 - Un pequeño script en el `<head>` aplica el tema y el acento guardados **antes de pintar** la página: evita el destello oscuro → claro.

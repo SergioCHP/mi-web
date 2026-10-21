@@ -129,8 +129,8 @@
 
       <ul class="case-stats" aria-label="El proyecto en cifras" data-i18n-aria="statsAria">
         <li><strong>10</strong> <span data-i18n="stPages">páginas</span></li>
-        <li><strong>+50</strong> <span data-i18n="stCommits">commits</span></li>
-        <li><strong>+20 000</strong> <span data-i18n="stLines">líneas de código</span></li>
+        <li><strong>+75</strong> <span data-i18n="stCommits">commits</span></li>
+        <li><strong>+25 000</strong> <span data-i18n="stLines">líneas de código</span></li>
         <li><strong>5</strong> <span data-i18n="stApis">APIs externas</span></li>
         <li><strong>2</strong> <span data-i18n="stLangs">idiomas</span></li>
         <li><strong>0</strong> <span data-i18n="stAxe">errores de accesibilidad (axe)</span></li>
@@ -169,7 +169,7 @@
     <section class="section reveal" aria-labelledby="proceso-title">
       <div class="section-head">
         <h2 id="proceso-title" data-i18n="procTitle">Proceso</h2>
-        <p data-i18n="procSub">Cuatro fases, reconstruidas a partir del historial de commits.</p>
+        <p data-i18n="procSub">Cinco fases, reconstruidas a partir del historial de commits.</p>
       </div>
 
       <ol class="case-timeline">
@@ -193,6 +193,11 @@
           <h3 data-i18n="ph4Title">Calidad</h3>
           <p data-i18n="ph4Text">Políticas de seguridad RLS, escape de datos contra XSS, código de idioma válido, reorganización en carpetas, minijuego modular y accesibilidad con teclado.</p>
         </li>
+        <li>
+          <p class="case-when" data-i18n="ph5When">16 – 21 oct.</p>
+          <h3 data-i18n="ph5Title">Pulido</h3>
+          <p data-i18n="ph5Text">Correo automático del formulario, rendimiento y SEO, logo propio, privacidad (RGPD), animaciones y enemigo nuevo en el minijuego, y Farolillo en siete páginas con quiz, minijuegos y trucos.</p>
+        </li>
       </ol>
     </section>
 
@@ -214,7 +219,7 @@
         <div class="case-arch__col">
           <h3 data-i18n="arqShared">Componentes compartidos</h3>
           <ul>
-            <li>theme.js · nav-i18n.js</li><li>particles.js · carousel3d.js</li><li>a11y.js · mobile.js</li><li>style.css · pages.css · mobile.css</li>
+            <li>theme.js · nav-i18n.js</li><li>particles.js · carousel3d.js</li><li>a11y.js · mobile.js</li><li>farolillo.js · respuestas.json</li><li>style.css · pages.css · mobile.css</li>
           </ul>
         </div>
         <span class="case-arch__arrow" aria-hidden="true">→</span>
@@ -270,7 +275,7 @@ document.documentElement
         <article class="card spotlight-card card--static case-challenge">
           <h3 data-i18n="c5Title">Un chatbot sin IA ni servidor</h3>
           <p data-i18n="c5Problem"><strong>Problema:</strong> un modelo de IA cuesta dinero, añade latencia y necesita una clave que no se puede esconder en el navegador.</p>
-          <p data-i18n="c5Solution"><strong>Solución:</strong> un buscador difuso propio con distancia de Levenshtein, que entiende faltas de ortografía, y 116 intenciones en un JSON editable sin tocar código.</p>
+          <p data-i18n="c5Solution"><strong>Solución:</strong> un buscador difuso propio con distancia de Levenshtein, que entiende faltas de ortografía, y 256 intenciones en un JSON editable sin tocar código. Además tiene quiz, minijuegos y trucos animados, y sabe en qué página está.</p>
         </article>
 
         <article class="card spotlight-card card--static case-challenge">
@@ -380,6 +385,7 @@ $ node tools/refresh-rate-test.mjs
             <li>PageSpeed: 90 en móvil y 100 en ordenador; 100 en accesibilidad, buenas prácticas y SEO</li>
             <li>Formulario de contacto protegido con RLS</li>
             <li>Aviso por correo y respuesta automática con una Edge Function, con 15 pruebas automáticas</li>
+            <li>Farolillo, un chatbot sin servidor en 7 páginas, con quiz y minijuegos</li>
           </ul>
         </article>
 

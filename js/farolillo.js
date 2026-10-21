@@ -101,8 +101,8 @@ const TEXTOS = {
         chips: ['Recomiéndame un anime', 'Dragon Ball', 'One Piece', 'Kamehameha'],
       },
       'caso-estudio': {
-        saludo: 'Estás en el caso de estudio del minijuego. Si algo no te queda claro, pregúntame 🛠️',
-        pistaInicial: '¿Dudas sobre el minijuego? Pregúntame 🛠️',
+        saludo: 'Estás en el caso de estudio de la web. Si algo no te queda claro, pregúntame 🛠️',
+        pistaInicial: '¿Dudas sobre cómo se hizo la web? Pregúntame 🛠️',
         chips: ['¿Cómo funciona el minijuego?', 'Jugar', '¿Qué es la POO?', 'Proyectos'],
       },
       privacidad: {
@@ -181,8 +181,8 @@ const TEXTOS = {
         chips: ['Recomana’m un anime', 'Dragon Ball', 'One Piece', 'Kamehameha'],
       },
       'caso-estudio': {
-        saludo: 'Estàs en el cas d’estudi del minijoc. Si alguna cosa no et queda clara, pregunta’m 🛠️',
-        pistaInicial: 'Dubtes sobre el minijoc? Pregunta’m 🛠️',
+        saludo: 'Estàs en el cas d’estudi de la web. Si alguna cosa no et queda clara, pregunta’m 🛠️',
+        pistaInicial: 'Dubtes sobre com es va fer la web? Pregunta’m 🛠️',
         chips: ['Com funciona el minijoc?', 'Jugar', 'Què és la POO?', 'Projectes'],
       },
       privacidad: {

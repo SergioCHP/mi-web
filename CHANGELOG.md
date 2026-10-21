@@ -12,9 +12,11 @@ Las versiones anteriores a la 1.0.0 se han reconstruido a partir del historial d
 
 ## [Sin publicar]
 
-Minijuego: animaciones nuevas, Soldado de Élite y escenario pintado.
+Minijuego con animaciones nuevas, un enemigo nuevo y escenario pintado. Farolillo pasa de la portada a 7 páginas, con quiz, minijuegos, trucos animados y reacciones nuevas.
 
 ### Añadido
+
+**Minijuego**
 - **Animaciones nuevas del héroe** generadas con IA: daño, magia, Límite y victoria (`assets/combat/heroe_*.webp`).
 - **Soldado de Élite**, enemigo nuevo: ráfaga de fusil a distancia y «Asalto táctico» con la espada. Entra en el combate por defecto (Bug Fatal + Soldado).
 - **Reactor Mako pintado en 3 capas** con parallax, escenario por defecto. `?stage=reactor` vuelve al reactor dibujado por código.
@@ -22,15 +24,45 @@ Minijuego: animaciones nuevas, Soldado de Élite y escenario pintado.
 - `tools/stage_layer.py`: prepara capas de fondo (croma, niebla, centro despejado y WebP).
 - `tools/sprite_repack.py --strip-lines`: borra las rejillas, marcos y líneas de suelo que dibuja la IA.
 
+**Farolillo**
+- **En 7 páginas:** además de la portada, en juegos, cine, anime, libros, caso de estudio y privacidad. Cada página tiene su saludo, su pista y sus sugerencias, y da contexto a las recomendaciones («recomiéndame algo» en `juegos.html` recomienda un juego). «¿Qué hay aquí?» describe la página.
+- **Más respuestas:** de 116 a 256 intenciones y 2 660 frases reconocidas, en castellano y valenciano.
+- **Quiz de Sergio** (37 preguntas) y **«¿Quién lo dijo?»** (24 frases míticas): 5 preguntas al azar por partida, con respuesta por botón, número, letra o texto.
+- **Minijuegos en el chat:** piedra, papel o tijera (a 3 puntos), adivina el número (1–100, con pistas de frío y calor) y ahorcado friki (32 títulos, 6 vidas y pista).
+- **Pilla-pilla:** con «juega conmigo», huye del cursor durante 15 s con cuenta atrás y burlas.
+- **19 trucos animados** que se activan con frases de películas, series, anime y juegos: espada láser, varita, kamehameha, lluvia de Matrix, caja de cartón, kamikaze…
+- **Se puede lanzar:** si se suelta con fuerza, sale volando, rebota en los bordes de la ventana y vuelve mareado.
+- **Código Konami y modo 8 bits:** ↑↑↓↓←→←→BA lo convierte en un sprite de pixel art. Se puede teclear, escribir en el chat o escribir con palabras.
+- **Modo escondido:** botón del ojo o «escóndete». Queda una pestañita en el borde y se recuerda entre páginas.
+- **Reacciones nuevas:** al llegar al final de la página, al copiar texto, al rellenar y enviar el formulario «¿Te llamo?» y al agitar el móvil.
+- `docs/FAROLILLO.md`: qué hace Farolillo, cómo funciona por dentro y cómo editar sus respuestas.
+
 ### Cambiado
+
+**Minijuego**
 - El animador reproduce tramos de una hoja y mantiene poses: el Límite va por fases (carga, embestida, impacto, aterrizaje) sin volver al idle entre golpes.
 - `tools/simulate.mjs` usa los mismos enemigos que el juego; antes simulaba Bug Fatal + Larva.
 - Equilibrio del Soldado ajustado con la simulación: quien solo ataca gana el 85 % y quien usa las habilidades, el 100 %. Cifras del caso de estudio actualizadas.
 
+**Farolillo**
+- Las sugerencias cambian después de cada respuesta y proponen la siguiente pregunta.
+- Las respuestas largas se muestran desde el principio, sin que el chat salte al final.
+
+**Portada y documentación**
+- Texto del hero y de «Sobre mí» reescrito, más natural (castellano y valenciano).
+- Caso de estudio: +75 commits, +25 000 líneas, quinta fase en el proceso («Pulido», 16–21 oct.), Farolillo entre los componentes compartidos y en los resultados, y 256 intenciones.
+- README: Farolillo tiene su propio apartado en «Qué hace» y enlaza a la guía nueva.
+
 ### Corregido
+
+**Minijuego**
 - Tras lanzar una magia, el héroe se quedaba en la postura de magia. Ahora vuelve al idle en el impacto, y al terminar cada acción se sueltan todas las poses.
 - La cámara se quedaba con zoom después de un hechizo.
 - Al caer el último héroe, un enemigo podía intentar atacar y lanzaba un error en la consola.
+- El nombre de los enemigos se cortaba en el móvil.
+
+**Farolillo**
+- En el caso de estudio decía que era «el caso de estudio del minijuego». Ahora habla del caso de estudio de la web.
 
 ## [1.2.0] — 2026-10-20
 

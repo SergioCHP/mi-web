@@ -45,7 +45,7 @@
       "<li>Formulari de contacte amb backend segur</li>",
 
     procTitle: "Procés",
-    procSub: "Quatre fases, reconstruïdes a partir de l'historial de commits.",
+    procSub: "Cinc fases, reconstruïdes a partir de l'historial de commits.",
     ph1When: "22 – 29 set.",
     ph1Title: "Base",
     ph1Text: "Portada, formulari «Et cride?», versió en valencià, selector de color i panell d'administració amb Supabase. Primer prototip del minijoc.",
@@ -58,6 +58,9 @@
     ph4When: "12 – 15 oct.",
     ph4Title: "Qualitat",
     ph4Text: "Polítiques de seguretat RLS, escapament de dades contra XSS, codi d'idioma vàlid, reorganització en carpetes, minijoc modular i accessibilitat amb teclat.",
+    ph5When: "16 – 21 oct.",
+    ph5Title: "Poliment",
+    ph5Text: "Correu automàtic del formulari, rendiment i SEO, logo propi, privacitat (RGPD), animacions i enemic nou en el minijoc, i Farolillo en set pàgines amb quiz, minijocs i trucs.",
 
     arqTitle: "Arquitectura",
     arqSub: "Web estàtica: cada pàgina carrega només el que necessita i comparteix els components comuns.",
@@ -84,7 +87,7 @@
     c4Solution: "<strong>Solució:</strong> vaig reorganitzar el projecte en <code>css/</code>, <code>js/</code> i <code>data/</code> i vaig traure els components comuns a fitxers compartits.",
     c5Title: "Un xatbot sense IA ni servidor",
     c5Problem: "<strong>Problema:</strong> un model d'IA costa diners, afig latència i necessita una clau que no es pot amagar en el navegador.",
-    c5Solution: "<strong>Solució:</strong> un cercador difús propi amb distància de Levenshtein, que entén faltes d'ortografia, i 116 intencions en un JSON editable sense tocar codi.",
+    c5Solution: "<strong>Solució:</strong> un cercador difús propi amb distància de Levenshtein, que entén faltes d'ortografia, i 256 intencions en un JSON editable sense tocar codi. A més té quiz, minijocs i trucs animats, i sap en quina pàgina està.",
     c6Title: "Els límits de les API",
     c6Problem: "<strong>Problema:</strong> l'API de GitHub sense token només permet 60 peticions per hora, i els cercadors llançaven una petició per cada lletra.",
     c6Solution: "<strong>Solució:</strong> memòria cau d'una hora en <code>localStorage</code> per a GitHub i, en els cercadors, espera de 500 ms abans de cercar i memòria cau per cerca.",
@@ -133,7 +136,8 @@
       "<li>0 errors d'axe (WCAG 2.1 AA) en les pàgines públiques</li>" +
       "<li>PageSpeed: 90 en mòbil i 100 en ordinador; 100 en accessibilitat, bones pràctiques i SEO</li>" +
       "<li>Formulari de contacte protegit amb RLS</li>" +
-      "<li>Avís per correu i resposta automàtica amb una Edge Function, amb 15 proves automàtiques</li>",
+      "<li>Avís per correu i resposta automàtica amb una Edge Function, amb 15 proves automàtiques</li>" +
+      "<li>Farolillo, un xatbot sense servidor en 7 pàgines, amb quiz i minijocs</li>",
     resLearnT: "Què he aprés",
     resLearn:
       "<li>La seguretat està en el servidor, no en amagar claus.</li>" +
