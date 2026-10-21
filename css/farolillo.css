@@ -1261,6 +1261,86 @@
 }
 
 /* ==========================================================
+   Modo 8 bits (código Konami): sprite de píxeles en lugar del SVG normal
+   ========================================================== */
+
+.farol-svg-retro { display: none; }
+
+.farol--retro .farol-svg { display: none; }
+
+.farol--retro .farol-svg-retro {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  image-rendering: pixelated;
+  transform-origin: 50% 55%;
+  filter: drop-shadow(0 0 10px var(--farol-glow));
+}
+
+.farolillo[data-tema="claro"].farol--retro .farol-svg-retro {
+  filter: drop-shadow(3px 3px 0 rgba(60, 45, 30, 0.25));
+}
+
+/* Flotación a saltitos, como en las consolas de antes */
+.farol--retro .farol-flotar { animation: farol-flotar-retro 1.4s steps(2, jump-none) infinite; }
+
+@keyframes farol-flotar-retro {
+  from { transform: translateY(0); }
+  to { transform: translateY(-6px); }
+}
+
+/* Paleta: sale de las variables de la web, así cambia con el tema y el acento */
+.rp-K { fill: var(--farol-tinta); }
+.rp-M { fill: var(--farol-metal); }
+.rp-A { fill: var(--farol-papel-borde); }
+.rp-S { fill: var(--farol-costilla); }
+.rp-L { fill: var(--farol-papel-medio); }
+.rp-C { fill: var(--farol-papel-centro); }
+.rp-W { fill: #fff; }
+.rp-P { fill: var(--farol-mejilla); }
+.rp-R { fill: #ff2d55; }
+.rp-B { fill: var(--farol-b); opacity: 0.7; }
+.rp-F { fill: #fff7c2; }
+.rp-O { fill: var(--farol-b); }
+
+/* Llama a dos fotogramas */
+.retro-llama--a { animation: farol-fotograma 0.5s steps(1, end) infinite; }
+.retro-llama--b { animation: farol-fotograma 0.5s steps(1, end) infinite reverse; }
+
+@keyframes farol-fotograma {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Caras en píxeles (mismos estados que el farolillo normal) */
+.retro-cara { display: none; }
+.farolillo[data-cara="normal"] .retro-cara--normal,
+.farolillo:not([data-cara]) .retro-cara--normal,
+.farolillo[data-cara="feliz"] .retro-cara--feliz,
+.farolillo[data-cara="dormido"] .retro-cara--dormido,
+.farolillo[data-cara="mareado"] .retro-cara--mareado,
+.farolillo[data-cara="sorpresa"] .retro-cara--sorpresa,
+.farolillo[data-cara="enamorado"] .retro-cara--amor { display: inline; }
+
+/* Parpadeo de 8 bits */
+.farol--parpadeo .retro-cara--normal { display: none; }
+.farol--parpadeo[data-cara="normal"] .retro-cara--dormido { display: inline; }
+
+/* Los trucos que cambian el aspecto del SVG también afectan al sprite */
+.farol--retro.farol--invisible .farol-svg-retro { opacity: 0.1; }
+.farol--retro.farol--explotado .farol-svg-retro { opacity: 0; transform: scale(1.8); transition: opacity 0.12s, transform 0.12s; }
+.farol--retro.farol--fantasma .farol-svg-retro { opacity: 0.6; filter: grayscale(1) brightness(1.9) drop-shadow(0 0 10px #fff); }
+.farol--retro.farol--fantasma .retro-llama { visibility: hidden; }
+.farol--retro.farol--matrix .farol-svg-retro { filter: hue-rotate(110deg) saturate(1.4) drop-shadow(0 0 10px #22c55e); }
+.farol--retro.farol--lumos .farol-svg-retro { filter: brightness(1.5) drop-shadow(0 0 18px #fff); }
+.farol--retro.farol--hinchar .farol-svg-retro { animation: farol-hinchar 1.15s steps(6) both; }
+.farol--retro.farol--estirar .farol-svg-retro { transform-origin: 50% 100%; animation: farol-estirar 1.2s steps(8); }
+.farol--retro.farol--mareo .farol-svg-retro { animation: farol-voltereta 1s steps(8); }
+.farol--retro.farol--hover .farol-svg-retro { transform: scale(1.06); }
+.farol--retro.farol--salto .farol-svg-retro { animation: farol-salto 0.6s steps(6); }
+
+/* ==========================================================
    Escondido: solo queda una pestañita en el borde para volver
    ========================================================== */
 

@@ -23,6 +23,7 @@
  * Idioma: lee el atributo lang de <html> (es / va) y cambia en directo.
  *
  * API devuelta: { abrir, cerrar, ocultar, mostrar, decir(texto), celebrar(), truco(nombre), destruir }
+ * Código Konami (↑↑↓↓←→←→BA en la caja de texto): alterna el modo 8 bits; se guarda en localStorage (farolillo-retro).
  * Trucos (efecto de una respuesta): sable, sable-rojo, varita, anillo, kamehameha, final-flash, bola, corte,
  * rasengan, aura, kaioken, matrix, gafas, caja, baston, onda, estirar, amor, kamikaze · «truco» = uno al azar.
  * Esconder: botón del ojo en la cabecera del chat (o escribir «escóndete»). Queda una pestañita
@@ -50,6 +51,8 @@ const TEXTOS = {
     dia: 'Buenos días. Modo ahorro de llama ☀️',
     acentoRosa: 'Rosa neón. Me sienta genial 💗',
     acentoAzul: 'Azul eléctrico. Qué estilo ⚡',
+    retroOn: '▶ CÓDIGO ACEPTADO\n¡Modo 8 bits activado! 👾 Ahora soy un sprite de consola retro. Vuelve a meter el código para recuperar mis 16 millones de colores.',
+    retroOff: '▶ CÓDIGO ACEPTADO\nModo 8 bits desactivado. ¡Vuelvo a la alta definición! ✨',
     ocultar: 'Esconder a Farolillo',
     mostrar: 'Mostrar a Farolillo',
     vuelta: '¡He vuelto! 🏮',
@@ -120,6 +123,8 @@ const TEXTOS = {
     dia: 'Bon dia. Mode estalvi de flama ☀️',
     acentoRosa: 'Rosa neó. Em queda genial 💗',
     acentoAzul: 'Blau elèctric. Quin estil ⚡',
+    retroOn: '▶ CODI ACCEPTAT\nMode 8 bits activat! 👾 Ara soc un sprite de consola retro. Torna a posar el codi per a recuperar els meus 16 milions de colors.',
+    retroOff: '▶ CODI ACCEPTAT\nMode 8 bits desactivat. Torne a l’alta definició! ✨',
     ocultar: 'Amagar Farolillo',
     mostrar: 'Mostrar Farolillo',
     vuelta: 'He tornat! 🏮',
@@ -281,6 +286,26 @@ const SVG = `
     </g>
   </g>
 </svg>`;
+
+/* Farolillo en pixel art de 8 bits (modo secreto del código Konami). Generado desde un mapa de 14×20 píxeles. */
+const SVG_RETRO = '<svg class="farol-svg-retro" viewBox="0 0 14 20" shape-rendering="crispEdges" aria-hidden="true" focusable="false"><g class="retro-llama retro-llama--a"><rect class="rp-F" x="6" y="0" width="1" height="1"/><rect class="rp-F" x="5" y="1" width="1" height="1"/><rect class="rp-O" x="6" y="1" width="2" height="1"/><rect class="rp-O" x="5" y="2" width="1" height="1"/><rect class="rp-F" x="6" y="2" width="2" height="1"/><rect class="rp-O" x="8" y="2" width="1" height="1"/><rect class="rp-O" x="6" y="3" width="2" height="1"/></g><g class="retro-llama retro-llama--b"><rect class="rp-F" x="7" y="0" width="1" height="1"/><rect class="rp-O" x="6" y="1" width="2" height="1"/><rect class="rp-F" x="8" y="1" width="1" height="1"/><rect class="rp-O" x="5" y="2" width="1" height="1"/><rect class="rp-F" x="6" y="2" width="2" height="1"/><rect class="rp-O" x="8" y="2" width="1" height="1"/><rect class="rp-O" x="6" y="3" width="2" height="1"/></g><g class="retro-cuerpo"><rect class="rp-M" x="4" y="4" width="6" height="1"/><rect class="rp-K" x="3" y="5" width="1" height="1"/><rect class="rp-A" x="4" y="5" width="6" height="1"/><rect class="rp-K" x="10" y="5" width="1" height="1"/><rect class="rp-K" x="2" y="6" width="1" height="1"/><rect class="rp-A" x="3" y="6" width="1" height="1"/><rect class="rp-L" x="4" y="6" width="6" height="1"/><rect class="rp-A" x="10" y="6" width="1" height="1"/><rect class="rp-K" x="11" y="6" width="1" height="1"/><rect class="rp-K" x="1" y="7" width="1" height="1"/><rect class="rp-A" x="2" y="7" width="1" height="1"/><rect class="rp-L" x="3" y="7" width="2" height="1"/><rect class="rp-W" x="5" y="7" width="2" height="1"/><rect class="rp-L" x="7" y="7" width="4" height="1"/><rect class="rp-A" x="11" y="7" width="1" height="1"/><rect class="rp-K" x="12" y="7" width="1" height="1"/><rect class="rp-K" x="1" y="8" width="1" height="1"/><rect class="rp-A" x="2" y="8" width="1" height="1"/><rect class="rp-S" x="3" y="8" width="8" height="1"/><rect class="rp-A" x="11" y="8" width="1" height="1"/><rect class="rp-K" x="12" y="8" width="1" height="1"/><rect class="rp-K" x="0" y="9" width="1" height="1"/><rect class="rp-A" x="1" y="9" width="1" height="1"/><rect class="rp-L" x="2" y="9" width="2" height="1"/><rect class="rp-C" x="4" y="9" width="6" height="1"/><rect class="rp-L" x="10" y="9" width="2" height="1"/><rect class="rp-A" x="12" y="9" width="1" height="1"/><rect class="rp-K" x="13" y="9" width="1" height="1"/><rect class="rp-K" x="0" y="10" width="1" height="1"/><rect class="rp-A" x="1" y="10" width="1" height="1"/><rect class="rp-L" x="2" y="10" width="1" height="1"/><rect class="rp-C" x="3" y="10" width="8" height="1"/><rect class="rp-L" x="11" y="10" width="1" height="1"/><rect class="rp-A" x="12" y="10" width="1" height="1"/><rect class="rp-K" x="13" y="10" width="1" height="1"/><rect class="rp-K" x="0" y="11" width="1" height="1"/><rect class="rp-A" x="1" y="11" width="1" height="1"/><rect class="rp-L" x="2" y="11" width="1" height="1"/><rect class="rp-C" x="3" y="11" width="8" height="1"/><rect class="rp-L" x="11" y="11" width="1" height="1"/><rect class="rp-A" x="12" y="11" width="1" height="1"/><rect class="rp-K" x="13" y="11" width="1" height="1"/><rect class="rp-K" x="0" y="12" width="1" height="1"/><rect class="rp-A" x="1" y="12" width="1" height="1"/><rect class="rp-L" x="2" y="12" width="1" height="1"/><rect class="rp-C" x="3" y="12" width="8" height="1"/><rect class="rp-L" x="11" y="12" width="1" height="1"/><rect class="rp-A" x="12" y="12" width="1" height="1"/><rect class="rp-K" x="13" y="12" width="1" height="1"/><rect class="rp-K" x="0" y="13" width="1" height="1"/><rect class="rp-A" x="1" y="13" width="1" height="1"/><rect class="rp-L" x="2" y="13" width="2" height="1"/><rect class="rp-C" x="4" y="13" width="6" height="1"/><rect class="rp-L" x="10" y="13" width="2" height="1"/><rect class="rp-A" x="12" y="13" width="1" height="1"/><rect class="rp-K" x="13" y="13" width="1" height="1"/><rect class="rp-K" x="1" y="14" width="1" height="1"/><rect class="rp-A" x="2" y="14" width="1" height="1"/><rect class="rp-S" x="3" y="14" width="8" height="1"/><rect class="rp-A" x="11" y="14" width="1" height="1"/><rect class="rp-K" x="12" y="14" width="1" height="1"/><rect class="rp-K" x="2" y="15" width="1" height="1"/><rect class="rp-A" x="3" y="15" width="1" height="1"/><rect class="rp-L" x="4" y="15" width="6" height="1"/><rect class="rp-A" x="10" y="15" width="1" height="1"/><rect class="rp-K" x="11" y="15" width="1" height="1"/><rect class="rp-K" x="3" y="16" width="1" height="1"/><rect class="rp-A" x="4" y="16" width="6" height="1"/><rect class="rp-K" x="10" y="16" width="1" height="1"/><rect class="rp-M" x="4" y="17" width="6" height="1"/><rect class="rp-B" x="6" y="18" width="2" height="1"/><rect class="rp-B" x="6" y="19" width="1" height="1"/></g><rect class="rp-P" x="3" y="12" width="1" height="1"/><rect class="rp-P" x="10" y="12" width="1" height="1"/><g class="retro-cara retro-cara--normal"><rect class="rp-K" x="3" y="10" width="1" height="1"/><rect class="rp-K" x="4" y="10" width="1" height="1"/><rect class="rp-K" x="3" y="11" width="1" height="1"/><rect class="rp-K" x="4" y="11" width="1" height="1"/><rect class="rp-K" x="9" y="10" width="1" height="1"/><rect class="rp-K" x="10" y="10" width="1" height="1"/><rect class="rp-K" x="9" y="11" width="1" height="1"/><rect class="rp-K" x="10" y="11" width="1" height="1"/><rect class="rp-K" x="5" y="12" width="1" height="1"/><rect class="rp-K" x="8" y="12" width="1" height="1"/><rect class="rp-K" x="6" y="13" width="1" height="1"/><rect class="rp-K" x="7" y="13" width="1" height="1"/></g><g class="retro-cara retro-cara--feliz"><rect class="rp-K" x="3" y="11" width="1" height="1"/><rect class="rp-K" x="4" y="10" width="1" height="1"/><rect class="rp-K" x="5" y="11" width="1" height="1"/><rect class="rp-K" x="8" y="11" width="1" height="1"/><rect class="rp-K" x="9" y="10" width="1" height="1"/><rect class="rp-K" x="10" y="11" width="1" height="1"/><rect class="rp-K" x="5" y="12" width="1" height="1"/><rect class="rp-K" x="8" y="12" width="1" height="1"/><rect class="rp-K" x="6" y="13" width="1" height="1"/><rect class="rp-K" x="7" y="13" width="1" height="1"/></g><g class="retro-cara retro-cara--dormido"><rect class="rp-K" x="3" y="11" width="1" height="1"/><rect class="rp-K" x="4" y="11" width="1" height="1"/><rect class="rp-K" x="5" y="11" width="1" height="1"/><rect class="rp-K" x="8" y="11" width="1" height="1"/><rect class="rp-K" x="9" y="11" width="1" height="1"/><rect class="rp-K" x="10" y="11" width="1" height="1"/><rect class="rp-K" x="6" y="13" width="1" height="1"/><rect class="rp-K" x="7" y="13" width="1" height="1"/></g><g class="retro-cara retro-cara--mareado"><rect class="rp-K" x="3" y="10" width="1" height="1"/><rect class="rp-K" x="5" y="10" width="1" height="1"/><rect class="rp-K" x="4" y="11" width="1" height="1"/><rect class="rp-K" x="3" y="12" width="1" height="1"/><rect class="rp-K" x="5" y="12" width="1" height="1"/><rect class="rp-K" x="8" y="10" width="1" height="1"/><rect class="rp-K" x="10" y="10" width="1" height="1"/><rect class="rp-K" x="9" y="11" width="1" height="1"/><rect class="rp-K" x="8" y="12" width="1" height="1"/><rect class="rp-K" x="10" y="12" width="1" height="1"/><rect class="rp-K" x="6" y="13" width="1" height="1"/><rect class="rp-K" x="7" y="13" width="1" height="1"/></g><g class="retro-cara retro-cara--sorpresa"><rect class="rp-K" x="3" y="9" width="1" height="1"/><rect class="rp-K" x="4" y="9" width="1" height="1"/><rect class="rp-K" x="3" y="10" width="1" height="1"/><rect class="rp-K" x="4" y="10" width="1" height="1"/><rect class="rp-K" x="3" y="11" width="1" height="1"/><rect class="rp-K" x="4" y="11" width="1" height="1"/><rect class="rp-K" x="9" y="9" width="1" height="1"/><rect class="rp-K" x="10" y="9" width="1" height="1"/><rect class="rp-K" x="9" y="10" width="1" height="1"/><rect class="rp-K" x="10" y="10" width="1" height="1"/><rect class="rp-K" x="9" y="11" width="1" height="1"/><rect class="rp-K" x="10" y="11" width="1" height="1"/><rect class="rp-K" x="6" y="12" width="1" height="1"/><rect class="rp-K" x="7" y="12" width="1" height="1"/><rect class="rp-K" x="6" y="13" width="1" height="1"/><rect class="rp-K" x="7" y="13" width="1" height="1"/></g><g class="retro-cara retro-cara--amor"><rect class="rp-R" x="3" y="10" width="1" height="1"/><rect class="rp-R" x="5" y="10" width="1" height="1"/><rect class="rp-R" x="3" y="11" width="1" height="1"/><rect class="rp-R" x="4" y="11" width="1" height="1"/><rect class="rp-R" x="5" y="11" width="1" height="1"/><rect class="rp-R" x="4" y="12" width="1" height="1"/><rect class="rp-R" x="8" y="10" width="1" height="1"/><rect class="rp-R" x="10" y="10" width="1" height="1"/><rect class="rp-R" x="8" y="11" width="1" height="1"/><rect class="rp-R" x="9" y="11" width="1" height="1"/><rect class="rp-R" x="10" y="11" width="1" height="1"/><rect class="rp-R" x="9" y="12" width="1" height="1"/><rect class="rp-K" x="6" y="13" width="1" height="1"/><rect class="rp-K" x="7" y="13" width="1" height="1"/></g></svg>';
+
+/* ---------- Código Konami ---------- */
+/* ↑↑↓↓←→←→BA escrito con flechas, con palabras (es / va / en) o tecleado con las flechas en la caja */
+const SECUENCIA_KONAMI = 'uuddlrlrba';
+const PALABRAS_KONAMI = {
+  arriba: 'u', abajo: 'd', izquierda: 'l', derecha: 'r', dalt: 'u', baix: 'd', esquerra: 'l', dreta: 'r',
+  up: 'u', down: 'd', left: 'l', right: 'r', b: 'b', a: 'a',
+};
+export function esCodigoKonami(texto) {
+  const flechas = String(texto).replace(/[\s,·\-]+/g, '')
+    .replace(/[↑⬆]/g, 'u').replace(/[↓⬇]/g, 'd').replace(/[←⬅]/g, 'l').replace(/[→➡]/g, 'r')
+    .replace(/\uFE0F/g, '').toLowerCase();
+  if (flechas === SECUENCIA_KONAMI) return true;
+  const palabras = String(texto).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z ]+/g, ' ').split(' ').filter(Boolean);
+  return palabras.map((p) => PALABRAS_KONAMI[p] || '?').join('') === SECUENCIA_KONAMI;
+}
 
 /* ---------- Utilidades ---------- */
 
@@ -948,7 +973,7 @@ export function initFarolillo(opciones = {}) {
     </div>
     <p class="farol-pista" aria-live="polite"></p>
     <button type="button" class="farol-boton" aria-expanded="false" aria-controls="farol-panel">
-      <span class="farol-fisica"><span class="farol-flotar">${SVG}</span></span>
+      <span class="farol-fisica"><span class="farol-flotar">${SVG}${SVG_RETRO}</span></span>
     </button>
     <button type="button" class="farol-mini">${ICONO_MINI}</button>`;
   contenedor.append(raiz);
@@ -974,6 +999,10 @@ export function initFarolillo(opciones = {}) {
   let destruido = false;
   /* Escondido: preferencia de cada visitante, se recuerda entre páginas y visitas */
   const CLAVE_OCULTO = 'farolillo-oculto';
+  const CLAVE_RETRO = 'farolillo-retro';
+  let retro = false;
+  try { retro = localStorage.getItem(CLAVE_RETRO) === '1'; } catch { /* sin storage */ }
+  if (retro) raiz.classList.add('farol--retro');
   let oculto = false;
   try { oculto = localStorage.getItem(CLAVE_OCULTO) === '1'; } catch { /* sin storage */ }
   let ultimaActividad = performance.now();
@@ -1245,6 +1274,13 @@ export function initFarolillo(opciones = {}) {
         ctx.globalAlpha = k * 0.9;
         ctx.font = `700 ${p.tam}px ${FUENTE_Z}`;
         ctx.fillText('z', p.x, p.y);
+        continue;
+      }
+      if (retro) {
+        // Modo 8 bits: chispas cuadradas y sin halo
+        const lado = Math.max(2, Math.round((p.tam * k + 1) * 1.6));
+        ctx.globalAlpha = Math.min(1, k * 1.3);
+        ctx.fillRect(Math.round(p.x - lado / 2), Math.round(p.y - lado / 2), lado, lado);
         continue;
       }
       ctx.globalAlpha = k * halo;
@@ -1911,6 +1947,30 @@ export function initFarolillo(opciones = {}) {
     chips.scrollTop = 0;
   };
 
+  /* ---------- Modo 8 bits (código Konami) ---------- */
+  const alternarRetro = () => {
+    retro = !retro;
+    try { localStorage.setItem(CLAVE_RETRO, retro ? '1' : '0'); } catch { /* sin storage */ }
+    raiz.classList.toggle('farol--retro', retro);
+    fis.vy -= 260;
+    estallido(40);
+    return { texto: retro ? tx().retroOn : tx().retroOff, efecto: 'fuegos' };
+  };
+  /* Teclear ↑↑↓↓←→←→BA con el cursor en la caja de texto */
+  let teclasKonami = '';
+  const TECLA_KONAMI = { ArrowUp: 'u', ArrowDown: 'd', ArrowLeft: 'l', ArrowRight: 'r', b: 'b', B: 'b', a: 'a', A: 'a' };
+  const alTeclearEntrada = (e) => {
+    const t = TECLA_KONAMI[e.key];
+    teclasKonami = t ? (teclasKonami + t).slice(-SECUENCIA_KONAMI.length) : '';
+    if (teclasKonami === SECUENCIA_KONAMI) {
+      e.preventDefault();
+      teclasKonami = '';
+      entrada.value = entrada.value.replace(/b$/i, '');
+      if (!entrada.value.trim()) entrada.value = '';
+      enviar('↑↑↓↓←→←→BA');
+    }
+  };
+
   const enviar = async (texto) => {
     if (ocupado) return;
     ocupado = true;
@@ -1927,7 +1987,9 @@ export function initFarolillo(opciones = {}) {
 
     let respuesta;
     try {
-      respuesta = await obtenerRespuesta(texto, { idioma: idiomaActual(), pagina });
+      respuesta = esCodigoKonami(texto)
+        ? (await esperar(500), alternarRetro())
+        : await obtenerRespuesta(texto, { idioma: idiomaActual(), pagina });
     } catch (error) {
       console.error('[Farolillo]', error);
       respuesta = tx().error;
@@ -2149,6 +2211,7 @@ export function initFarolillo(opciones = {}) {
     enviar(texto);
   });
 
+  entrada.addEventListener('keydown', alTeclearEntrada);
   entrada.addEventListener('input', () => {
     actividad();
     if (ocupado) return;

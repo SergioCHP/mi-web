@@ -797,7 +797,8 @@
         "Otro secreto: si dejas de moverte un buen rato, me quedo dormido. Haz algo y me despiertas.",
         "Prueba a cambiar el tema o el color de acento con el chat abierto: me doy cuenta de todo 👀",
         "¿Te molesto? Pulsa el ojo de la cabecera o escribe «escóndete»: me quedo en una pestañita hasta que me llames.",
-        "Sé hacer trucos: pídeme la espada láser, la varita, el anillo, un kamehameha, el súper saiyan o «no hay cuchara». O escribe «trucos»."
+        "Sé hacer trucos: pídeme la espada láser, la varita, el anillo, un kamehameha, el súper saiyan o «no hay cuchara». O escribe «trucos».",
+        "Hay un código de videojuego clásico que, metido en esta caja, me cambia de aspecto. Pista: Konami 👾"
       ],
       "va": [
         "Pistes 🤫: arrossega’m, fes-me cinc clics seguits, deixa’m quiet una estona o escriu «focs».",
@@ -805,7 +806,8 @@
         "Un altre secret: si deixes de moure’t una bona estona, em quede adormit. Fes alguna cosa i em desperte.",
         "Prova a canviar el tema o el color d’accent amb el xat obert: me n’adone de tot 👀",
         "Et moleste? Prem l’ull de la capçalera o escriu «amaga’t»: em quede en una pestanyeta fins que em cridés.",
-        "Sé fer trucs: demana’m l’espasa làser, la vareta, l’anell, un kamehameha, el súper saiyan o «no hi ha cullera». O escriu «trucs»."
+        "Sé fer trucs: demana’m l’espasa làser, la vareta, l’anell, un kamehameha, el súper saiyan o «no hi ha cullera». O escriu «trucs».",
+        "Hi ha un codi de videojoc clàssic que, posat en esta caixa, em canvia d’aspecte. Pista: Konami 👾"
       ],
       "repetible": true
     },
@@ -3857,17 +3859,21 @@
       "id": "konami",
       "frases": [
         "konami",
-        "arriba arriba abajo abajo",
         "codigo konami",
-        "dalt dalt baix baix"
+        "codigo secreto",
+        "modo retro",
+        "8 bits",
+        "pixel art",
+        "modo 8 bits"
       ],
       "es": [
-        "↑ ↑ ↓ ↓ ← → ← → B A… ¡Desbloqueado! +30 vidas de farol 🕹️"
+        "🎮 El código Konami de verdad hay que meterlo aquí, en la caja de texto: ↑ ↑ ↓ ↓ ← → ← → B A (con las flechas del teclado o escrito). Algo cambiará… 👾",
+        "¿Konami? Pista: ↑↑↓↓←→←→BA en esta caja. Desde el móvil vale escribirlo con palabras: «arriba arriba abajo abajo izquierda derecha izquierda derecha b a»."
       ],
       "va": [
-        "↑ ↑ ↓ ↓ ← → ← → B A… Desbloquejat! +30 vides de farol 🕹️"
+        "🎮 El codi Konami de veres cal posar-lo ací, a la caixa de text: ↑ ↑ ↓ ↓ ← → ← → B A (amb les fletxes del teclat o escrit). Alguna cosa canviarà… 👾",
+        "Konami? Pista: ↑↑↓↓←→←→BA en esta caixa. Des del mòbil val escriure’l amb paraules: «dalt dalt baix baix esquerra dreta esquerra dreta b a»."
       ],
-      "efecto": "fuegos",
       "peso": 1.2
     },
     {
