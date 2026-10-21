@@ -6,7 +6,8 @@
     "tema + item: true agrupa favoritos para «recomiéndame uno» y «otro». repetible: true permite pedir «otro» chiste o curiosidad.",
     "Plantillas: {saludo}, {hora}, {dia}, {anio}.",
     "quiz: banco de preguntas (correcta = posición de la opción buena, desde 0). Se piden {numero} al azar con la intención de acción \"quiz\".",
-    "paginas: por cada página (nombre del archivo sin .html) su descripción para «¿qué hay aquí?» y, opcional, el tema que se usa por defecto para «otro» y «recomiéndame algo»."
+    "paginas: por cada página (nombre del archivo sin .html) su descripción para «¿qué hay aquí?» y, opcional, el tema que se usa por defecto para «otro» y «recomiéndame algo».",
+    "juegos: textos de los minijuegos (ppt, numero, ahorcado). Las intenciones con \"accion\": \"juego\" y \"juego\": \"ppt|numero|ahorcado\" los empiezan. quienLoDijo usa el motor del quiz (\"banco\": \"quienLoDijo\")."
   ],
   "version": 2,
   "porDefecto": {
@@ -478,6 +479,7 @@
       ],
       "sugerencias": {
         "es": [
+          "Jugamos",
           "Quiz de Sergio",
           "Trucos",
           "¿Quién es Sergio?",
@@ -487,6 +489,7 @@
           "Secretos"
         ],
         "va": [
+          "Juguem",
           "Quiz de Sergio",
           "Trucs",
           "Qui és Sergio?",
@@ -511,14 +514,17 @@
       ],
       "es": [
         "¿Te aburres? Prueba el reto antes de ver los juegos, abre el grimorio de libros o hazme cinco clics seguidos (bajo tu responsabilidad).",
-        "Plan anti-aburrimiento: pídeme un chiste, una curiosidad o escribe «fuegos» 🎆"
+        "Plan anti-aburrimiento: pídeme un chiste, una curiosidad o escribe «fuegos» 🎆",
+        "¿Jugamos? Tengo piedra, papel o tijera, adivina el número, ahorcado friki y «¿Quién lo dijo?»."
       ],
       "va": [
         "T’avorrixes? Prova el repte abans de veure els jocs, obri el grimori de llibres o fes-me cinc clics seguits (sota la teua responsabilitat).",
-        "Pla antiavorriment: demana’m un acudit, una curiositat o escriu «focs» 🎆"
+        "Pla antiavorriment: demana’m un acudit, una curiositat o escriu «focs» 🎆",
+        "Juguem? Tinc pedra, paper o tisora, endevina el número, penjat friki i «Qui ho va dir?»."
       ],
       "sugerencias": {
         "es": [
+          "Jugamos",
           "Quiz de Sergio",
           "Trucos",
           "El reto",
@@ -527,6 +533,7 @@
           "Fuegos"
         ],
         "va": [
+          "Juguem",
           "Quiz de Sergio",
           "Trucs",
           "El repte",
@@ -5501,22 +5508,23 @@
         "pedra paper tisora",
         "pedra",
         "paper",
-        "tisora"
+        "tisora",
+        "revancha",
+        "revenja",
+        "otra partida",
+        "jugar a piedra papel tijera",
+        "piedra papel o tijeras",
+        "pedra paper o tisora"
       ],
       "es": [
-        "Yo saco… ✊ piedra.",
-        "Yo saco… ✋ papel.",
-        "Yo saco… ✌️ tijera.",
-        "Yo saco… 🔥 fuego. Quema el papel, derrite la tijera y calienta la piedra. Gano yo."
+        "¡Vamos!"
       ],
       "va": [
-        "Jo trac… ✊ pedra.",
-        "Jo trac… ✋ paper.",
-        "Jo trac… ✌️ tisora.",
-        "Jo trac… 🔥 foc. Crema el paper, fon la tisora i escalfa la pedra. Guanye jo."
+        "Som-hi!"
       ],
-      "repetible": true,
-      "peso": 1.15
+      "peso": 1.15,
+      "accion": "juego",
+      "juego": "ppt"
     },
     {
       "id": "bola-magica",
@@ -7685,6 +7693,126 @@
       ],
       "efecto": "kamikaze",
       "peso": 1.2
+    },
+    {
+      "id": "jugar-menu",
+      "frases": [
+        "jugamos",
+        "juega conmigo",
+        "vamos a jugar",
+        "quiero jugar contigo",
+        "a que jugamos",
+        "minijuegos",
+        "juegos del chat",
+        "jugar contigo",
+        "echamos una partida",
+        "una partida",
+        "otro juego",
+        "juguem",
+        "jugem",
+        "vols jugar",
+        "a que juguem",
+        "un altre joc",
+        "que juegos tienes",
+        "me aburro jugamos"
+      ],
+      "es": [
+        "¡Claro! ¿A qué jugamos? 🎮",
+        "¡Vamos! Elige juego 👇"
+      ],
+      "va": [
+        "És clar! A què juguem? 🎮",
+        "Som-hi! Tria joc 👇"
+      ],
+      "peso": 1.25,
+      "efecto": "salto",
+      "sugerencias": {
+        "es": [
+          "Piedra, papel o tijera",
+          "Adivina el número",
+          "¿Quién lo dijo?",
+          "Ahorcado",
+          "Quiz de Sergio"
+        ],
+        "va": [
+          "Pedra, paper o tisora",
+          "Endevina el número",
+          "Qui ho va dir?",
+          "Penjat",
+          "Quiz de Sergio"
+        ]
+      }
+    },
+    {
+      "id": "adivina-numero",
+      "frases": [
+        "adivina el numero",
+        "adivinar numero",
+        "juego del numero",
+        "piensa un numero",
+        "piensa en un numero",
+        "adivina numero",
+        "otro numero",
+        "endevina el numero",
+        "pensa un numero",
+        "un altre numero",
+        "numero secreto"
+      ],
+      "es": [
+        "¡Vamos!"
+      ],
+      "va": [
+        "Som-hi!"
+      ],
+      "accion": "juego",
+      "juego": "numero",
+      "peso": 1.3
+    },
+    {
+      "id": "ahorcado",
+      "frases": [
+        "ahorcado",
+        "el ahorcado",
+        "jugar al ahorcado",
+        "otra palabra",
+        "penjat",
+        "el penjat",
+        "una altra paraula",
+        "juego de letras"
+      ],
+      "es": [
+        "¡Vamos!"
+      ],
+      "va": [
+        "Som-hi!"
+      ],
+      "accion": "juego",
+      "juego": "ahorcado",
+      "peso": 1.3
+    },
+    {
+      "id": "quien-lo-dijo",
+      "frases": [
+        "quien lo dijo",
+        "quien dijo",
+        "adivina la frase",
+        "de donde es la frase",
+        "otra ronda",
+        "adivina la peli",
+        "qui ho va dir",
+        "una altra ronda",
+        "frases de pelis juego",
+        "juego de frases"
+      ],
+      "es": [
+        "¡A ver cuánto sabes de pelis, series y juegos! 5 frases míticas: ¿de dónde son?"
+      ],
+      "va": [
+        "A vore quant saps de pel·lis, sèries i jocs! 5 frases mítiques: d’on són?"
+      ],
+      "accion": "quiz",
+      "banco": "quienLoDijo",
+      "peso": 1.3
     }
   ],
   "quiz": {
@@ -8777,5 +8905,1162 @@
         ]
       }
     }
+  },
+  "juegos": {
+    "ppt": {
+      "meta": 3,
+      "nombres": {
+        "es": [
+          "✊ Piedra",
+          "✋ Papel",
+          "✌️ Tijera"
+        ],
+        "va": [
+          "✊ Pedra",
+          "✋ Paper",
+          "✌️ Tisora"
+        ]
+      },
+      "textos": {
+        "intro": {
+          "es": [
+            "¡Piedra, papel o tijera! Gana quien llegue antes a {meta}. Elige 👇"
+          ],
+          "va": [
+            "Pedra, paper o tisora! Guanya qui arribe abans a {meta}. Tria 👇"
+          ]
+        },
+        "ronda": {
+          "es": [
+            "Tú: {tuya} · Yo: {mia}\n{resultado}\nMarcador: Tú {tu} – {yo} Farolillo"
+          ],
+          "va": [
+            "Tu: {tuya} · Jo: {mia}\n{resultado}\nMarcador: Tu {tu} – {yo} Farolillo"
+          ]
+        },
+        "ganas": {
+          "es": [
+            "¡Ganas esta! 😤",
+            "Punto para ti. Me has leído la llama.",
+            "Uf, esa no la vi venir."
+          ],
+          "va": [
+            "Guanyes esta! 😤",
+            "Punt per a tu. M’has llegit la flama.",
+            "Uf, eixa no la vaig veure vindre."
+          ]
+        },
+        "pierdes": {
+          "es": [
+            "¡Punto para mí! 😎",
+            "Te gané. Los faroles vemos en la oscuridad.",
+            "Lo siento… bueno, no mucho 😏"
+          ],
+          "va": [
+            "Punt per a mi! 😎",
+            "T’he guanyat. Els fanals veiem en la foscor.",
+            "Ho sent… bé, no molt 😏"
+          ]
+        },
+        "empate": {
+          "es": [
+            "¡Empate! Pensamos igual, qué miedo.",
+            "Empate. Otra vez."
+          ],
+          "va": [
+            "Empat! Pensem igual, quina por.",
+            "Empat. Una altra vegada."
+          ]
+        },
+        "victoria": {
+          "es": [
+            "🏆 ¡Me has ganado {tu}–{yo}! Exijo la revancha.",
+            "🏆 {tu}–{yo} para ti. Mi llama está de luto."
+          ],
+          "va": [
+            "🏆 M’has guanyat {tu}–{yo}! Exigisc la revenja.",
+            "🏆 {tu}–{yo} per a tu. La meua flama està de dol."
+          ]
+        },
+        "derrota": {
+          "es": [
+            "🔥 ¡Gané {yo}–{tu}! Siente el poder del Súper Farol.",
+            "🔥 {yo}–{tu} para el farol. ¿Revancha?"
+          ],
+          "va": [
+            "🔥 He guanyat {yo}–{tu}! Sent el poder del Súper Fanal.",
+            "🔥 {yo}–{tu} per al fanal. Revenja?"
+          ]
+        },
+        "recordatorio": {
+          "es": [
+            "Elige piedra, papel o tijera (o escribe «salir»)."
+          ],
+          "va": [
+            "Tria pedra, paper o tisora (o escriu «eixir»)."
+          ]
+        },
+        "abandono": {
+          "es": [
+            "Partida abandonada con {tu}–{yo}. Lo apunto como victoria moral mía 😏"
+          ],
+          "va": [
+            "Partida abandonada amb {tu}–{yo}. Ho apunte com a victòria moral meua 😏"
+          ]
+        },
+        "botonesFinal": {
+          "es": [
+            "Revancha",
+            "Otro juego"
+          ],
+          "va": [
+            "Revenja",
+            "Un altre joc"
+          ]
+        }
+      }
+    },
+    "numero": {
+      "textos": {
+        "intro": {
+          "es": [
+            "He pensado un número del 1 al 100 🔢 ¿Cuál es? Escríbelo.",
+            "Tengo un número secreto del 1 al 100. Adivínalo y te ganas mi respeto eterno."
+          ],
+          "va": [
+            "He pensat un número de l’1 al 100 🔢 Quin és? Escriu-lo.",
+            "Tinc un número secret de l’1 al 100. Endevina’l i et guanyes el meu respecte etern."
+          ]
+        },
+        "mas": {
+          "es": [
+            "Más alto ⬆️",
+            "Sube, sube ⬆️",
+            "Es mayor que {n} ⬆️"
+          ],
+          "va": [
+            "Més alt ⬆️",
+            "Puja, puja ⬆️",
+            "És major que {n} ⬆️"
+          ]
+        },
+        "menos": {
+          "es": [
+            "Más bajo ⬇️",
+            "Baja ⬇️",
+            "Es menor que {n} ⬇️"
+          ],
+          "va": [
+            "Més baix ⬇️",
+            "Baixa ⬇️",
+            "És menor que {n} ⬇️"
+          ]
+        },
+        "quema": {
+          "es": [
+            "¡Te quemas! 🔥",
+            "¡Casi! Noto el calor desde aquí 🔥"
+          ],
+          "va": [
+            "Et cremes! 🔥",
+            "Quasi! Note la calor des d’ací 🔥"
+          ]
+        },
+        "caliente": {
+          "es": [
+            "Caliente…",
+            "Te acercas, padawan."
+          ],
+          "va": [
+            "Calent…",
+            "T’acostes, padawan."
+          ]
+        },
+        "templado": {
+          "es": [
+            "Templado.",
+            "Ni frío ni calor."
+          ],
+          "va": [
+            "Temperat.",
+            "Ni fred ni calor."
+          ]
+        },
+        "frio": {
+          "es": [
+            "Frío, frío ❄️",
+            "Más perdido que Frodo sin Sam ❄️",
+            "Frío como Poniente en invierno ❄️"
+          ],
+          "va": [
+            "Fred, fred ❄️",
+            "Més perdut que Frodo sense Sam ❄️",
+            "Fred com Ponent a l’hivern ❄️"
+          ]
+        },
+        "rango": {
+          "es": [
+            "(Está entre {min} y {max} · intento {intentos})"
+          ],
+          "va": [
+            "(Està entre {min} i {max} · intent {intentos})"
+          ]
+        },
+        "acierto": {
+          "es": [
+            "🎉 ¡Era el {n}! Lo has sacado en {intentos} intentos."
+          ],
+          "va": [
+            "🎉 Era el {n}! L’has tret en {intentos} intents."
+          ]
+        },
+        "pro": {
+          "es": [
+            "Nivel: maestro de la búsqueda binaria. Sergio estaría orgulloso.",
+            "Eso ha sido digno de Sherlock."
+          ],
+          "va": [
+            "Nivell: mestre de la cerca binària. Sergio estaria orgullós.",
+            "Això ha sigut digne de Sherlock."
+          ]
+        },
+        "bien": {
+          "es": [
+            "¡Bien jugado!",
+            "Nada mal, nada mal."
+          ],
+          "va": [
+            "Ben jugat!",
+            "Gens malament."
+          ]
+        },
+        "justo": {
+          "es": [
+            "Lo importante es llegar 😅 Truco: empieza siempre por la mitad."
+          ],
+          "va": [
+            "L’important és arribar 😅 Truc: comença sempre per la meitat."
+          ]
+        },
+        "recordatorio": {
+          "es": [
+            "Escribe un número entre {min} y {max} (o «salir»)."
+          ],
+          "va": [
+            "Escriu un número entre {min} i {max} (o «eixir»)."
+          ]
+        },
+        "fuera": {
+          "es": [
+            "Del 1 al 100, que no soy una calculadora científica 😅"
+          ],
+          "va": [
+            "De l’1 al 100, que no soc una calculadora científica 😅"
+          ]
+        },
+        "abandono": {
+          "es": [
+            "¡Te rindes! Era el {n}. Mi secreto está a salvo… ya no."
+          ],
+          "va": [
+            "Et rendeixes! Era el {n}. El meu secret està a salvo… ja no."
+          ]
+        },
+        "botonesFinal": {
+          "es": [
+            "Otro número",
+            "Otro juego"
+          ],
+          "va": [
+            "Un altre número",
+            "Un altre joc"
+          ]
+        }
+      }
+    },
+    "ahorcado": {
+      "vidas": 6,
+      "categorias": {
+        "juego": {
+          "es": [
+            "un videojuego de su top"
+          ],
+          "va": [
+            "un videojoc del seu top"
+          ]
+        },
+        "peli": {
+          "es": [
+            "una de sus pelis favoritas"
+          ],
+          "va": [
+            "una de les seues pel·lis preferides"
+          ]
+        },
+        "anime": {
+          "es": [
+            "uno de sus animes favoritos"
+          ],
+          "va": [
+            "un dels seus animes preferits"
+          ]
+        },
+        "libro": {
+          "es": [
+            "uno de sus libros o sagas"
+          ],
+          "va": [
+            "un dels seus llibres o sagues"
+          ]
+        },
+        "serie": {
+          "es": [
+            "una de sus series"
+          ],
+          "va": [
+            "una de les seues sèries"
+          ]
+        }
+      },
+      "palabras": [
+        {
+          "es": "Final Fantasy",
+          "categoria": "juego"
+        },
+        {
+          "es": "Metal Gear Solid",
+          "categoria": "juego"
+        },
+        {
+          "es": "God of War",
+          "categoria": "juego"
+        },
+        {
+          "es": "Resident Evil",
+          "categoria": "juego"
+        },
+        {
+          "es": "The Last of Us",
+          "categoria": "juego"
+        },
+        {
+          "es": "Zelda",
+          "categoria": "juego"
+        },
+        {
+          "es": "The Witcher",
+          "categoria": "juego"
+        },
+        {
+          "es": "Red Dead Redemption",
+          "categoria": "juego"
+        },
+        {
+          "es": "Ghost of Tsushima",
+          "categoria": "juego"
+        },
+        {
+          "es": "Sonic",
+          "categoria": "juego"
+        },
+        {
+          "es": "El Señor de los Anillos",
+          "va": "El Senyor dels Anells",
+          "categoria": "peli"
+        },
+        {
+          "es": "Gladiator",
+          "categoria": "peli"
+        },
+        {
+          "es": "Terminator",
+          "categoria": "peli"
+        },
+        {
+          "es": "Matrix",
+          "categoria": "peli"
+        },
+        {
+          "es": "Braveheart",
+          "categoria": "peli"
+        },
+        {
+          "es": "Jurassic Park",
+          "categoria": "peli"
+        },
+        {
+          "es": "Regreso al futuro",
+          "va": "Tornada al futur",
+          "categoria": "peli"
+        },
+        {
+          "es": "Dragon Ball",
+          "categoria": "anime"
+        },
+        {
+          "es": "Bleach",
+          "categoria": "anime"
+        },
+        {
+          "es": "One Piece",
+          "categoria": "anime"
+        },
+        {
+          "es": "Naruto",
+          "categoria": "anime"
+        },
+        {
+          "es": "Saint Seiya",
+          "categoria": "anime"
+        },
+        {
+          "es": "Kimetsu no Yaiba",
+          "categoria": "anime"
+        },
+        {
+          "es": "Jujutsu Kaisen",
+          "categoria": "anime"
+        },
+        {
+          "es": "Dune",
+          "categoria": "libro"
+        },
+        {
+          "es": "Harry Potter",
+          "categoria": "libro"
+        },
+        {
+          "es": "El nombre del viento",
+          "va": "El nom del vent",
+          "categoria": "libro"
+        },
+        {
+          "es": "Nacidos de la Bruma",
+          "va": "Nascuts de la Boira",
+          "categoria": "libro"
+        },
+        {
+          "es": "Juego de Tronos",
+          "va": "Joc de Trons",
+          "categoria": "serie"
+        },
+        {
+          "es": "Perdidos",
+          "va": "Perduts",
+          "categoria": "serie"
+        },
+        {
+          "es": "Dark",
+          "categoria": "serie"
+        },
+        {
+          "es": "The Boys",
+          "categoria": "serie"
+        }
+      ],
+      "textos": {
+        "intro": {
+          "es": [
+            "¡Ahorcado friki! Adivina el título letra a letra (o escríbelo entero). Tienes 6 farolillos de vida."
+          ],
+          "va": [
+            "Penjat friki! Endevina el títol lletra a lletra (o escriu-lo sencer). Tens 6 fanalets de vida."
+          ]
+        },
+        "vidas": {
+          "es": [
+            "Vidas: {vidas}"
+          ],
+          "va": [
+            "Vides: {vidas}"
+          ]
+        },
+        "bien": {
+          "es": [
+            "¡Sí! Hay «{letra}» ✅",
+            "«{letra}» está. Vas bien."
+          ],
+          "va": [
+            "Sí! Hi ha «{letra}» ✅",
+            "«{letra}» hi és. Vas bé."
+          ]
+        },
+        "mal": {
+          "es": [
+            "No hay «{letra}» ❌ Se apaga un farolillo…",
+            "«{letra}» no está 💨"
+          ],
+          "va": [
+            "No hi ha «{letra}» ❌ S’apaga un fanalet…",
+            "«{letra}» no hi és 💨"
+          ]
+        },
+        "repetida": {
+          "es": [
+            "La «{letra}» ya la has dicho 😉"
+          ],
+          "va": [
+            "La «{letra}» ja l’has dita 😉"
+          ]
+        },
+        "noEs": {
+          "es": [
+            "No es eso ❌ Te cuesta un farolillo."
+          ],
+          "va": [
+            "No és això ❌ Et costa un fanalet."
+          ]
+        },
+        "pista": {
+          "es": [
+            "Pista: es {categoria} 🔎"
+          ],
+          "va": [
+            "Pista: és {categoria} 🔎"
+          ]
+        },
+        "recordatorio": {
+          "es": [
+            "Escribe una letra (o el título entero, o «salir»)."
+          ],
+          "va": [
+            "Escriu una lletra (o el títol sencer, o «eixir»)."
+          ]
+        },
+        "victoria": {
+          "es": [
+            "🎉 ¡«{palabra}»! Lo has adivinado con {fallos} fallos.",
+            "🏆 ¡Correcto: «{palabra}»! Eres un friki de manual."
+          ],
+          "va": [
+            "🎉 «{palabra}»! L’has endevinat amb {fallos} errades.",
+            "🏆 Correcte: «{palabra}»! Eres un friki de manual."
+          ]
+        },
+        "derrota": {
+          "es": [
+            "💥 ¡Sin farolillos! Era «{palabra}». Me he quedado sin llama… y exploto de la pena."
+          ],
+          "va": [
+            "💥 Sense fanalets! Era «{palabra}». M’he quedat sense flama… i explote de pena."
+          ]
+        },
+        "abandono": {
+          "es": [
+            "¡Te rindes! Era «{palabra}»."
+          ],
+          "va": [
+            "Et rendeixes! Era «{palabra}»."
+          ]
+        },
+        "botonPista": {
+          "es": [
+            "Pista"
+          ],
+          "va": [
+            "Pista"
+          ]
+        },
+        "palabrasPista": {
+          "es": [
+            "pista",
+            "una pista",
+            "ayuda"
+          ],
+          "va": [
+            "pista",
+            "una pista",
+            "ajuda"
+          ]
+        },
+        "botonesFinal": {
+          "es": [
+            "Otra palabra",
+            "Otro juego"
+          ],
+          "va": [
+            "Una altra paraula",
+            "Un altre joc"
+          ]
+        }
+      }
+    }
+  },
+  "quienLoDijo": {
+    "numero": 5,
+    "textos": {
+      "pregunta": {
+        "es": [
+          "Frase {n}/{total}: {pregunta}\n¿De dónde es?"
+        ],
+        "va": [
+          "Frase {n}/{total}: {pregunta}\nD’on és?"
+        ]
+      },
+      "perfecto": {
+        "es": [
+          "🏆 {aciertos}/{total}. ¡Pleno! Tienes más horas de pantalla que yo de llama."
+        ],
+        "va": [
+          "🏆 {aciertos}/{total}. Ple! Tens més hores de pantalla que jo de flama."
+        ]
+      },
+      "alto": {
+        "es": [
+          "⭐ {aciertos}/{total}. ¡Muy friki! Aprobado con nota."
+        ],
+        "va": [
+          "⭐ {aciertos}/{total}. Molt friki! Aprovat amb nota."
+        ]
+      },
+      "bajo": {
+        "es": [
+          "🕯️ {aciertos}/{total}. Toca maratón de pelis este finde."
+        ],
+        "va": [
+          "🕯️ {aciertos}/{total}. Toca marató de pel·lis este cap de setmana."
+        ]
+      },
+      "botonesFinal": {
+        "es": [
+          "Otra ronda",
+          "Otro juego"
+        ],
+        "va": [
+          "Una altra ronda",
+          "Un altre joc"
+        ]
+      }
+    },
+    "preguntas": [
+      {
+        "es": {
+          "pregunta": "«Que la Fuerza te acompañe»",
+          "opciones": [
+            "Star Wars",
+            "Star Trek",
+            "Dune"
+          ],
+          "correcta": 0,
+          "explicacion": "Star Wars, claro."
+        },
+        "va": {
+          "pregunta": "«Que la Força t’acompanye»",
+          "opciones": [
+            "Star Wars",
+            "Star Trek",
+            "Dune"
+          ],
+          "correcta": 0,
+          "explicacion": "Star Wars, és clar."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«Volveré»",
+          "opciones": [
+            "Terminator",
+            "Rocky",
+            "Gladiator"
+          ],
+          "correcta": 0,
+          "explicacion": "Terminator. Y volvió."
+        },
+        "va": {
+          "pregunta": "«Tornaré»",
+          "opciones": [
+            "Terminator",
+            "Rocky",
+            "Gladiator"
+          ],
+          "correcta": 0,
+          "explicacion": "Terminator. I va tornar."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«Lo que hacemos en la vida tiene su eco en la eternidad»",
+          "opciones": [
+            "Gladiator",
+            "Troya",
+            "300"
+          ],
+          "correcta": 0,
+          "explicacion": "Máximo, en Gladiator."
+        },
+        "va": {
+          "pregunta": "«El que fem en la vida té el seu eco en l’eternitat»",
+          "opciones": [
+            "Gladiator",
+            "Troia",
+            "300"
+          ],
+          "correcta": 0,
+          "explicacion": "Màxim, a Gladiator."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«¿Carreteras? A donde vamos no necesitamos carreteras»",
+          "opciones": [
+            "Regreso al futuro",
+            "Fast & Furious",
+            "Mad Max"
+          ],
+          "correcta": 0,
+          "explicacion": "Doc Brown, en Regreso al futuro."
+        },
+        "va": {
+          "pregunta": "«Carreteres? On anem no necessitem carreteres»",
+          "opciones": [
+            "Tornada al futur",
+            "Fast & Furious",
+            "Mad Max"
+          ],
+          "correcta": 0,
+          "explicacion": "Doc Brown, a Tornada al futur."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«La vida se abre camino»",
+          "opciones": [
+            "Jurassic Park",
+            "Interstellar",
+            "Alien"
+          ],
+          "correcta": 0,
+          "explicacion": "Ian Malcolm, en Jurassic Park."
+        },
+        "va": {
+          "pregunta": "«La vida s’obri camí»",
+          "opciones": [
+            "Jurassic Park",
+            "Interstellar",
+            "Alien"
+          ],
+          "correcta": 0,
+          "explicacion": "Ian Malcolm, a Jurassic Park."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«No hay cuchara»",
+          "opciones": [
+            "Matrix",
+            "Inception",
+            "Blade Runner"
+          ],
+          "correcta": 0,
+          "explicacion": "Matrix: el niño de las cucharas."
+        },
+        "va": {
+          "pregunta": "«No hi ha cullera»",
+          "opciones": [
+            "Matrix",
+            "Inception",
+            "Blade Runner"
+          ],
+          "correcta": 0,
+          "explicacion": "Matrix: el xiquet de les culleres."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«¡Esto es Esparta!»",
+          "opciones": [
+            "300",
+            "Gladiator",
+            "Troya"
+          ],
+          "correcta": 0,
+          "explicacion": "Leónidas, en 300."
+        },
+        "va": {
+          "pregunta": "«Açò és Esparta!»",
+          "opciones": [
+            "300",
+            "Gladiator",
+            "Troia"
+          ],
+          "correcta": 0,
+          "explicacion": "Leònides, a 300."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«Pueden quitarnos la vida, pero jamás nos quitarán… ¡la libertad!»",
+          "opciones": [
+            "Braveheart",
+            "Gladiator",
+            "El último samurái"
+          ],
+          "correcta": 0,
+          "explicacion": "William Wallace, en Braveheart."
+        },
+        "va": {
+          "pregunta": "«Poden llevar-nos la vida, però mai ens llevaran… la llibertat!»",
+          "opciones": [
+            "Braveheart",
+            "Gladiator",
+            "L’últim samurai"
+          ],
+          "correcta": 0,
+          "explicacion": "William Wallace, a Braveheart."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«No puedes pasar»",
+          "opciones": [
+            "El Señor de los Anillos",
+            "Harry Potter",
+            "Juego de Tronos"
+          ],
+          "correcta": 0,
+          "explicacion": "Gandalf frente al Balrog."
+        },
+        "va": {
+          "pregunta": "«No pots passar»",
+          "opciones": [
+            "El Senyor dels Anells",
+            "Harry Potter",
+            "Joc de Trons"
+          ],
+          "correcta": 0,
+          "explicacion": "Gandalf davant del Balrog."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«Se acerca el invierno»",
+          "opciones": [
+            "Juego de Tronos",
+            "Frozen",
+            "The Witcher"
+          ],
+          "correcta": 0,
+          "explicacion": "Los Stark, en Juego de Tronos."
+        },
+        "va": {
+          "pregunta": "«S’acosta l’hivern»",
+          "opciones": [
+            "Joc de Trons",
+            "Frozen",
+            "The Witcher"
+          ],
+          "correcta": 0,
+          "explicacion": "Els Stark, a Joc de Trons."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«¡Bazinga!»",
+          "opciones": [
+            "The Big Bang Theory",
+            "Friends",
+            "Los Simpson"
+          ],
+          "correcta": 0,
+          "explicacion": "Sheldon Cooper."
+        },
+        "va": {
+          "pregunta": "«Bazinga!»",
+          "opciones": [
+            "The Big Bang Theory",
+            "Friends",
+            "Els Simpson"
+          ],
+          "correcta": 0,
+          "explicacion": "Sheldon Cooper."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«El principio es el fin, y el fin es el principio»",
+          "opciones": [
+            "Dark",
+            "Perdidos",
+            "Stranger Things"
+          ],
+          "correcta": 0,
+          "explicacion": "Dark, y sus bucles temporales."
+        },
+        "va": {
+          "pregunta": "«El principi és la fi, i la fi és el principi»",
+          "opciones": [
+            "Dark",
+            "Perduts",
+            "Stranger Things"
+          ],
+          "correcta": 0,
+          "explicacion": "Dark, i els seus bucles temporals."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«Kept you waiting, huh?»",
+          "opciones": [
+            "Metal Gear Solid",
+            "Call of Duty",
+            "Halo"
+          ],
+          "correcta": 0,
+          "explicacion": "Snake, en Metal Gear Solid."
+        },
+        "va": {
+          "pregunta": "«Kept you waiting, huh?»",
+          "opciones": [
+            "Metal Gear Solid",
+            "Call of Duty",
+            "Halo"
+          ],
+          "correcta": 0,
+          "explicacion": "Snake, a Metal Gear Solid."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«Es peligroso ir solo. Toma esto»",
+          "opciones": [
+            "The Legend of Zelda",
+            "Final Fantasy",
+            "Pokémon"
+          ],
+          "correcta": 0,
+          "explicacion": "El anciano de la cueva, en el primer Zelda."
+        },
+        "va": {
+          "pregunta": "«És perillós anar sol. Pren això»",
+          "opciones": [
+            "The Legend of Zelda",
+            "Final Fantasy",
+            "Pokémon"
+          ],
+          "correcta": 0,
+          "explicacion": "L’ancià de la cova, al primer Zelda."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«BOY»",
+          "opciones": [
+            "God of War",
+            "Halo",
+            "Gears of War"
+          ],
+          "correcta": 0,
+          "explicacion": "Kratos, a su hijo."
+        },
+        "va": {
+          "pregunta": "«BOY»",
+          "opciones": [
+            "God of War",
+            "Halo",
+            "Gears of War"
+          ],
+          "correcta": 0,
+          "explicacion": "Kratos, al seu fill."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«¡Kamehameha!»",
+          "opciones": [
+            "Dragon Ball",
+            "Naruto",
+            "One Piece"
+          ],
+          "correcta": 0,
+          "explicacion": "La técnica de Goku."
+        },
+        "va": {
+          "pregunta": "«Kamehameha!»",
+          "opciones": [
+            "Dragon Ball",
+            "Naruto",
+            "One Piece"
+          ],
+          "correcta": 0,
+          "explicacion": "La tècnica de Goku."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«¡Bankai!»",
+          "opciones": [
+            "Bleach",
+            "Naruto",
+            "Jujutsu Kaisen"
+          ],
+          "correcta": 0,
+          "explicacion": "Bleach: la liberación final de la zanpakutō."
+        },
+        "va": {
+          "pregunta": "«Bankai!»",
+          "opciones": [
+            "Bleach",
+            "Naruto",
+            "Jujutsu Kaisen"
+          ],
+          "correcta": 0,
+          "explicacion": "Bleach: l’alliberament final de la zanpakutō."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«Shinzō wo sasageyo»",
+          "opciones": [
+            "Ataque a los Titanes",
+            "Kimetsu no Yaiba",
+            "Death Note"
+          ],
+          "correcta": 0,
+          "explicacion": "¡Entregad vuestros corazones!"
+        },
+        "va": {
+          "pregunta": "«Shinzō wo sasageyo»",
+          "opciones": [
+            "Atac als Titans",
+            "Kimetsu no Yaiba",
+            "Death Note"
+          ],
+          "correcta": 0,
+          "explicacion": "Entregueu els vostres cors!"
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«¡Seré el Rey de los Piratas!»",
+          "opciones": [
+            "One Piece",
+            "Naruto",
+            "Bleach"
+          ],
+          "correcta": 0,
+          "explicacion": "Monkey D. Luffy."
+        },
+        "va": {
+          "pregunta": "«Seré el Rei dels Pirates!»",
+          "opciones": [
+            "One Piece",
+            "Naruto",
+            "Bleach"
+          ],
+          "correcta": 0,
+          "explicacion": "Monkey D. Luffy."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«El miedo es el asesino de la mente»",
+          "opciones": [
+            "Dune",
+            "Star Wars",
+            "Interstellar"
+          ],
+          "correcta": 0,
+          "explicacion": "La letanía contra el miedo de Dune."
+        },
+        "va": {
+          "pregunta": "«La por és l’assassina de la ment»",
+          "opciones": [
+            "Dune",
+            "Star Wars",
+            "Interstellar"
+          ],
+          "correcta": 0,
+          "explicacion": "La lletania contra la por de Dune."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«Eres un mago, Harry»",
+          "opciones": [
+            "Harry Potter",
+            "El Señor de los Anillos",
+            "Las crónicas de Narnia"
+          ],
+          "correcta": 0,
+          "explicacion": "Hagrid, claro."
+        },
+        "va": {
+          "pregunta": "«Ets un mag, Harry»",
+          "opciones": [
+            "Harry Potter",
+            "El Senyor dels Anells",
+            "Les cròniques de Nàrnia"
+          ],
+          "correcta": 0,
+          "explicacion": "Hagrid, és clar."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«Hodor»",
+          "opciones": [
+            "Juego de Tronos",
+            "The Witcher",
+            "Vikingos"
+          ],
+          "correcta": 0,
+          "explicacion": "Sujeta la puerta…"
+        },
+        "va": {
+          "pregunta": "«Hodor»",
+          "opciones": [
+            "Joc de Trons",
+            "The Witcher",
+            "Víkings"
+          ],
+          "correcta": 0,
+          "explicacion": "Subjecta la porta…"
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«Hasta la vista, baby»",
+          "opciones": [
+            "Terminator 2",
+            "Robocop",
+            "Depredador"
+          ],
+          "correcta": 0,
+          "explicacion": "El T-800, en Terminator 2."
+        },
+        "va": {
+          "pregunta": "«Hasta la vista, baby»",
+          "opciones": [
+            "Terminator 2",
+            "Robocop",
+            "Depredador"
+          ],
+          "correcta": 0,
+          "explicacion": "El T-800, a Terminator 2."
+        }
+      },
+      {
+        "es": {
+          "pregunta": "«Diabolical»",
+          "opciones": [
+            "The Boys",
+            "Los Vengadores",
+            "Daredevil"
+          ],
+          "correcta": 0,
+          "explicacion": "Butcher, en The Boys."
+        },
+        "va": {
+          "pregunta": "«Diabolical»",
+          "opciones": [
+            "The Boys",
+            "Els Venjadors",
+            "Daredevil"
+          ],
+          "correcta": 0,
+          "explicacion": "Butcher, a The Boys."
+        }
+      }
+    ]
   }
 }

@@ -440,7 +440,7 @@ export function crearCerebro(datos) {
       .filter((frase) => frase.palabras.length),
   }));
 
-  const memoria = { ultima: null, tema: null, pagina: null, dichas: new Set(), variantes: new Map() };
+  const memoria = { ultima: null, tema: null, pagina: null, juego: null, dichas: new Set(), variantes: new Map() };
 
   const lista = (obj, idioma) => (obj?.[idioma]?.length ? obj[idioma] : obj?.es) || [];
 
@@ -540,9 +540,10 @@ export function crearCerebro(datos) {
   /* ---------- Quiz «¿Cuánto sabes de Sergio?» ----------
      Mientras hay un quiz en marcha, lo que escribe el usuario se compara con las opciones
      de la pregunta actual (con tolerancia a faltas, o por número/letra: 1, 2, 3 / a, b, c). */
-  const quiz = datos.quiz;
+  let quiz = datos.quiz; // banco activo: datos.quiz o el de la intención (p. ej. «¿Quién lo dijo?»)
+  const textosQ = (clave, idioma) => lista(quiz?.textos?.[clave] || datos.quiz?.textos?.[clave], idioma);
   const textoQuiz = (clave, idioma, extra = {}) =>
-    rellenar(elegirAlAzar(lista(quiz?.textos?.[clave], idioma)) || '', idioma, extra);
+    rellenar(elegirAlAzar(textosQ(clave, idioma)) || '', idioma, extra);
   const barajar = (arr) => {
     const copia = [...arr];
     for (let i = copia.length - 1; i > 0; i--) {
@@ -557,7 +558,7 @@ export function crearCerebro(datos) {
     const p = datosPregunta(q.preguntas[q.i], idioma);
     return q.orden[q.i].map((j) => p.opciones[j]);
   };
-  const salirQuiz = (idioma) => lista(quiz.textos?.botonSalir, idioma)[0] || 'Salir';
+  const salirQuiz = (idioma) => textosQ('botonSalir', idioma)[0] || 'Salir';
   const enunciado = (idioma) => {
     const q = memoria.quiz;
     const p = datosPregunta(q.preguntas[q.i], idioma);
@@ -570,6 +571,7 @@ export function crearCerebro(datos) {
   });
 
   const empezarQuiz = (intencion, idioma) => {
+    quiz = datos[intencion.banco] || datos.quiz;
     const banco = quiz?.preguntas || [];
     if (!banco.length) return construir(intencion, idioma);
     const preguntas = barajar(banco).slice(0, Math.min(quiz.numero || 5, banco.length));
@@ -587,13 +589,13 @@ export function crearCerebro(datos) {
     const { aciertos, preguntas, i } = memoria.quiz;
     const total = abandono ? i : preguntas.length; // si sale antes, solo cuentan las respondidas
     memoria.quiz = null;
-    if (!total) return { texto: prefijo, sugerencias: lista(quiz.textos?.botonesFinal, idioma) };
+    if (!total) return { texto: prefijo, sugerencias: textosQ('botonesFinal', idioma) };
     const nivel = aciertos === total ? 'perfecto' : aciertos >= Math.ceil(total / 2) ? 'alto' : 'bajo';
     const cierre = textoQuiz(nivel, idioma, { aciertos, total });
     return {
       texto: prefijo ? `${prefijo}\n\n${cierre}` : cierre,
       efecto: nivel === 'perfecto' ? 'fuegos' : nivel === 'alto' ? 'feliz' : 'salto',
-      sugerencias: lista(quiz.textos?.botonesFinal, idioma),
+      sugerencias: textosQ('botonesFinal', idioma),
     };
   };
 
@@ -620,7 +622,7 @@ export function crearCerebro(datos) {
 
   const responderQuiz = (palabras, limpio, idioma) => {
     const q = memoria.quiz;
-    const salir = lista(quiz.textos?.palabrasSalir, idioma).concat(lista(quiz.textos?.palabrasSalir, 'es'));
+    const salir = textosQ('palabrasSalir', idioma).concat(textosQ('palabrasSalir', 'es'));
     if (salir.some((s) => normalizarTexto(s) === limpio)) return terminarQuiz(idioma, textoQuiz('abandono', idioma), true);
 
     const elegida = opcionElegida(palabras, limpio, idioma);
@@ -639,6 +641,173 @@ export function crearCerebro(datos) {
     return respuestaQuiz(`${feedback}\n\n${enunciado(idioma)}`, idioma, acierto ? 'feliz' : undefined);
   };
 
+
+  /* ---------- Minijuegos del chat: piedra-papel-tijera, adivina el número y ahorcado ----------
+     Como el quiz: mientras hay uno en marcha, lo que se escribe va al juego («salir» para dejarlo).
+     Textos y palabras en datos.juegos (respuestas.json). */
+  const JUE = datos.juegos || {};
+  const textoJuego = (juego, clave, idioma, extra = {}) =>
+    rellenar(elegirAlAzar(lista(JUE[juego]?.textos?.[clave] || JUE.textos?.[clave], idioma)) || '', idioma, extra);
+  const listaJuego = (juego, clave, idioma) => lista(JUE[juego]?.textos?.[clave] || JUE.textos?.[clave], idioma);
+  /* Texto «en bruto» para los juegos: sin abreviaturas (una «d» o una «k» del ahorcado son letras) */
+  const limpiarJuego = (texto) => String(texto).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/·/g, '').replace(/[^a-z0-9ñ ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const esSalir = (limpio, idioma) => lista(datos.quiz?.textos?.palabrasSalir, idioma)
+    .concat(lista(datos.quiz?.textos?.palabrasSalir, 'es')).some((s) => normalizarTexto(s) === limpio);
+  const botonSalir = (idioma) => lista(datos.quiz?.textos?.botonSalir, idioma)[0] || 'Salir';
+  const finJuego = (juego, texto, idioma, efecto) => {
+    memoria.juego = null;
+    return { texto, efecto, sugerencias: listaJuego(juego, 'botonesFinal', idioma) };
+  };
+
+  /* --- Piedra, papel o tijera (gana quien llegue antes a 3) --- */
+  const PPT = ['piedra', 'papel', 'tijera'];
+  const GANA_A = { piedra: 'tijera', papel: 'piedra', tijera: 'papel' };
+  const leerJugada = (texto) => {
+    if (/✊|👊/.test(texto)) return 'piedra';
+    if (/✋|🖐/.test(texto)) return 'papel';
+    if (/✌/.test(texto)) return 'tijera';
+    const t = limpiarJuego(texto);
+    if (/\b(piedra|pedra|roca)\b/.test(t) || t === '1') return 'piedra';
+    if (/\b(papel|paper)\b/.test(t) || t === '2') return 'papel';
+    if (/\b(tijeras?|tisores?|tisora)\b/.test(t) || t === '3') return 'tijera';
+    return null;
+  };
+  const nombreJugada = (j, idioma) => lista(JUE.ppt?.nombres, idioma)[PPT.indexOf(j)] || j;
+  const botonesPPT = (idioma) => [...PPT.map((j) => nombreJugada(j, idioma)), botonSalir(idioma)];
+  const rondaPPT = (tuya, idioma, prefijo = '') => {
+    const j = memoria.juego;
+    const mia = elegirAlAzar(PPT);
+    let resultado;
+    if (tuya === mia) { resultado = 'empate'; j.empates++; }
+    else if (GANA_A[tuya] === mia) { resultado = 'ganas'; j.tu++; }
+    else { resultado = 'pierdes'; j.yo++; }
+    const linea = textoJuego('ppt', 'ronda', idioma, {
+      tuya: nombreJugada(tuya, idioma), mia: nombreJugada(mia, idioma),
+      resultado: textoJuego('ppt', resultado, idioma), tu: j.tu, yo: j.yo,
+    });
+    const texto = prefijo ? `${prefijo}\n\n${linea}` : linea;
+    const meta = JUE.ppt?.meta || 3;
+    if (j.tu >= meta) return finJuego('ppt', `${texto}\n\n${textoJuego('ppt', 'victoria', idioma, { tu: j.tu, yo: j.yo })}`, idioma, 'fuegos');
+    if (j.yo >= meta) return finJuego('ppt', `${texto}\n\n${textoJuego('ppt', 'derrota', idioma, { tu: j.tu, yo: j.yo })}`, idioma, 'aura');
+    return { texto, efecto: resultado === 'ganas' ? 'salto' : resultado === 'pierdes' ? 'feliz' : undefined, sugerencias: botonesPPT(idioma) };
+  };
+  const empezarPPT = (texto, idioma) => {
+    memoria.juego = { tipo: 'ppt', tu: 0, yo: 0, empates: 0 };
+    const intro = textoJuego('ppt', 'intro', idioma, { meta: JUE.ppt?.meta || 3 });
+    const jugada = leerJugada(texto);
+    return jugada ? rondaPPT(jugada, idioma, intro) : { texto: intro, sugerencias: botonesPPT(idioma) };
+  };
+
+  /* --- Adivina el número del 1 al 100 --- */
+  const empezarNumero = (idioma) => {
+    memoria.juego = { tipo: 'numero', secreto: 1 + Math.floor(Math.random() * 100), intentos: 0, min: 1, max: 100 };
+    return { texto: textoJuego('numero', 'intro', idioma), sugerencias: ['50', botonSalir(idioma)] };
+  };
+  const jugarNumero = (texto, idioma) => {
+    const j = memoria.juego;
+    const m = String(texto).match(/-?\d+/);
+    if (!m) return { texto: textoJuego('numero', 'recordatorio', idioma, { min: j.min, max: j.max }), sugerencias: [botonSalir(idioma)] };
+    const n = Number(m[0]);
+    if (n < 1 || n > 100) return { texto: textoJuego('numero', 'fuera', idioma), sugerencias: [botonSalir(idioma)] };
+    j.intentos++;
+    if (n === j.secreto) {
+      const nivel = j.intentos <= 5 ? 'pro' : j.intentos <= 8 ? 'bien' : 'justo';
+      return finJuego('numero', `${textoJuego('numero', 'acierto', idioma, { n, intentos: j.intentos })} ${textoJuego('numero', nivel, idioma)}`, idioma, 'fuegos');
+    }
+    if (n < j.secreto) j.min = Math.max(j.min, n + 1); else j.max = Math.min(j.max, n - 1);
+    const d = Math.abs(n - j.secreto);
+    const calor = d <= 3 ? 'quema' : d <= 10 ? 'caliente' : d <= 25 ? 'templado' : 'frio';
+    const texto2 = `${textoJuego('numero', n < j.secreto ? 'mas' : 'menos', idioma, { n })} ${textoJuego('numero', calor, idioma)}\n${textoJuego('numero', 'rango', idioma, { min: j.min, max: j.max, intentos: j.intentos })}`;
+    const medio = Math.floor((j.min + j.max) / 2);
+    return { texto: texto2, efecto: calor === 'quema' ? 'salto' : undefined, sugerencias: [String(medio), botonSalir(idioma)] };
+  };
+
+  /* --- Ahorcado friki --- */
+  const letraBase = (c) => c.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const esLetra = (c) => /[a-zñ]/i.test(letraBase(c));
+  const tablero = () => {
+    const j = memoria.juego;
+    // Entre palabras, espacios «eme» (U+2003): el chat junta los espacios normales seguidos
+    return [...j.palabra].map((c) => (c === ' ' ? '\u2003\u2003' : !esLetra(c) || j.letras.has(letraBase(c)) ? c : '_')).join(' ');
+  };
+  const vidas = () => {
+    const j = memoria.juego;
+    return '🏮'.repeat(j.max - j.fallos) + '💨'.repeat(j.fallos);
+  };
+  const resuelto = () => [...memoria.juego.palabra].every((c) => !esLetra(c) || memoria.juego.letras.has(letraBase(c)));
+  const estadoAhorcado = (idioma, prefijo) => ({
+    texto: `${prefijo ? `${prefijo}\n\n` : ''}${tablero()}\n\n${textoJuego('ahorcado', 'vidas', idioma, { vidas: vidas() })}`,
+    sugerencias: [...listaJuego('ahorcado', 'botonPista', idioma), botonSalir(idioma)],
+  });
+  const empezarAhorcado = (idioma) => {
+    const palabras = JUE.ahorcado?.palabras || [];
+    if (!palabras.length) return null;
+    const elegida = elegirAlAzar(palabras);
+    memoria.juego = {
+      tipo: 'ahorcado', palabra: (elegida[idioma] || elegida.es).toUpperCase(), categoria: elegida.categoria,
+      letras: new Set(), fallos: 0, max: JUE.ahorcado?.vidas || 6, pista: false,
+    };
+    return estadoAhorcado(idioma, textoJuego('ahorcado', 'intro', idioma));
+  };
+  const jugarAhorcado = (texto, idioma) => {
+    const j = memoria.juego;
+    const t = limpiarJuego(texto);
+    const pista = listaJuego('ahorcado', 'palabrasPista', idioma).concat(listaJuego('ahorcado', 'palabrasPista', 'es'));
+    if (pista.some((p) => normalizarTexto(p) === normalizarTexto(texto))) {
+      const cat = lista(JUE.ahorcado?.categorias?.[j.categoria], idioma)[0] || j.categoria;
+      return estadoAhorcado(idioma, textoJuego('ahorcado', 'pista', idioma, { categoria: cat }));
+    }
+    if (!t) return estadoAhorcado(idioma, textoJuego('ahorcado', 'recordatorio', idioma));
+    const solucion = letraBase(j.palabra).replace(/[^a-zñ0-9]/g, '');
+    let prefijo;
+    if (t.replace(/ /g, '').length > 1) {
+      // Intenta resolver la palabra entera
+      if (t.replace(/[^a-zñ0-9]/g, '') === solucion) {
+        [...j.palabra].forEach((c) => esLetra(c) && j.letras.add(letraBase(c)));
+      } else {
+        j.fallos++;
+        prefijo = textoJuego('ahorcado', 'noEs', idioma);
+      }
+    } else if (/[a-zñ]/.test(t)) {
+      if (j.letras.has(t)) return estadoAhorcado(idioma, textoJuego('ahorcado', 'repetida', idioma, { letra: t.toUpperCase() }));
+      j.letras.add(t);
+      const esta = [...j.palabra].some((c) => letraBase(c) === t);
+      if (!esta) j.fallos++;
+      prefijo = textoJuego('ahorcado', esta ? 'bien' : 'mal', idioma, { letra: t.toUpperCase() });
+    } else {
+      return estadoAhorcado(idioma, textoJuego('ahorcado', 'recordatorio', idioma));
+    }
+    if (resuelto()) {
+      return finJuego('ahorcado', `${tablero()}\n\n${textoJuego('ahorcado', 'victoria', idioma, { palabra: j.palabra, fallos: j.fallos })}`, idioma, 'fuegos');
+    }
+    if (j.fallos >= j.max) {
+      return finJuego('ahorcado', `${vidas()}\n\n${textoJuego('ahorcado', 'derrota', idioma, { palabra: j.palabra })}`, idioma, 'kamikaze');
+    }
+    return estadoAhorcado(idioma, prefijo);
+  };
+
+  const empezarJuego = (intencion, texto, idioma) => {
+    memoria.ultima = intencion;
+    if (intencion.juego === 'ppt') return empezarPPT(texto, idioma);
+    if (intencion.juego === 'numero') return empezarNumero(idioma);
+    if (intencion.juego === 'ahorcado') return empezarAhorcado(idioma) || construir(intencion, idioma);
+    return construir(intencion, idioma);
+  };
+  const responderJuego = (texto, limpio, idioma) => {
+    const j = memoria.juego;
+    if (esSalir(limpio, idioma)) {
+      const extra = j.tipo === 'ahorcado' ? { palabra: j.palabra } : j.tipo === 'numero' ? { n: j.secreto } : { tu: j.tu, yo: j.yo };
+      return finJuego(j.tipo, textoJuego(j.tipo, 'abandono', idioma, extra), idioma);
+    }
+    if (j.tipo === 'ppt') {
+      const jugada = leerJugada(texto);
+      return jugada ? rondaPPT(jugada, idioma) : { texto: textoJuego('ppt', 'recordatorio', idioma), sugerencias: botonesPPT(idioma) };
+    }
+    if (j.tipo === 'numero') return jugarNumero(texto, idioma);
+    return jugarAhorcado(texto, idioma);
+  };
+
   return {
     responder(texto, idioma = 'es', contexto = {}) {
       // La página da contexto: en juegos.html, «otro» o «recomiéndame algo» van de juegos
@@ -650,6 +819,7 @@ export function crearCerebro(datos) {
       const limpio = normalizarTexto(texto);
       const palabras = limpio.split(' ').filter(Boolean);
       if (memoria.quiz && palabras.length) return responderQuiz(palabras, limpio, idioma);
+      if (memoria.juego && String(texto).trim()) return responderJuego(texto, limpio, idioma);
       let mejor = null;
       let maximo = 0;
       if (palabras.length) {
@@ -666,6 +836,7 @@ export function crearCerebro(datos) {
       if (mejor.accion === 'aleatorio') return accionAleatorio(mejor, idioma);
       if (mejor.accion === 'sorpresa') return accionSorpresa(mejor, idioma);
       if (mejor.accion === 'quiz') return empezarQuiz(mejor, idioma);
+      if (mejor.accion === 'juego') return empezarJuego(mejor, texto, idioma);
       if (mejor.accion === 'pagina') return accionPagina(mejor, idioma);
       return construir(mejor, idioma);
     },
