@@ -51,6 +51,11 @@ const TEXTOS = {
     dia: 'Buenos días. Modo ahorro de llama ☀️',
     acentoRosa: 'Rosa neón. Me sienta genial 💗',
     acentoAzul: 'Azul eléctrico. Qué estilo ⚡',
+    finPagina: ['¡Has llegado al final! 🏁 ¿Le escribes a Sergio?', 'Fin del scroll. Más abajo solo hay píxeles vacíos 👀', '¡Hasta el fondo! Eres de los que leen todo. Me gusta.'],
+    copiar: ['¡Eh, que eso lo escribió Sergio! 😄', 'Copiando, ¿eh? Cita la fuente 😉', 'Ctrl+C detectado. Mi llama lo ha visto todo 👀'],
+    formFoco: ['¡Escríbele, que contesta! ✍️', 'Ánimo, Sergio lee todos los mensajes 📬', 'Tranquilo: tus datos solo se usan para contestarte 🔒'],
+    formEnviado: ['¡Allá va tu mensaje! 📬🎉', '¡Enviado! Ahora toca esperar… yo te hago compañía 🏮'],
+    agitar: ['¡Para, que me mareo! 😵‍💫', '¡Terremoto! … Ah no, eras tú agitando el móvil.', '¡Que soy de papel! 📱💫'],
     pillaBurlas: ['¡Por aquí!', '¡Casi! 😝', 'Nananana', '¡Más rápido!', 'Soy un farol, no un caracol', '¿Eso es todo?', '¡Uy, por poco!'],
     pillaAtrapado: ['¡Me pillaste! 🎉 Eres más rápido que el Flash.', '¡Atrapado! Vale, vale, me rindo 🏳️', '¡Noooo! Me has pillado. Exijo la revancha.'],
     pillaEscapa: ['¡15 segundos y no me has pillado! 😎', '¡Se acabó el tiempo! El farol más rápido del oeste.', '¡Gané! Escribe «juega conmigo» para la revancha.'],
@@ -127,6 +132,11 @@ const TEXTOS = {
     dia: 'Bon dia. Mode estalvi de flama ☀️',
     acentoRosa: 'Rosa neó. Em queda genial 💗',
     acentoAzul: 'Blau elèctric. Quin estil ⚡',
+    finPagina: ['Has arribat al final! 🏁 Li escrius a Sergio?', 'Fi del scroll. Més avall només hi ha píxels buits 👀', 'Fins al fons! Eres dels que ho lligen tot. M’agrada.'],
+    copiar: ['Eh, que això ho va escriure Sergio! 😄', 'Copiant, eh? Cita la font 😉', 'Ctrl+C detectat. La meua flama ho ha vist tot 👀'],
+    formFoco: ['Escriu-li, que contesta! ✍️', 'Ànim, Sergio llig tots els missatges 📬', 'Tranquil: les teues dades només s’usen per a contestar-te 🔒'],
+    formEnviado: ['Allà va el teu missatge! 📬🎉', 'Enviat! Ara toca esperar… jo et faig companyia 🏮'],
+    agitar: ['Para, que em maree! 😵‍💫', 'Terratrèmol! … Ah no, eres tu agitant el mòbil.', 'Que soc de paper! 📱💫'],
     pillaBurlas: ['Per ací!', 'Quasi! 😝', 'Nananana', 'Més ràpid!', 'Soc un fanal, no un caragol', 'Això és tot?', 'Ui, per poc!'],
     pillaAtrapado: ['M’has pillat! 🎉 Eres més ràpid que el Flash.', 'Atrapat! Vale, vale, em rendisc 🏳️', 'Noooo! M’has pillat. Exigisc la revenja.'],
     pillaEscapa: ['15 segons i no m’has pillat! 😎', 'S’ha acabat el temps! El fanal més ràpid de l’oest.', 'He guanyat! Escriu «juga amb mi» per a la revenja.'],
@@ -1535,6 +1545,113 @@ export function initFarolillo(opciones = {}) {
     return true;
   };
 
+
+  /* ---------- Pequeñas reacciones a lo que pasa en la web ---------- */
+  const enfriamientos = {};
+  /* Cada reacción tiene su pausa para no ser pesado */
+  const reaccionarA = (clave, pausa, accion) => {
+    const ahora = performance.now();
+    if (enfriamientos[clave] && ahora - enfriamientos[clave] < pausa) return;
+    enfriamientos[clave] = ahora;
+    accion();
+  };
+
+  // Llegar al final de la página (una vez por visita a la página)
+  let finVisto = false;
+  function revisarFinal() {
+    if (finVisto || pilla || vuelo) return;
+    const alto = document.documentElement.scrollHeight;
+    if (alto <= innerHeight + 200) return; // páginas cortas: no cuenta
+    if (window.scrollY + innerHeight >= alto - 40) {
+      finVisto = true;
+      temporizador(() => {
+        fis.vy -= 220;
+        estallido(18);
+        mostrarPista(elegir(tx().finPagina), 4000);
+      }, 400);
+    }
+  }
+
+  // Copiar texto de la web
+  const alCopiar = () => {
+    const seleccion = String(window.getSelection?.() || '').trim();
+    if (seleccion.length < 4) return;
+    const nodo = window.getSelection()?.anchorNode;
+    if (nodo && raiz.contains(nodo.nodeType === 1 ? nodo : nodo.parentNode)) return; // copiar del chat no cuenta
+    reaccionarA('copiar', 9000, () => {
+      ponerCara('sorpresa', 1200);
+      fis.vy -= 160;
+      mostrarPista(elegir(tx().copiar), 3200);
+    });
+  };
+
+  // Formularios de la web (p. ej. «¿Te llamo?»): ánimo al escribir y fiesta al enviar
+  let timerEncima = 0;
+  const ponerEncima = (si) => {
+    clearTimeout(timerEncima);
+    if (si && innerWidth < 700) return; // en el móvil la ventana ocupa toda la pantalla: no tapar el formulario
+    raiz.classList.toggle('farol--encima', si);
+    lienzo?.classList.toggle('farol-lienzo--encima', si);
+  };
+  const formularioAjeno = (el) => {
+    const form = el?.closest?.('form');
+    return form && !raiz.contains(form) ? form : null;
+  };
+  const alEnfocar = (e) => {
+    if (!formularioAjeno(e.target) || !e.target.matches('input, textarea, select')) return;
+    ponerEncima(true); // los formularios en ventana modal quedan por encima de Farolillo
+    reaccionarA('form', 20000, () => {
+      ponerCara('feliz', 1500);
+      fis.vy -= 140;
+      mostrarPista(elegir(tx().formFoco), 3500);
+    });
+  };
+  const alDesenfocar = (e) => {
+    if (!formularioAjeno(e.target)) return;
+    clearTimeout(timerEncima);
+    timerEncima = setTimeout(() => {
+      if (!formularioAjeno(document.activeElement)) ponerEncima(false);
+    }, 4000);
+  };
+  const alEnviarFormulario = (e) => {
+    if (!formularioAjeno(e.target)) return;
+    ponerEncima(true);
+    temporizador(() => {
+      fuegos();
+      ponerCara('feliz', 2500);
+      fis.vy -= 260;
+      mostrarPista(elegir(tx().formEnviado), 4000);
+    }, 300);
+    timerEncima = setTimeout(() => ponerEncima(false), 6000);
+  };
+
+  // Agitar el móvil (sensor de movimiento; en iPhone el navegador no lo permite sin pedir permiso, así que ahí no se usa)
+  let agitones = [];
+  let ultimaAceleracion = null;
+  const alMoverMovil = (e) => {
+    const a = e.accelerationIncludingGravity;
+    if (!a || a.x == null) return;
+    const actual = { x: a.x, y: a.y, z: a.z };
+    if (ultimaAceleracion) {
+      const cambio = Math.abs(actual.x - ultimaAceleracion.x) + Math.abs(actual.y - ultimaAceleracion.y) + Math.abs(actual.z - ultimaAceleracion.z);
+      const ahora = performance.now();
+      if (cambio > 28) agitones.push(ahora);
+      agitones = agitones.filter((t) => ahora - t < 900);
+      if (agitones.length >= 4 && !oculto && !pilla && !vuelo) {
+        agitones = [];
+        reaccionarA('agitar', 5000, () => {
+          ponerCara('mareado', 2600);
+          reaccionar('farol--mareo');
+          fis.vAng += azar(-1, 1) > 0 ? 720 : -720;
+          estallido(36);
+          mostrarPista(elegir(tx().agitar), 3000);
+        });
+      }
+    }
+    ultimaAceleracion = actual;
+  };
+  const sensorMovimiento = 'DeviceMotionEvent' in window && typeof DeviceMotionEvent.requestPermission !== 'function' && !punteroFino;
+
   /* ---------- Bucle principal (física + chispas) ---------- */
   let raf = 0;
   let ultimo = 0;
@@ -1669,6 +1786,7 @@ export function initFarolillo(opciones = {}) {
     const dy = window.scrollY - ultimoScroll;
     ultimoScroll = window.scrollY;
     ultimaActividad = performance.now();
+    revisarFinal();
     if (reducido) return;
     fis.vAng += limitar(dy * 0.5, -90, 90);
     fis.vy += limitar(-dy * 1.2, -160, 160);
@@ -2398,6 +2516,11 @@ export function initFarolillo(opciones = {}) {
   window.addEventListener('keydown', alTeclear);
   html.addEventListener('pointerleave', alSalirPuntero);
   document.addEventListener('pointerdown', alPulsarFuera);
+  document.addEventListener('copy', alCopiar);
+  document.addEventListener('focusin', alEnfocar);
+  document.addEventListener('focusout', alDesenfocar);
+  document.addEventListener('submit', alEnviarFormulario, true);
+  if (sensorMovimiento) window.addEventListener('devicemotion', alMoverMovil, { passive: true });
   document.addEventListener('visibilitychange', alCambiarVisibilidad);
 
   /* ---------- Arranque ---------- */
@@ -2454,6 +2577,12 @@ export function initFarolillo(opciones = {}) {
       window.removeEventListener('keydown', alTeclear);
       html.removeEventListener('pointerleave', alSalirPuntero);
       document.removeEventListener('pointerdown', alPulsarFuera);
+      document.removeEventListener('copy', alCopiar);
+      document.removeEventListener('focusin', alEnfocar);
+      document.removeEventListener('focusout', alDesenfocar);
+      document.removeEventListener('submit', alEnviarFormulario, true);
+      window.removeEventListener('devicemotion', alMoverMovil);
+      window.removeEventListener('keydown', alTeclearEntrada);
       document.removeEventListener('visibilitychange', alCambiarVisibilidad);
       lienzo?.remove();
       limpiarTruco();

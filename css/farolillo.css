@@ -1385,6 +1385,10 @@
 .farol--retro.farol--hover .farol-svg-retro { transform: scale(1.06); }
 .farol--retro.farol--salto .farol-svg-retro { animation: farol-salto 0.6s steps(6); }
 
+/* Mientras se rellena un formulario en ventana modal (z-index alto), Farolillo se pone encima */
+.farolillo.farol--encima { z-index: 10001; }
+.farol-lienzo.farol-lienzo--encima { z-index: 10000; }
+
 /* ==========================================================
    Escondido: solo queda una pestañita en el borde para volver
    ========================================================== */
