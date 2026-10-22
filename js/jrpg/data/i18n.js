@@ -161,6 +161,8 @@ let current = 'es';
 
 export function setLang(lang) {
   current = STRINGS[lang] ? lang : 'es';
+  // Que el lector de pantalla pronuncie en el idioma que se ve
+  if (typeof document !== 'undefined') document.documentElement.lang = current === 'va' ? 'ca-ES-valencia' : 'es';
 }
 
 /** Traduce una clave con interpolación simple: t('msg.yourTurn', { name: 'Ada' }). */

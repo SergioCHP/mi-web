@@ -12,6 +12,10 @@ Las versiones anteriores a la 1.0.0 se han reconstruido a partir del historial d
 
 ## [Sin publicar]
 
+_Nada todavía._
+
+## [1.3.0] — 2026-10-22
+
 Minijuego con animaciones nuevas, un enemigo nuevo y escenario pintado. Farolillo pasa de la portada a 7 páginas, con quiz, minijuegos, trucos animados y reacciones nuevas.
 
 ### Añadido
@@ -63,6 +67,10 @@ Minijuego con animaciones nuevas, un enemigo nuevo y escenario pintado. Farolill
 
 **Farolillo**
 - En el caso de estudio decía que era «el caso de estudio del minijuego». Ahora habla del caso de estudio de la web.
+
+**Idiomas**
+- La elección de Matrix (`matrix_pills.html`) seguía en castellano con la web en valenciano. Ahora se traducen el título, las pastillas, el enlace de volver y el mensaje final.
+- El minijuego se traducía, pero la página seguía marcada como castellano (`lang="es"`) y el lector de pantalla leía el valenciano con pronunciación castellana. Ahora el atributo `lang` cambia con el idioma.
 
 ## [1.2.0] — 2026-10-20
 
@@ -219,7 +227,8 @@ Primera versión estable: la web completa, segura, accesible, documentada y opti
 - Selector de color de acento y modo claro/oscuro.
 - Primer prototipo del minijuego JRPG.
 
-[Sin publicar]: https://github.com/SergioCHP/mi-web/compare/v1.2.0...HEAD
+[Sin publicar]: https://github.com/SergioCHP/mi-web/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/SergioCHP/mi-web/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/SergioCHP/mi-web/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/SergioCHP/mi-web/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/SergioCHP/mi-web/releases/tag/v1.0.0

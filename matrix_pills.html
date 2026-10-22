@@ -60,6 +60,26 @@
         const fadeOverlay = document.getElementById('fade-overlay');
         const finalMessage = document.getElementById('final-message');
         
+        // Idioma: la misma preferencia que el resto de la web (localStorage "sergio-lang")
+        let lang = 'es';
+        try { if (localStorage.getItem('sergio-lang') === 'va') lang = 'va'; } catch { /* sin almacenamiento */ }
+        const TEXTOS = {
+            es: { anime: 'Bienvenido al mundo del anime...', cine: 'Entrando a la sala de cine...' },
+            va: { anime: "Benvingut al món de l'anime...", cine: 'Entrant a la sala de cinema...' },
+        };
+        if (lang === 'va') {
+            document.documentElement.lang = 'ca-ES-valencia';
+            document.title = "L'Elecció | Sergio Chorques";
+            document.querySelector('.matrix-nav').setAttribute('aria-label', 'Navegació');
+            document.querySelector('.matrix-back').textContent = "← Tornar a l'inici";
+            document.querySelector('.title').textContent = 'Tria el teu destí';
+            const blava = document.getElementById('blue-pill');
+            blava.title = 'Entrar a Cinema';
+            blava.querySelector('.sr-only').textContent = 'Pastilla blava';
+            document.getElementById('label-cine').textContent = 'CINEMA';
+            document.getElementById('red-pill').title = 'Entrar a Anime';
+        }
+
         let rainColor = '#0F0'; // Color inicial: Verde Matrix
         let isRunning = true;
         let animationId;
@@ -160,7 +180,7 @@
             setTimeout(() => uiLayer.style.display = 'none', 800);
 
             setTimeout(() => {
-                typeWriterEffect("Bienvenido al mundo del anime...", "#fff", "rgba(232, 58, 58, 0.5)", 55);
+                typeWriterEffect(TEXTOS[lang].anime,"#fff", "rgba(232, 58, 58, 0.5)", 55);
             }, 900);
 
             // Redirección equilibrada (3.6s en total)
@@ -178,7 +198,7 @@
             setTimeout(() => uiLayer.style.display = 'none', 800);
 
             setTimeout(() => {
-                typeWriterEffect("Entrando a la sala de cine...", "#fff", "rgba(56, 189, 248, 0.5)", 55);
+                typeWriterEffect(TEXTOS[lang].cine,"#fff", "rgba(56, 189, 248, 0.5)", 55);
             }, 900);
 
             // Redirección manteniendo la lluvia en pantalla

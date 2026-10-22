@@ -5,7 +5,7 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 
 🔗 **Web publicada:** https://sergiochp.github.io/mi-web/
 📄 **Caso de estudio y vídeo demo:** https://sergiochp.github.io/mi-web/caso-estudio.html
-🏷️ **Versión actual:** [v1.2.0](https://github.com/SergioCHP/mi-web/releases/tag/v1.2.0) · cambios en [CHANGELOG.md](CHANGELOG.md)
+🏷️ **Versión actual:** [v1.3.0](https://github.com/SergioCHP/mi-web/releases/tag/v1.3.0) · cambios en [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
