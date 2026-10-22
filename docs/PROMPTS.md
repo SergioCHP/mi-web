@@ -211,3 +211,87 @@ Al documentarlo, la IA vio que al README le faltaba la sección «Decisiones de 
 - Publicarlo como versión 1.2.0 con el mismo flujo que la 1.1.0: rama, Pull Request y etiqueta.
 
 **Resultado:** rama `privacidad-rgpd`, Pull Request y etiqueta `v1.2.0`.
+
+## 20 oct · Hero y «Sobre mí»
+
+**Órdenes (textual):**
+> Reescribe «Sobre mí» y el hero con algo más natural, que ocupe lo mismo más o menos. Si necesitas saber algo, pregúntame.
+
+> No me convence, déjalo todo como estaba en la release 1.2.0 y quita los cambios a partir de ahí.
+
+La IA propuso cuatro enfoques (directo, cercano, honesto y «como código»). Probé uno en la web, no me convenció y lo deshice. Al final escribí yo los textos y se los pasé:
+
+> Cambia esto en mi-web: hero: Estudio 1º de DAM en el IES Simarro. Aprendo programando: cada proyecto es una excusa para probar algo nuevo y hacer que se vea y funcione bien. […] No hagas ningún commit ni nada hasta que te lo diga.
+
+**Qué decidí yo:**
+- Los textos finales del hero y de «Sobre mí», con mis palabras.
+- Borrar del historial los dos commits de la prueba que no me gustó.
+- Hacer yo el commit desde VS Code, directo en `main`.
+
+**Resultado:** commit `f47085a`.
+
+## 20 oct · Minijuego: animaciones nuevas y Soldado de Élite
+
+**Órdenes (textual):**
+> Según la guía de sprites que has creado, dame los prompts para crear todas las mejoras que dices ahí.
+
+> ¿Cómo se juega con tres héroes o con el monstruo pequeño de antes?
+
+> Elimina las imágenes de assets que ya no gastamos.
+
+> Vale, pues haz el add, el commit y el push, en el mismo main.
+
+**Qué salió:**
+- Generé con IA las animaciones nuevas del héroe (daño, magia, Límite y victoria), el Soldado de Élite y el Reactor Mako en 3 capas, con los prompts de `docs/GUIA_SPRITES.md`.
+- Al integrarlas, la IA encontró y corrigió fallos: la postura de magia se quedaba enganchada, la cámara se quedaba con zoom y el nombre del Soldado se cortaba en el móvil.
+- La simulación seguía usando a los enemigos antiguos. Con el Soldado real, quien solo atacaba ganaba el 36 %; se ajustó al 85 % y se corrigieron las cifras del caso de estudio.
+- Se borraron los 9 JPG originales que el juego ya no usaba (unos 19 MB).
+
+**Qué decidí yo:**
+- Generar las imágenes yo mismo siguiendo la guía.
+- Borrar las imágenes que sobraban.
+- Subirlo directo a `main`.
+
+**Resultado:** commit `2ad3bfd`.
+
+## 21 oct · Farolillo: más respuestas, juegos y trucos
+
+**Órdenes (textual):**
+> Me gustaría que Farolillo, el chatbot de la web, tuviera más preguntas y respuestas, para que sea difícil encontrarle fallos. Si necesitas respuestas sobre mí, dímelo y te las digo.
+
+> El código Konami creo que no funciona.
+
+> Pequeñas reacciones: al llegar al final de la página, al copiar texto («¡eh, que eso lo escribió Sergio!»), al rellenar el formulario de contacto o si agitas el móvil.
+
+**Órdenes (resumen):** después le fui pidiendo más cosas, una por commit: trucos animados, poder lanzarlo para que rebote, minijuegos en el chat, el código Konami con un modo 8 bits y el pilla-pilla.
+
+**Qué salió:**
+- De 116 a 256 intenciones, con un quiz sobre mí, contexto según la página y la opción de esconderlo.
+- 19 trucos animados, tres minijuegos en el chat, «¿Quién lo dijo?», el pilla-pilla y el modo 8 bits.
+- El código Konami fallaba de verdad en tres casos: si se metía mientras Farolillo saludaba, si el cursor no estaba en la caja y con algunas formas de escribirlo. Se arreglaron los tres.
+- Las reacciones al final de la página, a copiar texto, al formulario y a agitar el móvil. En iPhone no reacciona al agitar, porque Safari pediría un permiso.
+
+**Qué decidí yo:**
+- Las respuestas sobre mí y el tono bromista y friki.
+- Qué trucos, juegos y reacciones quería.
+- Probarlo yo y avisar cuando algo no funcionaba, como el código Konami.
+
+**Resultado:** commits del `d87f9d8` al `1254448`.
+
+## 21–22 oct · Documentación y versión 1.3.0
+
+**Órdenes (textual):**
+> He hecho bastantes cambios y deberíamos documentarlos donde toque en la web. También quiero un archivo nuevo que aparezca todo sobre Farolillo, todo lo que hace, cómo lo hace, todo bien explicado. Los commits también han subido y habría que cambiarlo en el caso de estudio. Repásalo.
+
+
+**Qué salió:**
+- `docs/FAROLILLO.md`, la guía completa de Farolillo.
+- El caso de estudio actualizado: +75 commits, +25 000 líneas, 256 intenciones y una quinta fase, «Pulido».
+- Una revisión de las 10 páginas en castellano y valenciano, en ordenador y en móvil: sin errores en la consola ni de accesibilidad (axe).
+- La página de Matrix traducida al valenciano y el idioma del minijuego corregido para los lectores de pantalla.
+
+**Qué decidí yo:**
+- Publicarlo como versión 1.3.0.
+- Hacer yo los commits, la etiqueta y la release.
+
+**Resultado:** commits `149ad89` y `9998aff`, etiqueta y release `v1.3.0`.
