@@ -37,6 +37,12 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 - Física y reacciones: se arrastra, se lanza y rebota por la pantalla, se duerme, comenta las secciones y reacciona al tema, al idioma, al formulario y a copiar texto.
 - Todo explicado en [`docs/FAROLILLO.md`](docs/FAROLILLO.md).
 
+**Buscador de videojuegos** (`juegos.html`, datos de IGDB):
+- Ficha con portada, nota, crítica, plataformas, géneros, estudio, editora y modos de juego.
+- Tráiler de YouTube que solo se carga al pulsar «Ver tráiler», galería de capturas con visor y duración (historia y al 100 %).
+- «Si te gusta, prueba»: juegos parecidos que se buscan con un clic.
+- Todo explicado en [`docs/BUSCADOR_JUEGOS.md`](docs/BUSCADOR_JUEGOS.md).
+
 **Extras en la portada:**
 - Formulario **«¿Te llamo?»** que guarda las solicitudes en Supabase, me avisa por correo y envía una **respuesta automática** al visitante en su idioma (Edge Function `contacto`).
 - Widget del tiempo de Enguera (API de **Open-Meteo**).

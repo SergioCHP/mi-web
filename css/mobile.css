@@ -440,6 +440,7 @@ body::after {
   .search-chip,
   .buscador__btn,
   .buscador__tienda,
+  .buscador__mas,
   .modal__submit {
     min-height: 44px;
   }
@@ -897,6 +898,32 @@ body::after {
   .buscador__etiqueta {
     display: block;
     min-width: 0;
+  }
+
+  .buscador__galeria {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ficha__fila {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .ficha__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .buscador__ficha .buscador__nombre {
+    text-align: center;
+  }
+
+  .ficha__fecha {
+    text-align: center;
+  }
+
+  .buscador__trailer-play {
+    padding: 0.6rem 1.1rem;
+    font-size: 0.9rem;
   }
 
   /* Tarjetas de resultados generadas con estilos en línea */

@@ -2522,6 +2522,11 @@ main, footer {
   box-shadow: var(--neu-inset), var(--neu-bevel);
 }
 
+/* display: grid anula el atributo hidden: la ficha oculta no debe ocupar sitio */
+.buscador__ficha[hidden] {
+  display: none;
+}
+
 .buscador__img {
   width: 100%;
   aspect-ratio: 3 / 4;
@@ -2607,6 +2612,306 @@ main, footer {
   color: var(--accent);
 }
 
+/* --- Información de la ficha: fecha, casillas de datos, etiquetas y sinopsis --- */
+.buscador__contenido {
+  min-width: 0;
+}
+
+.buscador__ficha .buscador__img {
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--line);
+}
+
+.buscador__ficha .buscador__nombre {
+  margin: 0.1rem 0 0.25rem;
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.buscador .ficha__fecha {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Casillas: nota, crítica y duración */
+.ficha__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.ficha__stats:empty {
+  display: none;
+}
+
+.ficha__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  box-shadow: var(--neu-bevel);
+}
+
+.ficha__stat-valor {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--accent-text, var(--accent));
+}
+
+.ficha__stat-valor small {
+  margin-left: 0.15rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.ficha__stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Datos: etiqueta a la izquierda, valor a la derecha */
+.ficha__datos {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0 0 1.25rem;
+}
+
+.ficha__fila {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.ficha__fila dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.ficha__fila dd {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.ficha__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ficha__tag {
+  padding: 0.22rem 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface-2));
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+/* Sinopsis separada del resto */
+.ficha__sinopsis {
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.ficha__sinopsis .buscador__desc {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.ficha__idioma {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* --- Extras de la ficha: tráiler, capturas y juegos parecidos --- */
+.buscador__extra {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.buscador__extra .detail-trailer {
+  margin-top: 0;
+}
+
+/* .buscador delante: si no, «.card p» (gris) le gana */
+.buscador .buscador__subtitulo,
+.buscador .detail-trailer__label {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-text, var(--accent));
+}
+
+/* Botón con la imagen del juego: YouTube solo se carga al pulsarlo */
+.buscador__trailer-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: #000;
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.buscador__trailer-btn img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+  transition: opacity var(--transition), transform 0.4s ease;
+}
+
+.buscador__trailer-play {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.7rem 1.3rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.buscador__trailer-btn:hover,
+.buscador__trailer-btn:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.buscador__trailer-btn:hover img,
+.buscador__trailer-btn:focus-visible img {
+  opacity: 0.75;
+  transform: scale(1.03);
+}
+
+.buscador__trailer-btn:focus-visible,
+.buscador__captura:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Galería de capturas */
+.buscador__galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.6rem;
+}
+
+.buscador__captura {
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  cursor: zoom-in;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.buscador__captura img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.buscador__captura:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.buscador__similares {
+  margin-top: 0;
+}
+
+/* Visor de capturas: flechas sobre la imagen */
+.captura-modal .cert-modal__img-wrap {
+  position: relative;
+}
+
+.captura-modal__paso {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.captura-modal__paso[hidden] {
+  display: none;
+}
+
+.captura-modal__paso--prev { left: 0.6rem; }
+.captura-modal__paso--next { right: 0.6rem; }
+
+.captura-modal__paso:hover,
+.captura-modal__paso:focus-visible {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.captura-modal__paso:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buscador__trailer-btn img,
+  .buscador__captura {
+    transition: none;
+  }
+  .buscador__trailer-btn:hover img,
+  .buscador__captura:hover {
+    transform: none;
+  }
+}
+
 /* Skeleton (base surface-2 para que contraste sobre la ficha surface) */
 .skeleton {
   background: linear-gradient(90deg, var(--surface-2) 25%, color-mix(in srgb, var(--accent) 12%, var(--surface-2)) 50%, var(--surface-2) 75%);
@@ -2673,6 +2978,37 @@ main, footer {
 
 .buscador__grid[hidden] {
   display: none;
+}
+
+/* Botón «Ver más» bajo los resultados */
+.buscador__mas {
+  display: block;
+  margin: 1rem auto 0;
+  padding: 0.55rem 1.3rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition), transform var(--transition);
+}
+
+.buscador__mas[hidden] {
+  display: none;
+}
+
+.buscador__mas:hover {
+  border-color: var(--accent);
+  color: var(--accent-text, var(--accent));
+  transform: translateY(-2px);
+}
+
+.buscador__mas:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .game-mini-card {

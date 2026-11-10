@@ -96,7 +96,7 @@
       "<li><strong>GitHub</strong>: allotja la web (GitHub Pages), i la seua API mostra la meua activitat en la portada.</li>" +
       "<li><strong>Open-Meteo</strong>: el temps d'Enguera en la portada.</li>" +
       "<li><strong>IGDB (Twitch), TMDB i AniList</strong>: els cercadors de videojocs, cinema i anime, amb les seues portades.</li>" +
-      "<li><strong>YouTube</strong>, en mode de privacitat millorada (<code>youtube-nocookie.com</code>): només quan obris un anime que té tràiler.</li>" +
+      "<li><strong>YouTube</strong>, en mode de privacitat millorada (<code>youtube-nocookie.com</code>): només quan obris un anime que té tràiler o polses «Veure tràiler» en el cercador de jocs.</li>" +
       "<li><strong>cdnjs i jsDelivr</strong>: les llibreries del grimori de llibres.</li>" +
       "</ul>" +
       "<p>Les tipografies estan allotjades en esta mateixa web, així que no es demanen a Google Fonts.</p>",

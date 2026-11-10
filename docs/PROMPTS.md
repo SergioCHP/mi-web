@@ -322,4 +322,34 @@ La IA propuso cuatro enfoques (directo, cercano, honesto y «como código»). Pr
 - Twitch no deja registrar apps sin la verificación en dos pasos y, al activarla, cerró la sesión de la consola.
 - El formulario de Twitch daba error por una URL de redirección vacía añadida dos veces.
 
-**Resultado:** Edge Function `juegos` desplegada en Supabase. Guía en `docs/BUSCADOR_JUEGOS.md`.
+**Resultado:** commit `41e4a4f`. Edge Function `juegos` desplegada en Supabase. Guía en `docs/BUSCADOR_JUEGOS.md`.
+
+## 10 nov · Ficha ampliada del buscador de juegos
+
+**Orden (textual):**
+> Ahora en la búsqueda de videojuegos puedes añadir algunas cosas más, ej. tráiler, no sé qué se puede poner más.
+
+La IA propuso cuatro grupos de datos que da IGDB y los elegí todos: tráiler, galería de capturas, estudio/editora/modos y duración/juegos parecidos.
+
+**Qué salió:**
+- La función `juegos` devuelve los datos nuevos y pide la duración en una segunda consulta.
+- El tráiler se carga solo al pulsar «Ver tráiler», así YouTube no entra en la página si nadie lo ve.
+- Las capturas se abren en un visor con el mismo estilo que el de los certificados, con flechas y teclado.
+- Los juegos parecidos se buscan con un clic.
+- Los resultados se ordenan para que no salgan primero los fangames, que aparecían al buscar «Elden Ring».
+- La ficha se traduce al valenciano al cambiar de idioma y la política de privacidad menciona el tráiler de juegos.
+
+**Orden (textual), después de probarlo:**
+> Me gustaría que fuese como en anime: haces la búsqueda y salen los resultados, a ser posible 5, porque al ser 6 el sexto se va a la línea de abajo. Y cuando pinchas en uno sale toda la info; ahora ya sale directamente del primero de la búsqueda.
+
+> Donde sale la información, hazlo un poco más bonito, está muy amontonado (plataformas está pegado a PlayStation 3). Hazlo más vistoso.
+
+> Se puede mejorar la búsqueda? Cuando buscas por ejemplo God of War te salen 5 resultados, pero se queda fuera el primer God of War de 2005. Pero tampoco quiero que salgan infinidad de juegos si no son el que tiene que ser.
+
+> A veces ignora juegos si escribes parte del nombre, y por ejemplo no sale el God of War que salió en PS3.
+
+**Problema que apareció:** al probarlo no se veían los cambios. El navegador guardaba una hora las respuestas antiguas de la función; se arregló añadiendo una versión a la URL de búsqueda (`JUEGOS_VERSION`).
+
+**Qué decidí yo:**
+- Qué datos añadir a la ficha.
+- Que funcione como el buscador de anime y con 5 resultados.

@@ -12,7 +12,15 @@ Las versiones anteriores a la 1.0.0 se han reconstruido a partir del historial d
 
 ## [Sin publicar]
 
+### Añadido
+- **Ficha ampliada en el buscador de videojuegos:** tráiler de YouTube (se carga solo al pulsar «Ver tráiler»), galería de 4 capturas con visor (flechas y teclado), estudio, editora, modos de juego, duración (historia y al 100 %) y 4 juegos parecidos que se buscan con un clic.
+- El buscador funciona como el de anime: muestra 5 resultados (caben en una fila), un botón «Ver más» añade hasta 5 más y la ficha solo se abre al pulsar uno.
+- Ficha rediseñada: casillas para la nota, la crítica y la duración; plataformas, géneros y modos como etiquetas; fecha legible y sinopsis separada.
+- La ficha usa la portada vertical del juego y se traduce al cambiar de idioma; los avisos del buscador también salen en valenciano.
+
 ### Cambiado
+- **Búsqueda más precisa:** se descartan DLC, packs, ports y fangames; los resultados se ordenan por popularidad con un plus para el título exacto (con «god of war» ya sale el de 2005). Si solo hay 2 o 3 juegos que encajan, salen 2 o 3. También encuentra títulos escritos a medias («god of war ascen»).
+- La función reintenta una vez si IGDB responde «demasiadas peticiones».
 - **Buscador de videojuegos:** RAWG dejó de responder y se sustituye por **IGDB** (Twitch). La consulta pasa por la Edge Function `juegos` de Supabase, que guarda las claves de Twitch en los Secrets y devuelve los datos con el mismo formato que antes.
 - Créditos actualizados de RAWG a IGDB en `juegos.html`, la política de privacidad y el caso de estudio.
 - README y `docs/PROMPTS.md` actualizados; nueva guía `docs/BUSCADOR_JUEGOS.md` para crear la app de Twitch y desplegar la función.

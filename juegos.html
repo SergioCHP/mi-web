@@ -314,7 +314,7 @@
         </svg>
       </div>
       <h2 id="buscadorTitulo" class="buscador__titulo" data-es="Buscador de videojuegos" data-ca="Cercador de videojocs">Buscador de videojuegos</h2>
-      <p class="buscador__intro" data-es="Escribe un título y te muestro los resultados con portada, plataformas y detalles. Datos de IGDB." data-ca="Escriu un títol i et mostro els resultats amb portada, plataformes i detalls. Dades d'IGDB.">Escribe un título y te muestro los resultados con portada, plataformas y detalles. Datos de IGDB.</p>
+      <p class="buscador__intro" data-es="Busca un título y pulsa un resultado para ver portada, tráiler, capturas, duración y juegos parecidos. Datos de IGDB." data-ca="Busca un títol i polsa un resultat per a veure portada, tràiler, captures, durada i jocs semblants. Dades d'IGDB.">Busca un título y pulsa un resultado para ver portada, tráiler, capturas, duración y juegos parecidos. Datos de IGDB.</p>
 
       <form class="buscador__form" id="buscadorForm" autocomplete="off">
         <input type="search" id="buscadorInput" class="buscador__input" placeholder="Ej. Cyberpunk, Elden Ring, Zelda..." aria-label="Buscar videojuego" />
@@ -333,6 +333,7 @@
 
       <!-- Lista de resultados en cuadrícula -->
       <div class="buscador__grid" id="buscadorGrid" hidden></div>
+      <button type="button" class="buscador__mas" id="buscadorMas" hidden>Ver más</button>
 
       <!-- Ficha detallada del juego seleccionado -->
       <div class="buscador__ficha" id="buscadorFicha" hidden></div>
@@ -379,6 +380,22 @@
     </div>
   </footer>
   
+  <!-- Visor de capturas del buscador (mismo estilo que el de certificados) -->
+  <div class="modal cert-modal captura-modal" id="capturaModal" aria-hidden="true">
+    <div class="modal__backdrop" data-cerrar-captura></div>
+    <div class="cert-modal__panel" role="dialog" aria-modal="true" aria-labelledby="capturaModalTitle">
+      <button type="button" class="modal__close" data-cerrar-captura aria-label="Cerrar visor">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h3 id="capturaModalTitle" class="cert-modal__title"></h3>
+      <div class="cert-modal__img-wrap">
+        <button type="button" class="captura-modal__paso captura-modal__paso--prev" data-paso="-1" aria-label="Captura anterior">&#8249;</button>
+        <img id="capturaModalImg" alt="" />
+        <button type="button" class="captura-modal__paso captura-modal__paso--next" data-paso="1" aria-label="Captura siguiente">&#8250;</button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/particles.js"></script>
   <script src="js/carousel3d.js"></script>
   <script src="js/a11y.js"></script>

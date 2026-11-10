@@ -57,7 +57,7 @@
         "Gira el carrusel y toca una tarjeta para ver más detalles.",
       buscadorTitle: "Buscador de videojuegos",
       buscadorIntro:
-        "Escribe un título y te muestro los resultados con portada, plataformas y detalles. Datos de IGDB.",
+        "Busca un título y pulsa un resultado para ver portada, tráiler, capturas, duración y juegos parecidos. Datos de IGDB.",
       buscadorBtn: "Buscar",
       igdbFooter: "Datos de juegos: IGDB",
       flipHint: "Voltear",
@@ -242,7 +242,7 @@
         "Gira el carrusel i toca una targeta per a veure més detalls.",
       buscadorTitle: "Cercador de videojocs",
       buscadorIntro:
-        "Escriu un títol i et mostre els resultats amb portada, plataformes i detalls. Dades d'IGDB.",
+        "Busca un títol i polsa un resultat per a veure portada, tràiler, captures, durada i jocs semblants. Dades d'IGDB.",
       buscadorBtn: "Cercar",
       igdbFooter: "Dades de jocs: IGDB",
       flipHint: "Girar",
@@ -1502,12 +1502,19 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
    los datos con el mismo formato que usaba RAWG. */
 const JUEGOS_URL = `${SUPABASE_URL}/functions/v1/juegos`;
 const JUEGOS_TIMEOUT_MS = 8000;
+// Súbelo cuando cambie lo que devuelve la función: así el navegador no usa
+// respuestas guardadas con el formato antiguo (se guardan 1 hora).
+const JUEGOS_VERSION = 6;
+// Se enseñan 5 (caben en una fila) y «Ver más» añade el resto, hasta 10.
+const JUEGOS_POR_FILA = 5;
+const JUEGOS_MAX = 10;
 
 const buscadorForm = document.getElementById("buscadorForm");
 const buscadorInput = document.getElementById("buscadorInput");
 const buscadorEstado = document.getElementById("buscadorEstado");
 const buscadorGrid = document.getElementById("buscadorGrid");
 const buscadorFicha = document.getElementById("buscadorFicha");
+const buscadorMas = document.getElementById("buscadorMas");
 const searchChips = document.querySelectorAll(".search-chip");
 
 const gamesCache = new Map();
@@ -1522,49 +1529,266 @@ function estado(msg, err = false) {
   buscadorEstado.classList.toggle("is-error", err);
 }
 
+/* --- Textos de la ficha en castellano y valenciano --- */
+const enVa = () => (document.documentElement.lang || "").startsWith("ca");
+const tx = (es, va) => (enVa() ? va : es);
+
+// IGDB da los modos de juego en inglés
+const MODOS = {
+  "Single player": ["Un jugador", "Un jugador"],
+  "Multiplayer": ["Multijugador", "Multijugador"],
+  "Co-operative": ["Cooperativo", "Cooperatiu"],
+  "Split screen": ["Pantalla dividida", "Pantalla dividida"],
+  "Massively Multiplayer Online (MMO)": ["MMO", "MMO"],
+  "Battle Royale": ["Battle royale", "Battle royale"]
+};
+const traducirModo = (m) => (MODOS[m] ? MODOS[m][enVa() ? 1 : 0] : m);
+
+const ICONO_PLAY = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>`;
+
+let fichaActual = null;
+
 function renderFicha(j) {
   if (!buscadorFicha) return;
+  fichaActual = j;
 
-  const img = j.background_image
-    ? `<img class="buscador__img" src="${esc(j.background_image)}" alt="${esc(j.name)}" loading="lazy" />`
-    : `<div class="buscador__img buscador__img--vacio">Sin imagen</div>`;
+  // Portada vertical si la hay (encaja con el hueco 3:4); si no, la imagen apaisada
+  const portada = j.cover || j.background_image;
+  const img = portada
+    ? `<img class="buscador__img" src="${esc(portada)}" alt="${esc(tx("Portada de ", "Portada de ") + j.name)}" loading="lazy" />`
+    : `<div class="buscador__img buscador__img--vacio">${tx("Sin imagen", "Sense imatge")}</div>`;
 
-  const plataformas = (j.platforms || []).map((p) => esc(p.platform.name)).slice(0, 8).join(" · ") || "—";
-  const generos = (j.genres || []).map((g) => esc(g.name)).slice(0, 6).join(" · ") || "—";
-  const fecha = j.released ? esc(j.released) : "—";
-  const nota = typeof j.rating === "number" ? j.rating.toFixed(1) : "—";
+  // Plataformas, géneros y modos como etiquetas; estudio y editora como texto
+  const etiquetas = (arr, max) => (arr || []).slice(0, max)
+    .map((t) => `<li class="ficha__tag">${esc(t)}</li>`).join("");
+  const texto = (arr, max) => (arr || []).slice(0, max).map(esc).join(", ");
+  const plataformas = etiquetas((j.platforms || []).map((p) => p.platform.name), 8);
+  const generos = etiquetas((j.genres || []).map((g) => g.name), 6);
+  const modos = etiquetas((j.modes || []).map(traducirModo), 5);
+  const estudio = texto(j.developers, 3);
+  const editora = texto(j.publishers, 3);
+
+  // Fecha legible: «17 nov 2009»
+  const fecha = j.released
+    ? new Date(`${j.released}T12:00:00`).toLocaleDateString(enVa() ? "ca-ES" : "es-ES",
+        { day: "numeric", month: "short", year: "numeric" })
+    : null;
+  const nota = typeof j.rating === "number" ? j.rating.toFixed(1) : null;
   const meta = typeof j.metacritic === "number" ? j.metacritic : null;
+  const dur = j.duration || {};
   const desc = (j.short_description || j.description_raw || "")
     .replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+
+  // Casilla de dato: valor grande, unidad pequeña y etiqueta debajo
+  const stat = (valor, unidad, etiqueta) => valor == null ? "" : `
+    <div class="ficha__stat">
+      <span class="ficha__stat-valor">${esc(valor)}${unidad ? `<small>${unidad}</small>` : ""}</span>
+      <span class="ficha__stat-label">${etiqueta}</span>
+    </div>`;
+  const fila = (etiqueta, valor, esLista) => !valor ? "" : `
+    <div class="ficha__fila">
+      <dt>${etiqueta}</dt>
+      <dd>${esLista ? `<ul class="ficha__tags">${valor}</ul>` : valor}</dd>
+    </div>`;
 
   const tiendas = (j.stores || [])
     .map((s) => `<a class="buscador__tienda" href="${esc(s.store.url)}" target="_blank" rel="noopener">${esc(s.store.name)}</a>`)
     .join("");
 
+  // Tráiler: solo un botón; YouTube no se carga hasta que se pulsa
+  const trailer = j.trailer
+    ? `<div class="detail-trailer buscador__trailer">
+         <p class="detail-trailer__label">${ICONO_PLAY}${tx("Tráiler", "Tràiler")}</p>
+         <button type="button" class="buscador__trailer-btn" data-trailer="${esc(j.trailer.id)}"
+                 aria-label="${esc(tx("Ver el tráiler de ", "Veure el tràiler de ") + j.name)}">
+           ${portada ? `<img src="${esc(j.background_image || portada)}" alt="" loading="lazy" />` : ""}
+           <span class="buscador__trailer-play">${ICONO_PLAY}${tx("Ver tráiler", "Veure tràiler")}</span>
+         </button>
+       </div>`
+    : "";
+
+  const capturas = (j.screenshots || []).length
+    ? `<div class="buscador__bloque">
+         <p class="buscador__subtitulo">${tx("Capturas", "Captures")}</p>
+         <div class="buscador__galeria">
+           ${j.screenshots.map((c, i) => `
+             <button type="button" class="buscador__captura" data-captura="${i}"
+                     aria-label="${esc(tx(`Ampliar captura ${i + 1} de `, `Ampliar captura ${i + 1} de `) + j.name)}">
+               <img src="${esc(c.mini)}" alt="" loading="lazy" />
+             </button>`).join("")}
+         </div>
+       </div>`
+    : "";
+
+  const similares = (j.similar || []).length
+    ? `<div class="buscador__bloque">
+         <p class="buscador__subtitulo">${tx("Si te gusta, prueba", "Si t'agrada, prova")}</p>
+         <div class="buscador__chips buscador__similares">
+           ${j.similar.map((n) => `<button type="button" class="search-chip" data-similar="${esc(n)}">${esc(n)}</button>`).join("")}
+         </div>
+       </div>`
+    : "";
+
   buscadorFicha.innerHTML = `
     ${img}
     <div class="buscador__contenido">
       <h4 class="buscador__nombre">${esc(j.name)}</h4>
-      <div class="buscador__meta">
-        <span class="buscador__dato"><strong>${fecha}</strong><span>lanzamiento</span></span>
-        <span class="buscador__dato"><strong>${nota}</strong><span>nota IGDB</span></span>
-        ${meta != null ? `<span class="buscador__dato"><strong>${meta}</strong><span>crítica</span></span>` : ""}
+      ${fecha ? `<p class="ficha__fecha">${tx("Lanzado el", "Eixit el")} ${esc(fecha)}</p>` : ""}
+
+      <div class="ficha__stats">
+        ${stat(nota, "/10", tx("Nota IGDB", "Nota IGDB"))}
+        ${stat(meta, "/100", tx("Crítica", "Crítica"))}
+        ${stat(dur.historia ? `~${dur.historia}` : null, "h", tx("Historia", "Història"))}
+        ${stat(dur.completo ? `~${dur.completo}` : null, "h", tx("Al 100 %", "Al 100 %"))}
       </div>
-      <p class="buscador__linea"><span class="buscador__etiqueta">Plataformas</span>${plataformas}</p>
-      <p class="buscador__linea"><span class="buscador__etiqueta">Géneros</span>${generos}</p>
-      ${desc ? `<p class="buscador__desc">${esc(desc)}</p>` : ""}
+
+      <dl class="ficha__datos">
+        ${fila(tx("Plataformas", "Plataformes"), plataformas, true)}
+        ${fila(tx("Géneros", "Gèneres"), generos, true)}
+        ${fila(tx("Modos", "Modes"), modos, true)}
+        ${fila(tx("Estudio", "Estudi"), estudio)}
+        ${fila(tx("Editora", "Editora"), editora)}
+      </dl>
+
+      ${desc ? `
+        <div class="ficha__sinopsis">
+          <p class="buscador__subtitulo">${tx("Sinopsis", "Sinopsi")} <span class="ficha__idioma">(${tx("en inglés", "en anglés")})</span></p>
+          <p class="buscador__desc" lang="en">${esc(desc)}</p>
+        </div>` : ""}
       ${tiendas ? `<div class="buscador__tiendas">${tiendas}</div>` : ""}
-    </div>`;
+    </div>
+    ${trailer || capturas || similares ? `<div class="buscador__extra">${trailer}${capturas}${similares}</div>` : ""}`;
   buscadorFicha.hidden = false;
   buscadorFicha.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
+/* --- Clics dentro de la ficha (delegados: la ficha se redibuja entera) --- */
+buscadorFicha?.addEventListener("click", (e) => {
+  // Tráiler: el reproductor de YouTube sustituye al botón
+  const btnTrailer = e.target.closest("[data-trailer]");
+  if (btnTrailer) {
+    const marco = document.createElement("div");
+    marco.className = "detail-trailer__frame";
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(btnTrailer.dataset.trailer)}?autoplay=1&rel=0`;
+    iframe.title = tx("Tráiler de ", "Tràiler de ") + (fichaActual?.name || "");
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    iframe.allowFullscreen = true;
+    marco.appendChild(iframe);
+    btnTrailer.replaceWith(marco);
+    iframe.focus();
+    return;
+  }
 
-function renderGrid(games) {
+  // Captura: se abre en grande
+  const btnCaptura = e.target.closest("[data-captura]");
+  if (btnCaptura) {
+    visorCapturas.abrir(Number(btnCaptura.dataset.captura));
+    return;
+  }
+
+  // Juego similar: se busca
+  const btnSimilar = e.target.closest("[data-similar]");
+  if (btnSimilar) {
+    const nombre = btnSimilar.dataset.similar;
+    if (buscadorInput) buscadorInput.value = nombre;
+    buscarJuego(nombre);
+    document.getElementById("buscador")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+});
+
+// Si se cambia el idioma con una ficha abierta, se vuelve a pintar traducida
+new MutationObserver(() => {
+  if (fichaActual && buscadorFicha && !buscadorFicha.hidden) renderFicha(fichaActual);
+}).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+
+/* --- Visor de capturas (mismo modal que el de certificados) --- */
+const visorCapturas = (() => {
+  const modal = document.getElementById("capturaModal");
+  const imagen = document.getElementById("capturaModalImg");
+  const titulo = document.getElementById("capturaModalTitle");
+  if (!modal || !imagen || !titulo) return { abrir() {} };
+
+  const focus = window.a11y ? window.a11y.modal(modal, () => cerrar()) : null;
+  let indice = 0;
+
+  const pintar = () => {
+    const capturas = fichaActual?.screenshots || [];
+    const c = capturas[indice];
+    if (!c) return;
+    imagen.src = c.grande;
+    imagen.alt = tx(`Captura ${indice + 1} de `, `Captura ${indice + 1} de `) + fichaActual.name;
+    titulo.textContent = `${fichaActual.name} · ${indice + 1}/${capturas.length}`;
+    modal.querySelectorAll("[data-paso]").forEach((b) => { b.hidden = capturas.length < 2; });
+    // Etiquetas de los botones en el idioma actual
+    modal.querySelector(".modal__close")?.setAttribute("aria-label", tx("Cerrar visor", "Tancar visor"));
+    modal.querySelector('[data-paso="-1"]')?.setAttribute("aria-label", tx("Captura anterior", "Captura anterior"));
+    modal.querySelector('[data-paso="1"]')?.setAttribute("aria-label", tx("Captura siguiente", "Captura següent"));
+  };
+
+  const mover = (paso) => {
+    const total = fichaActual?.screenshots?.length || 0;
+    if (total < 2) return;
+    indice = (indice + paso + total) % total;
+    pintar();
+  };
+
+  const onTecla = (e) => {
+    if (e.key === "ArrowRight") mover(1);
+    if (e.key === "ArrowLeft") mover(-1);
+  };
+
+  function abrir(i) {
+    indice = i;
+    pintar();
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    document.addEventListener("keydown", onTecla);
+    if (focus) focus.abierto(modal.querySelector(".modal__close"));
+  }
+
+  function cerrar() {
+    if (!modal.classList.contains("is-open")) return;
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    document.removeEventListener("keydown", onTecla);
+    imagen.removeAttribute("src");
+    if (focus) focus.cerrado();
+  }
+
+  modal.querySelectorAll("[data-cerrar-captura]").forEach((el) => el.addEventListener("click", cerrar));
+  modal.querySelectorAll("[data-paso]").forEach((b) =>
+    b.addEventListener("click", () => mover(Number(b.dataset.paso))));
+
+  return { abrir };
+})();
+
+
+function renderGrid(games, todos = false, abierto = null) {
   if (!buscadorGrid) return;
   buscadorGrid.innerHTML = "";
 
-  games.forEach((game) => {
+  // Primero 5; el botón «Ver más» vuelve a pintar con todos
+  const visibles = todos ? games : games.slice(0, JUEGOS_POR_FILA);
+  const quedan = games.length - visibles.length;
+  if (buscadorMas) {
+    buscadorMas.hidden = quedan <= 0;
+    buscadorMas.textContent = tx(`Ver ${quedan} más`, `Veure'n ${quedan} més`);
+  }
+
+  // Como en anime: primero solo los resultados; la ficha sale al pulsar uno.
+  // Con «Ver más» se mantiene la ficha que estuviera abierta.
+  if (!abierto) {
+    fichaActual = null;
+    if (buscadorFicha) {
+      buscadorFicha.innerHTML = "";
+      buscadorFicha.hidden = true;
+    }
+  }
+
+  visibles.forEach((game) => {
     const card = document.createElement("article");
     card.className = "game-mini-card";
     const imgUrl = game.background_image || "";
@@ -1585,19 +1809,16 @@ function renderGrid(games) {
     });
     a11y.hacerAccesible(card, year ? `${game.name} (${year})` : game.name);
 
+    if (game === abierto) card.classList.add("is-selected");
     buscadorGrid.appendChild(card);
   });
 
   buscadorGrid.hidden = false;
-  if (games.length > 0) {
-    buscadorGrid.children[0].classList.add("is-selected");
-    renderFicha(games[0]);
-  }
 }
 
 async function buscarJuego(nombre) {
   const q = (nombre || "").trim();
-  if (q.length < 2) { estado("Escribe al menos 2 letras.", true); return; }
+  if (q.length < 2) { estado(tx("Escribe al menos 2 letras.", "Escriu almenys 2 lletres."), true); return; }
 
   const cacheKey = q.toLowerCase();
   if (gamesCache.has(cacheKey)) {
@@ -1607,8 +1828,9 @@ async function buscarJuego(nombre) {
     return;
   }
 
-  estado("Buscando títulos…");
+  estado(tx("Buscando títulos…", "Buscant títols…"));
   if (buscadorGrid) buscadorGrid.hidden = true;
+  if (buscadorMas) buscadorMas.hidden = true;
   if (buscadorFicha) buscadorFicha.hidden = true;
 
   const btn = document.querySelector(".buscador__btn");
@@ -1619,7 +1841,7 @@ async function buscarJuego(nombre) {
   const timer = setTimeout(() => ctrl.abort(), JUEGOS_TIMEOUT_MS);
 
   try {
-    const url = `${JUEGOS_URL}?search=${encodeURIComponent(q)}`;
+    const url = `${JUEGOS_URL}?search=${encodeURIComponent(q)}&v=${JUEGOS_VERSION}`;
     const res = await fetch(url, {
       signal: ctrl.signal,
       headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
@@ -1628,19 +1850,17 @@ async function buscarJuego(nombre) {
     const data = await res.json();
 
     if (!data.results || data.results.length === 0) {
-      estado(`Sin resultados para “${q}”.`, true);
+      estado(tx(`Sin resultados para “${q}”.`, `Sense resultats per a “${q}”.`), true);
       return;
     }
 
-    currentResults = data.results;
+    currentResults = data.results.slice(0, JUEGOS_MAX);
     gamesCache.set(cacheKey, currentResults);
     renderGrid(currentResults);
     estado("");
   } catch (e) {
-    const enValenciano = (document.documentElement.lang || "").startsWith("ca");
-    estado(enValenciano
-      ? "El cercador de jocs no respon ara mateix. Torna-ho a provar més tard."
-      : "El buscador de juegos no responde ahora mismo. Inténtalo más tarde.", true);
+    estado(tx("El buscador de juegos no responde ahora mismo. Inténtalo más tarde.",
+              "El cercador de jocs no respon ara mateix. Torna-ho a provar més tard."), true);
   } finally {
     clearTimeout(timer);
     btn?.classList.remove("is-busy");
@@ -1679,6 +1899,7 @@ buscadorInput?.addEventListener("input", () => {
     if (buscadorGrid) {
       buscadorGrid.innerHTML = "";
       buscadorGrid.hidden = true;
+      if (buscadorMas) buscadorMas.hidden = true;
     }
     if (buscadorFicha) {
       buscadorFicha.innerHTML = "";
@@ -1701,6 +1922,7 @@ buscadorInput?.addEventListener("search", () => {
     if (buscadorGrid) {
       buscadorGrid.innerHTML = "";
       buscadorGrid.hidden = true;
+      if (buscadorMas) buscadorMas.hidden = true;
     }
     if (buscadorFicha) {
       buscadorFicha.innerHTML = "";
@@ -1708,6 +1930,12 @@ buscadorInput?.addEventListener("search", () => {
     }
     estado("");
   }
+});
+
+// «Ver más»: añade el resto de resultados y lleva el foco al primero nuevo
+buscadorMas?.addEventListener("click", () => {
+  renderGrid(currentResults, true, fichaActual);
+  buscadorGrid?.children[JUEGOS_POR_FILA]?.focus();
 });
 
 // Eventos de los chips sugeridos

@@ -407,7 +407,8 @@ html[data-theme="light"] .detail-title {
 }
 
 html[data-theme="light"] .detail-score,
-html[data-theme="light"] .detail-trailer__label {
+html[data-theme="light"] .detail-trailer__label,
+html[data-theme="light"] .buscador__subtitulo {
   color: var(--accent-text);
 }
 
