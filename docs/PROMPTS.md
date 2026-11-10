@@ -353,3 +353,10 @@ La IA propuso cuatro grupos de datos que da IGDB y los elegí todos: tráiler, g
 **Qué decidí yo:**
 - Qué datos añadir a la ficha.
 - Que funcione como el buscador de anime y con 5 resultados.
+
+**Resultado:** commit `16e5d99`. Publicado como versión **1.4.0**.
+
+**Orden (textual):**
+> Perfecto, ya he hecho el push. ¿Deberíamos poner en GitHub nueva versión tipo 1.3.1?
+
+La IA propuso **1.4.0** en lugar de 1.3.1: hay funciones nuevas, no solo correcciones, y el CHANGELOG sigue el versionado semántico. Le pedí que lo hiciera todo: CHANGELOG, commit, etiqueta y release.

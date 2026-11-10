@@ -12,24 +12,31 @@ Las versiones anteriores a la 1.0.0 se han reconstruido a partir del historial d
 
 ## [Sin publicar]
 
+_Nada todavía._
+
+## [1.4.0] — 2026-11-10
+
+El buscador de videojuegos vuelve a funcionar: RAWG dejó de responder y se cambia por IGDB, a través de una Edge Function de Supabase. Además, la ficha de cada juego trae tráiler, capturas, duración y juegos parecidos, y la búsqueda es más precisa.
+
 ### Añadido
 - **Ficha ampliada en el buscador de videojuegos:** tráiler de YouTube (se carga solo al pulsar «Ver tráiler»), galería de 4 capturas con visor (flechas y teclado), estudio, editora, modos de juego, duración (historia y al 100 %) y 4 juegos parecidos que se buscan con un clic.
 - El buscador funciona como el de anime: muestra 5 resultados (caben en una fila), un botón «Ver más» añade hasta 5 más y la ficha solo se abre al pulsar uno.
 - Ficha rediseñada: casillas para la nota, la crítica y la duración; plataformas, géneros y modos como etiquetas; fecha legible y sinopsis separada.
 - La ficha usa la portada vertical del juego y se traduce al cambiar de idioma; los avisos del buscador también salen en valenciano.
+- Nueva guía `docs/BUSCADOR_JUEGOS.md`: cómo crear la app de Twitch, desplegar la función y cómo se eligen los resultados.
 
 ### Cambiado
+- **Buscador de videojuegos:** RAWG dejó de responder y se sustituye por **IGDB** (Twitch). La consulta pasa por la Edge Function `juegos` de Supabase, que guarda las claves de Twitch en los Secrets y devuelve los datos con el mismo formato que antes.
 - **Búsqueda más precisa:** se descartan DLC, packs, ports y fangames; los resultados se ordenan por popularidad con un plus para el título exacto (con «god of war» ya sale el de 2005). Si solo hay 2 o 3 juegos que encajan, salen 2 o 3. También encuentra títulos escritos a medias («god of war ascen»).
 - La función reintenta una vez si IGDB responde «demasiadas peticiones».
-- **Buscador de videojuegos:** RAWG dejó de responder y se sustituye por **IGDB** (Twitch). La consulta pasa por la Edge Function `juegos` de Supabase, que guarda las claves de Twitch en los Secrets y devuelve los datos con el mismo formato que antes.
 - Créditos actualizados de RAWG a IGDB en `juegos.html`, la política de privacidad y el caso de estudio.
-- README y `docs/PROMPTS.md` actualizados; nueva guía `docs/BUSCADOR_JUEGOS.md` para crear la app de Twitch y desplegar la función.
+- README y `docs/PROMPTS.md` actualizados.
 
 ### Corregido
 - El buscador ya no se queda colgado si la API no responde: corta a los 8 s y muestra un aviso claro (ES/VA).
 
 ### Seguridad
-- Eliminada del código la API key de RAWG, que estaba publicada en `js/script.js`.
+- Eliminada del código la API key de RAWG, que estaba publicada en `js/script.js`. Las claves de Twitch solo están en los Secrets de Supabase.
 
 ## [1.3.0] — 2026-10-22
 
@@ -244,7 +251,8 @@ Primera versión estable: la web completa, segura, accesible, documentada y opti
 - Selector de color de acento y modo claro/oscuro.
 - Primer prototipo del minijuego JRPG.
 
-[Sin publicar]: https://github.com/SergioCHP/mi-web/compare/v1.3.0...HEAD
+[Sin publicar]: https://github.com/SergioCHP/mi-web/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/SergioCHP/mi-web/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/SergioCHP/mi-web/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/SergioCHP/mi-web/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/SergioCHP/mi-web/compare/v1.0.0...v1.1.0
