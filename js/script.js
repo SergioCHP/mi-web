@@ -2,7 +2,7 @@
    script.js — Portada (index) y juegos.html
    Idioma ES/VA, typewriter, GitHub en vivo, reveal, spotlight,
    tilt 3D, filtros de proyectos, formulario Supabase, tiempo,
-   buscador RAWG y carrusel del hero.
+   buscador de videojuegos (IGDB) y carrusel del hero.
    El tema y el acento están en js/theme.js.
    ========================================================= */
 
@@ -57,9 +57,9 @@
         "Gira el carrusel y toca una tarjeta para ver más detalles.",
       buscadorTitle: "Buscador de videojuegos",
       buscadorIntro:
-        "Escribe un título y te muestro los resultados con portada, plataformas y detalles. Datos de RAWG.",
+        "Escribe un título y te muestro los resultados con portada, plataformas y detalles. Datos de IGDB.",
       buscadorBtn: "Buscar",
-      rawgFooter: "Datos de juegos: RAWG",
+      igdbFooter: "Datos de juegos: IGDB",
       flipHint: "Voltear",
       gameCards: [
         {
@@ -242,9 +242,9 @@
         "Gira el carrusel i toca una targeta per a veure més detalls.",
       buscadorTitle: "Cercador de videojocs",
       buscadorIntro:
-        "Escriu un títol i et mostre els resultats amb portada, plataformes i detalls. Dades de RAWG.",
+        "Escriu un títol i et mostre els resultats amb portada, plataformes i detalls. Dades d'IGDB.",
       buscadorBtn: "Cercar",
-      rawgFooter: "Dades de jocs: RAWG",
+      igdbFooter: "Dades de jocs: IGDB",
       flipHint: "Girar",
       gameCards: [
         {
@@ -616,7 +616,7 @@
     const gamesP = document.querySelector(".games-header p");
     if (gamesP) gamesP.textContent = t.gamesHeaderDesc;
 
-    // Buscador RAWG en juegos.html
+    // Buscador de videojuegos en juegos.html
     const buscadorTitleEl = document.getElementById("buscadorTitulo");
     if (buscadorTitleEl) buscadorTitleEl.textContent = t.buscadorTitle;
 
@@ -626,9 +626,9 @@
     const buscadorSubmitBtn = document.querySelector(".buscador__btn");
     if (buscadorSubmitBtn) buscadorSubmitBtn.textContent = t.buscadorBtn;
 
-    // Enlace RAWG en footer de juegos.html
-    const rawgFooterLink = document.querySelector('.contact-links a[href*="rawg.io"]');
-    if (rawgFooterLink) rawgFooterLink.textContent = t.rawgFooter;
+    // Enlace IGDB en footer de juegos.html
+    const igdbFooterLink = document.querySelector('.contact-links a[href*="igdb.com"]');
+    if (igdbFooterLink) igdbFooterLink.textContent = t.igdbFooter;
 
     // Traducir las tarjetas del carrusel en juegos.html
     const carouselCards = document.querySelectorAll(".carousel-card");
@@ -1087,10 +1087,12 @@
 /* =========================================================
    MODAL ¿TE LLAMO? + ENVÍO A SUPABASE API
    ========================================================= */
+// Datos públicos de Supabase (los usan el formulario y el buscador de juegos).
+// La anon key es pública por diseño: la seguridad la ponen RLS y las Edge Functions.
+const SUPABASE_URL = "https://kusmmtgvrecayytatvbf.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1c21tdGd2cmVjYXl5dGF0dmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2Mjc3NzgsImV4cCI6MjEwNjIwMzc3OH0.y_p7oKUQPueKn8fSqWGqlRafnDaQelFX0cvFmQv3AqI";
+
 (() => {
-  // PEGA AQUÍ TUS DATOS DE SUPABASE:
-  const SUPABASE_URL = "https://kusmmtgvrecayytatvbf.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1c21tdGd2cmVjYXl5dGF0dmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA2Mjc3NzgsImV4cCI6MjEwNjIwMzc3OH0.y_p7oKUQPueKn8fSqWGqlRafnDaQelFX0cvFmQv3AqI";
 
   const modal = document.getElementById("callModal");
   const openBtn = document.getElementById("openCall");
@@ -1494,8 +1496,12 @@
   }, 15 * 60 * 1000);
 })();
 
-/* ===== Buscador de videojuegos (RAWG) ===== */
-const RAWG_KEY = "b6b00ccbcb714d73a1474bb2fff67d6a"; // Tu API key de RAWG
+/* ===== Buscador de videojuegos (IGDB) =====
+   La búsqueda pasa por la Edge Function «juegos» (supabase/functions/juegos),
+   que consulta IGDB con las claves de Twitch guardadas en Supabase y devuelve
+   los datos con el mismo formato que usaba RAWG. */
+const JUEGOS_URL = `${SUPABASE_URL}/functions/v1/juegos`;
+const JUEGOS_TIMEOUT_MS = 8000;
 
 const buscadorForm = document.getElementById("buscadorForm");
 const buscadorInput = document.getElementById("buscadorInput");
@@ -1541,8 +1547,8 @@ function renderFicha(j) {
       <h4 class="buscador__nombre">${esc(j.name)}</h4>
       <div class="buscador__meta">
         <span class="buscador__dato"><strong>${fecha}</strong><span>lanzamiento</span></span>
-        <span class="buscador__dato"><strong>${nota}</strong><span>nota RAWG</span></span>
-        ${meta != null ? `<span class="buscador__dato"><strong>${meta}</strong><span>Metacritic</span></span>` : ""}
+        <span class="buscador__dato"><strong>${nota}</strong><span>nota IGDB</span></span>
+        ${meta != null ? `<span class="buscador__dato"><strong>${meta}</strong><span>crítica</span></span>` : ""}
       </div>
       <p class="buscador__linea"><span class="buscador__etiqueta">Plataformas</span>${plataformas}</p>
       <p class="buscador__linea"><span class="buscador__etiqueta">Géneros</span>${generos}</p>
@@ -1590,10 +1596,6 @@ function renderGrid(games) {
 }
 
 async function buscarJuego(nombre) {
-  if (!RAWG_KEY || RAWG_KEY.includes("PEGA_AQUI")) {
-    estado("Añade tu API key de RAWG en script.js (const RAWG_KEY).", true);
-    return;
-  }
   const q = (nombre || "").trim();
   if (q.length < 2) { estado("Escribe al menos 2 letras.", true); return; }
 
@@ -1612,9 +1614,16 @@ async function buscarJuego(nombre) {
   const btn = document.querySelector(".buscador__btn");
   btn?.classList.add("is-busy");
 
+  // Si IGDB o la función tardan demasiado, se corta y se avisa.
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), JUEGOS_TIMEOUT_MS);
+
   try {
-    const url = `https://api.rawg.io/api/games?key=${RAWG_KEY}&search=${encodeURIComponent(q)}&page_size=6`;
-    const res = await fetch(url);
+    const url = `${JUEGOS_URL}?search=${encodeURIComponent(q)}`;
+    const res = await fetch(url, {
+      signal: ctrl.signal,
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
     if (!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
 
@@ -1628,8 +1637,12 @@ async function buscarJuego(nombre) {
     renderGrid(currentResults);
     estado("");
   } catch (e) {
-    estado("Error consultando RAWG. Revisa tu conexión o la API key.", true);
+    const enValenciano = (document.documentElement.lang || "").startsWith("ca");
+    estado(enValenciano
+      ? "El cercador de jocs no respon ara mateix. Torna-ho a provar més tard."
+      : "El buscador de juegos no responde ahora mismo. Inténtalo más tarde.", true);
   } finally {
+    clearTimeout(timer);
     btn?.classList.remove("is-busy");
   }
 }

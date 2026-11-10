@@ -147,7 +147,7 @@
     resNextT: "Què faria diferent i pròxims passos",
     resNext:
       "<li>Organitzar les carpetes des del primer dia, no al final.</li>" +
-      "<li>Portar les claus de RAWG i TMDB a una Edge Function de Supabase.</li>" +
+      "<li>Portar la clau de TMDB a una Edge Function de Supabase, com ja fa el cercador de jocs.</li>" +
       "<li>Usar un domini propi per a enviar els correus.</li>" +
       "<li>Ampliar les proves automàtiques a la resta de la web.</li>",
     backProjects: "← Tornar a projectes",

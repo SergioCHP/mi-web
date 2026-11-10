@@ -14,7 +14,7 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
 | Página | Qué ofrece |
 |---|---|
 | `index.html` | Portada con hero rotativo, sobre mí, trayectoria (con visor de certificados Cisco), intereses, proyectos filtrables, actividad de GitHub en directo y contacto |
-| `juegos.html` | Carrusel 3D de mis juegos favoritos + buscador de videojuegos (API de **RAWG**) |
+| `juegos.html` | Carrusel 3D de mis juegos favoritos + buscador de videojuegos (**IGDB**, vía Edge Function `juegos`) |
 | `minijuego.html` | Combate JRPG por turnos (sistema ATB en canvas) que da acceso a la página de juegos |
 | `matrix_pills.html` | Elección «pastilla roja / azul» con lluvia digital en canvas que lleva a Cine o Anime |
 | `cine.html` | Carrusel 3D de películas + explorador de cine (API de **TMDB**) |
@@ -51,7 +51,7 @@ Hecha a mano con **HTML, CSS y JavaScript vanilla**, sin frameworks, con **Supab
   - JavaScript ES6+ con módulos (`farolillo.js`).
 - **Backend:** Supabase (PostgreSQL + Auth + Row Level Security + Edge Functions en Deno/TypeScript).
 - **Correo:** Gmail por SMTP (puerto 465) desde la Edge Function, con la contraseña guardada en los *Secrets* de Supabase.
-- **APIs externas:** GitHub REST, RAWG, TMDB, AniList (GraphQL), Open-Meteo.
+- **APIs externas:** GitHub REST, IGDB (Twitch), TMDB, AniList (GraphQL), Open-Meteo.
 - **Librerías**, solo en `libros.html` y con versiones fijadas:
   - GSAP 3.12;
   - St.PageFlip 2.0.7.
@@ -79,13 +79,15 @@ mi-web/
 │                           y logo.svg (logo SC propio)
 ├── assets/                 Sprites del minijuego, vídeo demo (MP4 + VTT) y fuentes (fonts/)
 ├── tools/                  Scripts de apoyo del minijuego (simulación en Node, sprites)
-├── docs/                   Guías (Farolillo, correo de contacto, sprites del minijuego)
+├── docs/                   Guías (Farolillo, correo de contacto, buscador de juegos, sprites)
 │                           y PROMPTS.md (órdenes clave a la IA)
 ├── CHANGELOG.md            Historial de versiones
 └── supabase/
     ├── rls.sql             Políticas de seguridad de la base de datos
     ├── retencion.sql       Borrado automático de solicitudes con más de 6 meses (pg_cron)
-    └── functions/contacto/ Edge Function del formulario (index.ts) y sus pruebas (index.test.ts)
+    └── functions/
+        ├── contacto/       Edge Function del formulario (index.ts) y sus pruebas (index.test.ts)
+        └── juegos/         Edge Function del buscador de videojuegos (proxy a IGDB)
 ```
 
 **Componentes reutilizables:** el tema, las partículas y el carrusel 3D se escribieron una sola vez y se cargan en cada página que los necesita (antes estaban copiados en varias). Las páginas no tienen bloques `<style>` ni atributos `style=""`: todo el CSS está en `css/`.
@@ -124,6 +126,7 @@ mi-web/
 4. En **Authentication → Users**, crea tu usuario administrador y desactiva el registro público.
 5. Sustituye `SUPABASE_URL` y `SUPABASE_ANON_KEY` en `js/script.js` y en `admin.html`.
 6. (Opcional) Despliega la Edge Function de correo siguiendo [`docs/CONTACTO_CORREO.md`](docs/CONTACTO_CORREO.md). Sin ella, el formulario sigue guardando los mensajes, pero no envía correos.
+7. Despliega la Edge Function del buscador de juegos siguiendo [`docs/BUSCADOR_JUEGOS.md`](docs/BUSCADOR_JUEGOS.md). Sin ella, el buscador de `juegos.html` muestra un aviso y no busca.
 
 ### Pruebas automáticas
 
@@ -158,6 +161,12 @@ Además:
 - La contraseña de Gmail vive en los *Secrets* de Supabase, nunca en el código ni en GitHub.
 - La respuesta automática **no copia el mensaje** del visitante: así nadie puede usar el formulario para mandar texto a otra persona.
 - Si la función no está disponible, el formulario guarda el mensaje directamente en la tabla (plan B), sin correo.
+
+**Buscador de videojuegos.** `juegos.html` no llama a ninguna API externa: llama a la Edge Function `juegos`, que pide un token a Twitch, consulta IGDB y devuelve los datos con el formato que ya usaba la web.
+- Las claves de Twitch viven en los *Secrets* de Supabase; en el navegador no hay ninguna clave privada.
+- Solo responde a peticiones desde la web publicada y desde `localhost:5500`.
+- Si tarda más de 8 s, el buscador corta la petición y avisa en lugar de quedarse colgado.
+- Antes usaba RAWG directamente desde el navegador; en noviembre de 2026 RAWG dejó de responder y se cambió a IGDB (ver `CHANGELOG.md`).
 
 ### 3. Farolillo: un chatbot sin IA ni servidor
 En lugar de conectar un modelo de lenguaje (coste, latencia y una clave que no se puede esconder en el frontend), Farolillo usa un **motor de búsqueda difusa** propio:
@@ -310,15 +319,16 @@ El formulario «¿Te llamo?» recoge datos personales (nombre, email y teléfono
 
 ## Seguridad: notas
 
-- Las claves de RAWG y TMDB están en el cliente porque la web es estática. Son claves gratuitas, solo de lectura y con límite de uso.
-- Mejora prevista: llevarlas a una *Edge Function* de Supabase que haga de proxy, como ya hace el formulario de contacto con la contraseña del correo.
+- El buscador de juegos ya no tiene clave en el cliente: la Edge Function `juegos` guarda las claves de Twitch/IGDB en los *Secrets* de Supabase.
+- La clave de TMDB sigue en el cliente porque la web es estática. Es gratuita, solo de lectura y con límite de uso.
+- Mejora prevista: llevar también la de TMDB a una *Edge Function*, como ya hacen el buscador de juegos y el formulario de contacto.
 - La contraseña del correo es una **contraseña de aplicación** de Gmail: se puede revocar en cualquier momento sin cambiar la contraseña de la cuenta.
 
 ---
 
 ## Créditos
 
-- Datos: [RAWG](https://rawg.io), [TMDB](https://www.themoviedb.org) (este producto usa la API de TMDB, pero TMDB no lo respalda ni certifica), [AniList](https://anilist.co), [Open-Meteo](https://open-meteo.com), [GitHub API](https://docs.github.com/rest).
+- Datos: [IGDB](https://www.igdb.com) (Twitch), [TMDB](https://www.themoviedb.org) (este producto usa la API de TMDB, pero TMDB no lo respalda ni certifica), [AniList](https://anilist.co), [Open-Meteo](https://open-meteo.com), [GitHub API](https://docs.github.com/rest).
 - Librerías: [GSAP](https://gsap.com), [St.PageFlip](https://github.com/Nodlik/StPageFlip), [Supabase JS](https://supabase.com/docs/reference/javascript).
 - Tipografías: Chakra Petch, Inter, Poppins, Cinzel, Playfair Display y Courier Prime (SIL Open Font License), alojadas en la web a partir de [Fontsource](https://fontsource.org).
 

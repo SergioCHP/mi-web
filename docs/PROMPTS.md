@@ -295,3 +295,31 @@ La IA propuso cuatro enfoques (directo, cercano, honesto y «como código»). Pr
 - Hacer yo los commits, la etiqueta y la release.
 
 **Resultado:** commits `149ad89` y `9998aff`, etiqueta y release `v1.3.0`.
+
+## 10 nov · El buscador de juegos deja de funcionar: de RAWG a IGDB
+
+**Órdenes (textual):**
+> Tengo un problema en mi-web, en la sección videojuegos la API RAWG ha dejado de funcionar, no sé si es porque ha caído la web RAWG o por otra cosa pero lleva una semana sin hacer búsquedas, revisa qué es lo que puede pasar.
+
+> ¿Podemos cambiar la API por una que funcione?
+
+> Vamos a hacerlo, pero me tienes que guiar paso a paso.
+
+**Qué salió:**
+- El diagnóstico: el código no había cambiado y fallaba igual con la clave y sin ella. El servidor de RAWG tardaba unos 19 s en contestar y lo hacía sin cabeceras CORS. El fallo era de RAWG, no de la web.
+- La IA comparó alternativas y propuso **IGDB** (de Twitch): gratis, con los mismos datos, pero no se puede llamar desde el navegador. Por eso hace falta una Edge Function.
+- La Edge Function `juegos`, que devuelve los datos con el mismo formato que RAWG: el código que pinta las tarjetas y la ficha no cambia.
+- Un límite de 8 s y un aviso claro en castellano y valenciano si la API no responde.
+- Fuera la clave de RAWG, que estaba publicada en `js/script.js`.
+
+**Qué decidí yo:**
+- Cambiar de API en lugar de esperar a que RAWG volviera.
+- Crear la app en la consola de Twitch y activar la verificación en dos pasos, que Twitch exige.
+- Guardar yo el Client ID y el Client Secret en los *Secrets* de Supabase, sin pegarlos en el chat ni en el código.
+- Probarlo en local con Live Server antes de subirlo.
+
+**Problemas que aparecieron:**
+- Twitch no deja registrar apps sin la verificación en dos pasos y, al activarla, cerró la sesión de la consola.
+- El formulario de Twitch daba error por una URL de redirección vacía añadida dos veces.
+
+**Resultado:** Edge Function `juegos` desplegada en Supabase. Guía en `docs/BUSCADOR_JUEGOS.md`.

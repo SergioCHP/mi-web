@@ -12,7 +12,16 @@ Las versiones anteriores a la 1.0.0 se han reconstruido a partir del historial d
 
 ## [Sin publicar]
 
-_Nada todavía._
+### Cambiado
+- **Buscador de videojuegos:** RAWG dejó de responder y se sustituye por **IGDB** (Twitch). La consulta pasa por la Edge Function `juegos` de Supabase, que guarda las claves de Twitch en los Secrets y devuelve los datos con el mismo formato que antes.
+- Créditos actualizados de RAWG a IGDB en `juegos.html`, la política de privacidad y el caso de estudio.
+- README y `docs/PROMPTS.md` actualizados; nueva guía `docs/BUSCADOR_JUEGOS.md` para crear la app de Twitch y desplegar la función.
+
+### Corregido
+- El buscador ya no se queda colgado si la API no responde: corta a los 8 s y muestra un aviso claro (ES/VA).
+
+### Seguridad
+- Eliminada del código la API key de RAWG, que estaba publicada en `js/script.js`.
 
 ## [1.3.0] — 2026-10-22
 
